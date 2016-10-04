@@ -1,6 +1,7 @@
 # ImagePress Issue Tracker
 
 [![Version](https://getbutterfly.com/web/imagepress-version.svg)](https://getbutterfly.com/wordpress-plugins/imagepress/)
+[![Build Status](https://getbutterfly.com/web/imagepress-build.svg)](https://getbutterfly.com/wordpress-plugins/imagepress)
 
 **Looking for testers and contributors!**
 
