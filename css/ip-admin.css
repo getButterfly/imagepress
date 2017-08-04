@@ -8,7 +8,7 @@
     display: inline-block;
     background-color: #E74C3C;
     color: #ffffff;
-    padding: 0px 4px;
+    padding: 0 4px;
     font-size: 10px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
     border-radius: 2px;
@@ -17,7 +17,7 @@
     display: inline-block;
     background-color: #16A085;
     color: #ffffff;
-    padding: 0px 4px;
+    padding: 0 4px;
     font-size: 10px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
     border-radius: 2px;
@@ -26,7 +26,7 @@
     display: inline-block;
     background-color: #F39C12;
     color: #ffffff;
-    padding: 0px 4px;
+    padding: 0 4px;
     font-size: 10px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
     border-radius: 2px;
@@ -139,9 +139,6 @@ small .codor {
     margin: 16px 0;
     overflow: hidden;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
-
-    -webkit-transition: all .15s ease-in-out;
-    transition: all .15s ease-in-out;
 }
 .ip-card img {
     max-width: 100%;
@@ -157,10 +154,6 @@ small .codor {
 }
 .ip-card-cta {
     padding: 16px;
-}
-
-.flex-grid-thirds .ip-card:hover {
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
 }
 
 .flex-grid {
