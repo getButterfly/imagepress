@@ -139,9 +139,6 @@ small .codor {
     margin: 16px 0;
     overflow: hidden;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
-
-    -webkit-transition: all .15s ease-in-out;
-    transition: all .15s ease-in-out;
 }
 .ip-card img {
     max-width: 100%;
@@ -157,10 +154,6 @@ small .codor {
 }
 .ip-card-cta {
     padding: 16px;
-}
-
-.flex-grid-thirds .ip-card:hover {
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
 }
 
 .flex-grid {
