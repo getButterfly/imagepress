@@ -1,15 +1,15 @@
 jQuery(document).ready(function($){
-    $('#regform').on('submit', function(e){
+    $("#regform").on("submit", function(e){
         e.preventDefault();
 
 		$('#regform p.message').remove();
         $('#regform h2').after('<p class="message notice">' + fum_script.registrationloadingmessage + '</p>');
 
         $.ajax({
-            type: 'GET',
+            type: "GET",
             dataType: 'json',
             url: fum_script.ajax,
-            data: $("#regform").serialize() + '&action=cinnamon_process_registration',
+            data: $("#regform").serialize() + "&action=cinnamon_process_registration",
             success: function(results) {
                 if(results.registered === true) {
                     $('#regform p.message').removeClass('notice').addClass('success').text(results.message).show();
@@ -23,8 +23,8 @@ jQuery(document).ready(function($){
 	$('#pswform').on('submit', function(e){
         e.preventDefault();
 
-        $('#pswform p.message').remove();
-        $('#pswform h2').after('<p class="message notice">' + fum_script.loadingmessage + '</p>');
+        $("#pswform p.message").remove();
+        $("#pswform h2").after('<p class="message notice">' + fum_script.loadingmessage + '</p>');
 
         $.ajax({
             type: 'GET',
