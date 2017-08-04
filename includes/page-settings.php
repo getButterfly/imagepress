@@ -352,20 +352,14 @@ function imagepress_admin_page() {
                         <tr>
                             <th scope="row"><label>Image grid details</label></th>
                             <td>
+                                <input name="ip_ipw" id="ip_ipw" type="number" value="<?php echo get_imagepress_option('ip_ipw'); ?>" min="1" max="1024">
                                 <label for="ip_ipw">Images per row (0-32)</label>
                                 <br><small>Number of images per grid row.</small>
-                                <div class="range-slider range-slider-ipw">
-                                    <input name="ip_ipw" id="ip_ipw" class="input-range input-range-ipw" type="range" value="<?php echo get_imagepress_option('ip_ipw'); ?>" min="0" max="32">
-                                    <span class="range-value range-value-ipw">0</span>
-                                </div>
                                 <br>
 
+                                <input name="ip_ipp" id="ip_ipp" type="number" value="<?php echo get_imagepress_option('ip_ipp'); ?>" min="1" max="65536">
                                 <label for="ip_ipp">Images per page (0-256)</label>
                                 <br><small>How many images per page you want to display using the <code>[imagepress-loop]</code> shortcode.</small>
-                                <div class="range-slider range-slider-ipp">
-                                    <input name="ip_ipp" id="ip_ipp" class="input-range input-range-ipp" type="range" value="<?php echo get_imagepress_option('ip_ipp'); ?>" min="0" max="256">
-                                    <span class="range-value range-value-ipp">0</span>
-                                </div>
 
                                 <p>
                                     <label for="ip_order">Sort images</label>
