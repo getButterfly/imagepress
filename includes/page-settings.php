@@ -44,7 +44,7 @@ function imagepress_admin_page() {
             $ipdata = get_plugin_data(IP_PLUGIN_FILE_PATH);
 
             echo '<div id="gb-ad">
-                <h3 class="gb-handle"><span class="dashicons dashicons-heart"></span> Thank you for using ImagePress!</h3>
+                <h3 class="gb-handle">Thank you for using ImagePress!</h3>
                 <div id="gb-ad-content">
                     <div class="inside">
                         <img src="' . IP_PLUGIN_URL . '/img/gb-logo-white-512.png" alt="getButterfly">';
