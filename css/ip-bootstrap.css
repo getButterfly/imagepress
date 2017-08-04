@@ -272,94 +272,6 @@ a img { border: none; }
     position: relative;
     margin: 0 0 24px 0;
 }
-.dropbtn {
-    width: 100%;
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-}
-.dropbtn:hover {
-    color: #0cb8fc;
-}
-.dropbtn .fa {
-    margin: 0 0 0 4px;
-}
-.cinnamon-dropdown {
-    font-weight: 400;
-    position: relative;
-    display: inline-block;
-}
-.cinnamon-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #ECF0F1;
-    width: 100%;
-    border: 1px solid #BDC3C7;
-    margin-top: -1px;
-    z-index: 2;
-}
-.cinnamon-dropdown-content a {
-    color: #878787;
-    padding: 6px 8px;
-    font-size: 14px;;
-    text-decoration: none;
-    display: block;
-}
-.cinnamon-dropdown-content a:hover {
-    color: #0cb8fc;
-}
-.dropbtn-options {
-    background-color: #121212;
-    color: #878787;
-    padding: 16px;
-    border: none;
-    cursor: pointer;
-}
-.dropbtn-options:hover {
-    color: #0cb8fc;
-}
-.cinnamon-dropdown-options {
-    font-weight: 300;
-    width: 108px;
-    position: absolute;
-    top: 8px;
-    display: inline-block;
-    float: right;
-}
-.cinnamon-dropdown-options-content {
-    display: none;
-    position: absolute;
-    background-color: #121212;
-    width: 100%;
-    border: 1px solid #2f2f2f;
-    margin-top: -1px;
-    padding: 4px 0;
-    z-index: 2;
-}
-.cinnamon-dropdown-options-content a {
-    text-transform: none;
-    color: #878787;
-    padding: 0px;
-    text-decoration: none;
-    display: block !important;
-}
-.cinnamon-dropdown-options-content .fa {
-    font-size: 14px;
-    margin: 0 2px;
-}
-.cinnamon-dropdown-title {
-    color: #878787;
-    font-size: 12px;
-}
-.cinnamon-dropdown-options-content a:hover {
-    color: #0cb8fc;
-}
-.cinnamon-dropdown-options:hover .cinnamon-dropdown-options-content {
-    display: block;
-}
-.cinnamon-dropdown-options:hover .dropbtn-options {
-    background-color: #121212;
-}
 
 /* SEARCH */
 .ip-sorter-primary form {
@@ -783,6 +695,8 @@ ul, li {padding: 0; margin: 0; list-style: none}
     margin: 5px 0 15px;
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     padding: 12px;
+}
+#imagepress-errors:focus {
     outline: 0;
 }
 #imagepress-errors p {
