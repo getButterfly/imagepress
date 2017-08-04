@@ -5,7 +5,7 @@
  */
 
 function addMoreFiles() {
-    var newElement = jQuery('#fileuploads').clone().prop({
+    var newElement = jQuery("#fileuploads").clone().prop({
         class: 'ip-more'
     });
     newElement.find('input, textarea, select').val('').end().insertBefore('#endOfForm');
@@ -15,9 +15,9 @@ function addMoreFiles() {
 (function($){
     jQuery.fn.jConfirmAction = function(options){
         var theOptions = jQuery.extend({
-            question: 'Are you sure you want to delete this image? This action is irreversible!',
-            yesAnswer: 'Yes',
-            cancelAnswer: 'No'
+            question: "Are you sure you want to delete this image? This action is irreversible!",
+            yesAnswer: "Yes",
+            cancelAnswer: "No"
         }, options);
 
         return this.each(function(){
@@ -76,7 +76,7 @@ jQuery(document).ready(function() {
     jQuery('#imagepress_image_file_bulk').change(function () {
         var filename = jQuery('#imagepress_image_file_bulk').val();
         jQuery('.file-upload').addClass('active');
-        jQuery('#noFile').text(filename.replace("C:\\fakepath\\", ""));
+        jQuery("#noFile").text(filename.replace("C:\\fakepath\\", ""));
     });
 
     jQuery('.poster-container img').click(function(){
@@ -96,7 +96,7 @@ jQuery(document).ready(function() {
             data: 'action=imagepress-like&nonce=' + ip_ajax_var.nonce + '&imagepress_like=&post_id=' + pid,
             success: function(count){
                 if(count.indexOf('already') !== -1) {
-                    var lecount = count.replace('already', '');
+                    var lecount = count.replace("already", "");
                     if(lecount === '0') {
                         lecount = ip_ajax_var.likelabel;
                     }
