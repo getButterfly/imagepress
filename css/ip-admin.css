@@ -40,9 +40,6 @@
     border-left: 4px solid #19aa8d;
 }
 
-#gb-ad * {
-    box-sizing: border-box;
-}
 #gb-ad {
     color: #FFFFFF;
     background-color: #303141;
@@ -75,9 +72,6 @@
     padding: 16px 24px;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.15);
-}
-#gb-ad .gb-handle .dashicons {
-    color: rgba(255, 255, 255, 0.5);
 }
 #gb-ad img {
     width: 90px;
