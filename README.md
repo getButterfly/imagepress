@@ -1,6 +1,6 @@
 # ImagePress
 
-[![Version](https://getbutterfly.com/web/imagepress-version.svg)](https://getbutterfly.com/wordpress-plugins/imagepress/)
+[![Version](https://cdn.rawgit.com/getbutterfly/imagepress/master/imagepress-version.svg)](https://getbutterfly.com/wordpress-plugins/imagepress/)
 [![Build Status](https://getbutterfly.com/web/imagepress-build.svg)](https://getbutterfly.com/wordpress-plugins/imagepress)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/22b07233e3ec434ab3be3216364c8e90)](https://www.codacy.com/app/getButterfly/imagepress?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=getButterfly/imagepress&amp;utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/getbutterfly/imagepress/badge/master)](https://www.codefactor.io/repository/github/getbutterfly/imagepress/overview/master)
