@@ -52,7 +52,7 @@ function imagepress_registration() {
 
     register_post_type($ip_slug, $image_type_args);
 
-    $image_category_labels = array(
+    $imageTaxonomy = array(
         'name'                       => _x( 'Image categories', 'Taxonomy general name', 'imagepress' ),
         'singular_name'              => _x( 'Image category', 'Taxonomy singular name', 'imagepress' ),
         'menu_name'                  => __( 'Image Categories', 'imagepress' ),
@@ -76,7 +76,7 @@ function imagepress_registration() {
     );
 
     $image_category_args = array(
-        'labels' 				     => $image_category_labels,
+        'labels' 				     => $imageTaxonomy,
         'hierarchical'               => true,
         'public'                     => true,
         'show_ui'                    => true,

@@ -1647,21 +1647,21 @@ RewriteRule ^(.*)$ ?author_name=%1
                             <th scope="row"><label for="ip_field_type">Field type</label></th>
                             <td>
                                 <select name="ip_field_type" id="ip_field_type">
-                                    <option value="1"<?php if(get_imagepress_option('ip_field_type') == 1) echo ' selected'; ?>>Input (text)</option>
-                                    <option value="2"<?php if(get_imagepress_option('ip_field_type') == 2) echo ' selected'; ?>>Input (URL)</option>
-                                    <option value="3"<?php if(get_imagepress_option('ip_field_type') == 3) echo ' selected'; ?>>Input (email)</option>
-                                    <option value="4"<?php if(get_imagepress_option('ip_field_type') == 4) echo ' selected'; ?>>Input (number)</option>
-                                    <option value="5"<?php if(get_imagepress_option('ip_field_type') == 5) echo ' selected'; ?>>Textarea</option>
-                                    <option value="6"<?php if(get_imagepress_option('ip_field_type') == 6) echo ' selected'; ?>>Checkbox</option>
-                                    <option value="7"<?php if(get_imagepress_option('ip_field_type') == 7) echo ' selected'; ?>>Radiobox</option>
-                                    <option value="8"<?php if(get_imagepress_option('ip_field_type') == 8) echo ' selected'; ?>>Dropdown</option>
+                                    <option value="1">Input (text)</option>
+                                    <option value="2">Input (URL)</option>
+                                    <option value="3">Input (email)</option>
+                                    <option value="4">Input (number)</option>
+                                    <option value="5">Textarea</option>
+                                    <option value="6">Checkbox</option>
+                                    <option value="7">Radiobox</option>
+                                    <option value="8">Dropdown</option>
 
                                     <optgroup label="Field presets">
-                                        <option value="20"<?php if(get_imagepress_option('ip_field_type') == 20) echo ' selected'; ?>>Sketchfab (model ID)</option>
-                                        <option value="21"<?php if(get_imagepress_option('ip_field_type') == 21) echo ' selected'; ?>>Vimeo (video ID)</option>
-                                        <option value="22"<?php if(get_imagepress_option('ip_field_type') == 22) echo ' selected'; ?>>Youtube (video ID)</option>
-                                        <option value="23"<?php if(get_imagepress_option('ip_field_type') == 23) echo ' selected'; ?>>Google Maps location (address)</option>
-                                        <option value="24"<?php if(get_imagepress_option('ip_field_type') == 24) echo ' selected'; ?>>Round.me (tour ID)</option>
+                                        <option value="20">Sketchfab (model ID)</option>
+                                        <option value="21">Vimeo (video ID)</option>
+                                        <option value="22">Youtube (video ID)</option>
+                                        <option value="23">Google Maps location (address)</option>
+                                        <option value="24">Round.me (tour ID)</option>
                                     </optgroup>
                                 </select>
                             </td>
@@ -1669,28 +1669,28 @@ RewriteRule ^(.*)$ ?author_name=%1
                         <tr>
                             <th scope="row"><label for="ip_field_order">Field order</label></th>
                             <td>
-                                <input type="number" name="ip_field_order" id="ip_field_order" value="<?php echo get_imagepress_option('ip_field_order'); ?>" min="0" max="99999" step="1" placeholder="0">
+                                <input type="number" name="ip_field_order" id="ip_field_order" value="" min="0" max="99999" step="1" placeholder="0">
                                 <br><small>This is the field order</small>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row"><label for="ip_field_name">Field name</label></th>
                             <td>
-                                <input type="text" name="ip_field_name" id="ip_field_name" class="regular-text" value="<?php echo get_imagepress_option('ip_field_name'); ?>">
+                                <input type="text" name="ip_field_name" id="ip_field_name" class="regular-text" value="">
                                 <br><small>This is the field label</small>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row"><label for="ip_field_slug">Field slug</label></th>
                             <td>
-                                <input type="text" name="ip_field_slug" id="ip_field_slug" class="regular-text" value="<?php echo get_imagepress_option('ip_field_slug'); ?>">
+                                <input type="text" name="ip_field_slug" id="ip_field_slug" class="regular-text" value="">
                                 <br><small>This is the field slug</small>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row"><label for="ip_field_content">Field content<br><small>(optional)</small></label></th>
                             <td>
-                                <textarea class="large-text code" rows="4" name="ip_field_content" id="ip_field_content"><?php echo get_imagepress_option('ip_field_content'); ?></textarea>
+                                <textarea class="large-text code" rows="4" name="ip_field_content" id="ip_field_content"></textarea>
                                 <br><small>Use dropdown options, separated by comma (e.g. <code>Value 1, Value 2, Value 3</code>)</small>
                             </td>
                         </tr>
