@@ -911,17 +911,6 @@ function imagepress_image_download($path) {
     return $out;
 }
 
-// Hooks and actions
-function do_ip_before_show() {
-    do_action('do_ip_before_show');
-}
-
-// Example hook
-function my_ip_function() {
-    // echo '<p>This is a hooked action.</p>';
-}
-add_action('do_ip_before_show', 'my_ip_function');
-
 function imagepress_order_list() {
     global $wpdb;
 
