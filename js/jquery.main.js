@@ -6,9 +6,9 @@
 
 function addMoreFiles() {
     var newElement = jQuery("#fileuploads").clone().prop({
-        class: 'ip-more'
+        class: "ip-more"
     });
-    newElement.find('input, textarea, select').val('').end().insertBefore('#endOfForm');
+    newElement.find("input, textarea, select").val("").end().insertBefore("#endOfForm");
 }
 
 /* ImagePress */
@@ -23,7 +23,7 @@ function addMoreFiles() {
         return this.each(function(){
             $(this).bind('click', function(e){
                 e.preventDefault();
-                var thisHref = $(this).attr('href');
+                var thisHref = $(this).attr("href");
                 if($(this).next('.question').length <= 0)
                     $(this).after('<div class="question"><i class="fa fa-exclamation-triangle"></i> ' + theOptions.question + '<br><span class="yes button noir-secondary">' + theOptions.yesAnswer + '</span><span class="cancel button">' + theOptions.cancelAnswer + '</span></div>');
 
@@ -65,10 +65,17 @@ jQuery.fn.extend({
 });
 
 function bytesToSize(bytes) {
-    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if(bytes === 0) return 'n/a';
-    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-    if(i === 0) return bytes + ' ' + sizes[i];
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
+        i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+
+    if (bytes === 0) {
+        return 'n/a';
+    }
+
+    if (i === 0) {
+        return bytes + ' ' + sizes[i];
+    }
+
     return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
 }
 
@@ -80,7 +87,7 @@ jQuery(document).ready(function() {
     });
 
     jQuery('.poster-container img').click(function(){
-        jQuery(this).toggleClass('ip-more-target');
+        jQuery(this).toggleClass("ip-more-target");
     });
 
     /* like action */
