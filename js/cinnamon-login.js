@@ -7,14 +7,14 @@ jQuery(document).ready(function($){
 
         $.ajax({
             type: "GET",
-            dataType: 'json',
+            dataType: "json",
             url: fum_script.ajax,
             data: $("#regform").serialize() + "&action=cinnamon_process_registration",
             success: function(results) {
                 if(results.registered === true) {
-                    $('#regform p.message').removeClass('notice').addClass('success').text(results.message).show();
+                    $("#regform p.message").removeClass("notice").addClass("success").text(results.message).show();
                 } else {
-                    $('#regform p.message').removeClass('notice').addClass('error').html(results.message).show();
+                    $("#regform p.message").removeClass("notice").addClass("error").html(results.message).show();
                 }
             }
         });
@@ -31,7 +31,7 @@ jQuery(document).ready(function($){
             dataType: 'json',
             url: fum_script.ajax,
             data: {
-                'action': 'cinnamon_process_psw_recovery', // Calls our wp_ajax_nopriv_ajaxlogin
+                'action': "cinnamon_process_psw_recovery", // Calls our wp_ajax_nopriv_ajaxlogin
                 'username': $('#pswform #forgot_login').val(),
                 'forgotten': $('#pswform input[name="forgotten"]').val(),
                 'security': $('#pswform #security').val()
