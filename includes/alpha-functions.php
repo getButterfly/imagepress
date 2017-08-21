@@ -327,7 +327,12 @@ function imagepress_loop($atts, $content = null) {
                 }
                 $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, $size);
 
-                $out .= '<div class="ip_box ip_box_' . $i . '" style="width: ' . (100/$ip_ipw) . '%;"><a href="' . $ip_image_link . '" rel="' . $ip_rel_tag . '" data-taxonomy="' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a><div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div><div class="ip_box_bottom"><span class="imagedate ip-hide">' . get_the_date('YmdHis', $i) . '</span>' . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div></div>';
+                $ip_box_bottom_hook = '';
+                if (has_filter('do_ip_box_bottom')) {
+                    $ip_box_bottom_hook = apply_filters('do_ip_box_bottom', $i);
+                }
+
+                $out .= '<div class="ip_box ip_box_' . $i . '" style="width: ' . (100/$ip_ipw) . '%;"><a href="' . $ip_image_link . '" rel="' . $ip_rel_tag . '" data-taxonomy="' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a><div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div><div class="ip_box_bottom">' . $ip_box_bottom_hook . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div></div>';
 
 
             endwhile;
