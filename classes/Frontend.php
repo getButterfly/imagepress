@@ -105,9 +105,9 @@ class Cinnamon_Frontend_User_Manager {
 
 			$user_id = $errors;
         } else {
-			$registration_error_messages = $errors->errors;
+			$registrationErrors = $errors->errors;
 			$display_errors = '<ul>';
-                foreach($registration_error_messages as $error) {
+                foreach($registrationErrors as $error) {
                     $display_errors .= '<li>' . $error[0] . '</li>';
                 }
 			$display_errors .= '</ul>';
@@ -220,4 +220,3 @@ class Cinnamon_Frontend_User_Manager {
 }
 
 $cinnamon_frontend_user_manager = new Cinnamon_Frontend_User_Manager();
-?>
