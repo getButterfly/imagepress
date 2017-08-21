@@ -747,17 +747,10 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
     // labels
     $ip_caption_label = get_imagepress_option('ip_caption_label');
     $ip_description_label = get_imagepress_option('ip_description_label');
-    $ip_sticky_label = get_imagepress_option('ip_sticky_label');
-    $ip_video_label = get_imagepress_option('ip_video_label');
-    $ip_upload_label = get_imagepress_option('ip_upload_label');
 
     $ip_request_user_details = get_imagepress_option('ip_request_user_details');
     $ip_require_description = get_imagepress_option('ip_require_description');
-    $ip_allow_tags = get_imagepress_option('ip_allow_tags');
     $ip_upload_size = get_imagepress_option('ip_upload_size');
-    $ip_dropbox_enable = get_imagepress_option('ip_dropbox_enable');
-    $ip_dropbox_key = get_imagepress_option('ip_dropbox_key');
-    $ip_upload_secondary = get_imagepress_option('ip_upload_secondary');
 
     $out = '<div class="ip-uploader">';
         $out .= '<form id="imagepress_upload_image_form_bulk" method="post" action="" enctype="multipart/form-data" class="imagepress-upload-form">';

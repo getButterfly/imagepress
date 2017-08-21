@@ -60,11 +60,6 @@ a img { border: none; }
 /* Tiny icons */
 .ip_icon_hover { position: absolute; padding: 8px; display: block; bottom: 8px; left: 8px; }
 
-/* Faux cropping and responsiveness */
-.ip-block { display: block !important; overflow: hidden; }
-.ip-block .ip-link img { margin: -50% 0 0 0; }
-
-
 #cinnamon-cards .list {
     -webkit-flex-flow: row wrap; 
     -moz-flex-flow: row wrap; 
@@ -137,17 +132,23 @@ a img { border: none; }
 }
 .ip-box-container-overlay .ip_box_bottom {
     background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+    background: -webkit-linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background: -o-linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     position: absolute;
     top: 0;
-    left: 0; right: 0;
+    left: 0;
+    right: 0;
 }
 .ip-box-container-overlay .ip_box_top {
     background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.5)));
+    background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+    background: -o-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
     background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
     position: absolute;
     bottom: 0;
-    left: 0; right: 0;
+    left: 0;
+    right: 0;
 }
 .ip-box-container-overlay .imagetitle {
     height: auto;
@@ -370,6 +371,8 @@ section[role="navigation"] a { display: inline; }
 .cinnamon-cover { position: relative; height: 300px; }
 .cinnamon-cover {
     background-image: -webkit-linear-gradient(bottom,#000000,rgba(0,0,0,0));
+    background-image: -webkit-gradient(linear,left bottom, left top,from(#000000),to(rgba(0,0,0,0)));
+    background-image: -o-linear-gradient(bottom,#000000,rgba(0,0,0,0));
     background-image: linear-gradient(to top,#000000,rgba(0,0,0,0));
 }
 .cinnamon-cover-preview { width: 100%; height: 150px; margin: 0 0 32px 0; position: relative; }
