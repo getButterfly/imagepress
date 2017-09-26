@@ -67,7 +67,7 @@ function imagepress_admin_page() {
             </div>';
 
             echo '<p>
-                <small>You are using ImagePress plugin version <strong>' . $ipdata['Version'] . '</strong> with <a href="http://fontawesome.io" rel="external">FontAwesome</a> 4.7.0 and jQuery ' . $wp_jquery_ver . '.</small><br>
+                <small>You are using ImagePress plugin version <strong>' . $ipdata['Version'] . '</strong>.</small><br>
                 <small>You are using PHP version ' . PHP_VERSION . ' and MySQL server version ' . $wpdb->db_version() . '.</small>
             </p>
 

@@ -3,8 +3,8 @@ Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
-Tested up to: 4.8.1
-Stable tag: 7.4.2
+Tested up to: 4.8.2
+Stable tag: 7.4.3
 Text Domain: imagepress
 
 == Description ==
@@ -18,6 +18,9 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 3. A new ImagePress menu will appear in WordPress with options and general help
 
 == Changelog ==
+
+= 7.4.3 =
+* FIX: Added slug fallback
 
 = 7.4.2 =
 * FIX: Fixed deprecated author function

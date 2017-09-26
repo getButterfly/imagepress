@@ -2,6 +2,10 @@
 function imagepress_registration() {
     $ip_slug = get_imagepress_option('ip_slug');
 
+    if (empty($ip_slug)) {
+        $ip_slug = 'image';
+    }
+
     $image_type_labels = array(
         'name'                  => _x( 'Images', 'Post type general name', 'imagepress' ),
         'singular_name'         => _x( 'Image', 'Post type singular name', 'imagepress' ),
