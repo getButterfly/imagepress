@@ -230,14 +230,14 @@ function ip_editor() {
     $current_user = wp_get_current_user();
 
     // check if user is author // show author tools
-    if($post->post_author == $current_user->ID) { ?>
+    if ($post->post_author == $current_user->ID) { ?>
         <span class="ip-editor-display-container">
             <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><i class="fa fa-wrench"></i> <?php _e('Author tools', 'imagepress'); ?></a>
         </span>
         <?php
         $edit_id = get_the_ID();
 
-        if(isset($_GET['d'])) {
+        if (isset($_GET['d'])) {
             $post_id = $_GET['d'];
             wp_delete_post($post_id);
 
@@ -249,11 +249,11 @@ function ip_editor() {
                 echo '<script>window.location.href="' . home_url() . '?deleted"</script>';
             }
         }
-        if('POST' == $_SERVER['REQUEST_METHOD'] && !empty($_POST['post_id']) && !empty($_POST['post_title']) && isset($_POST['update_post_nonce']) && isset($_POST['postcontent'])) {
+        if ('POST' == $_SERVER['REQUEST_METHOD'] && !empty($_POST['post_id']) && !empty($_POST['post_title']) && isset($_POST['update_post_nonce']) && isset($_POST['postcontent'])) {
             $post_id = $_POST['post_id'];
             $post_type = get_post_type($post_id);
             $capability = ('page' == $post_type) ? 'edit_page' : 'edit_post';
-            if(current_user_can($capability, $post_id) && wp_verify_nonce($_POST['update_post_nonce'], 'update_post_'. $post_id)) {
+            if (current_user_can($capability, $post_id) && wp_verify_nonce($_POST['update_post_nonce'], 'update_post_'. $post_id)) {
                 $post = array(
                     'ID'             => esc_sql($post_id),
                     'post_content'   => (stripslashes($_POST['postcontent'])),
@@ -300,8 +300,6 @@ function ip_editor() {
 
                 if('' != get_imagepress_option('ip_video_label'))
                     update_post_meta($post_id, 'imagepress_video', (string) $_POST['imagepress_video']);
-                if('' != get_imagepress_option('ip_sticky_label'))
-                    update_post_meta($post_id, 'imagepress_sticky', (string) $_POST['imagepress_sticky']);
 
                 // custom fields
                 global $wpdb;
@@ -392,10 +390,6 @@ function ip_editor() {
                 //
                 ?>
                 <hr>
-
-                <?php if('' != get_imagepress_option('ip_sticky_label')) { ?>
-                    <p><label for="imagepress_sticky"><input type="checkbox" id="imagepress_sticky" name="imagepress_sticky" value="1"<?php if(get_post_meta($edit_id, 'imagepress_sticky', true) == 1) echo ' checked'; ?>> <?php echo get_imagepress_option('ip_sticky_label'); ?></label></p>
-                <?php } ?>
 
                 <?php $ip_category = wp_get_object_terms($edit_id, 'imagepress_image_category', array('exclude' => array(4))); ?>
                 <?php if(get_imagepress_option('ip_allow_tags') == 1) $ip_tag = wp_get_post_terms($edit_id, 'imagepress_image_tag'); ?>
@@ -566,13 +560,13 @@ function ip_main($i) {
             <?php echo get_avatar($post->post_author, 40); ?>
         </div>
         <?php
-        if(get_the_author_meta('user_title', $post->post_author) == 'Verified')
+        if (get_the_author_meta('user_title', $post->post_author) == 'Verified')
             $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fa fa-check-square"></i></span>';
         else
             $verified = '';
         ?>
-        <?php _e('by', 'imagepress'); ?> <b><?php the_author_posts_link(); ?></b> <?php echo $verified; ?>
-        <br><small><?php _e('Uploaded', 'imagepress'); ?> <time title="<?php the_time(get_imagepress_option('date_format')); ?>"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?></time> <?php _e('in', 'imagepress'); ?> <?php echo get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', ''); ?></small>
+        <?php _e('by', 'imagepress'); ?> <b><?php echo getImagePressProfileUri($post->post_author); ?></b> <?php echo $verified; ?>
+        <br><small><?php _e('Uploaded', 'imagepress'); ?> <time title="<?php the_time(get_option('date_format')); ?>"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?></time> <?php _e('in', 'imagepress'); ?> <?php echo get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', ''); ?></small>
     </p>
 
     <div class="ip-clear"></div>
@@ -696,50 +690,15 @@ function kformat($number) {
 
 function ip_related($i) {
     global $post;
-    $post_thumbnail_id = get_post_thumbnail_id($i);
-    $author_id = $post->post_author;
-    $filesize = filesize(get_attached_file($post_thumbnail_id)) / 1024;
-    $filesize = number_format($filesize, 2, '.', ' ');
-    $filesize .= ' KB'; ?>
-    <h5 class="widget-title"><i class="fa fa-file-text-o"></i> <?php echo __('Image Details', 'imagepress'); ?></h5>
-    <div class="textwidget">
-        <p><small>
-            &copy;<?php echo date('Y'); ?> <a href="<?php echo get_author_posts_url($post->post_author); ?>"><?php echo get_the_author_meta('user_nicename', $post->post_author); ?></a> | <b>Image size:</b> <?php echo $filesize; ?> | <b>Date uploaded:</b> <?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?> (<?php the_time(get_option('date_format')); ?>) | <b>Category:</b> <?php echo ip_get_the_term_list($i, 'imagepress_image_category', '', ', ', '', array()); ?> | <?php echo get_the_term_list($i, 'imagepress_image_tag', '', ', ', ''); ?>
-            <br>
-            <b><?php echo ip_getPostViews($i); ?></b> <?php echo __('views', 'imagepress'); ?>, <b><?php echo get_comments_number($i); ?></b> <?php echo __('comments', 'imagepress'); ?>, <b><?php echo imagepress_get_like_count($i); ?></b> <?php echo __('likes', 'imagepress'); ?>
-        </small></p>
-    </div>
+    ?>
+    <h3><?php echo __('More by the same author', 'imagepress'); ?></h3>
+    <?php echo cinnamon_get_related_author_posts($post->post_author); ?>
 
-    <hr>
-
-    <div class="widget-container widget_text">
-        <h5 class="widget-title"><i class="fa fa-tags"></i> <?php echo __('Related', 'imagepress'); ?></h5>
-        <div class="textwidget">
-            <p><i class="fa fa-user"></i> <?php echo __('More by the same author', 'imagepress'); ?> (<a href="<?php echo get_author_posts_url($post->post_author); ?>"><?php echo __('view all', 'imagepress'); ?></a>)</p>
-            <?php echo cinnamon_get_related_author_posts($post->post_author); ?>
-        </div>
-    </div>
     <?php
 }
 
 function ip_author() {
-    // check for external portfolio // if page call is made from subdomain (e.g. username.domain.ext), display external page
-    if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-        $protocol = 'https://';
-    } else {
-        $protocol = 'http://';
-    }
-
-    $url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-    $parseUrl = parse_url($url);
-    $ext_detect = trim($parseUrl['path']);
-    if($ext_detect == '/') {
-        echo '<div id="hub-loading"></div>';
-        echo do_shortcode('[cinnamon-profile-blank]');
-    }
-    else {
-        echo do_shortcode('[cinnamon-profile]');
-    }
+    echo do_shortcode('[cinnamon-profile]');
 }
 
 
@@ -936,8 +895,27 @@ function get_imagepress_option($option) {
 
     return $ipOptions[$option];
 }
+/**
 function update_imagepress_option($option) {
     $ipOptions = get_option('imagepress');
 
     unset($ipOptions[$option]);
+}
+/**/
+
+function updateImagePressOption($optionArray) {
+    $imagePressOption = get_option('imagepress');
+    $updatedArray = array_merge($imagePressOption, $optionArray);
+
+    update_option('imagepress', $updatedArray);
+}
+
+function getImagePressProfileUri($authorId) {
+    $ipProfilePageId = (int) get_imagepress_option('ip_profile_page');
+    $ipProfilePageUri = get_permalink($ipProfilePageId);
+    $ipProfileSlug = (string) get_imagepress_option('cinnamon_author_slug');
+
+    $ipProfileLink = '<span class="name"><a href="' . $ipProfilePageUri . '?' . $ipProfileSlug . '=' . get_the_author_meta('user_nicename', $authorId) . '">' . get_the_author_meta('user_nicename', $authorId) . '</a></span>';
+
+    return $ipProfileLink;
 }

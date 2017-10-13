@@ -1,5 +1,11 @@
 <?php
 function imagepress_admin_page() {
+
+    /**
+    if (empty(get_imagepress_option('ip_tracking'))) {
+        echo '<div class="notice-warning settings-error notice is-dismissible"><p>We need your <a href="' . admin_url('edit.php?post_type=' . get_imagepress_option('ip_slug') . '&page=imagepress_admin_page&tab=settings_tab#tracking') . '">approval to collect data</a> regarding ImagePress plugin usage and its environment.</p></div>';
+    }
+    /**/
     ?>
     <div class="wrap">
         <h1>ImagePress Settings</h1>
@@ -21,11 +27,7 @@ function imagepress_admin_page() {
             <?php } ?>
             <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=label_tab" class="nav-tab <?php echo $t == 'label_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Labels', 'imagepress'); ?></a>
             <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=upload_tab" class="nav-tab <?php echo $t == 'upload_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Upload', 'imagepress'); ?></a>
-            <?php if (get_imagepress_option('cinnamon_mod_hub') == 0) { ?>
-                <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=authors_tab" class="nav-tab <?php echo $t == 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors', 'imagepress'); ?></a>
-            <?php } else { ?>
-                <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=authors_tab" class="nav-tab <?php echo $t == 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors (HUB)', 'imagepress'); ?></a>
-            <?php } ?>
+            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=authors_tab" class="nav-tab <?php echo $t == 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors', 'imagepress'); ?></a>
             <?php if (get_imagepress_option('ip_mod_login') == 1) { ?>
                 <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=login_tab" class="nav-tab <?php echo $t == 'login_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Login', 'imagepress'); ?></a>
             <?php } ?>
@@ -119,7 +121,6 @@ function imagepress_admin_page() {
             $ip_profile_page = get_imagepress_option('ip_profile_page');
 
             $single_template = 'single-' . $slug . '.php';
-            $author_template = 'author.php';
 
             echo '<div class="gb-assistant">';
                 if ($slug == '') {
@@ -161,25 +162,6 @@ function imagepress_admin_page() {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> New user default role should be <code>author</code> in order to allow for front-end image editing. Subscribers and contributors are not able to edit their uploaded images. <a href="' . admin_url('options-general.php') . '">Change it</a>.</p>';
                 }
             echo '</div>';
-            ?>
-
-            <hr>
-            <h3>Advanced Installation (optional)</h3>
-            <p>The steps below require modification of <code class="codor">.php</code> and <code class="codor">.htaccess</code> files inside your web site's root folder.</p>
-            <p>In order to enable the portfolio (hub) feature of ImagePress, check the <b>Dashboard</b> section and copy the required code inside your <code>author.php</code> template file and modify the <code>.htaccess</code> file.</p>
-            <?php
-            echo '<div class="gb-assistant">';
-                if (get_imagepress_option('cinnamon_mod_hub') == 0) {
-                    echo '<p><div class="dashicons dashicons-no"></div> <b>Note:</b> Your portfolio (hub) is disabled. Go to <b>Users</b> section and enable it.</p>';
-                } else {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your portfolio (hub) is enabled. Go to <b>Users</b> section and configure it. Also, make sure you made the correct changes to your <code>author.php</code> template file and your <code>.htaccess</code> file.</p>';
-                }
-                if ('' != locate_template($author_template)) {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author template is available.</p>';
-                } else {
-                    echo '<p><div class="dashicons dashicons-no"></div> <b>Note:</b> Your author template is not available. Duplicate your <code>singular.php</code>, <code>single.php</code> or <code>page.php</code> template file inside your theme folder and rename it <code>' . $author_template . '</code>.</p>';
-                }
-            echo '</div>';
 
             if (isset($_POST['isResetSubmit'])) {
                 global $wpdb;
@@ -189,7 +171,6 @@ function imagepress_admin_page() {
             }
             ?>
 
-            <hr>
             <h3><?php _e('Maintenance', 'imagepress'); ?></h3>
             <form method="post" action="">
                 <p>
@@ -610,12 +591,12 @@ function imagepress_admin_page() {
                     'ip_click_behaviour' => $_POST['ip_click_behaviour'],
                     'ip_cat_moderation_include' => $_POST['ip_cat_moderation_include'],
                     'cinnamon_mod_login' => $_POST['cinnamon_mod_login'],
-                    'cinnamon_mod_hub' => $_POST['cinnamon_mod_hub'],
                     'ip_mod_login' => $_POST['ip_mod_login'],
                     'ip_mod_collections' => $_POST['ip_mod_collections'],
                     'ip_upload_redirection' => $_POST['ip_upload_redirection'],
                     'ip_delete_redirection' => $_POST['ip_delete_redirection'],
                     'ip_notification_email' => $_POST['ip_notification_email'],
+                    //'ip_tracking' => (int) $_POST['ip_tracking'],
                 );
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
@@ -657,16 +638,6 @@ function imagepress_admin_page() {
                                     <option value="1"<?php if(get_imagepress_option('ip_mod_collections') == 1) echo ' selected'; ?>>Enable collections module</option>
                                     <option value="0"<?php if(get_imagepress_option('ip_mod_collections') == 0) echo ' selected'; ?>>Disable collections module</option>
                                 </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="cinnamon_mod_hub">User hub <sup><small>DEV</small></sup></label></th>
-                            <td>
-                                <select name="cinnamon_mod_hub" id="cinnamon_mod_hub">
-                                    <option value="1"<?php if(get_imagepress_option('cinnamon_mod_hub') == 1) echo ' selected'; ?>>Enable hub</option>
-                                    <option value="0"<?php if(get_imagepress_option('cinnamon_mod_hub') == 0) echo ' selected'; ?>>Disable hub</option>
-                                </select>
-                                <br><small>Enable a subdomain address for users (e.g. jack.yourdomain.com).</small>
                             </td>
                         </tr>
                     </tbody>
@@ -754,6 +725,26 @@ function imagepress_admin_page() {
                     </tbody>
                 </table>
 
+                <?php /** ?>
+                <hr>
+                <h2 id="tracking">Tracking and Data Collection <sup class="ip-beta">BETA</sup></h2>
+                <p>To maintain a plugin, we need to know what we're dealing with, what kinds of other plugins our users are using, what themes, what settings, and so on. Please allow us to track that data from your install. It will not track any user details, so your security and privacy are safe with us.</p>
+                <p>The benefits of providing tracking statistics is that the information sent back to us can be used to improve the plugin and its compatibility with other plugins and themes, making for a better all round plugin.</p>
+                <p><small>Note that this is a beta feature and it may be removed or changed in the future. As there are privacy concerns around this feature, we will let you know in advance.</small></p>
+                <table class="form-table">
+                    <tbody>
+                        <tr>
+                            <th scope="row"><label for="ip_tracking">Tracking</label></th>
+                            <td>
+                                <p>
+                                    <input type="checkbox" name="ip_tracking" value="1" <?php if (get_imagepress_option('ip_tracking') === '1') echo 'checked'; ?>> <label>Enable tracking and data collection</label>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <?php /**/ ?>
+
                 <hr>
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
@@ -762,18 +753,11 @@ function imagepress_admin_page() {
                 $ipUpdatedOptions = array(
                     'ip_profile_page' => (int) sanitize_text_field($_POST['ip_profile_page']),
                     'cinnamon_author_slug' => $_POST['cinnamon_author_slug'],
-                    'cinnamon_label_index' => $_POST['cinnamon_label_index'],
-                    'cinnamon_label_portfolio' => $_POST['cinnamon_label_portfolio'],
-                    'cinnamon_label_about' => $_POST['cinnamon_label_about'],
-                    'cinnamon_label_hub' => $_POST['cinnamon_label_hub'],
-                    'cinnamon_hide' => $_POST['cinnamon_hide'],
-                    'cinnamon_image_size' => $_POST['cinnamon_image_size'],
                     'ip_cards_per_author' => $_POST['ip_cards_per_author'],
                     'ip_et_login' => $_POST['ip_et_login'],
                     'cinnamon_show_uploads' => $_POST['cinnamon_show_uploads'],
                     'cinnamon_show_awards' => $_POST['cinnamon_show_awards'],
                     'cinnamon_show_about' => $_POST['cinnamon_show_about'],
-                    'cinnamon_show_map' => $_POST['cinnamon_show_map'],
                     'cinnamon_show_followers' => $_POST['cinnamon_show_followers'],
                     'cinnamon_show_following' => $_POST['cinnamon_show_following'],
                     'cinnamon_hide_admin' => $_POST['cinnamon_hide_admin'],
@@ -796,22 +780,6 @@ function imagepress_admin_page() {
                 <h2>General Settings</h2>
                 <p>These settings apply globally for all ImagePress users.</p>
 
-                <?php if ((int) get_imagepress_option('cinnamon_mod_hub') === 1) { ?>
-                    <div class="gb-assistant">
-                        <p><span class="dashicons dashicons-editor-help"></span> In order to view the user portfolio, you need to create (or edit) the <code class="codor">author.php</code> file in your theme folder (<code class="codor">wp-content/themes/your-theme/author.php</code>) and add the following code:</p>
-                        <p><code class="codor">&lt;?php if (function_exists('ip_author')) { ip_author(); } ?&gt;</code></p>
-
-                        <p>In order for the above to work, you need to edit your <code>.htaccess</code> file and add these lines at the end (make sure you replace <code>example.com</code> with your domain name):</p>
-                        <p><textarea class="large-text code" rows="6">
-# BEGIN ImagePress Author Rewrite
-RewriteCond %{HTTP_HOST} !^www\.example.com
-RewriteCond %{HTTP_HOST} ([^.]+)\.example.com
-RewriteRule ^(.*)$ ?author_name=%1
-# END ImagePress Author Rewrite
-                        </textarea></p>
-                    </div>
-                <?php } ?>
-
                 <table class="form-table">
                     <tbody>
                         <tr>
@@ -831,12 +799,14 @@ RewriteRule ^(.*)$ ?author_name=%1
                                         'option_none_value' => 0,
                                         'selected' => get_imagepress_option('ip_profile_page'),
                                     ));
+
+                                    $ipProfilePage = (int) get_imagepress_option('ip_profile_page')
                                     ?>
-                                    <br><small>This is a dummy page used to render single user profiles.</small>
+                                    <br><small>Make sure you add the <code>[cinnamon-profile]</code> shortcode on this page.</small>
                                 </p>
                                 <p>
                                     <input type="text" name="cinnamon_author_slug" id="cinnamon_author_slug" value="<?php echo get_imagepress_option('cinnamon_author_slug'); ?>" class="regular-text">
-                                    <br><small>Default is <b>author</b> (usage exemples: <b>author</b>, <b>profile</b> or <b>hub</b>). User profile URL will look like <code class="codor">https://www.example.com/<b>profile</b>/username/</code>.</small>
+                                    <br><small>Default is <b>author</b> (usage exemples: <b>author</b>, <b>profile</b> or <b>hub</b>). User profile URL will look like <code class="codor"><?php echo get_permalink($ipProfilePage) . '?<b>' . get_imagepress_option('cinnamon_author_slug') . '</b>='; ?>username</code>.</small>
                                     <br><small>After changing any of the values above, you might need to resave your permalinks, in order to avoid 404 errors.</small>
                                 </p>
                             </td>
@@ -911,10 +881,6 @@ RewriteRule ^(.*)$ ?author_name=%1
                                         <option value="1"<?php if(get_imagepress_option('cinnamon_show_about') == 1) echo ' selected'; ?>>Show "About" section</option>
                                         <option value="0"<?php if(get_imagepress_option('cinnamon_show_about') == 0) echo ' selected'; ?>>Hide "About" section</option>
                                     </select>
-                                    <select name="cinnamon_show_map" id="cinnamon_show_map">
-                                        <option value="1"<?php if(get_imagepress_option('cinnamon_show_map') == 1) echo ' selected'; ?>>Show map</option>
-                                        <option value="0"<?php if(get_imagepress_option('cinnamon_show_map') == 0) echo ' selected'; ?>>Hide map</option>
-                                    </select>
                                 </p>
                                 <p>
                                     <select name="cinnamon_hide_admin" id="cinnamon_hide_admin">
@@ -971,65 +937,6 @@ RewriteRule ^(.*)$ ?author_name=%1
                     </tbody>
                 </table>
 
-                <?php if(get_imagepress_option('cinnamon_mod_hub') == 1) { ?>
-                    <hr>
-                    <h2>Hub Options <sup><small>DEVELOPERS ONLY</small></sup></h2>
-                    <p>In order to enable the hub (portfolio) feature of ImagePress, check the <b>Dashboard</b> section and copy the required code inside your <code>author.php</code> template file and modify the <code>.htaccess</code> file. Requirements for portfolio subdomains (jack.domain.com) include active permalinks, wildcard subdomain support (contact your hosting server for more information) and FTP access to your template files.</p>
-                    <table class="form-table">
-                        <tbody>
-                            <tr>
-                                <th scope="row"><label for="cinnamon_label_index">Hub index icon label</label></th>
-                                <td>
-                                    <p>
-                                        <input type="text" name="cinnamon_label_index" id="cinnamon_label_index" value="<?php echo get_imagepress_option('cinnamon_label_index'); ?>" class="regular-text">
-                                        <br><small>Try <b>View all</b> or <b>Back to index view</b>.</small>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><label for="cinnamon_label_hub">Hub view button label</label></th>
-                                <td>
-                                    <p>
-                                        <input type="text" name="cinnamon_label_hub" id="cinnamon_label_hub" value="<?php echo get_imagepress_option('cinnamon_label_hub'); ?>" class="regular-text">
-                                        <br><small>Try <b>View Portfolio</b>.</small>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><label for="cinnamon_image_size">Profile image size</label></th>
-                                <td>
-                                    <p>
-                                        <input type="number" min="90" max="320" name="cinnamon_image_size" id="cinnamon_image_size" value="<?php echo get_imagepress_option('cinnamon_image_size'); ?>">
-                                        <br><small>Default is <b>150</b>px. Leave blank for default WordPress size.</small>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><label>Hub tabs</label></th>
-                                <td>
-                                    <p>
-                                        <input type="text" name="cinnamon_label_portfolio" id="cinnamon_label_portfolio" value="<?php echo get_imagepress_option('cinnamon_label_portfolio'); ?>" class="regular-text" placeholder="My Portfolio (tab title)">
-                                        <br><small>Try <b>My Portfolio</b> or <b>My Images</b>.</small>
-                                        <br>
-                                        <input type="text" name="cinnamon_label_about" id="cinnamon_label_about" value="<?php echo get_imagepress_option('cinnamon_label_about'); ?>" class="regular-text" placeholder="About (tab title)">
-                                        <br><small>Try <b>About</b>.</small>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><label for="cinnamon_hide">CSS selectors to hide when viewing the hub</label></th>
-                                <td>
-                                    <p>
-                                        <input type="text" name="cinnamon_hide" id="cinnamon_hide" value="<?php echo get_imagepress_option('cinnamon_hide'); ?>" class="regular-text">
-                                        <br><small>Try <b>header, nav, footer</b> or <b>.sidebar</b> or <b>#main-menu</b>.</small>
-                                        <br><small>If your hub page flashes for a brief moment, consider moving the selectors in your <code>style.css</code> file (e.g. <code>header, nav, footer, .sidebar, #main-menu { display: none; }</code>.</small>
-                                    </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                <?php } ?>
-
                 <hr>
                 <p><input name="cinnamon_submit" type="submit" class="button-primary" value="Save Changes"></p>
             </form>
@@ -1046,7 +953,6 @@ RewriteRule ^(.*)$ ?author_name=%1
                     'ip_upload_label' => $_POST['ip_upload_label'],
                     'ip_image_label' => $_POST['ip_image_label'],
                     'ip_video_label' => $_POST['ip_video_label'],
-                    'ip_sticky_label' => $_POST['ip_sticky_label'],
                     'ip_notifications_mark' => $_POST['ip_notifications_mark'],
                     'ip_notifications_all' => $_POST['ip_notifications_all'],
                     'cms_verified_profile' => $_POST['cms_verified_profile'],
@@ -1059,9 +965,9 @@ RewriteRule ^(.*)$ ?author_name=%1
                     'cinnamon_pt_social' => $_POST['cinnamon_pt_social'],
                     'cinnamon_pt_author' => $_POST['cinnamon_pt_author'],
                     'cinnamon_pt_profile' => $_POST['cinnamon_pt_profile'],
-                    'cinnamon_pt_portfolio' => $_POST['cinnamon_pt_portfolio'],
                     'cinnamon_pt_collections' => $_POST['cinnamon_pt_collections'],
                     'cinnamon_pt_images' => $_POST['cinnamon_pt_images'],
+                    'ip_load_more_label' => $_POST['ip_load_more_label'],
                 );
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
@@ -1135,12 +1041,6 @@ RewriteRule ^(.*)$ ?author_name=%1
                             <th scope="row"><label for="ip_video_label">Image video link<br><small>(Youtube/Vimeo)<br>Leave blank to disable</small></label></th>
                             <td>
                                 <input type="text" name="ip_video_label" id="ip_video_label" value="<?php echo get_imagepress_option('ip_video_label'); ?>" class="regular-text">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_sticky_label">Sticky image label<br><small>(checkbox)<br>Leave blank to disable</small></label></th>
-                            <td>
-                                <input type="text" name="ip_sticky_label" id="ip_sticky_label" value="<?php echo get_imagepress_option('ip_sticky_label'); ?>" class="regular-text">
                             </td>
                         </tr>
                     </tbody>
@@ -1219,10 +1119,15 @@ RewriteRule ^(.*)$ ?author_name=%1
                                     <input type="text" name="cinnamon_pt_social" value="<?php echo get_imagepress_option('cinnamon_pt_social'); ?>" class="regular-text" placeholder="Social details"><br>
                                     <input type="text" name="cinnamon_pt_author" value="<?php echo get_imagepress_option('cinnamon_pt_author'); ?>" class="regular-text" placeholder="Author details"><br>
                                     <input type="text" name="cinnamon_pt_profile" value="<?php echo get_imagepress_option('cinnamon_pt_profile'); ?>" class="regular-text" placeholder="Profile details"><br>
-                                    <input type="text" name="cinnamon_pt_portfolio" value="<?php echo get_imagepress_option('cinnamon_pt_portfolio'); ?>" class="regular-text" placeholder="Portfolio editor"><br>
                                     <input type="text" name="cinnamon_pt_collections" value="<?php echo get_imagepress_option('cinnamon_pt_collections'); ?>" class="regular-text" placeholder="Collections"><br>
                                     <input type="text" name="cinnamon_pt_images" value="<?php echo get_imagepress_option('cinnamon_pt_images'); ?>" class="regular-text" placeholder="Image editor">
                                 </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="ip_load_more_label">"Load more" button</label></th>
+                            <td>
+                                <input type="text" name="ip_load_more_label" id="ip_load_more_label" value="<?php echo get_imagepress_option('ip_load_more_label'); ?>" placeholder="Load more" class="regular-text">
                             </td>
                         </tr>
                     </tbody>
@@ -1259,7 +1164,6 @@ RewriteRule ^(.*)$ ?author_name=%1
                     'ip_request_user_details' => $_POST['ip_request_user_details'],
                     'ip_upload_secondary' => $_POST['ip_upload_secondary'],
                     'ip_allow_tags' => $_POST['ip_allow_tags'],
-                    'ip_require_description' => $_POST['ip_require_description'],
                     'ip_upload_tos' => $_POST['ip_upload_tos'],
                     'ip_upload_tos_url' => $_POST['ip_upload_tos_url'],
                     'ip_upload_tos_error' => $_POST['ip_upload_tos_error'],
@@ -1346,11 +1250,6 @@ RewriteRule ^(.*)$ ?author_name=%1
                                 <select name="ip_request_user_details" id="ip_request_user_details">
                                     <option value="1"<?php if(get_imagepress_option('ip_request_user_details') == 1) echo ' selected'; ?>>Request user name and email</option>
                                     <option value="0"<?php if(get_imagepress_option('ip_request_user_details') == 0) echo ' selected'; ?>>Do not request user name and email</option>
-                                </select>
-                                <br>
-                                <select name="ip_require_description" id="ip_require_description">
-                                    <option value="1"<?php if(get_imagepress_option('ip_require_description') == 1) echo ' selected'; ?>>Require description</option>
-                                    <option value="0"<?php if(get_imagepress_option('ip_require_description') == 0) echo ' selected'; ?>>Do not require description</option>
                                 </select>
                             </td>
                         </tr>
@@ -1444,17 +1343,6 @@ RewriteRule ^(.*)$ ?author_name=%1
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
         <?php } else if ($t == 'notifications_tab') {
-            if (isset($_POST['notification_update'])) {
-                $ipUpdatedOptions = array(
-                    'notification_limit' => $_POST['notification_limit'],
-                    'notification_thumbnail_custom' => $_POST['notification_thumbnail_custom'],
-                );
-                $ipOptions = get_option('imagepress');
-                $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
-                update_option('imagepress', $ipUpdate);
-
-                echo '<div class="updated notice is-dismissible"><p>Settings updated successfully!</p></div>';
-            }
             if (isset($_POST['notification_add'])) {
                 global $wpdb;
 
@@ -1493,26 +1381,6 @@ RewriteRule ^(.*)$ ?author_name=%1
             });
             </script>
 
-            <h2><?php _e('Notifications Settings', 'imagepress'); ?></h2>
-            <form method="post">
-                <p>
-                    <input type="number" name="notification_limit" id="notification_limit" min="0" max="65536" value="<?php echo get_imagepress_option('notification_limit'); ?>">
-                    <label for="notification_limit">Notification limit</label>
-                    <br><small>How many notifications to show when using the [notifications] shortcode.</small>
-                </p>
-                <p>
-                    <input type="number" name="notification_thumbnail_custom" id="notification_thumbnail_custom" min="0" value="<?php echo get_imagepress_option('notification_thumbnail_custom'); ?>">
-                    <label for="notification_thumbnail_custom">Custom notification thumbnail ID (scaled to 48x48px)</label>
-                    <br><small>Use this attachment ID for custom notifications (usually your logo or a custom square image).</small>
-                    <br><small>Check your media library for the correct ID.</small>
-                </p>
-                <p>
-                    <input type="submit" name="notification_update" value="Save Changes" class="button button-primary">
-                </p>
-            </form>
-
-            <hr>
-
             <form method="post">
                 <h3>Add new notification</h3>
                 <p>
@@ -1546,7 +1414,7 @@ RewriteRule ^(.*)$ ?author_name=%1
             <?php
             global $wpdb;
 
-            $limit = get_imagepress_option('notification_limit');
+            $limit = 256;
 
             $sql = "SELECT * FROM " . $wpdb->prefix . "notifications ORDER BY ID DESC LIMIT " . $limit . "";
             $results = $wpdb->get_results($sql);
@@ -1598,12 +1466,8 @@ RewriteRule ^(.*)$ ?author_name=%1
 
                     // custom
                     else if(0 == $result->postID || '-1' == $result->postID) {
-                        $attachment_id = get_imagepress_option('notification_thumbnail_custom');
-                        $image_attributes = wp_get_attachment_image_src($attachment_id, array(16,16));
-
-                        $display .= '<img src="' .  $image_attributes[0] . '" width="' . $image_attributes[1] . '" height="' . $image_attributes[2] . '"> <i class="fa fa-fw ' . $result->actionIcon . '"></i> ' . $result->actionType . ' <time>' . $time . '</time>';
+                        $display .= '<i class="fa fa-fw ' . $result->actionIcon . '"></i> ' . $result->actionType . ' <time>' . $time . '</time>';
                     }
-                    else {}
 
                     echo $display;
                     ?>

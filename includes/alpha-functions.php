@@ -109,6 +109,7 @@ function imagepress_loop($atts, $content = null) {
     ), $atts));
 
     $out = '';
+    $ipSlug = (string) get_imagepress_option('ip_slug');
 
     if ((string) trim($filters) === 'yes') {
         $out .= getImagePressDiscoverFilters();
@@ -122,10 +123,10 @@ function imagepress_loop($atts, $content = null) {
         $ipp = (int) get_imagepress_option('ip_ipp');
     }
     $args1 = array(
-        'post_type' => get_imagepress_option('ip_slug'),
+        'post_type' => $ipSlug,
         'paged' => $paged,
         'posts_per_page' => $ipp,
-        'author__in' => (int) $user,
+        //'author__in' => array($user),
         'post_status' => 'publish',
     );
 
@@ -256,6 +257,10 @@ function imagepress_loop($atts, $content = null) {
     }
 
     $ip_query = new WP_Query($args1);
+    //echo '<pre><code>';
+    //print_r($ip_query);
+    //print_r($args1);
+    //echo '</code></pre>';
 
     // Get loop options
     $ip_rel_tag = get_imagepress_option('ip_rel_tag');
@@ -278,8 +283,9 @@ function imagepress_loop($atts, $content = null) {
     $ip_box_ui = (string) get_imagepress_option('ip_box_ui');
 
     $out .= '<div id="ip-boxes" class="ip-box-container ip-box-container-' . $ip_box_ui . '">';
-        if($ip_query->have_posts()) :
-            while($ip_query->have_posts()) : $ip_query->the_post();
+        if ($ip_query->have_posts()) {
+            while ($ip_query->have_posts()) {
+                $ip_query->the_post();
                 $i = get_the_ID();
 
                 $user_info = get_userdata(get_the_author_meta('ID'));
@@ -292,66 +298,73 @@ function imagepress_loop($atts, $content = null) {
                     $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
 
                     $ip_image_link = $image_attributes[0];
-                }
-                if ($ip_click_behaviour === 'custom') {
+                } else if ($ip_click_behaviour === 'custom') {
                     $ip_image_link = get_permalink($i);
                 }
-                    // make all "brick" elements optional and active by default
-                if($get_ip_title_optional == 1) {
+
+                // make all "brick" elements optional and active by default
+                $ip_title_optional = '';
+                if ($get_ip_title_optional == 1) {
                     $ip_title_optional = '<span class="imagetitle">' . get_the_title($i) . '</span>';
                 }
 
-                if(get_post_meta($i, 'imagepress_author', true) != '') {
+                if (get_post_meta($i, 'imagepress_author', true) !== '') {
                     $ip_author_optional = '<span class="name">' . get_post_meta($i, 'imagepress_author', true) . '</span>';
                 } else {
                     // get post author ID
                     $post_author_id = get_post_field('post_author', $i);
 
-                    $ip_author_optional = '<span class="name"><a href="' . get_author_posts_url($post_author_id) . '">' . get_the_author_meta('user_nicename', $post_author_id) . '</a></span>';
+                    /**
+                    $ip_profile_page = (int) get_imagepress_option('ip_profile_page');
+                    $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
+                    $ip_author_page = get_permalink($ip_profile_page);
+
+                    $ip_author_optional = '<span class="name"><a href="' . $ip_author_page . '?' . $cinnamon_author_slug . '=' . get_the_author_meta('user_nicename', $post_author_id) . '">' . get_the_author_meta('user_nicename', $post_author_id) . '</a></span>';
+                    /**/
+                    $ip_author_optional = getImagePressProfileUri($post_author_id);
                 }
 
-
-                if($get_ip_meta_optional == 1)
+                $ip_meta_optional = '';
+                if ($get_ip_meta_optional == 1)
                     $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '">' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '</span>';
 
-                if($get_ip_views_optional == 1)
+                $ip_views_optional = '';
+                if ($get_ip_views_optional == 1)
                     $ip_views_optional = '<span class="imageviews">' . ip_getPostViews($i) . '</span> ';
-                if($get_ip_comments == 1)
+
+                $ip_comments = '';
+                if ($get_ip_comments == 1)
                     $ip_comments = '<span class="imagecomments">' . get_comments_number($i) . '</span> ';
-                if($get_ip_likes_optional == 1)
+
+                $ip_likes_optional = '';
+                if ($get_ip_likes_optional == 1)
                     $ip_likes_optional = '<span class="imagelikes">' . imagepress_get_like_count($i) . '</span> ';
 
-                if(empty($size)) {
+                if (empty($size)) {
                     $size = get_imagepress_option('ip_image_size');
                     $size = (string) $size;
                 }
                 $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, $size);
 
-                $ip_box_bottom_hook = '';
-                if (has_filter('do_ip_box_bottom')) {
-                    $ip_box_bottom_hook = apply_filters('do_ip_box_bottom', $i);
-                }
+                // <img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '">
+                $out .= '<div class="ip_box ip_box_' . $i . '" style="width: ' . (100/$ip_ipw) . '%;">
+                    <a href="' . $ip_image_link . '" rel="' . $ip_rel_tag . '" data-taxonomy="' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '" data-src="' . $image_attributes[0] . '"></a>
+                    <div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div>
+                    <div class="ip_box_bottom">' . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div>
+                </div>';
+            }
 
-                $out .= '<div class="ip_box ip_box_' . $i . '" style="width: ' . (100/$ip_ipw) . '%;"><a href="' . $ip_image_link . '" rel="' . $ip_rel_tag . '" data-taxonomy="' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a><div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div><div class="ip_box_bottom">' . $ip_box_bottom_hook . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div></div>';
-
-
-            endwhile;
             // Pagination
+            if (function_exists('pagination') && (int) $count == 0) {
+                $out .= pagination($ip_query->max_num_pages);
+            }
+        }
     $out .= '</div>';
 
-    if (function_exists('pagination') && (int) $count == 0) {
-        $out .= pagination($ip_query->max_num_pages);
-    }
-
-        endif;
     wp_reset_postdata();
 
     return $out;
 }
-
-
-
-
 
 
 

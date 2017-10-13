@@ -277,38 +277,6 @@ jQuery(document).ready(function() {
         });
     })(jQuery);
 
-    /* portfolio specific functions */
-    jQuery("#cinnamon-feature").hide();
-    jQuery("#cinnamon-index").hide();
-    jQuery(".cinnamon-grid-blank a").click(function(e) {
-        e.preventDefault();
-        var image = jQuery(this).attr("rel");
-        jQuery("#cinnamon-feature").html('<img src="' + image + '" alt="">');
-        jQuery("#cinnamon-feature").show();
-        jQuery("#cinnamon-index").fadeIn();
-    });
-    jQuery("#cinnamon-index a").click(function(e) {
-        e.preventDefault();
-        jQuery("#cinnamon-feature").hide();
-        jQuery("#cinnamon-index").hide();
-    });
-    jQuery(".c-index").click(function() {
-        jQuery("#cinnamon-feature").hide();
-        jQuery("#cinnamon-index").hide();
-    });
-
-    jQuery('#ip-tab li:first').addClass('active');
-    jQuery('.tab_icerik').hide();
-    jQuery('.tab_icerik:first').show();
-    jQuery('#ip-tab li').click(function() {
-        var index = jQuery(this).index();
-        jQuery('#ip-tab li').removeClass('active');
-        jQuery(this).addClass('active');
-        jQuery('.tab_icerik').hide();
-        jQuery('.tab_icerik:eq(' + index + ')').show();
-        return false;
-    });
-
     jQuery('.imagepress-follow a').on('click', function(e) {
         e.preventDefault();
         var $this = jQuery(this);
@@ -587,10 +555,6 @@ jQuery(document).ready(function() {
     });
 });
 
-jQuery(window).on('load', function(){
-    jQuery('#hub-loading').fadeOut(100);
-});
-
 
 
 
@@ -747,5 +711,59 @@ jQuery(window).load(function() {
         if (jQuery('.ip-box-container-default .ip_box').length) {
             equalHeight('.ip-box-container-default .ip_box');
         }
+    }
+});
+
+
+
+/*
+ * Infinite lazy loading for Profile page
+ */
+jQuery(document).ready(function () {
+    // Check if profile container exists
+    if (jQuery('.profile-hub-container').length) {
+        var sizeTotal = jQuery('#ip-boxes .ip_box').length,
+            sizePerRow = jQuery('.ip-profile').data('ipw');
+
+        if (sizeTotal === 0) {
+            jQuery('#ipProfileShowMore').hide();
+        }
+
+        /*
+         * Loop through first X visible images and lazy load them
+         */
+        jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').show();
+        jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').each(function() {
+            var src = jQuery(this).find('a[data-src]').data('src');
+
+            jQuery(this).find('a[data-src]').append('<img src="' + src + '" class="ip-deferred" alt="">');
+            jQuery(this).find('a[data-src]').data('src', '');
+        });
+
+        jQuery(document).on('click', '#ipProfileShowMore', function() {
+            sizePerRow = (sizePerRow + 5 <= sizeTotal) ? sizePerRow + 5 : sizeTotal;
+            jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').show();
+
+            if (sizePerRow === sizeTotal) {
+                jQuery('#ipProfileShowMore').hide();
+            }
+
+            /*
+             * Loop through visible images and lazy load them
+             */
+            jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').each(function() {
+                var src = jQuery(this).find('a[data-src]').data('src');
+
+                jQuery(this).find('a[data-src]').append('<img src="' + src + '" class="ip-deferred" alt="">');
+                jQuery(this).find('a[data-src]').data('src', '');
+            });
+        });
+    } else if (jQuery('.ip_box').length) {
+        jQuery('#ip-boxes .ip_box').each(function() {
+            var src = jQuery(this).find('a[data-src]').data('src');
+
+            jQuery(this).find('a[data-src]').append('<img src="' + src + '" class="ip-deferred" alt="">');
+            jQuery(this).find('a[data-src]').data('src', '');
+        });
     }
 });

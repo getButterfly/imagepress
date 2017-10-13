@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.4.3
+Version: 7.5
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -41,25 +41,48 @@ function imagepress_init() {
     load_plugin_textdomain('imagepress', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 
     $ip_slug = get_imagepress_option('ip_slug');
+    //$ip_tracking = get_imagepress_option('ip_tracking');
 
     if (empty($ip_slug)) {
-        $newImagePressOptions = array(
+        $optionArray = array(
             'ip_slug' => 'image',
         );
-        $ipOptions = get_option('imagepress');
-        $arr1 = array_merge($ipOptions, $newImagePressOptions);
-        update_option('imagepress', $arr1);
+        updateImagePressOption($optionArray);
     }
+
+    /**
+    if (empty($ip_tracking)) {
+        $optionArray = array(
+            'ip_tracking' => 0,
+        );
+        updateImagePressOption($optionArray);
+    }
+    /**/
 }
 add_action('plugins_loaded', 'imagepress_init');
 
+require_once IP_PLUGIN_PATH . '/classes/Updater.php';
 
-include_once IP_PLUGIN_PATH . '/includes/upgrade.php';
+if (is_admin()) {
+    $config = array(
+        'slug' => plugin_basename(__FILE__),
+        'proper_folder_name' => 'imagepress',
+        'api_url' => 'https://api.github.com/repos/getButterfly/imagepress',
+        'raw_url' => 'https://raw.github.com/getButterfly/imagepress/master',
+        'github_url' => 'https://github.com/getButterfly/imagepress',
+        'zip_url' => 'https://github.com/getButterfly/imagepress/zipball/master',
+        'sslverify' => true,
+        'requires' => '4.6',
+        'tested' => '4.8.2',
+        'readme' => 'README.MD'
+    );
+    new WP_GitHub_Updater($config);
+}
 
+include_once IP_PLUGIN_PATH . '/includes/imagepress-install.php';
 include_once IP_PLUGIN_PATH . '/includes/functions.php';
 
 include IP_PLUGIN_PATH . '/includes/alpha-functions.php';
-
 include IP_PLUGIN_PATH . '/includes/page-settings.php';
 include IP_PLUGIN_PATH . '/includes/cinnamon-users.php';
 
@@ -160,7 +183,6 @@ add_action('edit_user_profile_update', 'save_cinnamon_profile_fields');
 /* CINNAMON SHORTCODES */
 add_shortcode('cinnamon-card', 'cinnamon_card');
 add_shortcode('cinnamon-profile', 'cinnamon_profile');
-add_shortcode('cinnamon-profile-blank', 'cinnamon_profile_blank');
 add_shortcode('cinnamon-profile-edit', 'cinnamon_profile_edit');
 add_shortcode('cinnamon-awards', 'cinnamon_awards');
 
@@ -312,11 +334,6 @@ function imagepress_add($atts, $content = null) {
                     add_post_meta($post_id, 'imagepress_video', $_POST['imagepress_video'], true);
                 else
                     add_post_meta($post_id, 'imagepress_video', '', true);
-
-                if(isset($_POST['imagepress_sticky']))
-                    add_post_meta($post_id, 'imagepress_sticky', 1, true);
-                else
-                    add_post_meta($post_id, 'imagepress_sticky', 0, true);
 
                 if(isset($_POST['imagepress_author']))
                     add_post_meta($post_id, 'imagepress_author', $_POST['imagepress_author'], true);
@@ -522,7 +539,6 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
     $ip_caption_label = get_imagepress_option('ip_caption_label');
     $ip_description_label = get_imagepress_option('ip_description_label');
-    $ip_sticky_label = get_imagepress_option('ip_sticky_label');
     $ip_video_label = get_imagepress_option('ip_video_label');
     $ip_upload_label = get_imagepress_option('ip_upload_label');
 
@@ -531,7 +547,6 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
     $ip_upload_tos_content = get_imagepress_option('ip_upload_tos_content');
 
     $ip_request_user_details = get_imagepress_option('ip_request_user_details');
-    $ip_require_description = get_imagepress_option('ip_require_description');
     $ip_allow_tags = get_imagepress_option('ip_allow_tags');
     $ip_upload_size = get_imagepress_option('ip_upload_size');
     $ip_dropbox_enable = get_imagepress_option('ip_dropbox_enable');
@@ -587,14 +602,9 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
                     </p>';
 
                 if(!empty($ip_description_label)) {
-                    if($ip_require_description == 1)
-                        $required = 'required';
-                    else
-                        $required = '';
-
                     $out .= '<p>
                         <label>' . get_imagepress_option('ip_description_label') . '</label>
-                        <textarea id="imagepress_image_description" name="imagepress_image_description" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6" ' . $required . '></textarea>
+                        <textarea id="imagepress_image_description" name="imagepress_image_description" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6"></textarea>
                     </p>';
                 }
 
@@ -632,10 +642,6 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
                     </p>
                     <hr>';
                 }
-
-                // sticky image
-                if(!empty($ip_sticky_label))
-                    $out .= '<p><label for="imagepress_sticky"><input type="checkbox" id="imagepress_sticky" name="imagepress_sticky" value="1"> ' . $ip_sticky_label . '</label></p>';
 
                 if(!empty($ip_video_label))
                     $out .= '<p>
@@ -749,7 +755,6 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
     $ip_description_label = get_imagepress_option('ip_description_label');
 
     $ip_request_user_details = get_imagepress_option('ip_request_user_details');
-    $ip_require_description = get_imagepress_option('ip_require_description');
     $ip_upload_size = get_imagepress_option('ip_upload_size');
 
     $out = '<div class="ip-uploader">';
@@ -772,11 +777,7 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
                     $out .= '<p><input type="text" id="imagepress_image_caption" name="imagepress_image_caption[]" placeholder="' . $ip_caption_label . '" required></p>';
 
                 if(!empty($ip_description_label)) {
-                    if($ip_require_description == 1)
-                        $required = 'required';
-                    else
-                        $required = '';
-                    $out .= '<p><textarea id="imagepress_image_description" name="imagepress_image_description[]" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6" ' . $required . '></textarea></p>';
+                    $out .= '<p><textarea id="imagepress_image_description" name="imagepress_image_description[]" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6"></textarea></p>';
                 }
 
                 $out .= '<p>';

@@ -29,7 +29,6 @@ function cinnamon_author_base() {
     $cinnamon_author_slug = get_imagepress_option('cinnamon_author_slug');
 
     $wp_rewrite->author_base = $cinnamon_author_slug;
-    //$wp_rewrite->flush_rules();
 }
 
 function cinnamon_get_related_author_posts($author) {
@@ -67,35 +66,6 @@ function cinnamon_extra_contact_info($contactmethods) {
     return $contactmethods;
 }
 
-function cinnamon_get_portfolio_posts($author, $count, $size = 'thumbnail') {
-    global $post;
-
-    $ip_slug = get_imagepress_option('ip_slug');
-    $authors_posts = get_posts(array(
-        'author' => $author,
-        'post_type' => $ip_slug,
-        'posts_per_page' => $count,
-        'meta_key' => 'imagepress_sticky',
-        'meta_value' => 1,
-    ));
-
-    $output = '';
-    if($authors_posts) {
-        $output .= '<div id="cinnamon-index"><a href="#"><i class="fa fa-th-large"></i> ' . get_imagepress_option('cinnamon_label_index') . '</a></div>
-        <div id="cinnamon-feature"></div>
-        <div class="cinnamon-grid-blank">';
-            foreach($authors_posts as $authors_post) {
-                $post_thumbnail_id = get_post_thumbnail_id($authors_post->ID);
-                $post_thumbnail_url = wp_get_attachment_url( $post_thumbnail_id );
-                $output .= '<a href="#" rel="' . $post_thumbnail_url . '">' . get_the_post_thumbnail($authors_post->ID, $size) . '</a>';
-            }
-        $output .= '</div>';
-    }
-
-    return $output;
-}
-
-
 
 
 /* CINNAMON CARD SHORTCODE */
@@ -122,8 +92,6 @@ function cinnamon_card($atts, $content = null) {
 
     $display .= '<ul class="list">';
         foreach ($query as $q) {
-            //if (cinnamon_count_user_posts_by_type($q->ID, $ip_slug) > 0) {
-
             $author = $q->ID;
 
             $display .= '<li class="cinnamon-card">';
@@ -168,22 +136,7 @@ function cinnamon_card($atts, $content = null) {
                     <div class="cinnamon-meta"><span class="followers">' . kformat(pwuf_get_follower_count($author)) . '</span><br><small>' . __('followers', 'imagepress') . '</small></div>
                     <div class="cinnamon-meta"><span class="uploads">' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</span><br><small>' . __('uploads', 'imagepress') . '</small></div>
                 </div>';
-
-                /**
-                $display .= '<div class="user-avatar">' . get_avatar($q->ID, 80) . '</div>
-                <div class="user-data">
-                    <h4 class="user-name">
-                        <a href="' . get_author_posts_url($q->ID) . '">' . 
-                            get_the_author_meta('display_name', $q->ID) . '
-                        </a>
-                    </h4>';
-                    if (get_the_author_meta('description', $q->ID) != '') :
-                        $display .= '<p>' . get_the_author_meta('description', $q->ID) . '</p>';
-                    endif;
-                $display .= '</div>';
-                /**/
             $display .= '</li>';
-            //}
         }
     $display .= '</ul>';
 
@@ -207,146 +160,7 @@ function cinnamon_card($atts, $content = null) {
     return $display;
 }
 
-/* CINNAMON PROFILE (BLANK) SHORTCODE */
-function cinnamon_profile_blank($atts, $content = null) {
-    extract(shortcode_atts(array('author' => ''), $atts));
 
-    $author = get_user_by('slug', get_query_var('author_name'));
-    $author = $author->ID;
-
-    $author_rewrite = get_user_by('slug', get_query_var('author_name'));
-    $author_rewrite = $author_rewrite->user_login;
-
-    if(empty($author))
-        $author = get_current_user_id();
-
-    $hub_user_info = get_userdata($author);
-    $ip_slug = get_imagepress_option('ip_slug');
-
-    $hub_googleplus = ''; $hub_facebook = ''; $hub_twitter = '';
-    if($hub_user_info->googleplus != '')
-        $hub_googleplus = '<a href="' . $hub_user_info->googleplus . '" target="_blank"><i class="fa fa-google-plus-square"></i></a>';
-    if($hub_user_info->facebook != '')
-        $hub_facebook = '<a href="' . $hub_user_info->facebook . '" target="_blank"><i class="fa fa-facebook-square"></i></a>';
-    if($hub_user_info->twitter != '')
-        $hub_twitter = '<a href="https://twitter.com/' . $hub_user_info->twitter . '" target="_blank"><i class="fa fa-twitter-square"></i></a>';
-
-    $hub_email = '<a href="mailto:' . get_the_author_meta('email', $author) . '" target="_blank"><i class="fa fa-envelope-square"></i></a>';
-
-    $display = '';
-
-    // themes // 1.0
-    $theme = get_user_meta($author, 'cinnamon_portfolio_theme', true);
-    if(empty($theme)) {
-        $theme = 'default';
-        update_user_meta($author, 'cinnamon_portfolio_theme', $theme);
-    }
-
-    if($theme == 'default') {
-        $display .= '<style>.cornholio { max-width: 930px; margin: 0 auto; } .cornholio .c-main { text-align: center; font-size: 32px; font-weight: 300; } .cornholio .c-description { text-align: center; font-size: 14px; font-weight: 300; } .cornholio .c-social { text-align: center; font-size: 24px; } .cornholio .c-footer { text-align: center; font-size: 12px; }</style>';
-        $display .= '<style>html, body { background-color: ' . get_user_meta($author, 'hub_portfolio_bg', true) . '; color: ' . get_user_meta($author, 'hub_portfolio_text', true) . '; } a, a:hover { color: ' . get_user_meta($author, 'hub_portfolio_link', true) . '; } ul#tab li.active a { border-bottom: 1px solid ' . get_user_meta($author, 'hub_portfolio_link', true) . '; }</style>';
-        $cinnamon_size = 'thumbnail';
-    }
-    if($theme == 'sidebar-left') {
-        $display .= '<style>.cornholio { max-width: 100%; margin: 0 auto; } .cornholio .c-main { text-align: center; font-size: 32px; font-weight: 300; } .cornholio .c-description { display: none; text-align: center; font-size: 14px; font-weight: 300; } .cornholio .c-social { text-align: center; font-size: 24px; margin: 16px 0; } .cornholio .c-footer { text-align: center; font-size: 12px; } .cornholio-top { width: 20%; float: left; padding-top: 64px; } .cornholio-bottom { width: 80%; float: right; border-left: 1px solid ' . get_user_meta($author, 'hub_portfolio_link', true) . '; } .cinnamon-grid-blank img { width: 248px; height: auto; } .about { padding: 90px 64px 256px 64px; } hr { border-top: 1px solid ' . get_user_meta($author, 'hub_portfolio_link', true) . '; opacity: 0.25; } #tab { box-shadow: none; text-align: left; } ul#tab li.active a { font-weight: 700; } #tab li { display: block; } #tab li a { margin: 0; }</style>';
-        $display .= '<style>html, body { background-color: ' . get_user_meta($author, 'hub_portfolio_bg', true) . '; color: ' . get_user_meta($author, 'hub_portfolio_text', true) . '; } a, a:hover { color: ' . get_user_meta($author, 'hub_portfolio_link', true) . '; } ul#tab li.active a { border-bottom: 1px solid ' . get_user_meta($author, 'hub_portfolio_link', true) . '; }</style>';
-        $cinnamon_size = 'imagepress_sq_std';
-    }
-    // end themes
-
-    $display .= '<script>jQuery(document).ready(function(){ jQuery("' . get_imagepress_option('cinnamon_hide') . '").hide(); });</script>
-    <div class="cornholio">
-        <div class="cornholio-top">
-            <div class="c-main">' . $hub_user_info->first_name . ' ' . $hub_user_info->last_name . '</div>
-            <div class="c-description"> ' . get_the_author_meta('hub_field', $author) . '<br><small>' . get_the_author_meta('hub_location', $author) . '</small></div>
-            <div class="c-social">' . $hub_facebook . ' ' . $hub_twitter . ' ' . $hub_googleplus . ' ' . $hub_email;
-                if($hub_user_info->user_url != '')
-                    $display .= ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fa fa-link"></i></a>';
-            $display .= '</div>
-
-            <ul id="ip-tab">
-                <li><a href="#" class="c-index">' . get_imagepress_option('cinnamon_label_portfolio') . '</a></li>
-                <li><a href="#">' . get_imagepress_option('cinnamon_label_about') . '</a></li>
-            </ul>
-        </div>';
-
-        $display .= '<div class="cornholio-bottom">
-            <div class="ip_clear"></div>
-            <div class="tab_icerik">';
-                $display .= cinnamon_get_portfolio_posts($author, 12, $cinnamon_size);
-            $display .= '</div>
-            <div class="tab_icerik about">
-                <h3>' . get_imagepress_option('cinnamon_label_about') . '</h3>';
-                $display .= make_clickable(wpautop($hub_user_info->description));
-            $display .= '</div>
-        </div>';
-
-            $display .= '<div class="ip_clear"></div><hr><div class="c-footer">&copy; ' . $hub_user_info->first_name . ' ' . $hub_user_info->last_name . ' ' . date('Y') . '</div>';
-            $display .= '<div class="c-footer">' . __('Portfolio provided by', 'imagepress') . ' ' . get_bloginfo('name') . '</div>';
-    $display .= '</div>';
-
-    return $display;
-}
-
-// NEW USER PROFILE SETUP AND REWRITING
-/*
- * User profile setup and URL rewrite
- */
-add_action('init', 'cinnamon_profile_rewrite');
-add_filter('the_content', 'cinnamon_content');
-add_filter('query_vars', 'cinnamon_query_vars');
-
-function cinnamon_profile_rewrite() {
-    $ip_profile_page = (int) get_imagepress_option('ip_profile_page');
-    $cinnamon_author_slug = get_imagepress_option('cinnamon_author_slug');
-    $cinnamon_author_page = basename(get_permalink($ip_profile_page));
-
-    // alternative way of retrieving the slug
-    $slug = get_post_field('post_name', $ip_profile_page);
-
-    // URL rewrite with pagination
-    add_rewrite_rule(
-        '^' . $cinnamon_author_slug . '/([^/]+)/page/([0-9]+)?/?$',
-        'index.php?pagename=' . $cinnamon_author_page . '&user=$matches[1]&paged=$matches[2]',
-        'top'
-    );
-
-    // URL rewrite without pagination
-    add_rewrite_rule(
-        '^' . $cinnamon_author_slug . '/([^/]+)/?$',
-        'index.php?pagename=' . $cinnamon_author_page . '&user=$matches[1]',
-        'top'
-    );
-
-    //flush_rewrite_rules();
-}
-function cinnamon_query_vars($vars) {
-    $vars[] = 'user';
-
-    return $vars;
-}
-
-function cinnamon_content($content) {
-    $user_login = (get_query_var('user')) ? get_query_var('user') : '';
-
-    if (isset($_GET['user']) || !empty($user_login)) {
-        global $wpdb;
-
-        $userArray = $wpdb->get_row("SELECT ID, user_nicename FROM $wpdb->users WHERE user_nicename = '$user_login'");
-
-        //$user = get_user_by('login', $user_login);
-
-        //$content = do_shortcode('[cinnamon-profile author="' . $user->ID . '" username="' . $user->user_login . '"]');
-        $content = do_shortcode('[cinnamon-profile author="' . $userArray->ID . '" username="' . $userArray->user_nicename . '"]');
-    } else if (is_page('ImagePress Author Template')) {
-        $content = include dirname(__FILE__) . '/template.php';
-    } else {
-        $content = $content;
-    }
-
-    return $content;
-}
-// END
 
 /* CINNAMON PROFILE SHORTCODE */
 function cinnamon_profile($atts, $content = null) {
@@ -355,51 +169,54 @@ function cinnamon_profile($atts, $content = null) {
         'username' => '',
     ), $atts));
 
-    //$author = get_user_by('slug', get_query_var('author_name'));
-    //$author = $author->ID;
+    global $wpdb;
 
-    //$author_rewrite = get_user_by('slug', get_query_var('author_name'));
-    //$author_rewrite = $author_rewrite->user_login;
-    $author_rewrite = $username;
+    $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
+    $userLogin = (string) sanitize_text_field($_GET[$cinnamon_author_slug]);
+    $userArray = $wpdb->get_row($wpdb->prepare("SELECT ID, user_nicename FROM $wpdb->users WHERE user_nicename = '%s'", $userLogin));
+
+    if (empty($author)) {
+        $author = $userArray->ID;
+    }
+    if (empty($username)) {
+        $username = $userArray->user_nicename;
+    }
 
     $ip_slug = get_imagepress_option('ip_slug');
-
-    if(empty($author))
-        $author = get_current_user_id();
-
     $hub_user_info = get_userdata($author);
 
     $display = '';
 
     $hub_googleplus = ''; $hub_facebook = ''; $hub_twitter = ''; $hub_user_url = '';
-    if($hub_user_info->googleplus != '')
+    if ($hub_user_info->googleplus != '')
         $hub_googleplus = ' <a href="' . $hub_user_info->googleplus . '" target="_blank"><i class="fa fa-google-plus-square"></i></a>';
-    if($hub_user_info->facebook != '')
+    if ($hub_user_info->facebook != '')
         $hub_facebook = ' <a href="' . $hub_user_info->facebook . '" target="_blank"><i class="fa fa-facebook-square"></i></a>';
-    if($hub_user_info->twitter != '')
+    if ($hub_user_info->twitter != '')
         $hub_twitter = ' <a href="https://twitter.com/' . $hub_user_info->twitter . '" target="_blank"><i class="fa fa-twitter-square"></i></a>';
 
     $hca = get_the_author_meta('hub_custom_cover', $author);
     $hca = wp_get_attachment_url($hca);
-    if(!isset($hca) || empty($hca))
+    if (!isset($hca) || empty($hca))
         $hca = IP_PLUGIN_URL . '/img/coverimage.png';
 
     $logged_in_user = wp_get_current_user();
+
     $display .= '<div class="profile-hub-container">';
         $hub_url = $hub_user_info->user_url;
         $hub_field = get_the_author_meta('hub_field', $author);
         $hub_employer = get_the_author_meta('hub_employer', $author);
         $hub_location = get_the_author_meta('hub_location', $author);
 
-        if(get_imagepress_option('cinnamon_fancy_header') === 'yes') {
+        if (get_imagepress_option('cinnamon_fancy_header') === 'yes') {
             $display .= '<div class="cinnamon-cover" style="background: url(' . $hca . ') no-repeat center center; background-size: cover;"><div class="cinnamon-opaque"></div>';
 
                 $display .= '<div class="cinnamon-avatar"><div class="cinnamon-user">' . get_avatar($author, 120) . '';
-                    if(is_user_logged_in() && $author_rewrite != $logged_in_user->user_login)
+                    if (is_user_logged_in() && $username != $logged_in_user->user_login)
                         $display .= '<div class="imagepress-follow">' . do_shortcode('[follow_links follow_id="' . $author . '"]') . '</div>';
                     $display .= '</div>';
 
-                    if(get_the_author_meta('user_title', $author) == 'Verified')
+                    if (get_the_author_meta('user_title', $author) == 'Verified')
                         $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fa fa-check-square"></i></span>';
                     else
                         $verified = '';
@@ -409,16 +226,16 @@ function cinnamon_profile($atts, $content = null) {
                     $hubuser = get_user_by('id', $author);
                     $hubuser = sanitize_title($hubuser->user_login);
                     $hub_name = $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
-                    if(empty($hub_user_info->first_name) && empty($hub_user_info->last_name))
+                    if (empty($hub_user_info->first_name) && empty($hub_user_info->last_name))
                         $hub_name = $hubuser;
 
-                    if($hub_user_info->user_url != '')
+                    if ($hub_user_info->user_url != '')
                         $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fa fa-link"></i></a>';
 
                     $display .= '<div>
                         <div class="ph-nametag">
                             ' . $hub_name . $verified;
-                            if(is_user_logged_in() && $author_rewrite == $logged_in_user->user_login) {
+                            if(is_user_logged_in() && $username == $logged_in_user->user_login) {
                                 $display .= ' <small><a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
                             }
                         $display .= '</div>
@@ -438,7 +255,7 @@ function cinnamon_profile($atts, $content = null) {
         } else {
             $display .= '<div class="cinnamon-cover-blank">';
                 $display .= '<p>' . get_avatar($author, 60) . '</p>';
-                if(is_user_logged_in() && $author_rewrite != $logged_in_user->user_login)
+                if(is_user_logged_in() && $username != $logged_in_user->user_login)
                     $display .= '<div class="imagepress-follow">' . do_shortcode('[follow_links follow_id="' . $author . '"]') . '</div>';
 
                 if(get_the_author_meta('user_title', $author) == 'Verified')
@@ -465,7 +282,7 @@ function cinnamon_profile($atts, $content = null) {
                         $display .= $hub_location . ' | ';
                     $display .= $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
-                    if(is_user_logged_in() && $author_rewrite == $logged_in_user->user_login)
+                    if(is_user_logged_in() && $username == $logged_in_user->user_login)
                         $display .= ' | <a href="' . get_imagepress_option('cinnamon_edit_page') . '"><i class="fa fa-pencil-square-o"></i> ' . get_imagepress_option('cinnamon_edit_label') . '</a>';
                 $display .= '</p>';
             $display .= '</div>';
@@ -500,22 +317,17 @@ function cinnamon_profile($atts, $content = null) {
                         $display .= '<div class="cinnamon-meta"><b>' . kformat(cinnamon_PostViews($author)) . '</b> ' . __('profile views', 'imagepress') . '</div>';
                         $display .= '<div class="cinnamon-meta"><b>' . kformat(pwuf_get_follower_count($author)) . '</b> ' . __('followers', 'imagepress') . '</div>';
                         $display .= '<div class="cinnamon-meta"><b>' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>';
-
-                        if(get_imagepress_option('cinnamon_mod_hub') == 1)
-                            $display .= '<div class="cinnamon-meta"><a href="//' . $hubuser . '.' . $hubdomain . '" target="_blank"><i class="fa fa-th"></i> ' . get_imagepress_option('cinnamon_label_hub') . '</a></div>';
-
                     $display .= '</div>';
                 $display .= '</li>';
             $display .= '</ul>
             <div class="tab_content">';
-                if ((int) get_imagepress_option('cinnamon_show_uploads') === 1)
-                    //if (is_user_logged_in() && $author_rewrite == $logged_in_user->user_login) {
-                        //$display .= '<div class="ip-tabs-item" style="display: block;">' . do_shortcode('[imagepress-show user="' . $author . '" order="custom" pending="yes"]') . '</div>';
-                    //    $display .= '<div class="ip-tabs-item" style="display: block;">' . do_shortcode('[imagepress-loop user="' . $author . '" order="custom" pending="yes"]') . '</div>';
-                    //} else {
-                        //$display .= '<div class="ip-tabs-item" style="display: block;">' . do_shortcode('[imagepress-show user="' . $author . '" order="custom"]') . '</div>';
-                    $display .= '<div class="ip-tabs-item" style="display: block;">' . do_shortcode('[imagepress-loop user="' . $author . '" order="custom"]') . '</div>';
-                    //}
+                if ((int) get_imagepress_option('cinnamon_show_uploads') === 1) {
+                    $display .= '<div class="ip-tabs-item ip-profile" data-ipw="' . get_imagepress_option('ip_ipw') . '" style="display: block;">' . 
+                        do_shortcode('[imagepress-loop user="' . $author . '" order="custom" count="999999"]') . 
+                    '</div>
+                    <div class="ip-clear"></div>
+                    <div class="thin-ui-button ip-clear" id="ipProfileShowMore">' . get_imagepress_option('ip_load_more_label') . '</div>';
+                }
 
                 if(get_imagepress_option('cinnamon_show_about') == 1) {
                     $display .= '<div class="ip-tabs-item" style="display: none;">';
@@ -524,9 +336,6 @@ function cinnamon_profile($atts, $content = null) {
                         $display .= '<br>';
                         if(!empty($hub_employer))
                             $display .= '<p><b>' . __('Employer', 'imagepress') . ':</b><br>' . $hub_employer . '</p>';
-
-                        if(get_imagepress_option('cinnamon_show_map') == 1 && get_the_author_meta('hub_location', $author) != '')
-                            $display .= '<p><img src="https://maps.googleapis.com/maps/api/staticmap?center=' . get_the_author_meta('hub_location', $author) . '&zoom=13&size=640x320&maptype=terrain"></p>';
                     $display .= '</div>';
                 }
 
@@ -699,9 +508,6 @@ function cinnamon_profile_edit($atts, $content = null) {
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_social') . '</a></li>
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_author') . '</a></li>
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_profile') . '</a></li>';
-                        if(get_imagepress_option('cinnamon_mod_hub') == 1) {
-                            $out .= '<li><a href="#">' . get_imagepress_option('cinnamon_pt_portfolio') . '</a></li>';
-                        }
                         if(get_imagepress_option('ip_mod_collections') == 1) {
                             $out .= '<li><a href="#" class="imagepress-collections">' . get_imagepress_option('cinnamon_pt_collections') . '</a></li>';
                         }
@@ -880,39 +686,6 @@ function cinnamon_profile_edit($atts, $content = null) {
                                 <tr><td colspan="2"><hr></td></tr>
                             </table>
                         </div>';
-                        if(get_imagepress_option('cinnamon_mod_hub') == 1) {
-                            $out .= '<div class="ip-tabs-item" style="display: none;">';
-                                // get custom URL
-                                $hub_user_info = get_userdata($userid);
-                                $hub_user_login = get_userdata($current_user->user_login);
-                                $hubdomain = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']);
-                                $hubuser = get_user_by('id', $userid);
-                                $hubuser = sanitize_title($hubuser->user_login);
-                                //
-                                $hub_user_url = '';
-                                if($hub_user_info->user_url != '')
-                                    $hub_user_url = 'Customize your <a href="//' . $hubuser . '.' . $hubdomain . '" rel="external" target="_blank"><i class="fa fa-th"></i> portfolio</a> page.';
-
-                                $out .= '<p>' . $hub_user_url . '</p>
-                                <hr>
-                                <p>';
-                                    $cinnamon_portfolio_theme = get_user_meta($userid, 'cinnamon_portfolio_theme', true);
-                                    $out .= '<select name="cinnamon_portfolio_theme" id="cinnamon_portfolio_theme">
-                                        <option value="default" ' . (($cinnamon_portfolio_theme == 'default') ? 'selected' : '') . '>' . __('Default theme', 'imagepress') . '</option>
-                                        <option value="sidebar-left"' . (($cinnamon_portfolio_theme == 'sidebar-left') ? 'selected' : '') . '>' . __('Sidebar (left)', 'imagepress') . '</option>
-                                    </select> <label for="cinnamon_portfolio_theme">' . __('Portfolio theme', 'imagepress') . '</label>
-                                </p>
-                                <p>
-                                    <input type="color" id="hub_portfolio_bg" name="hub_portfolio_bg" value="' . get_user_meta($userid, 'hub_portfolio_bg', true) . '"> <label for="hub_portfolio_bg">' . __('Background colour', 'imagepress') . '</label>
-                                </p>
-                                <p>
-                                    <input type="color" id="hub_portfolio_text" name="hub_portfolio_text" value="' . get_user_meta($userid, 'hub_portfolio_text', true) . '"> <label for="hub_portfolio_text">' . __('Text colour', 'imagepress') . '</label>
-                                </p>
-                                <p>
-                                    <input type="color" id="hub_portfolio_link" name="hub_portfolio_link" value="' .  get_user_meta($userid, 'hub_portfolio_link', true) . '"> <label for="hub_portfolio_link">' . __('Accent colour', 'imagepress') . '</label>
-                                </p>
-                            </div>';
-                        }
                         if(get_imagepress_option('ip_mod_collections') == 1) {
                             $out .= '<div class="ip-tabs-item" style="display: none;">
                                 <p>
@@ -1041,22 +814,6 @@ function save_cinnamon_profile_fields($user_id) {
 
     if(!empty($_POST['hub_status'])) {
         update_user_meta($user_id, 'hub_status', $_POST['hub_status']);
-    }
-
-    if(!empty($_POST['hub_portfolio_bg'])) {
-        update_user_meta($user_id, 'hub_portfolio_bg', $_POST['hub_portfolio_bg']);
-    }
-
-    if(!empty($_POST['hub_portfolio_text'])) {
-        update_user_meta($user_id, 'hub_portfolio_text', $_POST['hub_portfolio_text']);
-    }
-
-    if(!empty($_POST['hub_portfolio_link'])) {
-        update_user_meta($user_id, 'hub_portfolio_link', $_POST['hub_portfolio_link']);
-    }
-
-    if(!empty($_POST['cinnamon_portfolio_theme'])) {
-        update_user_meta($user_id, 'cinnamon_portfolio_theme', $_POST['cinnamon_portfolio_theme']);
     }
 
     // awards

@@ -82,14 +82,11 @@ a img { border: none; }
  * @since   7.0.0
  */
 .ip_box {
-    padding: 2px;
+    padding: 1px;
 }
 .ip_box p:empty {
     display: none;
 }
-
-.ip_box:hover .ip_box_top { background-color: rgba(0, 0, 0, 0.10); }
-.ip_box:hover .ip_box_bottom { background-color: rgba(0, 0, 0, 0.05); }
 
 .ip_box_top { background-color: rgba(0, 0, 0, 0.05); padding: 12px 8px; }
 .ip_box_top .name { font-size: 12px; }
@@ -135,20 +132,24 @@ a img { border: none; }
     background: -webkit-linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background: -o-linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    color: #FFFFFF;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
+    margin: 1px;
 }
 .ip-box-container-overlay .ip_box_top {
-    background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.5)));
-    background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
-    background: -o-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
-    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 1)));
+    background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+    background: -o-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+    color: #FFFFFF;
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
+    margin: 1px;
 }
 .ip-box-container-overlay .imagetitle {
     height: auto;
@@ -524,19 +525,6 @@ section[role="navigation"] a { display: inline; }
 .cinnamon-grid ul li img { width: 100px; height: 100px; opacity: 1; }
 .cinnamon-grid ul li img:hover { opacity: 0.85; }
 
-.cinnamon-grid-blank img { opacity: 1; margin: 0 1px 1px 0; }
-.cinnamon-grid-blank img:hover { opacity: 0.85; }
-#cinnamon-feature {
-    text-align: center;
-    margin: 0 0 8px 0;
-
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    -ms-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
-}
-
 .cinnamon-card-grid ul { margin: 0; padding: 0; }
 .cinnamon-card-grid ul li { list-style: none; margin: 0 1px 1px 0; padding: 0; display: inline-block; }
 .cinnamon-card-grid ul li img { width: auto; height: 100px; opacity: 1; }
@@ -578,15 +566,7 @@ section[role="navigation"] a { display: inline; }
 
 ul, li {padding: 0; margin: 0; list-style: none}
 
-/* Tab */
-#ip-tab { text-align: center; margin: 48px 0 0 0; box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.05); }
-#ip-tab li { display: inline-block; }
-#ip-tab li a { display: block; padding: 12px 0; margin: 0 48px; font-size: 16px; text-decoration: none; }
-#ip-tab li.active a {}
-.tab_icerik { padding: 10px; }
 
-#cinnamon-index { text-align: center; margin: 16px 0; }
-#cinnamon-index a { text-decoration: none; }
 
 
 
@@ -815,16 +795,6 @@ span.imagecomments:before {
 span.imagelikes:before {
     content: "\f004\0020";
     font-family: "fontawesome";
-}
-span.imagecategory:before {
-    content: "\f02b\0020";
-    font-family: "fontawesome";
-    opacity: 0.5;
-}
-span.name:before {
-    content: "\f007\0020";
-    font-family: "fontawesome";
-    opacity: 0.5;
 }
 
 
@@ -1120,4 +1090,18 @@ span.name:before {
 div.list[data-mode="teaser"] .ip_box .ip_box_top,
 div.list[data-mode="teaser"] .ip_box .ip_box_bottom {
     display: none;
+}
+
+/*
+ * Infinite loading on profile page
+ */
+.profile-hub-container .ip_box {
+    display: none;
+}
+.profile-hub-container #ipProfileShowMore {
+    text-align: center;
+    margin: 16px auto;
+    padding: 16px;
+    font-size: 16px;
+    display: block;
 }

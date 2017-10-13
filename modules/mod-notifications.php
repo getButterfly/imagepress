@@ -3,14 +3,12 @@
 
 add_shortcode('notifications', 'imagepress_notifications');
 
-function notification_count() {
+function notification_count($count = 50) {
     global $wpdb;
     $user_ID = get_current_user_id();
     $n = 0;
 
-    $limit = get_imagepress_option('notification_limit');
-
-    $sql = "SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = 0 ORDER BY actionTime DESC LIMIT " . $limit . "";
+    $sql = "SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = 0 ORDER BY actionTime DESC LIMIT " . $count . "";
     $res = $wpdb->get_results($sql);
     foreach($res as $line) {
         $postdata = get_post($line->postID, ARRAY_A);
@@ -68,12 +66,15 @@ function notification_reset() {
 }
 
 function imagepress_notifications($atts, $content = null) {
+    extract(shortcode_atts(array(
+        'count' => 50
+    ), $atts));
+
     global $wpdb;
 
     $user_ID = get_current_user_id();
     $following = array(pwuf_get_followers($user_ID));
 
-    $limit = get_imagepress_option('notification_limit');
     $ip_slug = get_imagepress_option('ip_slug');
     $display = '';
 
@@ -83,7 +84,7 @@ function imagepress_notifications($atts, $content = null) {
 	</div>';
     $display .= '<div class="notifications-inner" id="c">';
 
-    $sql = "SELECT * FROM " . $wpdb->prefix . "notifications ORDER BY actionTime DESC LIMIT " . $limit . "";
+    $sql = "SELECT * FROM " . $wpdb->prefix . "notifications ORDER BY actionTime DESC LIMIT " . $count . "";
 
     $res = $wpdb->get_results($sql);
 
@@ -129,10 +130,7 @@ function imagepress_notifications($atts, $content = null) {
 
         // custom
         if(0 == $line->postID || '-1' == $line->postID) {
-            $attachment_id = get_imagepress_option('notification_thumbnail_custom');
-            $image_attributes = wp_get_attachment_image_src($attachment_id, array(48,48));
-
-            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><div class="navatar"><img src="' .  $image_attributes[0] . '" width="' . $image_attributes[1] . '" height="' . $image_attributes[2] . '"></div><i class="fa fa-fw ' . $line->actionIcon . '"></i> ' . $line->actionType . '<time>' . $time . '</time></div>';
+            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><i class="fa fa-fw ' . $line->actionIcon . '"></i> ' . $line->actionType . '<time>' . $time . '</time></div>';
         }
     }
 
@@ -215,12 +213,11 @@ add_action('wp_ajax_ajax_trash_action', 'ajax_trash_action_callback');
  *
  * Use these functions inside themes to display various notification-related information
  */
-function ip_notifications_menu_item() {
-	if(notification_count() > 0)
-		$item = '<a href="#" class="notifications-bell"><i class="fa fa-bell"></i><sup class="ui-accent-background">' . notification_count() . '</sup></a><div class="notifications-container ui">' . do_shortcode('[notifications]') . '</div>';
+function ip_notifications_menu_item($count = 50) {
+	if (notification_count($count) > 0)
+		$item = '<a href="#" class="notifications-bell"><i class="fa fa-bell"></i><sup class="ui-accent-background">' . notification_count($count) . '</sup></a><div class="notifications-container ui">' . do_shortcode('[notifications]') . '</div>';
 	else
-		$item = '<a href="#" class="notifications-bell"><i class="fa fa-bell-o"></i></a><div class="notifications-container ui">' . do_shortcode('[notifications]') . '</div>';
+		$item = '<a href="#" class="notifications-bell"><i class="fa fa-bell-o"></i></a><div class="notifications-container ui">' . do_shortcode('[notifications count="' . $count . '"]') . '</div>';
 
 	return $item;
 }
-?>
