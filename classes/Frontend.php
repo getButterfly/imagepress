@@ -1,5 +1,7 @@
 <?php
-if(!defined('ABSPATH')) exit;
+if (!defined('ABSPATH')) {
+	exit;
+}
 
 class Cinnamon_Frontend_User_Manager {
 	public function __construct() {
@@ -28,9 +30,9 @@ class Cinnamon_Frontend_User_Manager {
 	public function cinnamon_login_form() { ?>
         <div class="ip-tab">
             <ul class="ip-tabs active">
-                <li class="current"><a href="#"><i class="fa fa-sign-in"></i> <?php _e('Log in', 'imagepress'); ?></a></li>
-                <li class=""><a href="#"><i class="fa fa-user"></i> <?php _e('Sign up', 'imagepress'); ?></a></li>
-                <li class=""><a href="#"><i class="fa fa-question-circle"></i> <?php _e('Lost password', 'imagepress'); ?></a></li>
+                <li class="current"><a href="#"><i class="fa fa-sign-in"></i> <?php esc_html_e('Log in', 'imagepress'); ?></a></li>
+                <li class=""><a href="#"><i class="fa fa-user"></i> <?php esc_html_e('Sign up', 'imagepress'); ?></a></li>
+                <li class=""><a href="#"><i class="fa fa-question-circle"></i> <?php esc_html_e('Lost password', 'imagepress'); ?></a></li>
             </ul>
             <div class="tab_content">
                 <div class="ip-tabs-item" style="display: block;">
@@ -57,29 +59,29 @@ class Cinnamon_Frontend_User_Manager {
                         wp_login_form($login_arguments);
                         ?>
                     <?php else : ?>
-                        <p><?php echo __('You are already logged in.', 'imagepress'); ?></p>
+                        <p><?php esc_html_e('You are already logged in.', 'imagepress'); ?></p>
                     <?php endif; ?>
                 </div>
                 <div class="ip-tabs-item">
-                    <?php if(!is_user_logged_in()) : ?>
+                    <?php if (!is_user_logged_in()) { ?>
                         <form action="register" method="post" id="regform" name="registrationform">
-                            <h2><?php _e('Sign up', 'imagepress'); ?></h2>
-                            <p><input type="text" name="user_login" id="reg_user" value="<?php if(isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php _e('Username', 'imagepress'); ?>"></p>
-                            <p><input type="email" name="user_email" id="reg_email" value="<?php if(isset($user_email)) echo esc_attr(stripslashes($user_email)); ?>" size="32" placeholder="<?php _e('Email address', 'imagepress'); ?>"></p>
-                            <p><?php echo __('A password will be emailed to you.', 'imagepress'); ?></p>
-                            <p><input type="submit" name="user-sumbit" id="user-submit" value="<?php esc_attr_e('Sign up', 'imagepress'); ?>"></p>
+                            <h2><?php esc_html_e('Sign up', 'imagepress'); ?></h2>
+                            <p><input type="text" name="user_login" id="reg_user" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php esc_html_e('Username', 'imagepress'); ?>"></p>
+                            <p><input type="email" name="user_email" id="reg_email" value="<?php if (isset($user_email)) echo esc_attr(stripslashes($user_email)); ?>" size="32" placeholder="<?php esc_html_e('Email address', 'imagepress'); ?>"></p>
+                            <p><?php esc_html_e('A password will be emailed to you.', 'imagepress'); ?></p>
+                            <p><input type="submit" name="user-sumbit" id="user-submit" value="<?php esc_html_e('Sign up', 'imagepress'); ?>"></p>
                             <input type="hidden" name="register" value="true">
                             <?php wp_nonce_field('ajax-form-nonce', 'security'); ?>
                         </form>
-                    <?php else : ?>
-                        <p><?php echo __('You are already logged in.', 'imagepress'); ?></p>
-                    <?php endif; ?>
+                    <?php } else { ?>
+                        <p><?php esc_html_e('You are already logged in.', 'imagepress'); ?></p>
+                    <?php } ?>
                 </div>
                 <div class="ip-tabs-item">
                     <form action="resetpsw" method="post" id="pswform" name="passwordform">
-                        <h2><?php _e('Lost your password?', 'imagepress'); ?></h2>
-                        <p><input type="text" name="forgot_login" id="forgot_login" class="input" value="<?php if(isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php _e('Username or email address', 'imagepress'); ?>"></p>
-                        <p><input type="submit" name="fum-psw-sumbit" id="fum-psw-submit" value="<?php esc_attr_e('Reset password', 'imagepress'); ?>"></p>
+                        <h2><?php esc_html_e('Lost your password?', 'imagepress'); ?></h2>
+                        <p><input type="text" name="forgot_login" id="forgot_login" class="input" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php _e('Username or email address', 'imagepress'); ?>"></p>
+                        <p><input type="submit" name="fum-psw-sumbit" id="fum-psw-submit" value="<?php esc_html_e('Reset password', 'imagepress'); ?>"></p>
                         <input type="hidden" name="forgotten" value="true">
                         <?php wp_nonce_field('ajax-form-nonce', 'security'); ?>
                     </form>
