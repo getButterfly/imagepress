@@ -107,7 +107,7 @@ a img { border: none; }
 .ip_box img:hover { opacity: 0.75; }
 .ip_box .fa-lg { float: left; margin: 4px 0 0 0; }
 
-.imagecategory { cursor: pointer; height: 18px; overflow: hidden; display: block; margin: 0; font-size: 12px; }
+.imagecategory { height: 18px; overflow: hidden; display: block; margin: 0; font-size: 12px; }
 
 .imagetitle {
     display: block;

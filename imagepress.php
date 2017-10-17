@@ -61,22 +61,34 @@ function imagepress_init() {
 }
 add_action('plugins_loaded', 'imagepress_init');
 
-require_once IP_PLUGIN_PATH . '/classes/Updater.php';
 
-if (is_admin()) {
-    $config = array(
-        'slug' => plugin_basename(__FILE__),
-        'proper_folder_name' => 'imagepress',
-        'api_url' => 'https://api.github.com/repos/getButterfly/imagepress',
-        'raw_url' => 'https://raw.github.com/getButterfly/imagepress/master',
-        'github_url' => 'https://github.com/getButterfly/imagepress',
-        'zip_url' => 'https://github.com/getButterfly/imagepress/zipball/master',
-        'sslverify' => true,
-        'requires' => '4.6',
-        'tested' => '4.8.2',
-        'readme' => 'README.MD'
-    );
-    new WP_GitHub_Updater($config);
+
+/*
+ * PressTrends Collector
+ */
+//require_once IP_PLUGIN_PATH . '/classes/Tracker.php';
+//pressTrendsCollectorHelper(__FILE__);
+//
+
+
+if (defined('ALLOW_IMAGEPRESS_UPDATE')) {
+    require_once IP_PLUGIN_PATH . '/classes/Updater.php';
+
+    if (is_admin()) {
+        $config = array(
+            'slug' => plugin_basename(__FILE__),
+            'proper_folder_name' => 'imagepress',
+            'api_url' => 'https://api.github.com/repos/getButterfly/imagepress',
+            'raw_url' => 'https://raw.github.com/getButterfly/imagepress/master',
+            'github_url' => 'https://github.com/getButterfly/imagepress',
+            'zip_url' => 'https://github.com/getButterfly/imagepress/zipball/master',
+            'sslverify' => true,
+            'requires' => '4.6',
+            'tested' => '4.8.2',
+            'readme' => 'README.MD'
+        );
+        new WP_GitHub_Updater($config);
+    }
 }
 
 include_once IP_PLUGIN_PATH . '/includes/imagepress-install.php';
@@ -1059,6 +1071,8 @@ function imagepress_widget($atts, $content = null) {
         'count' => 5,
     ), $atts));
 
+    $display = '';
+
     if ((string) $mode === 'likes')
         $imagepress_meta_key = '_like_count';
     if ((string) $mode === 'views')
@@ -1086,14 +1100,14 @@ function imagepress_widget($atts, $content = null) {
 
     $is = get_posts($args);
 
-    if($is && ($type == 'list')) {
-        $display = '<ul>';
-            foreach($is as $i) {
-                if($mode == 'likes')
+    if ($is && ($type == 'list')) {
+        $display .= '<ul>';
+            foreach ($is as $i) {
+                if ($mode == 'likes')
                     $ip_link_value = imagepress_get_like_count($i->ID);
-                if($mode == 'views')
+                if ($mode == 'views')
                     $ip_link_value = ip_getPostViews($i->ID);
-                if(empty($ip_link_value))
+                if (empty($ip_link_value))
                     $ip_link_value = 0;
 
                 $display .= '<li><a href="' . get_permalink($i->ID) . '">' . get_the_title($i->ID) . '</a> <small>(' . $ip_link_value . ')</small></li>';
@@ -1101,20 +1115,20 @@ function imagepress_widget($atts, $content = null) {
         $display .= '</ul>';
     }
 
-    if($is && ($type == 'top')) {
-        $display = '';
-        foreach($is as $i) {
-            if(get_imagepress_option('ip_comments') == 1)
+    if ($is && ($type == 'top')) {
+        $display .= '';
+        foreach ($is as $i) {
+            if (get_imagepress_option('ip_comments') == 1)
                 $ip_comments = '<i class="fa fa-comments"></i> ' . get_comments_number($i->ID) . '';
-            if(get_imagepress_option('ip_comments') == 0)
+            if (get_imagepress_option('ip_comments') == 0)
                 $ip_comments = '';
 
             $post_thumbnail_id = get_post_thumbnail_id($i->ID);
             $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
 
-            if(get_imagepress_option('ip_click_behaviour') == 'media')
+            if (get_imagepress_option('ip_click_behaviour') == 'media')
                 $ip_image_link = $image_attributes[0];
-            if(get_imagepress_option('ip_click_behaviour') == 'custom')
+            if (get_imagepress_option('ip_click_behaviour') == 'custom')
                 $ip_image_link = get_permalink($i->ID);
 
             $display .= '<div id="ip_container_2"><div class="ip_icon_hover">' .

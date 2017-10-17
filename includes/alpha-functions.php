@@ -308,20 +308,23 @@ function imagepress_loop($atts, $content = null) {
                     $ip_title_optional = '<span class="imagetitle">' . get_the_title($i) . '</span>';
                 }
 
-                if (get_post_meta($i, 'imagepress_author', true) !== '') {
-                    $ip_author_optional = '<span class="name">' . get_post_meta($i, 'imagepress_author', true) . '</span>';
-                } else {
-                    // get post author ID
-                    $post_author_id = get_post_field('post_author', $i);
+                $ip_author_optional = '';
+                if ($get_ip_author_optional == 1) {
+                    if (get_post_meta($i, 'imagepress_author', true) !== '') {
+                        $ip_author_optional = '<span class="name">' . get_post_meta($i, 'imagepress_author', true) . '</span>';
+                    } else {
+                        // get post author ID
+                        $post_author_id = get_post_field('post_author', $i);
 
-                    /**
-                    $ip_profile_page = (int) get_imagepress_option('ip_profile_page');
-                    $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
-                    $ip_author_page = get_permalink($ip_profile_page);
+                        /**
+                        $ip_profile_page = (int) get_imagepress_option('ip_profile_page');
+                        $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
+                        $ip_author_page = get_permalink($ip_profile_page);
 
-                    $ip_author_optional = '<span class="name"><a href="' . $ip_author_page . '?' . $cinnamon_author_slug . '=' . get_the_author_meta('user_nicename', $post_author_id) . '">' . get_the_author_meta('user_nicename', $post_author_id) . '</a></span>';
-                    /**/
-                    $ip_author_optional = getImagePressProfileUri($post_author_id);
+                        $ip_author_optional = '<span class="name"><a href="' . $ip_author_page . '?' . $cinnamon_author_slug . '=' . get_the_author_meta('user_nicename', $post_author_id) . '">' . get_the_author_meta('user_nicename', $post_author_id) . '</a></span>';
+                        /**/
+                        $ip_author_optional = getImagePressProfileUri($post_author_id);
+                    }
                 }
 
                 $ip_meta_optional = '';

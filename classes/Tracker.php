@@ -1,20 +1,20 @@
 <?php
+// Prevent loading this file directly and/or if the class is already defined
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
     die;
 }
 
-if (!defined('PRESSTRENDS_URL')) {
-    define('PRESSTRENDS_URL', 'https://www.presstrends.org/collector/');
+if (!defined('ABSPATH') || function_exists('pressTrendsCollector')) {
+    return;
 }
 
-
 // Scheduled Action Hook
-function ipTracking( ) {
+function pressTrendsCollector($pathToPlugin) {
     global $wpdb;
 
     $theme = wp_get_theme();
-    $plugin = get_plugin_data(IP_PLUGIN_PATH . '/imagepress.php');
+    $plugin = get_plugin_data($pathToPlugin);
 
     $trackingArray = array(
         // Theme details
@@ -45,7 +45,7 @@ function ipTracking( ) {
         'admin_email' => get_option('admin_email'),
     );
 
-    $response = wp_remote_post(esc_url_raw(PRESSTRENDS_URL), array(
+    $response = wp_remote_post(esc_url_raw('https://www.presstrends.org/collector/'), array(
         'method' => 'POST',
         'timeout' => 30,
         'redirection' => 3,
@@ -57,20 +57,24 @@ function ipTracking( ) {
 }
 
 // Custom Cron Recurrences
-function imagepress_tracking_recurrence($schedules) {
+function pressTrendsCollectRecurrence($schedules) {
     $schedules['monthly'] = array(
-        'display' => __('Once Monthly', 'imagepress'),
+        'display' => __('Once Monthly'),
         'interval' => 2635200,
     );
 
     return $schedules;
 }
-add_filter('cron_schedules', 'imagepress_tracking_recurrence');
 
 // Schedule Cron Job Event
-function imagepress_tracking() {
-    if (!wp_next_scheduled('ipTracking')) {
-        wp_schedule_event(time(), 'monthly', 'ipTracking');
+function pressTrendsCollect() {
+    if (!wp_next_scheduled('pressTrendsCollector')) {
+        wp_schedule_event(time(), 'monthly', 'pressTrendsCollector');
     }
 }
-add_action('wp', 'imagepress_tracking');
+add_action('wp', 'pressTrendsCollect');
+
+function pressTrendsCollectorHelper($pathToPlugin) {
+    add_filter('cron_schedules', 'pressTrendsCollectRecurrence');
+    add_action('wp', 'pressTrendsCollect');
+}
