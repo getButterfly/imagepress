@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.1
+Version: 7.5.2
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -41,7 +41,6 @@ function imagepress_init() {
     load_plugin_textdomain('imagepress', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 
     $ip_slug = get_imagepress_option('ip_slug');
-    //$ip_tracking = get_imagepress_option('ip_tracking');
 
     if (empty($ip_slug)) {
         $optionArray = array(
@@ -49,26 +48,9 @@ function imagepress_init() {
         );
         updateImagePressOption($optionArray);
     }
-
-    /**
-    if (empty($ip_tracking)) {
-        $optionArray = array(
-            'ip_tracking' => 0,
-        );
-        updateImagePressOption($optionArray);
-    }
-    /**/
 }
 add_action('plugins_loaded', 'imagepress_init');
 
-
-
-/*
- * PressTrends Collector
- */
-//require_once IP_PLUGIN_PATH . '/classes/Tracker.php';
-//pressTrendsCollectorHelper(__FILE__);
-//
 
 
 if (defined('ALLOW_IMAGEPRESS_UPDATE')) {
@@ -298,7 +280,7 @@ function imagepress_add($atts, $content = null) {
 
         if(!empty($_FILES['imagepress_image_file'])) {
             if($post_id = wp_insert_post($user_image_data)) {
-                imagepress_process_image('imagepress_image_file', $post_id, $imagepress_image_caption);
+                imagepress_process_image('imagepress_image_file', $post_id);
 
                 // multiple images
                 if(1 == get_imagepress_option('ip_upload_secondary')) {
@@ -519,22 +501,14 @@ if (get_imagepress_option('ip_resize') == 1) {
 
 
 
-function imagepress_process_image($file, $post_id, $caption, $feature = 1) {
+function imagepress_process_image($file, $post_id, $feature = 1) {
     require_once(ABSPATH . 'wp-admin' . '/includes/image.php');
     require_once(ABSPATH . 'wp-admin' . '/includes/file.php');
     require_once(ABSPATH . 'wp-admin' . '/includes/media.php');
 
     $attachment_id = media_handle_upload($file, $post_id);
 
-    /**
-    if(is_wp_error($attachment_id)) {
-        echo 'There was an error uploading the image.';
-    } else {
-        echo 'The image was uploaded successfully!';
-    }
-    /**/
-
-    if($feature == 1) {
+    if ($feature == 1) {
         set_post_thumbnail($post_id, $attachment_id);
     }
 
@@ -1036,7 +1010,7 @@ function imagepress_notify_status($new_status, $old_status, $post) {
         if(strlen($emails)) {
             $subject = '[' . get_option('blogname') . '] "' . $post->post_title . '" pending review';
             $message = "<p>A new post by {$contributor->display_name} is pending review.</p>";
-            $message .= "<p>Author: {$contributor->user_login} <{$contributor->user_email}> (IP: {$_SERVER['REMOTE_ADDR']})</p>";
+            $message .= "<p>Author: {$contributor->user_login} <{$contributor->user_email}></p>";
             $message .= "<p>Title: {$post->post_title}</p>";
             $category = get_the_category($post->ID);
             if(isset($category[0]))

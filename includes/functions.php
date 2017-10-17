@@ -261,7 +261,7 @@ function ip_editor() {
                 );
                 wp_update_post($post);
 
-                imagepress_process_image('imagepress_image_file', $post_id, $_FILES['imagepress_image_file'], 1);
+                imagepress_process_image('imagepress_image_file', $post_id, 1);
 
                 // multiple images
                 if(1 == get_imagepress_option('ip_upload_secondary')) {
@@ -279,7 +279,7 @@ function ip_editor() {
                             }
                             $_FILES = array("imagepress_image_additional" => $file);
                             foreach($_FILES as $file => $array) {
-                                imagepress_process_image('imagepress_image_additional', $post_id, '');
+                                imagepress_process_image('imagepress_image_additional', $post_id);
                             }
                         }
                     }
@@ -540,10 +540,10 @@ function ip_main($i) {
 
         echo get_the_title($i);
 
-        if(get_imagepress_option('ip_allow_tags') == 1) {
+        if (get_imagepress_option('ip_allow_tags') == 1) {
             $terms = get_the_terms($i, 'imagepress_image_tag');
 
-            if($terms && !is_wp_error($terms)) :
+            if ($terms && !is_wp_error($terms)) :
                 $term_links = array();
                 foreach($terms as $term) {
                     $term_links[] = $term->name;
@@ -560,13 +560,13 @@ function ip_main($i) {
             <?php echo get_avatar($post->post_author, 40); ?>
         </div>
         <?php
-        if (get_the_author_meta('user_title', $post->post_author) == 'Verified')
+        $verified = '';
+        if (get_the_author_meta('user_title', $post->post_author) == 'Verified') {
             $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fa fa-check-square"></i></span>';
-        else
-            $verified = '';
+        }
         ?>
-        <?php _e('by', 'imagepress'); ?> <b><?php echo getImagePressProfileUri($post->post_author); ?></b> <?php echo $verified; ?>
-        <br><small><?php _e('Uploaded', 'imagepress'); ?> <time title="<?php the_time(get_option('date_format')); ?>"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?></time> <?php _e('in', 'imagepress'); ?> <?php echo get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', ''); ?></small>
+        <?php esc_html_e('by', 'imagepress'); ?> <b><?php echo getImagePressProfileUri($post->post_author); ?></b> <?php echo $verified; ?>
+        <br><small><?php esc_html_e('Uploaded', 'imagepress'); ?> <time title="<?php the_time(get_option('date_format')); ?>"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?></time> <?php esc_html_e('in', 'imagepress'); ?> <?php echo get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', ''); ?></small>
     </p>
 
     <div class="ip-clear"></div>
@@ -575,26 +575,26 @@ function ip_main($i) {
     // custom preset fields
     $result = $wpdb->get_results("SELECT field_type, field_name, field_slug FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
-    foreach($result as $field) {
+    foreach ($result as $field) {
         $fs_meta = get_post_meta($i, $field['field_slug'], true);
 
-        if((int) $field['field_type'] === 20 && !empty($fs_meta)) {
+        if ((int) $field['field_type'] === 20 && !empty($fs_meta)) {
             $sketchfabId = $fs_meta;
             echo '<iframe width="100%" height="480" src="https://sketchfab.com/models/' . $sketchfabId . '/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe><br>via <a href="https://sketchfab.com/models/' . $sketchfabId . '?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank">Sketchfab</a>';
         }
-        if((int) $field['field_type'] === 21 && !empty($fs_meta)) {
+        if ((int) $field['field_type'] === 21 && !empty($fs_meta)) {
             $vimeoId = $fs_meta;
             echo '<iframe src="https://player.vimeo.com/video/' . $vimeoId . '" width="100%" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
         }
-        if((int) $field['field_type'] === 22 && !empty($fs_meta)) {
+        if ((int) $field['field_type'] === 22 && !empty($fs_meta)) {
             $youtubeId = $fs_meta;
             echo '<iframe width="100%" height="480" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" frameborder="0" allowfullscreen></iframe>';
         }
-        if((int) $field['field_type'] === 23 && !empty($fs_meta)) {
+        if ((int) $field['field_type'] === 23 && !empty($fs_meta)) {
             $googleMapsLocation = $fs_meta;
             echo '<p><img class="single-image-map" src="https://maps.googleapis.com/maps/api/staticmap?center=' . $googleMapsLocation . '&scale=2&zoom=13&size=600x300&maptype=terrain" alt="' . $googleMapsLocation . '" width="600"></p>';
         }
-        if((int) $field['field_type'] === 24 && !empty($fs_meta)) {
+        if ((int) $field['field_type'] === 24 && !empty($fs_meta)) {
             $roundMeTourId = $fs_meta;
             echo '<p><iframe width="100%" height="480" src="https://round.me/embed/' . $roundMeTourId . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>';
         }

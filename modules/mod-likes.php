@@ -67,19 +67,19 @@ function imagepress_like() {
 			}
 		}
 		else { // user is not logged in (anonymous)
-			$ip = $_SERVER['REMOTE_ADDR']; // user IP address
+			$userIp = $_SERVER['REMOTE_ADDR']; // user IP address
 			$meta_IPS = get_post_meta($post_id, '_user_IP'); // stored IP addresses
 			$liked_IPS = NULL; // set up array variable
 
-			if(count($meta_IPS) != 0) { // meta exists, set up values
+			if (count($meta_IPS) != 0) { // meta exists, set up values
 				$liked_IPS = $meta_IPS[0];
 			}
 
-			if(!is_array($liked_IPS)) // make array just in case
+			if (!is_array($liked_IPS)) // make array just in case
 				$liked_IPS = array();
 
-			if(!in_array($ip, $liked_IPS)) // if IP not in array
-				$liked_IPS['ip-' . $ip] = $ip; // add IP to array
+			if (!in_array($userIp, $liked_IPS)) // if IP not in array
+				$liked_IPS['ip-' . $userIp] = $userIp; // add IP to array
 
 			if(!ipAlreadyLiked($post_id)) { // like the post
 				update_post_meta($post_id, '_user_IP', $liked_IPS); // add user IP to post meta
@@ -87,7 +87,7 @@ function imagepress_like() {
 				echo $like_count; // update count on front end
 			}
 			else { // unlike the post
-				$ip_key = array_search( $ip, $liked_IPS ); // find the key
+				$ip_key = array_search($userIp, $liked_IPS); // find the key
 				unset($liked_IPS[$ip_key]); // remove from array
 				update_post_meta($post_id, '_user_IP', $liked_IPS); // remove user IP from post meta
 				update_post_meta($post_id, $ip_vote_meta, --$like_count); // -1 count post meta
@@ -148,7 +148,6 @@ function ipGetPostLikeLink($post_id) {
 	$ip_vote_unlike = get_imagepress_option('ip_vote_unlike');
 
 	if (is_user_logged_in()) {
-		$like_count = get_post_meta($post_id, $ip_vote_meta, true); // get post likes
 		if (ipAlreadyLiked($post_id)) {
 			$class = esc_attr(' liked');
 			$like = '<i class="fa fa-fw fa-heart-o"></i> ' . $ip_vote_unlike;

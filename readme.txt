@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
 Tested up to: 4.8.2
-Stable tag: 7.5.1
+Stable tag: 7.5.2
 Text Domain: imagepress
 
 == Description ==
@@ -19,7 +19,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
-= 7.5.1 =
+= 7.5.2 =
 * FIX: Fixed installation/upgrade routine
 * FIX: Fixed user profile error
 * UPDATE: Removed 4 unused (or troublesome) options
