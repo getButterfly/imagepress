@@ -4,7 +4,7 @@ require_once $parse_uri[0] . 'wp-load.php';
 
 global $wpdb;
 
-foreach($_GET['listItem'] as $position => $item) {
-    $wpdb->query("UPDATE `" . $wpdb->prefix . "posts` SET `menu_order` = $position WHERE `ID` = $item");
+foreach ($_GET['listItem'] as $position => $item) {
+    $wpdb->query($wpdb->prepare("UPDATE `" . $wpdb->prefix . "posts` SET `menu_order` = %d WHERE `ID` = %d", $position, $item));
 }
-echo '<p><i class="fa fa-check"></i> ' . __('Image order changed successfully!', 'imagepress') . '</p>';
+echo '<p><i class="fa fa-check"></i> ' . esc_attr__('Image order changed successfully!', 'imagepress') . '</p>';

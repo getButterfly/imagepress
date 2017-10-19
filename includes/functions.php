@@ -128,76 +128,28 @@ function imagepress_registration() {
 }
 
 
-/**
-// Custom taxonomy fields
-function imagepress_category_add_meta_field() {
-    ?>
-	<div class="form-field">
-		<label for="term_meta[ip_category_limit]"><?php _e('Category image limit per user', 'imagepress'); ?></label>
-		<input type="number" name="term_meta[ip_category_limit]" id="term_meta[ip_category_limit]" placeholder="0" min="0" step="1">
-		<p class="description"><?php _e('Enter a value for this field. Leave blank or add 0 to disable.', 'imagepress'); ?></p>
-	</div>
-<?php
-}
 
-function imagepress_category_edit_meta_field($term) {
-    $t_id = $term->term_id;
-
-    $term_meta = get_imagepress_option("taxonomy_$t_id"); ?>
-    <tr class="form-field">
-        <th scope="row" valign="top"><label for="term_meta[ip_category_limit]"><?php _e('Category image limit per user', 'imagepress'); ?></label></th>
-        <td>
-            <input type="number" name="term_meta[ip_category_limit]" id="term_meta[ip_category_limit]" value="<?php echo esc_attr($term_meta['ip_category_limit']) ? esc_attr($term_meta['ip_category_limit']) : ''; ?>" placeholder="0" min="0" step="1">
-            <p class="description"><?php _e('Enter a value for this field. Leave blank or add 0 to disable.', 'imagepress'); ?></p>
-        </td>
-    </tr>
-<?php
-}
-
-function imagepress_category_save_meta_field($term_id) {
-    if(isset($_POST['term_meta'])) {
-        $t_id = $term_id;
-        $term_meta = get_imagepress_option("taxonomy_$t_id");
-        $cat_keys = array_keys($_POST['term_meta']);
-        foreach ($cat_keys as $key) {
-            if (isset($_POST['term_meta'][$key])) {
-                $term_meta[$key] = $_POST['term_meta'][$key];
-            }
-        }
-
-        update_option("taxonomy_$t_id", $term_meta);
-    }
-}
-
-add_action('imagepress_image_category_add_form_fields', 'imagepress_category_add_meta_field', 10, 2);
-add_action('imagepress_image_category_edit_form_fields', 'imagepress_category_edit_meta_field', 10, 2);
-
-add_action('edited_imagepress_image_category', 'imagepress_category_save_meta_field', 10, 2);
-add_action('create_imagepress_image_category', 'imagepress_category_save_meta_field', 10, 2);
-/**/
-//
-
-
-
-function ip_getPostViews($postID){
+function ip_getPostViews($postID) {
     $count_key = 'post_views_count';
     $count = get_post_meta($postID, $count_key, true);
-    if(empty($count)) {
+
+    if (empty($count)) {
         delete_post_meta($postID, $count_key);
         add_post_meta($postID, $count_key, 0);
 
         return 0;
     }
+
     return $count;
 }
 function ip_setPostViews($postID) {
     $count_key = 'post_views_count';
     $count = get_post_meta($postID, $count_key, true);
-    if($count === 0 || empty($count)) {
+
+    if ($count === 0 || empty($count)) {
         delete_post_meta($postID, $count_key);
         add_post_meta($postID, $count_key, 1);
-    }
-    else {
+    } else {
         $count++;
         update_post_meta($postID, $count_key, $count);
     }
@@ -207,10 +159,10 @@ function ip_setPostViews($postID) {
 
 // front-end image editor
 function ip_get_object_terms_exclude_filter($terms, $object_ids, $taxonomies, $args) {
-    if(isset($args['exclude']) && (isset($args['fields']) && $args['fields'] == 'all')) {
-        foreach($terms as $key => $term) {
-            foreach($args['exclude'] as $exclude_term) {
-                if($term->term_id == $exclude_term) {
+    if (isset($args['exclude']) && (isset($args['fields']) && $args['fields'] == 'all')) {
+        foreach ($terms as $key => $term) {
+            foreach ($args['exclude'] as $exclude_term) {
+                if ($term->term_id == $exclude_term) {
                     unset($terms[$key]);
                 }
             }
@@ -334,41 +286,45 @@ function ip_editor() {
 
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
-                foreach($result as $field) {
+                foreach ($result as $field) {
                     $ps_meta = get_post_meta($edit_id, $field['field_slug'], true);
 
-                    if((int) $field['field_type'] === 1) {
-                        echo '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="text" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="' . $ps_meta . '"></p>';
-                    } else if((int) $field['field_type'] === 2) {
-                        echo '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="url" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="' . $ps_meta . '"></p>';
-                    } else if((int) $field['field_type'] === 3) {
-                        echo '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="email" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="' . $ps_meta . '"></p>';
-                    } else if((int) $field['field_type'] === 4) {
-                        echo '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="number" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="' . $ps_meta . '"></p>';
-                    } else if((int) $field['field_type'] === 5) {
-                        echo '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><textarea id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" rows="6" placeholder="' . $field['field_name'] . '">' . $ps_meta . '</textarea></p>';
-                    } else if((int) $field['field_type'] === 6) {
-                        if($ps_meta == 1) {
+                    $fieldType = (int) sanitize_text_field($field['field_type']);
+                    $fieldSlug = sanitize_text_field($field['field_slug']);
+                    $fieldName = sanitize_text_field($field['field_name']);
+
+                    if ($fieldType === 1) {
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                    } else if ($fieldType === 2) {
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="url" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                    } else if ($fieldType === 3) {
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="email" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                    } else if ($fieldType === 4) {
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="number" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                    } else if ($fieldType === 5) {
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
+                    } else if ($fieldType === 6) {
+                        if ($ps_meta == 1) {
                             $checked = 'checked';
                         } else {
                             $checked = '';
                         }
 
-                        echo '<p><label for="' . $field['field_slug'] . '"><input type="checkbox" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="1" ' . $checked . '> ' . $field['field_name'] . '</label></p>';
-                    } else if((int) $field['field_type'] === 7) {
-                        if($ps_meta == 1) {
+                        echo '<p><label for="' . $fieldSlug . '"><input type="checkbox" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
+                    } else if ($fieldType === 7) {
+                        if ($ps_meta == 1) {
                             $checked = 'checked';
                         } else {
                             $checked = '';
                         }
 
-                        echo '<p><label for="' . $field['field_slug'] . '"><input type="radio" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="1" ' . $checked . '> ' . $field['field_name'] . '</label></p>';
-                    } else if((int) $field['field_type'] === 8) {
-                        echo '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><select id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '">';
-                            $options = $wpdb->get_var($wpdb->prepare("SELECT field_content FROM  " . $wpdb->prefix . "ip_fields WHERE field_name = '%s'", $field['field_name']));
+                        echo '<p><label for="' . $fieldSlug . '"><input type="radio" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
+                    } else if ($fieldType === 8) {
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><select id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '">';
+                            $options = $wpdb->get_var($wpdb->prepare("SELECT field_content FROM  " . $wpdb->prefix . "ip_fields WHERE field_name = '%s'", $fieldName));
                             $options = explode(',', $options);
-                            foreach($options as $option) {
-                                if($ps_meta == trim($option)) {
+                            foreach ($options as $option) {
+                                if ($ps_meta == trim($option)) {
                                     $selected = 'selected';
                                 } else {
                                     $selected = '';
@@ -377,14 +333,14 @@ function ip_editor() {
                                 echo '<option ' . $selected . '>' . trim($option) . '</option>';
                             }
                         echo '</select></p>';
-                    } else if(
-                        (int) $field['field_type'] === 20 ||
-                        (int) $field['field_type'] === 21 ||
-                        (int) $field['field_type'] === 22 ||
-                        (int) $field['field_type'] === 23 ||
-                        (int) $field['field_type'] === 24
+                    } else if (
+                        $fieldType === 20 ||
+                        $fieldType === 21 ||
+                        $fieldType === 22 ||
+                        $fieldType === 23 ||
+                        $fieldType === 24
                     ) {
-                        echo '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="text" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     }
                 }
                 //
@@ -877,8 +833,8 @@ function imagepress_image_download($path) {
 function imagepress_order_list() {
     global $wpdb;
 
-    foreach($_POST['listItem'] as $position => $item) {
-        $wpdb->query("UPDATE `" . $wpdb->prefix . "posts` SET `menu_order` = $position WHERE `ID` = $item");
+    foreach ($_POST['listItem'] as $position => $item) {
+        $wpdb->query($wpdb->prepare("UPDATE `" . $wpdb->prefix . "posts` SET `menu_order` = %d WHERE `ID` = %d", $position, $item));
     }
 }
 add_action('wp_ajax_imagepress_list_update_order','imagepress_order_list');
@@ -895,13 +851,6 @@ function get_imagepress_option($option) {
 
     return $ipOptions[$option];
 }
-/**
-function update_imagepress_option($option) {
-    $ipOptions = get_option('imagepress');
-
-    unset($ipOptions[$option]);
-}
-/**/
 
 function updateImagePressOption($optionArray) {
     $imagePressOption = get_option('imagepress');
