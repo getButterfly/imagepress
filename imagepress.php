@@ -1046,68 +1046,67 @@ function imagepress_widget($atts, $content = null) {
     ), $atts));
 
     $display = '';
+    $mode = (string) sanitize_text_field($mode);
+    $type = (string) sanitize_text_field($type);
 
-    if ((string) $mode === 'likes')
+    $imagepress_meta_key = 'post_views_count';
+    if ($mode === 'likes') {
         $imagepress_meta_key = '_like_count';
-    if ((string) $mode === 'views')
-        $imagepress_meta_key = 'post_views_count';
+    }
 
-    if ((string) $type === 'top')
+    if ($type === 'top') {
         $count = 1;
+    }
 
     $args = array(
-        'post_type' 				=> get_imagepress_option('ip_slug'),
-        'posts_per_page' 			=> $count,
-        'orderby' 					=> 'meta_value_num',
-        'meta_key'                  => $imagepress_meta_key,
-        'meta_query'                => array(
+        'post_type' => get_imagepress_option('ip_slug'),
+        'posts_per_page' => $count,
+        'orderby' => 'meta_value_num',
+        'meta_key' => $imagepress_meta_key,
+        'meta_query' => array(
             array(
-                'key'       => $imagepress_meta_key,
-                'type'      => 'numeric'
-            )
+                'key' => $imagepress_meta_key,
+                'type' => 'numeric',
+            ),
         ),
-        'cache_results'             => false,
-        'update_post_term_cache'    => false,
-        'update_post_meta_cache'    => false,
-        'no_found_rows'             => true,
     );
 
-    $is = get_posts($args);
+    $getImages = get_posts($args);
 
-    if ($is && ($type == 'list')) {
+    if ($getImages && ($type == 'list')) {
         $display .= '<ul>';
-            foreach ($is as $i) {
+            foreach ($getImages as $image) {
                 if ($mode == 'likes')
-                    $ip_link_value = imagepress_get_like_count($i->ID);
+                    $ip_link_value = imagepress_get_like_count($image->ID);
                 if ($mode == 'views')
-                    $ip_link_value = ip_getPostViews($i->ID);
+                    $ip_link_value = ip_getPostViews($image);
                 if (empty($ip_link_value))
                     $ip_link_value = 0;
 
-                $display .= '<li><a href="' . get_permalink($i->ID) . '">' . get_the_title($i->ID) . '</a> <small>(' . $ip_link_value . ')</small></li>';
+                $display .= '<li><a href="' . get_permalink($image->ID) . '">' . get_the_title($image->ID) . '</a> <small>(' . $ip_link_value . ')</small></li>';
             }
         $display .= '</ul>';
     }
 
-    if ($is && ($type == 'top')) {
+    if ($getImages && ($type == 'top')) {
         $display .= '';
-        foreach ($is as $i) {
+        foreach ($getImages as $image) {
             if (get_imagepress_option('ip_comments') == 1)
-                $ip_comments = '<i class="fa fa-comments"></i> ' . get_comments_number($i->ID) . '';
+                $ip_comments = '<i class="fa fa-comments"></i> ' . get_comments_number($image->ID) . '';
             if (get_imagepress_option('ip_comments') == 0)
                 $ip_comments = '';
 
-            $post_thumbnail_id = get_post_thumbnail_id($i->ID);
+            $post_thumbnail_id = get_post_thumbnail_id($image);
             $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
 
             if (get_imagepress_option('ip_click_behaviour') == 'media')
                 $ip_image_link = $image_attributes[0];
             if (get_imagepress_option('ip_click_behaviour') == 'custom')
-                $ip_image_link = get_permalink($i->ID);
+                $ip_image_link = get_permalink($image->ID);
 
             $display .= '<div id="ip_container_2"><div class="ip_icon_hover">' .
-                    '<div><strong>' . get_the_title($i->ID) . '</strong></div>' .
-                    '<div><small><i class="fa fa-eye"></i> ' . ip_getPostViews($i->ID) . ' ' . $ip_comments . ' <i class="fa fa-heart"></i> ' . imagepress_get_like_count($i->ID) . '</small></div>
+                    '<div><strong>' . get_the_title($image->ID) . '</strong></div>' .
+                    '<div><small><i class="fa fa-eye"></i> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <i class="fa fa-heart"></i> ' . imagepress_get_like_count($image->ID) . '</small></div>
                 </div><a href="' . $ip_image_link . '" class="ip-link">' . wp_get_attachment_image($post_thumbnail_id, 'full') . '</a></div>';
         }
     }
