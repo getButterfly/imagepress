@@ -153,26 +153,26 @@ class Cinnamon_Frontend_User_Manager {
 	}
 
 	public function cinnamon_retrieve_password($user_data) {
-		global $wpdb, $current_site;
-
 		$errors = new WP_Error();
-		if(empty($user_data)) {
+
+		if (empty($user_data)) {
 			$errors->add('empty_username', __('Please enter a username or email address.', 'imagepress'));
-		}
-        else if(strpos($user_data, '@')) {
+		} else if(strpos($user_data, '@')) {
 			$user_data = get_user_by('email', trim($user_data));
-			if(empty($user_data))
+			if (empty($user_data)) {
 				$errors->add('invalid_email', __('There is no user registered with that email address.', 'imagepress'));
-		}
-        else {
+			}
+		} else {
 			$login = trim($user_data);
 			$user_data = get_user_by('login', $login);
 		}
 
-        if($errors->get_error_code())
+		if ($errors->get_error_code()) {
 			return $errors;
-		if(!$user_data) {
+		}
+		if (!$user_data) {
 			$errors->add('invalidcombo', __('Invalid username or email address.', 'imagepress'));
+
 			return $errors;
 		}
 
@@ -181,40 +181,38 @@ class Cinnamon_Frontend_User_Manager {
 
 		$allow = apply_filters('allow_password_reset', true, $user_data->ID);
 
-		if (!$allow)
+		if (!$allow) {
 			return new WP_Error('no_password_reset', __('Password reset is not allowed for this user', 'imagepress'));
-		else if(is_wp_error($allow))
+		} else if(is_wp_error($allow)) {
 			return $allow;
+		}
 
-
-        $user_id = $user_data->ID;
-        $password = wp_generate_password();
-        wp_set_password($password, $user_id);
+		$user_id = $user_data->ID;
+		$password = wp_generate_password();
+		wp_set_password($password, $user_id);
 
 		$message = __('Someone requested that your password be reset for the following account: ', 'imagepress')  . $key . "\r\n\r\n";
 		$message .= network_home_url('/') . "\r\n\r\n";
 		$message .= sprintf( __('Username: %s'), $user_login ) . "\r\n\r\n";
 		$message .= __('Your new password is ', 'imagepress') . $password . "\r\n\r\n";
 
-		if(is_multisite())
-			$blogname = $GLOBALS['current_site']->site_name;
-		else
-			$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+		$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
-		$title   = sprintf(__('[%s] Password reset' ), $blogname);
-		$title   = apply_filters('retrieve_password_title', $title);
+		$title = sprintf(__('[%s] Password reset' ), $blogname);
+		$title = apply_filters('retrieve_password_title', $title);
 		$message = apply_filters('retrieve_password_message', $message, $key);
 
-		if($message && ! wp_mail($user_email, $title, $message)) {
+		if ($message && ! wp_mail($user_email, $title, $message)) {
 			$errors->add('noemail', __('The e-mail could not be sent. Possible reason: your host may have disabled the mail() function.', 'imagepress'));
 
-            return $errors;
-            wp_die();
-        }
-        return true;
-    }
+			return $errors;
+			wp_die();
+		}
 
-	public function cinnamon_user_frontend_shortcode($atts, $content = null) {
+		return true;
+	}
+
+	public function cinnamon_user_frontend_shortcode($atts) {
         extract(shortcode_atts(array(
             'form' => '',
         ), $atts));
