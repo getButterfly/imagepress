@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.2
+Version: 7.5.3-beta1
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -620,7 +620,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
                             foreach ($result as $collection) {
                                 $out .= '<option value="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</option>';
                             }
-                        $out .= '</select> <span class="ip-collection-create-new">' . __('or', 'imagepress') . ' <input type="text" name="ip_collections_new" id="ip-collections-new" placeholder="' . __('Create new collection...', 'imagepress') . '"> 
+                        $out .= '</select> <span class="ip-collection-create-new">' . __('or', 'imagepress') . ' <input type="text" name="ip_collections_new" id="ip-collections-new" placeholder="' . __('Create new collection...', 'imagepress') . '">
                         <select name="collection_status" id="collection_status">
                             <option value="1">' . __('Public', 'imagepress') . '</option>
                             <option value="0">' . __('Private', 'imagepress') . '</option>
