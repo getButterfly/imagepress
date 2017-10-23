@@ -18,12 +18,14 @@ class Cinnamon_Frontend_User_Manager {
 	}
 
 	public function cinnamon_enqueue_scripts() {
+		$accountPageUri = get_option('cinnamon_account_page');
+
 		wp_enqueue_script('fum-script', IP_PLUGIN_URL . '/js/cinnamon-login.js', array('jquery'), false, true);
 		wp_localize_script('fum-script', 'fum_script', array(
-            'ajax'                          => admin_url('admin-ajax.php'),
-            'redirecturl'                   => apply_filters('fum_redirect_to', $_SERVER['REQUEST_URI']),
-            'loadingmessage'                => __('Checking credentials...', 'imagepress'),
-            'registrationloadingmessage'    => __('Processing registration...', 'imagepress'),
+			'ajax' => admin_url('admin-ajax.php'),
+			'redirecturl' => apply_filters('fum_redirect_to', $accountPageUri),
+			'loadingmessage' => __('Checking credentials...', 'imagepress'),
+			'registrationloadingmessage' => __('Processing registration...', 'imagepress'),
 		));
 	}
 
@@ -38,12 +40,12 @@ class Cinnamon_Frontend_User_Manager {
                 <div class="ip-tabs-item" style="display: block;">
                     <?php if(!is_user_logged_in()) : ?>
                         <?php
-                        $cinnamon_account_page = get_option('cinnamon_account_page');
+                        $accountPageUri = get_option('cinnamon_account_page');
 
                         $login_arguments = array(
                             'echo'           => true,
                             'remember'       => true,
-                            'redirect'       => $cinnamon_account_page,
+                            'redirect'       => $accountPageUri,
                             'form_id'        => 'form',
                             'id_username'    => 'user_login',
                             'id_password'    => 'user_pass',
@@ -80,7 +82,7 @@ class Cinnamon_Frontend_User_Manager {
                 <div class="ip-tabs-item">
                     <form action="resetpsw" method="post" id="pswform" name="passwordform">
                         <h2><?php esc_html_e('Lost your password?', 'imagepress'); ?></h2>
-                        <p><input type="text" name="forgot_login" id="forgot_login" class="input" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php _e('Username or email address', 'imagepress'); ?>"></p>
+                        <p><input type="text" name="forgot_login" id="forgot_login" class="input" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php esc_html_e('Username or email address', 'imagepress'); ?>"></p>
                         <p><input type="submit" name="fum-psw-sumbit" id="fum-psw-submit" value="<?php esc_html_e('Reset password', 'imagepress'); ?>"></p>
                         <input type="hidden" name="forgotten" value="true">
                         <?php wp_nonce_field('ajax-form-nonce', 'security'); ?>
@@ -94,9 +96,10 @@ class Cinnamon_Frontend_User_Manager {
 	public function cinnamon_process_registration() {
 		check_ajax_referer('ajax-form-nonce', 'security');
 
+		// filter_input(INPUT_POST, 'user_login')
 		$user_login = $_REQUEST['user_login'];
 		$user_email = $_REQUEST['user_email'];
-		
+
 		$errors = register_new_user($user_login, $user_email);
 
         if(!is_wp_error($errors)) {

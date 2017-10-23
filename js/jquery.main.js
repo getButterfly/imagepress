@@ -723,7 +723,8 @@ jQuery(document).ready(function () {
     // Check if profile container exists
     if (jQuery('.profile-hub-container').length) {
         var sizeTotal = jQuery('#ip-boxes .ip_box').length,
-            sizePerRow = jQuery('.ip-profile').data('ipw');
+            sizePerRow = jQuery('.ip-profile').data('ipw'),
+            sizePerPage = ip_ajax_var.imagesperpage;
 
         if (sizeTotal === 0) {
             jQuery('#ipProfileShowMore').hide();
@@ -732,8 +733,8 @@ jQuery(document).ready(function () {
         /*
          * Loop through first X visible images and lazy load them
          */
-        jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').show();
-        jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').each(function() {
+        jQuery('#ip-boxes .ip_box:lt(' + sizePerPage + ')').show();
+        jQuery('#ip-boxes .ip_box:lt(' + sizePerPage + ')').each(function() {
             var src = jQuery(this).find('a[data-src]').data('src');
 
             jQuery(this).find('a[data-src]').append('<img src="' + src + '" class="ip-deferred" alt="">');
@@ -741,7 +742,7 @@ jQuery(document).ready(function () {
         });
 
         jQuery(document).on('click', '#ipProfileShowMore', function() {
-            sizePerRow = (sizePerRow + 5 <= sizeTotal) ? sizePerRow + 5 : sizeTotal;
+            sizePerRow = (sizePerRow + sizePerPage <= sizeTotal) ? sizePerRow + sizePerPage : sizeTotal;
             jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').show();
 
             if (sizePerRow === sizeTotal) {

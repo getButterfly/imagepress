@@ -173,7 +173,12 @@ function cinnamon_profile($atts, $content = null) {
 
     $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
     $userLogin = (string) sanitize_text_field($_GET[$cinnamon_author_slug]);
-    $userArray = $wpdb->get_row($wpdb->prepare("SELECT ID, user_nicename FROM $wpdb->users WHERE user_nicename = '%s'", $userLogin));
+
+    $userArray = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->users WHERE user_nicename = '%s'", $userLogin));
+
+    if (empty($userArray)) {
+        $userArray = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->users WHERE user_login = '%s'", $userLogin));
+    }
 
     if (empty($author)) {
         $author = $userArray->ID;
@@ -322,8 +327,8 @@ function cinnamon_profile($atts, $content = null) {
             $display .= '</ul>
             <div class="tab_content">';
                 if ((int) get_imagepress_option('cinnamon_show_uploads') === 1) {
-                    $display .= '<div class="ip-tabs-item ip-profile" data-ipw="' . get_imagepress_option('ip_ipw') . '" style="display: block;">' . 
-                        do_shortcode('[imagepress-loop user="' . $author . '" order="custom" count="999999"]') . 
+                    $display .= '<div class="ip-tabs-item ip-profile" data-ipw="' . get_imagepress_option('ip_ipw') . '" style="display: block;">' .
+                        do_shortcode('[imagepress-loop user="' . $author . '" order="custom" count="999999"]') .
                     '</div>
                     <div class="ip-clear"></div>
                     <div class="thin-ui-button ip-clear" id="ipProfileShowMore">' . get_imagepress_option('ip_load_more_label') . '</div>';
