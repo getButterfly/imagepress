@@ -244,29 +244,27 @@ function ip_manage_users_columns($columns) {
 add_filter('manage_users_columns', 'ip_manage_users_columns');
 
 // Main upload function
-function imagepress_add($atts, $content = null) {
+function imagepress_add($atts) {
     extract(shortcode_atts(array(
         'category' => ''
     ), $atts));
 
+    global $current_user;
+
     $out = '';
+    $ipModerate = (int) get_imagepress_option('ip_moderate');
 
-    if(isset($_POST['imagepress_upload_image_form_submitted']) && wp_verify_nonce($_POST['imagepress_upload_image_form_submitted'], 'imagepress_upload_image_form')) {
-        if(get_imagepress_option('ip_moderate') == 0)
-            $ip_status = 'pending';
-        if(get_imagepress_option('ip_moderate') == 1)
-            $ip_status = 'publish';
+    if (isset($_POST['imagepress_upload_image_form_submitted']) && wp_verify_nonce($_POST['imagepress_upload_image_form_submitted'], 'imagepress_upload_image_form')) {
+        $ip_status = ($ipModerate === 0) ? 'pending' : 'publish';
 
-        global $current_user;
         $ip_image_author = $current_user->ID;
+        $ipImageCaption = uniqid();
 
-        if(!empty($_POST['imagepress_image_caption']))
-            $imagepress_image_caption = sanitize_text_field($_POST['imagepress_image_caption']);
-        else
-            $imagepress_image_caption = __('ImagePress Image #', 'imagepress') . uniqid();
+        if (!empty($_POST['imagepress_image_caption']))
+            $ipImageCaption = sanitize_text_field($_POST['imagepress_image_caption']);
 
         $user_image_data = array(
-            'post_title' => $imagepress_image_caption,
+            'post_title' => $ipImageCaption,
             'post_content' => sanitize_text_field($_POST['imagepress_image_description']),
             'post_status' => $ip_status,
             'post_author' => $ip_image_author,
@@ -274,20 +272,20 @@ function imagepress_add($atts, $content = null) {
         );
 
         // send notification email to administrator
-        $ip_notification_email = get_imagepress_option('ip_notification_email');
-        $ip_notification_subject = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
-        $ip_notification_message = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
+        $notificationEmail = get_imagepress_option('ip_notification_email');
+        $notificationSubject = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
+        $notificationMessage = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
 
-        if(!empty($_FILES['imagepress_image_file'])) {
-            if($post_id = wp_insert_post($user_image_data)) {
+        if (!empty($_FILES['imagepress_image_file'])) {
+            if ($post_id = wp_insert_post($user_image_data)) {
                 imagepress_process_image('imagepress_image_file', $post_id);
 
                 // multiple images
-                if(1 == get_imagepress_option('ip_upload_secondary')) {
+                if (1 == get_imagepress_option('ip_upload_secondary')) {
                     $files = $_FILES['imagepress_image_additional'];
-                    if($files) {
-                        foreach($files['name'] as $key => $value) {
-                            if($files['name'][$key]) {
+                    if ($files) {
+                        foreach ($files['name'] as $key => $value) {
+                            if ($files['name'][$key]) {
                                 $file = array(
                                     'name' => $files['name'][$key],
                                     'type' => $files['type'][$key],
@@ -297,41 +295,41 @@ function imagepress_add($atts, $content = null) {
                                 );
                             }
                             $_FILES = array("attachment" => $file);
-                            foreach($_FILES as $file => $array) {
+                            foreach ($_FILES as $file => $array) {
                                 $attach_id = media_handle_upload($file, $post_id);
-                                if($attach_id < 0) { $post_error = true; }
                             }
                         }
                     }
                 }
                 // end multiple images
 
-                if(isset($_POST['imagepress_image_category']))
+                if (isset($_POST['imagepress_image_category']))
                     wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
 
-                if(isset($_POST['imagepress_image_tag']))
+                if (isset($_POST['imagepress_image_tag']))
                     wp_set_object_terms($post_id, (int) $_POST['imagepress_image_tag'], 'imagepress_image_tag');
 
                 // always moderate this category
-                $ip_cat_moderation_include = get_imagepress_option('ip_cat_moderation_include');
-                if(!empty($ip_cat_moderation_include)) {
-                    if($_POST['imagepress_image_category'] == $ip_cat_moderation_include) {
+                $moderatedCategory = get_imagepress_option('ip_cat_moderation_include');
+                if (!empty($moderatedCategory)) {
+                    if ($_POST['imagepress_image_category'] == $moderatedCategory) {
                         $ip_post = array();
                         $ip_post['ID'] = $post_id;
                         $ip_post['post_status'] = 'pending';
+
                         wp_update_post($ip_post);
                     }
                 }
                 //
 
-                if(isset($_POST['imagepress_video']))
+                if (isset($_POST['imagepress_video']))
                     add_post_meta($post_id, 'imagepress_video', $_POST['imagepress_video'], true);
                 else
                     add_post_meta($post_id, 'imagepress_video', '', true);
 
-                if(isset($_POST['imagepress_author']))
+                if (isset($_POST['imagepress_author']))
                     add_post_meta($post_id, 'imagepress_author', $_POST['imagepress_author'], true);
-                if(isset($_POST['imagepress_email']))
+                if (isset($_POST['imagepress_email']))
                     add_post_meta($post_id, 'imagepress_email', $_POST['imagepress_email'], true);
 
                 // custom fields
@@ -339,7 +337,7 @@ function imagepress_add($atts, $content = null) {
 
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
-                foreach($result as $field) {
+                foreach ($result as $field) {
                     add_post_meta($post_id, $field['field_slug'], $_POST[$field['field_slug']], true);
                 }
                 //
@@ -364,10 +362,10 @@ function imagepress_add($atts, $content = null) {
 
                 $headers[] = "MIME-Version: 1.0\r\n";
                 $headers[] = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\r\n";
-                wp_mail($ip_notification_email, $ip_notification_subject, $ip_notification_message, $headers);
+                wp_mail($notificationEmail, $notificationSubject, $notificationMessage, $headers);
 
                 $ip_upload_redirection = get_imagepress_option('ip_upload_redirection');
-                if(!empty($ip_upload_redirection)) {
+                if (!empty($ip_upload_redirection)) {
                     wp_redirect(get_imagepress_option('ip_upload_redirection'));
                     exit;
                 }
@@ -408,9 +406,9 @@ function imagepress_add_bulk($atts, $content = null) {
         $ip_image_author = $current_user->ID;
 
         // send notification email to administrator
-        $ip_notification_email = get_imagepress_option('ip_notification_email');
-        $ip_notification_subject = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
-        $ip_notification_message = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
+        $notificationEmail = get_imagepress_option('ip_notification_email');
+        $notificationSubject = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
+        $notificationMessage = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
 
         // alpha
         $files = $_FILES['imagepress_image_file_bulk'];
@@ -432,7 +430,6 @@ function imagepress_add_bulk($atts, $content = null) {
                 $_FILES = array("attachment" => $file);
                 foreach($_FILES as $file => $array) {
                     $attach_id = media_handle_upload($file, 0);
-                    if($attach_id < 0) { $post_error = true; }
 
                     $user_image_data = array(
                         'post_title' => $_POST['imagepress_image_caption'][$key],
@@ -452,7 +449,7 @@ function imagepress_add_bulk($atts, $content = null) {
 
         $headers[] = "MIME-Version: 1.0\r\n";
         $headers[] = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\r\n";
-        wp_mail($ip_notification_email, $ip_notification_subject, $ip_notification_message, $headers);
+        wp_mail($notificationEmail, $notificationSubject, $notificationMessage, $headers);
 
         $out .= '<p class="message noir-success">' . get_imagepress_option('ip_upload_success_title') . '</p>';
         $out .= '<p class="message"><a href="' . get_permalink($post_id) . '">' . get_imagepress_option('ip_upload_success') . '</a></p>';

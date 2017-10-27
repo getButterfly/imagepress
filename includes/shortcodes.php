@@ -1,5 +1,5 @@
 <?php
-function imagepress_quota($atts, $content = null) {
+function imagepress_quota($atts) {
     extract(shortcode_atts(array(
     ), $atts));
 
