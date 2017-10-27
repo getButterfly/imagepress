@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.3-beta1
+Version: 7.5.3-beta2
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -471,33 +471,12 @@ function imagepress_add_bulk($atts, $content = null) {
     return $out;
 }
 
-function imagepress_resize_default_images($data) {
-    $ip_width = get_imagepress_option('ip_max_width');
-    $ip_quality = get_imagepress_option('ip_max_quality');
+function imagepress_jpeg_quality($quality, $context) {
+    $ip_quality = (int) get_imagepress_option('ip_max_quality');
 
-    // Return an implementation that extends WP_Image_Editor
-    $arguments = array(
-        'mime_type' => 'image/jpeg',
-        'methods' => array(
-            'resize',
-            'save'
-        )
-    );
-    $image = wp_get_image_editor($data['file'], $arguments);
-    if(is_wp_error($image)) {
-        return false;
-    }
-    $image->set_quality($ip_quality);
-    // max full size width: 960, unlimited height, no cropping
-    $image->resize($ip_width, 99999, false);
-    $image->save($data['file']);
-
-    return $data;
+	return $ip_quality;
 }
-
-if (get_imagepress_option('ip_resize') == 1) {
-    add_action('wp_handle_upload', 'imagepress_resize_default_images');
-}
+add_filter('jpeg_quality', 'imagepress_jpeg_quality', 10, 2);
 
 
 

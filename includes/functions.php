@@ -52,6 +52,9 @@ function imagepress_registration() {
         'exclude_from_search'   => false,
         'publicly_queryable'    => true,
         'capability_type'       => 'post',
+        'show_in_rest' => true,
+        'rest_base' => $ip_slug,
+        'rest_controller_class' => 'WP_REST_Posts_Controller',
     );
 
     register_post_type($ip_slug, $image_type_args);
@@ -87,6 +90,9 @@ function imagepress_registration() {
         'show_admin_column'          => true,
         'show_in_nav_menus'          => true,
         'show_tagcloud'              => false,
+        'show_in_rest' => true,
+        'rest_base' => 'image-category',
+        'rest_controller_class' => 'WP_REST_Terms_Controller',
     );
 
     register_taxonomy('imagepress_image_category', array($ip_slug), $image_category_args);
@@ -122,6 +128,9 @@ function imagepress_registration() {
         'show_admin_column'          => true,
         'show_in_nav_menus'          => true,
         'show_tagcloud'              => false,
+        'show_in_rest' => true,
+        'rest_base' => 'image-tag',
+        'rest_controller_class' => 'WP_REST_Terms_Controller',
     );
 
     register_taxonomy('imagepress_image_tag', array($ip_slug), $args);
@@ -359,9 +368,8 @@ function ip_editor() {
                 $ip_upload_size = get_imagepress_option('ip_upload_size');
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
-                $ip_width = get_imagepress_option('ip_max_width');
                 ?>
-                <p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" data-max-width="<?php echo $ip_width; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
+                <p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
 
                 <?php if(1 == get_imagepress_option('ip_upload_secondary')) { ?>
                     <hr>

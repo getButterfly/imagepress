@@ -259,7 +259,7 @@ function ip_frontend_add_collection($ip_id) {
                 </p>
                 <p><?php echo __('or', 'imagepress'); ?></p>
                 <p>
-                    <input type="text" name="ip_collections_new" placeholder="<?php echo __('Create new collection...', 'imagepress'); ?>"> 
+                    <input type="text" name="ip_collections_new" placeholder="<?php echo __('Create new collection...', 'imagepress'); ?>">
                     <select name="collection_status" id="collection_status">
                         <option value="1"><?php echo __('Public', 'imagepress'); ?></option>
                         <option value="0"><?php echo __('Private', 'imagepress'); ?></option>
@@ -336,8 +336,6 @@ function imagepress_collection($atts, $content = null) {
 
     // main images query
     $out = $cs = '';
-
-    do_ip_before_show();
 
     $collection_page = (int) sanitize_text_field($_GET['collection']);
 

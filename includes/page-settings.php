@@ -1170,8 +1170,6 @@ function imagepress_admin_page() {
                     'ip_global_upload_limit' => $_POST['ip_global_upload_limit'],
                     'ip_global_upload_limit_message' => $_POST['ip_global_upload_limit_message'],
                     'ip_cat_exclude' => $_POST['ip_cat_exclude'],
-                    'ip_resize' => $_POST['ip_resize'],
-                    'ip_max_width' => $_POST['ip_max_width'],
                     'ip_max_quality' => $_POST['ip_max_quality'],
                     'ip_dropbox_enable' => $_POST['ip_dropbox_enable'],
                     'ip_dropbox_key' => $_POST['ip_dropbox_key'],
@@ -1206,26 +1204,10 @@ function imagepress_admin_page() {
                 <table class="form-table">
                     <tbody>
                         <tr>
-                            <th scope="row"><label for="ip_resize">Image resize</label></th>
-                            <td>
-                                <select name="ip_resize" id="ip_resize">
-                                    <option value="1"<?php if(get_imagepress_option('ip_resize') == 1) echo ' selected'; ?>>Enable image resizing</option>
-                                    <option value="0"<?php if(get_imagepress_option('ip_resize') == 0) echo ' selected'; ?>>Disable image resizing</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_max_width">Maximum image width</label></th>
-                            <td>
-                                <input name="ip_max_width" id="ip_max_width" type="number" value="<?php echo get_imagepress_option('ip_max_width')?>" min="1">
-                                <br><small>Set maximum image width (will be resized if larger).</small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_max_quality">Resized image quality</label></th>
+                            <th scope="row"><label for="ip_max_quality">Image quality</label></th>
                             <td>
                                 <input name="ip_max_quality" id="ip_max_quality" type="number" value="<?php echo get_imagepress_option('ip_max_quality')?>" min="0" max="100">
-                                <br><small>Set image quality when resizing image.</small>
+                                <br><small>Set image quality when uploading image.</small>
                             </td>
                         </tr>
                         <tr>
