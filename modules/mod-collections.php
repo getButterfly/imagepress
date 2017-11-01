@@ -390,7 +390,7 @@ function imagepress_collection($atts, $content = null) {
         $out .= '<div class="ip_clear"></div>';
 
         $out .= '<div id="cinnamon-cards">';
-        $out .= '<div id="ip_container_' . $ip_unique_id . '" class="list" data-imagepress-count="' . get_imagepress_option('ip_ipp') . '" data-imagepress-id="' . $ip_unique_id . '" data-mode="' . $mode . '">';
+        $out .= '<div id="ip_container_' . $ip_unique_id . '" class="list" data-imagepress-count="' . get_imagepress_option('ip_ipp') . '" data-imagepress-id="' . $ip_unique_id . '">';
 
         // the configurator
         $ip_views_optional      = '';
@@ -447,7 +447,8 @@ function imagepress_collection($atts, $content = null) {
                     // get post author ID
                     $post_author_id = get_post_field('post_author', $i);
 
-                    $ip_author_optional = '<span class="name"><a href="' . get_author_posts_url($post_author_id) . '">' . get_the_author_meta('user_nicename', $post_author_id) . '</a></span>';
+                    $ip_author_optional = getImagePressProfileUri($post_author_id);
+                    //$ip_author_optional = '<span class="name"><a href="' . get_author_posts_url($post_author_id) . '">' . get_the_author_meta('user_nicename', $post_author_id) . '</a></span>';
                 }
 
 
