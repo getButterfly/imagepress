@@ -63,7 +63,7 @@ add_action('wp_ajax_ip_collections_display', 'ip_collections_display');
 function ip_collection_display() {
     $collection_ID = intval($_POST['collection_id']);
 
-    echo do_shortcode('[imagepress-show collection="1" collection_id="' . $collection_ID . '"]');
+    echo do_shortcode('[imagepress-collection collection="1" collection_id="' . $collection_ID . '"]');
     die();
 }
 
@@ -335,7 +335,8 @@ function imagepress_collection($atts, $content = null) {
     }
 
     // main images query
-    $out = $cs = '';
+    $out = '';
+    $cs = [];
 
     $collection_page = (int) sanitize_text_field($_GET['collection']);
 

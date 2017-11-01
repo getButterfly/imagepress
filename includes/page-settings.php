@@ -1213,8 +1213,8 @@ function imagepress_admin_page() {
                         <tr>
                             <th scope="row"><label for="ip_upload_size">Maximum image upload size<br><small>(in kilobytes)</small></label></th>
                             <td>
-                                <input type="number" name="ip_upload_size" id="ip_upload_size" min="0" max="<?php echo (ini_get('upload_max_filesize') * 1024); ?>" step="1024" value="<?php echo get_imagepress_option('ip_upload_size'); ?>">
-                                <br><small>Try 2048 for most configurations (your server allows a maximum of <?php echo ini_get('upload_max_filesize'); ?>).</small>
+                                <input type="number" name="ip_upload_size" id="ip_upload_size" min="0" max="65536" step="1024" value="<?php echo get_imagepress_option('ip_upload_size'); ?>">
+                                <br><small>Try 4096 for most configurations.</small>
                             </td>
                         </tr>
                         <tr>

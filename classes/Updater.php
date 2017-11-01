@@ -1,24 +1,13 @@
 <?php
-// Prevent loading this file directly and/or if the class is already defined
-if ( ! defined( 'ABSPATH' ) || class_exists( 'WPGitHubUpdater' ) || class_exists( 'WP_GitHub_Updater' ) )
-	return;
-
 /**
+ * WordPress GitHub Updater
  *
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html GPLv3
+ * @copyright Copyright (c) 2017, Ciprian Popescu
  *
- * @version 1.6
- * @author Joachim Kudish <info@jkudish.com>
- * @link http://jkudish.com
- * @package WP_GitHub_Updater
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @copyright Copyright (c) 2011-2013, Joachim Kudish
- *
- * GNU General Public License, Free Software Foundation
- * <http://creativecommons.org/licenses/GPL/2.0/>
- *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -27,69 +16,63 @@ if ( ! defined( 'ABSPATH' ) || class_exists( 'WPGitHubUpdater' ) || class_exists
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+if (!defined('ABSPATH') || class_exists('WPGitHubUpdater') || class_exists('WP_GitHub_Updater'))
+	return;
+
 class WP_GitHub_Updater {
-
 	/**
-	 * GitHub Updater version
-	 */
-	const VERSION = 1.6;
-
-	/**
-	 * @var $config the config for the updater
+	 * @var    $config the config for the updater
 	 * @access public
 	 */
 	var $config;
 
 	/**
-	 * @var $missing_config any config that is missing from the initialization of this instance
+	 * @var    $missing_config any config that is missing from the initialization of this instance
 	 * @access public
 	 */
 	var $missing_config;
 
 	/**
-	 * @var $github_data temporiraly store the data fetched from GitHub, allows us to only load the data once per class instance
+	 * @var    $github_data temporarily store the data fetched from GitHub (only load the data once per class instance)
 	 * @access private
 	 */
 	private $github_data;
 
-
 	/**
 	 * Class Constructor
 	 *
-	 * @since 1.0
-	 * @param array $config the configuration required for the updater to work
-	 * @see has_minimum_config()
+	 * @param  array $config the configuration required for the updater to work
+	 * @see    has_minimum_config()
 	 * @return void
 	 */
-	public function __construct( $config = array() ) {
-
+	public function __construct($config = array()) {
 		$defaults = array(
-			'slug' => plugin_basename( __FILE__ ),
-			'proper_folder_name' => dirname( plugin_basename( __FILE__ ) ),
+			'slug' => plugin_basename(__FILE__),
+			'proper_folder_name' => dirname(plugin_basename(__FILE__)),
 			'sslverify' => true,
 			'access_token' => '',
 		);
 
-		$this->config = wp_parse_args( $config, $defaults );
+		$this->config = wp_parse_args($config, $defaults);
 
 		// if the minimum config isn't set, issue a warning and bail
-		if ( ! $this->has_minimum_config() ) {
+		if (!$this->has_minimum_config()) {
 			$message = 'The GitHub Updater was initialized without the minimum required configuration, please check the config in your plugin. The following params are missing: ';
-			$message .= implode( ',', $this->missing_config );
-			_doing_it_wrong( __CLASS__, $message , self::VERSION );
+			$message .= implode(',', $this->missing_config);
+			_doing_it_wrong(__CLASS__, $message, '');
 			return;
 		}
 
 		$this->set_defaults();
 
-		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'api_check' ) );
+		add_filter('pre_set_site_transient_update_plugins', array($this, 'api_check'));
 
 		// Hook into the plugin details screen
-		add_filter( 'plugins_api', array( $this, 'get_plugin_info' ), 10, 3 );
-		add_filter( 'upgrader_post_install', array( $this, 'upgrader_post_install' ), 10, 3 );
+		add_filter('plugins_api', array($this, 'get_plugin_info'), 10, 3);
+		add_filter('upgrader_post_install', array($this, 'upgrader_post_install'), 10, 3);
 
 		// set timeout
 		add_filter( 'http_request_timeout', array( $this, 'http_request_timeout' ) );
