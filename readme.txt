@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
 Tested up to: 4.8.2
-Stable tag: 7.5.3-beta4
+Stable tag: 7.5.3
 Text Domain: imagepress
 
 == Description ==
@@ -19,25 +19,19 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
-= 7.5.3-beta4 =
+= 7.5.3 =
 * FIX: Fixed author link in collections module
-
-= 7.5.3-beta3 =
 * FIX: Fixed server-specific request
 * FIX: Fixed collections shortcode
 * FIX: Fixed array operator
-
-= 7.5.3-beta2 =
 * FIX: Fixed unused function in image collections
 * FIX: Fixed upload filter interfering with other mime types
+* FIX: Fixed "load more" functionality on profile pages
+* FIX: Fixed profile page to take into account usernames and nicknames
 * UPDATE: Added REST support for image CPT and taxonomies
 * UPDATE: Updated image quality filter
 * UPDATE: Removed image resize option
 * UPDATE: Code quality updates
-
-= 7.5.3-beta1 =
-* FIX: Fixed "load more" functionality on profile pages
-* FIX: Fixed profile page to take into account usernames and nicknames
 * UPDATE: Code quality updates
 * UPDATE: Security updates
 

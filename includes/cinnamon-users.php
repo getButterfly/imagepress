@@ -822,13 +822,15 @@ function save_cinnamon_profile_fields($user_id) {
     }
 
     // awards
-    if(current_user_can('manage_options', $user_id)) {
-        if(!empty($_POST['user_title'])) {
+    if (current_user_can('manage_options', $user_id)) {
+        if (!empty($_POST['user_title'])) {
             update_user_meta($user_id, 'user_title', $_POST['user_title']);
         }
-        update_user_meta($user_id, 'ip_upload_limit', $_POST['ip_upload_limit']);
+        if (!empty($_POST['ip_upload_limit'])) {
+            update_user_meta($user_id, 'ip_upload_limit', $_POST['ip_upload_limit']);
+        }
 
-        if(!empty($_POST['award'])) {
+        if (!empty($_POST['award'])) {
             $tax = get_taxonomy('award');
             $term = $_POST['award'];
             wp_set_object_terms($user_id, $term, 'award', false);
