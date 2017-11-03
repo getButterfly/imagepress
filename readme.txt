@@ -3,8 +3,8 @@ Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
-Tested up to: 4.8.2
-Stable tag: 7.5.3
+Tested up to: 4.8.3
+Stable tag: 7.5.4
 Text Domain: imagepress
 
 == Description ==
@@ -19,6 +19,14 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
+= 7.5.4 =
+* FIX: Fixed author link in several places
+* FIX: Removed unused function make_clickable()
+* FIX: Fixed display of the_content() on single pages to allow for filters
+* UPDATE: Better contextual help for slug options
+* UPDATE: Code quality updates
+* UPDATE: Security updates
+
 = 7.5.3 =
 * FIX: Fixed author link in collections module
 * FIX: Fixed server-specific request
@@ -31,7 +39,6 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Added REST support for image CPT and taxonomies
 * UPDATE: Updated image quality filter
 * UPDATE: Removed image resize option
-* UPDATE: Code quality updates
 * UPDATE: Code quality updates
 * UPDATE: Security updates
 

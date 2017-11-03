@@ -233,8 +233,8 @@ function imagepress_admin_page() {
                             <td>
                             <p>
                                 <input name="ip_slug" id="slug" type="text" class="regular-text" placeholder="Image slug" value="<?php echo get_imagepress_option('ip_slug'); ?>" required> <label for="ip_slug"><b>Image</b> slug</label>
-                                <br><small>Use an appropriate slug for your image (e.g. <b>image</b> in <code>domain.com/<b>image</b>/myimage</code>)</small>
-                                <br><small>Tip: use a singular term, one word only (examples: image, poster, illustration)</small>
+                                <br><small>Use an appropriate slug for your image (e.g. <b>image</b> in <code>domain.com/<b>image</b>/myimage</code>).</small>
+                                <br><small>Tip: use a singular term, one word only, lowercase, letters only (examples: image, poster, illustration).</small>
                             </p>
                             <p>
                                 <select name="ip_image_size" id="ip_image_size">
@@ -804,7 +804,9 @@ function imagepress_admin_page() {
                                 </p>
                                 <p>
                                     <input type="text" name="cinnamon_author_slug" id="cinnamon_author_slug" value="<?php echo get_imagepress_option('cinnamon_author_slug'); ?>" class="regular-text">
-                                    <br><small>Default is <b>author</b> (usage exemples: <b>author</b>, <b>profile</b> or <b>hub</b>). User profile URL will look like <code class="codor"><?php echo get_permalink($ipProfilePage) . '?<b>' . get_imagepress_option('cinnamon_author_slug') . '</b>='; ?>username</code>.</small>
+                                    <br><small>Default is <b>author</b> (usage exemples: <b>author</b>, <b>profile</b> or <b>hub</b>).</small>
+                                    <br><small>User profile URL will look like <code class="codor"><?php echo get_permalink($ipProfilePage) . '?<b>' . get_imagepress_option('cinnamon_author_slug') . '</b>='; ?>username</code>.</small>
+                                    <br><small>Tip: use a singular term, one word only, lowercase, letters only</small>
                                     <br><small>After changing any of the values above, you might need to resave your permalinks, in order to avoid 404 errors.</small>
                                 </p>
                             </td>
@@ -1419,26 +1421,26 @@ function imagepress_admin_page() {
                     $display .= ' [' . $result->ID . '] ';
 
                     if($action == 'loved')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-heart"></i> <a href="' . get_author_posts_url($result->userID) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-heart"></i> <a href="' . getImagePressProfileUri($result->userID) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
                     else if($action == 'collected')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-folder"></i> <a href="' . get_author_posts_url($result->userID) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ip_collections_page_id) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-folder"></i> <a href="' . getImagePressProfileUri($result->userID) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ip_collections_page_id) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
 
                     else if($action == 'added')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-arrow-circle-up"></i> <a href="' . get_author_posts_url($result->userID) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-arrow-circle-up"></i> <a href="' . getImagePressProfileUri($result->userID) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
                     else if($action == 'followed')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-plus-circle"></i> <a href="' . get_author_posts_url($result->userID) . '">' . $nickname . '</a> ' . $result->actionType . ' you <time>' . $time . '</time>';
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-plus-circle"></i> <a href="' . getImagePressProfileUri($result->userID) . '">' . $nickname . '</a> ' . $result->actionType . ' you <time>' . $time . '</time>';
 
                     else if($action == 'commented on')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-comment"></i> <a href="' . get_author_posts_url($result->userID) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-comment"></i> <a href="' . getImagePressProfileUri($result->userID) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
                     else if($action == 'replied to a comment on') {
                         $comment_id = get_comment($result->postID);
                         $comment_post_ID = $comment_id->comment_post_ID;
                         $b = $comment_id->user_id;
 
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-comment"></i> <a href="' . get_author_posts_url($result->userID) . '">' . $nickname . '</a> replied to a comment on <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a> <time>' . $time . '</time>';
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-comment"></i> <a href="' . getImagePressProfileUri($result->userID) . '">' . $nickname . '</a> replied to a comment on <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a> <time>' . $time . '</time>';
                     }
 
                     else if($action == 'featured')

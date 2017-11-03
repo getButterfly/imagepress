@@ -143,7 +143,7 @@ function ip_collections_display_public($author_ID) {
             $out .= '<div class="collection_details">';
                 $ip_collections_page_id = get_imagepress_option('ip_collections_page');
                 $out .= '<h3><a href="' . get_permalink($ip_collections_page_id) . '?collection=' . $collection['collection_ID'] . '/">' . $collection['collection_title'] . '</a></h3>';
-                $out .= '<div>' . __('By', 'imagepress') . ' <a href="' . get_author_posts_url($collection['collection_author_ID']) . '">' . get_the_author_meta('nickname', $collection['collection_author_ID']) . '</a></div>';
+                $out .= '<div>' . __('By', 'imagepress') . ' ' . getImagePressProfileUri($collection['collection_author_ID']) . '</div>';
             $out .= '</div>';
         $out .= '</div>';
     }
@@ -185,7 +185,7 @@ function ip_collections_display_custom($atts) {
                     $out .= '<div class="collection_details">';
                         $ip_collections_page_id = get_imagepress_option('ip_collections_page');
                         $out .= '<h3><a href="' . get_permalink($ip_collections_page_id) . '?collection=' . (int) $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></h3>';
-                        $out .= '<div>' . __('By', 'imagepress') . ' <a href="' . get_author_posts_url($collection['collection_author_ID']) . '">' . get_the_author_meta('nickname', $collection['collection_author_ID']) . '</a></div>';
+                        $out .= '<div>' . __('By', 'imagepress') . ' ' . getImagePressProfileUri($collection['collection_author_ID']) . '</div>';
                     $out .= '</div>';
                 $out .= '</div>';
             }
@@ -291,7 +291,7 @@ function ip_frontend_view_image_collection($ip_id) {
                 $featured = $wpdb->get_row("SELECT image_ID FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['image_collection_ID'] . "' ORDER BY RAND()", ARRAY_A);
                 echo '<div class="ip-featured-collection">';
                     echo get_the_post_thumbnail($featured['image_ID'], 'thumbnail');
-                    echo '<div class="ip-featured-collection-meta"><a href="' . get_permalink($ip_collections_page_id) . '?collection=' . (int) $which['collection_ID'] . '">' . $which['collection_title'] . '</a><br><small>' . __('by', 'imagepress') . ' <a href="' . get_author_posts_url($which['collection_author_ID']) . '">' . get_the_author_meta('nickname', $which['collection_author_ID']) . '</a></small></div>';
+                    echo '<div class="ip-featured-collection-meta"><a href="' . get_permalink($ip_collections_page_id) . '?collection=' . (int) $which['collection_ID'] . '">' . $which['collection_title'] . '</a><br><small>' . __('by', 'imagepress') . ' ' . getImagePressProfileUri($which['collection_author_ID']) . '</small></div>';
                     echo '<div class="ip_clear"></div>';
                 echo '</div>';
             }
@@ -357,7 +357,7 @@ function imagepress_collection($atts, $content = null) {
         $out .= '<div class="imagepress-float-right">' . $collection_row['collection_views'] . ' ' . __('views', 'imagepress') . ' | ' . count($collectionables) . ' ' . __('images', 'imagepress') . '</div>';
         $out .= '<div class="imagepress-float-left"><a href="' . get_permalink($last_image_row['image_ID']) . '">' . get_the_post_thumbnail($last_image_row['image_ID'], 'thumbnail') . '</a></div>';
         $out .= '<div class="tcm-title">' . $collection_row['collection_title'] . '</div>';
-        $out .= '<i class="fa fa-user"></i> <a href="' . get_author_posts_url($collection_row['collection_author_ID']) . '">' . get_the_author_meta('nickname', $collection_row['collection_author_ID']) . '</a>';
+        $out .= '<i class="fa fa-user"></i> ' . getImagePressProfileUri($collection_row['collection_author_ID']);
         $out .= '<div class="ipclear"></div>';
     $out .= '</div>';
 
@@ -448,7 +448,6 @@ function imagepress_collection($atts, $content = null) {
                     $post_author_id = get_post_field('post_author', $i);
 
                     $ip_author_optional = getImagePressProfileUri($post_author_id);
-                    //$ip_author_optional = '<span class="name"><a href="' . get_author_posts_url($post_author_id) . '">' . get_the_author_meta('user_nicename', $post_author_id) . '</a></span>';
                 }
 
 

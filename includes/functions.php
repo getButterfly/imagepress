@@ -1,44 +1,44 @@
 <?php
 function imagepress_registration() {
-    $ip_slug = get_imagepress_option('ip_slug');
+    $ip_slug = sanitize_text_field(get_imagepress_option('ip_slug'));
 
     if (empty($ip_slug)) {
         $ip_slug = 'image';
     }
 
     $image_type_labels = array(
-        'name'                  => _x( 'Images', 'Post type general name', 'imagepress' ),
-        'singular_name'         => _x( 'Image', 'Post type singular name', 'imagepress' ),
-        'menu_name'             => __( 'ImagePress', 'imagepress' ),
-        'name_admin_bar'        => __( 'Image', 'imagepress' ),
-        'archives'              => __( 'Image archives', 'imagepress' ),
-        'parent_item_colon'     => __( 'Parent image:', 'imagepress' ),
-        'all_items'             => __( 'All images', 'imagepress' ),
-        'add_new_item'          => __( 'Add new image', 'imagepress' ),
-        'add_new'               => __( 'Add new', 'imagepress' ),
-        'new_item'              => __( 'New image', 'imagepress' ),
-        'edit_item'             => __( 'Edit image', 'imagepress' ),
-        'update_item'           => __( 'Update image', 'imagepress' ),
-        'view_item'             => __( 'View image', 'imagepress' ),
-        'search_items'          => __( 'Search image', 'imagepress' ),
-        'not_found'             => __( 'Not found', 'imagepress' ),
-        'not_found_in_trash'    => __( 'Not found in trash', 'imagepress' ),
-        'featured_image'        => __( 'Featured image', 'imagepress' ),
-        'set_featured_image'    => __( 'Set featured image', 'imagepress' ),
-        'remove_featured_image' => __( 'Remove featured image', 'imagepress' ),
-        'use_featured_image'    => __( 'Use as featured image', 'imagepress' ),
-        'insert_into_item'      => __( 'Insert into image', 'imagepress' ),
-        'uploaded_to_this_item' => __( 'Uploaded to this image', 'imagepress' ),
-        'items_list'            => __( 'Images list', 'imagepress' ),
-        'items_list_navigation' => __( 'Images list navigation', 'imagepress' ),
-        'filter_items_list'     => __( 'Filter images list', 'imagepress' ),
+        'name'                  => _x('Images', 'Post type general name', 'imagepress'),
+        'singular_name'         => _x('Image', 'Post type singular name', 'imagepress'),
+        'menu_name'             => __('ImagePress', 'imagepress'),
+        'name_admin_bar'        => __('Image', 'imagepress'),
+        'archives'              => __('Image archives', 'imagepress'),
+        'parent_item_colon'     => __('Parent image:', 'imagepress'),
+        'all_items'             => __('All images', 'imagepress'),
+        'add_new_item'          => __('Add new image', 'imagepress'),
+        'add_new'               => __('Add new', 'imagepress'),
+        'new_item'              => __('New image', 'imagepress'),
+        'edit_item'             => __('Edit image', 'imagepress'),
+        'update_item'           => __('Update image', 'imagepress'),
+        'view_item'             => __('View image', 'imagepress'),
+        'search_items'          => __('Search image', 'imagepress'),
+        'not_found'             => __('Not found', 'imagepress'),
+        'not_found_in_trash'    => __('Not found in trash', 'imagepress'),
+        'featured_image'        => __('Featured image', 'imagepress'),
+        'set_featured_image'    => __('Set featured image', 'imagepress'),
+        'remove_featured_image' => __('Remove featured image', 'imagepress'),
+        'use_featured_image'    => __('Use as featured image', 'imagepress'),
+        'insert_into_item'      => __('Insert into image', 'imagepress'),
+        'uploaded_to_this_item' => __('Uploaded to this image', 'imagepress'),
+        'items_list'            => __('Images list', 'imagepress'),
+        'items_list_navigation' => __('Images list navigation', 'imagepress'),
+        'filter_items_list'     => __('Filter images list', 'imagepress'),
     );
 
     $image_type_args = array(
-        'label'                 => __( 'Image', 'imagepress' ),
-        'description'           => __( 'Image post type', 'imagepress' ),
+        'label'                 => __('Image', 'imagepress'),
+        'description'           => __('Image post type', 'imagepress'),
         'labels'                => $image_type_labels,
-        'supports'              => array( 'title', 'editor', 'author', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown' ),
+        'supports'              => array('title', 'editor', 'author', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown'),
         'hierarchical'          => false,
         'public'                => true,
         'show_ui'               => true,
@@ -52,91 +52,89 @@ function imagepress_registration() {
         'exclude_from_search'   => false,
         'publicly_queryable'    => true,
         'capability_type'       => 'post',
-        'show_in_rest' => true,
-        'rest_base' => $ip_slug,
+        'show_in_rest'          => true,
+        'rest_base'             => $ip_slug,
         'rest_controller_class' => 'WP_REST_Posts_Controller',
     );
 
     register_post_type($ip_slug, $image_type_args);
 
     $imageTaxonomy = array(
-        'name'                       => _x( 'Image categories', 'Taxonomy general name', 'imagepress' ),
-        'singular_name'              => _x( 'Image category', 'Taxonomy singular name', 'imagepress' ),
-        'menu_name'                  => __( 'Image Categories', 'imagepress' ),
-        'all_items'                  => __( 'All image categories', 'imagepress' ),
-        'parent_item'                => __( 'Parent image category', 'imagepress' ),
-        'parent_item_colon'          => __( 'Parent image category:', 'imagepress' ),
-        'new_item_name'              => __( 'New image category', 'imagepress' ),
-        'add_new_item'               => __( 'Add new image category', 'imagepress' ),
-        'edit_item'                  => __( 'Edit image category', 'imagepress' ),
-        'update_item'                => __( 'Update image category', 'imagepress' ),
-        'view_item'                  => __( 'View image category', 'imagepress' ),
-        'separate_items_with_commas' => __( 'Separate image categories with commas', 'imagepress' ),
-        'add_or_remove_items'        => __( 'Add or remove image categories', 'imagepress' ),
-        'choose_from_most_used'      => __( 'Choose from the most used', 'imagepress' ),
-        'popular_items'              => __( 'Popular image categories', 'imagepress' ),
-        'search_items'               => __( 'Search image categories', 'imagepress' ),
-        'not_found'                  => __( 'Not found', 'imagepress' ),
-        'no_terms'                   => __( 'No image categories', 'imagepress' ),
-        'items_list'                 => __( 'Image categories list', 'imagepress' ),
-        'items_list_navigation'      => __( 'Image categories list navigation', 'imagepress' ),
+        'name'                       => _x('Image categories', 'Taxonomy general name', 'imagepress'),
+        'singular_name'              => _x('Image category', 'Taxonomy singular name', 'imagepress'),
+        'menu_name'                  => __('Image Categories', 'imagepress'),
+        'all_items'                  => __('All image categories', 'imagepress'),
+        'parent_item'                => __('Parent image category', 'imagepress'),
+        'parent_item_colon'          => __('Parent image category:', 'imagepress'),
+        'new_item_name'              => __('New image category', 'imagepress'),
+        'add_new_item'               => __('Add new image category', 'imagepress'),
+        'edit_item'                  => __('Edit image category', 'imagepress'),
+        'update_item'                => __('Update image category', 'imagepress'),
+        'view_item'                  => __('View image category', 'imagepress'),
+        'separate_items_with_commas' => __('Separate image categories with commas', 'imagepress'),
+        'add_or_remove_items'        => __('Add or remove image categories', 'imagepress'),
+        'choose_from_most_used'      => __('Choose from the most used', 'imagepress'),
+        'popular_items'              => __('Popular image categories', 'imagepress'),
+        'search_items'               => __('Search image categories', 'imagepress'),
+        'not_found'                  => __('Not found', 'imagepress'),
+        'no_terms'                   => __('No image categories', 'imagepress'),
+        'items_list'                 => __('Image categories list', 'imagepress'),
+        'items_list_navigation'      => __('Image categories list navigation', 'imagepress'),
     );
 
     $image_category_args = array(
-        'labels' 				     => $imageTaxonomy,
-        'hierarchical'               => true,
-        'public'                     => true,
-        'show_ui'                    => true,
-        'show_admin_column'          => true,
-        'show_in_nav_menus'          => true,
-        'show_tagcloud'              => false,
-        'show_in_rest' => true,
-        'rest_base' => 'image-category',
+        'labels'                => $imageTaxonomy,
+        'hierarchical'          => true,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_admin_column'     => true,
+        'show_in_nav_menus'     => true,
+        'show_tagcloud'         => false,
+        'show_in_rest'          => true,
+        'rest_base'             => 'image-category',
         'rest_controller_class' => 'WP_REST_Terms_Controller',
     );
 
     register_taxonomy('imagepress_image_category', array($ip_slug), $image_category_args);
 
-    // image tags
     $labels = array(
-        'name'                       => _x( 'Image tags', 'Taxonomy ceneral name', 'imagepress' ),
-        'singular_name'              => _x( 'Image tag', 'Taxonomy singular name', 'imagepress' ),
-        'menu_name'                  => __( 'Image Tags', 'imagepress' ),
-        'all_items'                  => __( 'All image tags', 'imagepress' ),
-        'parent_item'                => __( 'Parent image tag', 'imagepress' ),
-        'parent_item_colon'          => __( 'Parent image tag:', 'imagepress' ),
-        'new_item_name'              => __( 'New image tag', 'imagepress' ),
-        'add_new_item'               => __( 'Add new image tag', 'imagepress' ),
-        'edit_item'                  => __( 'Edit image tag', 'imagepress' ),
-        'update_item'                => __( 'Update image tag', 'imagepress' ),
-        'view_item'                  => __( 'View image tag', 'imagepress' ),
-        'separate_items_with_commas' => __( 'Separate image tags with commas', 'imagepress' ),
-        'add_or_remove_items'        => __( 'Add or remove image tags', 'imagepress' ),
-        'choose_from_most_used'      => __( 'Choose from the most used', 'imagepress' ),
-        'popular_items'              => __( 'Popular image tags', 'imagepress' ),
-        'search_items'               => __( 'Search image tags', 'imagepress' ),
-        'not_found'                  => __( 'Not found', 'imagepress' ),
-        'no_terms'                   => __( 'No image tags', 'imagepress' ),
-        'items_list'                 => __( 'Image tags list', 'imagepress' ),
-        'items_list_navigation'      => __( 'Image tags list navigation', 'imagepress' ),
+        'name'                       => _x('Image tags', 'Taxonomy ceneral name', 'imagepress'),
+        'singular_name'              => _x('Image tag', 'Taxonomy singular name', 'imagepress'),
+        'menu_name'                  => __('Image Tags', 'imagepress'),
+        'all_items'                  => __('All image tags', 'imagepress'),
+        'parent_item'                => __('Parent image tag', 'imagepress'),
+        'parent_item_colon'          => __('Parent image tag:', 'imagepress'),
+        'new_item_name'              => __('New image tag', 'imagepress'),
+        'add_new_item'               => __('Add new image tag', 'imagepress'),
+        'edit_item'                  => __('Edit image tag', 'imagepress'),
+        'update_item'                => __('Update image tag', 'imagepress'),
+        'view_item'                  => __('View image tag', 'imagepress'),
+        'separate_items_with_commas' => __('Separate image tags with commas', 'imagepress'),
+        'add_or_remove_items'        => __('Add or remove image tags', 'imagepress'),
+        'choose_from_most_used'      => __('Choose from the most used', 'imagepress'),
+        'popular_items'              => __('Popular image tags', 'imagepress'),
+        'search_items'               => __('Search image tags', 'imagepress'),
+        'not_found'                  => __('Not found', 'imagepress'),
+        'no_terms'                   => __('No image tags', 'imagepress'),
+        'items_list'                 => __('Image tags list', 'imagepress'),
+        'items_list_navigation'      => __('Image tags list navigation', 'imagepress'),
     );
+
     $args = array(
-        'labels'                     => $labels,
-        'hierarchical'               => false,
-        'public'                     => true,
-        'show_ui'                    => true,
-        'show_admin_column'          => true,
-        'show_in_nav_menus'          => true,
-        'show_tagcloud'              => false,
-        'show_in_rest' => true,
-        'rest_base' => 'image-tag',
+        'labels'                => $labels,
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_admin_column'     => true,
+        'show_in_nav_menus'     => true,
+        'show_tagcloud'         => false,
+        'show_in_rest'          => true,
+        'rest_base'             => 'image-tag',
         'rest_controller_class' => 'WP_REST_Terms_Controller',
     );
 
     register_taxonomy('imagepress_image_tag', array($ip_slug), $args);
 }
-
-
 
 function ip_getPostViews($postID) {
     $count_key = 'post_views_count';
@@ -193,7 +191,7 @@ function ip_editor() {
     // check if user is author // show author tools
     if ($post->post_author == $current_user->ID) { ?>
         <span class="ip-editor-display-container">
-            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><i class="fa fa-wrench"></i> <?php _e('Author tools', 'imagepress'); ?></a>
+            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><i class="fa fa-wrench"></i> <?php esc_html_e('Author tools', 'imagepress'); ?></a>
         </span>
         <?php
         $edit_id = get_the_ID();
@@ -202,13 +200,11 @@ function ip_editor() {
             $post_id = $_GET['d'];
             wp_delete_post($post_id);
 
-            $ip_delete_redirection = get_imagepress_option('ip_delete_redirection');
-            if(!empty($ip_delete_redirection)) {
-                echo '<script>window.location.href="' . $ip_delete_redirection . '?deleted"</script>';
+            $ipDeleteRedirection = get_imagepress_option('ip_delete_redirection');
+            if (empty($ipDeleteRedirection)) {
+                $ipDeleteRedirection = home_url();
             }
-            else {
-                echo '<script>window.location.href="' . home_url() . '?deleted"</script>';
-            }
+            echo '<script>window.location.href="' . home_url() . '?deleted"</script>';
         }
         if ('POST' == $_SERVER['REQUEST_METHOD'] && !empty($_POST['post_id']) && !empty($_POST['post_title']) && isset($_POST['update_post_nonce']) && isset($_POST['postcontent'])) {
             $post_id = $_POST['post_id'];
@@ -225,11 +221,11 @@ function ip_editor() {
                 imagepress_process_image('imagepress_image_file', $post_id, 1);
 
                 // multiple images
-                if(1 == get_imagepress_option('ip_upload_secondary')) {
+                if (1 == get_imagepress_option('ip_upload_secondary')) {
                     $files = $_FILES['imagepress_image_additional'];
-                    if($files) {
-                        foreach($files['name'] as $key => $value) {
-                            if($files['name'][$key]) {
+                    if ($files) {
+                        foreach ($files['name'] as $key => $value) {
+                            if ($files['name'][$key]) {
                                 $file = array(
                                     'name' => $files['name'][$key],
                                     'type' => $files['type'][$key],
@@ -239,7 +235,7 @@ function ip_editor() {
                                 );
                             }
                             $_FILES = array("imagepress_image_additional" => $file);
-                            foreach($_FILES as $file => $array) {
+                            foreach ($_FILES as $file => $array) {
                                 imagepress_process_image('imagepress_image_additional', $post_id);
                             }
                         }
@@ -249,17 +245,17 @@ function ip_editor() {
 
                 $images = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
                 $count = count($images);
-                if($count == 1 || !has_post_thumbnail($post_id)) {
-                    foreach($images as $attachment_id => $image) {
+                if ($count == 1 || !has_post_thumbnail($post_id)) {
+                    foreach ($images as $attachment_id => $image) {
                         set_post_thumbnail($post_id, $image->ID);
                     }
                 }
 
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
-                if(get_imagepress_option('ip_allow_tags') == 1)
+                if (get_imagepress_option('ip_allow_tags') == 1)
                     wp_set_object_terms($post_id, (int) $_POST['imagepress_image_tag'], 'imagepress_image_tag');
 
-                if('' != get_imagepress_option('ip_video_label'))
+                if ('' != get_imagepress_option('ip_video_label'))
                     update_post_meta($post_id, 'imagepress_video', (string) $_POST['imagepress_video']);
 
                 // custom fields
@@ -267,7 +263,7 @@ function ip_editor() {
 
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
-                foreach($result as $field) {
+                foreach ($result as $field) {
                     update_post_meta($post_id, $field['field_slug'], $_POST[$field['field_slug']]);
                 }
                 //
@@ -282,10 +278,10 @@ function ip_editor() {
                 <input type="hidden" name="post_id" value="<?php echo $edit_id; ?>">
                 <?php wp_nonce_field('update_post_' . $edit_id, 'update_post_nonce'); ?>
 
-                <p><label for="post_title"><?php _e('Title', 'imagepress'); ?></label><input type="text" id="post_title" name="post_title" value="<?php echo get_the_title($edit_id); ?>"></p>
-                <p><label for="postcontent"><?php _e('Description', 'imagepress'); ?></label><textarea id="postcontent" name="postcontent" rows="3"><?php echo strip_tags(get_post_field('post_content', $edit_id)); ?></textarea></p>
+                <p><label for="post_title"><?php esc_html_e('Title', 'imagepress'); ?></label><input type="text" id="post_title" name="post_title" value="<?php echo get_the_title($edit_id); ?>"></p>
+                <p><label for="postcontent"><?php esc_html_e('Description', 'imagepress'); ?></label><textarea id="postcontent" name="postcontent" rows="3"><?php echo strip_tags(get_post_field('post_content', $edit_id)); ?></textarea></p>
                 <hr>
-                <?php if('' != get_imagepress_option('ip_video_label')) { ?>
+                <?php if ('' != get_imagepress_option('ip_video_label')) { ?>
                     <p><input type="url" name="imagepress_video" value="<?php echo get_post_meta($edit_id, 'imagepress_video', true); ?>" placeholder="<?php echo get_imagepress_option('ip_video_label'); ?>"></p>
                 <?php } ?>
 
@@ -374,10 +370,10 @@ function ip_editor() {
                 <?php if(1 == get_imagepress_option('ip_upload_secondary')) { ?>
                     <hr>
                     <p>
-                        <?php _e('Select', 'imagepress'); ?> <i class="fa fa-check-circle"></i> <?php _e('main image or', 'imagepress'); ?> <i class="fa fa-times-circle"></i> <?php _e('delete additional images', 'imagepress'); ?>
-                        <br><small><?php _e('Main image will appear first in single image listing and as a thumbnail in gallery view', 'imagepress'); ?></small>
+                        <?php esc_html_e('Select', 'imagepress'); ?> <i class="fa fa-check-circle"></i> <?php esc_html_e('main image or', 'imagepress'); ?> <i class="fa fa-times-circle"></i> <?php esc_html_e('delete additional images', 'imagepress'); ?>
+                        <br><small><?php esc_html_e('Main image will appear first in single image listing and as a thumbnail in gallery view', 'imagepress'); ?></small>
                     </p>
-                    <div class="ip-hide ip-notice"><p><i class="fa fa-check" aria-hidden="true"></i> <?php _e('Featured image selected succesfully!', 'imagepress'); ?></p></div>
+                    <div class="ip-hide ip-notice"><p><i class="fa fa-check" aria-hidden="true"></i> <?php esc_html_e('Featured image selected succesfully!', 'imagepress'); ?></p></div>
                     <?php
                     $thumbnail_ID = get_post_thumbnail_id();
                     $images = get_children(array('post_parent' => $edit_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
@@ -387,7 +383,6 @@ function ip_editor() {
                         echo '<div>';
                             foreach($images as $attachment_id => $image) {
                                 $small_array = image_downsize($image->ID, 'thumbnail');
-                                $big_array = image_downsize($image->ID, 'full');
 
                                 if($image->ID == $thumbnail_ID)
                                     echo '<div class="ip-additional-active">';
@@ -403,12 +398,12 @@ function ip_editor() {
                     }
                     ?>
 
-                    <p><label for="imagepress_image_additional"><i class="fa fa-cloud-upload"></i> <?php _e('Add more images', 'imagepress'); ?> (<?php echo $uploadsize; ?>MB <?php _e('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple></p>
+                    <p><label for="imagepress_image_additional"><i class="fa fa-cloud-upload"></i> <?php esc_html_e('Add more images', 'imagepress'); ?> (<?php echo $uploadsize; ?>MB <?php esc_html_e('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple></p>
                 <?php } ?>
 
                 <hr>
                 <p>
-                    <input type="submit" id="submit" value="<?php _e('Update image', 'imagepress'); ?>">
+                    <input type="submit" id="submit" value="<?php esc_html_e('Update image', 'imagepress'); ?>">
                     <a href="?d=<?php echo get_the_ID(); ?>" class="ask button ip-floatright"><i class="fa fa-trash-o"></i></a>
                 </p>
             </form>
@@ -583,7 +578,7 @@ function ip_main($i) {
     </div>
 
     <section>
-        <?php echo wpautop(make_clickable($post->post_content)); ?>
+        <?php the_content(); ?>
     </section>
 
     <section role="navigation">
@@ -867,12 +862,16 @@ function updateImagePressOption($optionArray) {
     update_option('imagepress', $updatedArray);
 }
 
-function getImagePressProfileUri($authorId) {
+function getImagePressProfileUri($authorId, $structure = true) {
     $ipProfilePageId = (int) get_imagepress_option('ip_profile_page');
     $ipProfilePageUri = get_permalink($ipProfilePageId);
     $ipProfileSlug = (string) get_imagepress_option('cinnamon_author_slug');
 
     $ipProfileLink = '<span class="name"><a href="' . $ipProfilePageUri . '?' . $ipProfileSlug . '=' . get_the_author_meta('user_nicename', $authorId) . '">' . get_the_author_meta('user_nicename', $authorId) . '</a></span>';
+
+    if ($structure === false) {
+        $ipProfileLink = $ipProfilePageUri . '?' . $ipProfileSlug . '=' . get_the_author_meta('user_nicename', $authorId);
+    }
 
     return $ipProfileLink;
 }

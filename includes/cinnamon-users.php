@@ -108,7 +108,7 @@ function cinnamon_card($atts, $content = null) {
                         }
                     $display .= '</div>';
                 }
-                $display .= '<div class="avatar-holder"><a href="' . get_author_posts_url($author) . '">' . get_avatar($author, 104) . '</a></div>';
+                $display .= '<div class="avatar-holder"><a href="' . getImagePressProfileUri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
 
                 if (get_the_author_meta('user_title', $author) == 'Verified')
                     $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fa fa-check-square"></i></span>';
@@ -119,7 +119,7 @@ function cinnamon_card($atts, $content = null) {
                 $hub_location = get_the_author_meta('hub_location', $author);
 
                 $display .= '<h3>
-                    <a href="' . get_author_posts_url($author) . '" class="name">';
+                    <a href="' . getImagePressProfileUri($author) . '" class="name">';
                         if (!empty($hub_user_info->first_name)) {
                             $display .= $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
                         } else {
@@ -337,7 +337,7 @@ function cinnamon_profile($atts, $content = null) {
                 if(get_imagepress_option('cinnamon_show_about') == 1) {
                     $display .= '<div class="ip-tabs-item" style="display: none;">';
                         if(!empty($hub_user_info->description))
-                            $display .= make_clickable(wpautop($hub_user_info->description));
+                            $display .= wpautop($hub_user_info->description);
                         $display .= '<br>';
                         if(!empty($hub_employer))
                             $display .= '<p><b>' . __('Employer', 'imagepress') . ':</b><br>' . $hub_employer . '</p>';
@@ -351,7 +351,7 @@ function cinnamon_profile($atts, $content = null) {
                             $display .= '<div class="cinnamon-followers">';
                                 foreach($arr as $value) {
                                     $user = get_user_by('id', $value);
-                                    $display .= '<a href="' . get_author_posts_url($value) . '">' . get_avatar($value, 40) . '</a> ';
+                                    $display .= '<a href="' . getImagePressProfileUri($value) . '">' . get_avatar($value, 40) . '</a> ';
                                 }
                                 unset($value);
                             $display .= '</div>';
@@ -366,7 +366,7 @@ function cinnamon_profile($atts, $content = null) {
                             $display .= '<div class="cinnamon-followers">';
                                 foreach($arr as $value) {
                                     $user = get_user_by('id', $value);
-                                    $display .= '<a href="' . get_author_posts_url($value) . '">' . get_avatar($value, 40) . '</a> ';
+                                    $display .= '<a href="' . getImagePressProfileUri($value) . '">' . get_avatar($value, 40) . '</a> ';
                                 }
                                 unset($value);
                             $display .= '</div>';
@@ -779,7 +779,7 @@ function cinnamon_profile_edit($atts, $content = null) {
                             <input name="updateuser" type="submit" class="button" id="updateuser" value="' . __('Update', 'imagepress') . '">';
                             wp_nonce_field('update-user');
                             $out .= '<input name="action" type="hidden" id="action" value="update-user">
-                            <i class="fa fa-share-square"></i> <a href="' . get_author_posts_url($userid) . '">' . __('View and share your profile', 'imagepress') . '</a>
+                            <i class="fa fa-share-square"></i> <a href="' . getImagePressProfileUri($userid) . '">' . __('View and share your profile', 'imagepress') . '</a>
                         </td>
                     </tr>
                 </table>
