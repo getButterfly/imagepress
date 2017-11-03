@@ -119,7 +119,7 @@ function cinnamon_card($atts, $content = null) {
                 $hub_location = get_the_author_meta('hub_location', $author);
 
                 $display .= '<h3>
-                    <a href="' . getImagePressProfileUri($author) . '" class="name">';
+                    <a href="' . getImagePressProfileUri($author, false) . '" class="name">';
                         if (!empty($hub_user_info->first_name)) {
                             $display .= $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
                         } else {
@@ -351,7 +351,7 @@ function cinnamon_profile($atts, $content = null) {
                             $display .= '<div class="cinnamon-followers">';
                                 foreach($arr as $value) {
                                     $user = get_user_by('id', $value);
-                                    $display .= '<a href="' . getImagePressProfileUri($value) . '">' . get_avatar($value, 40) . '</a> ';
+                                    $display .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
                                 }
                                 unset($value);
                             $display .= '</div>';
@@ -366,7 +366,7 @@ function cinnamon_profile($atts, $content = null) {
                             $display .= '<div class="cinnamon-followers">';
                                 foreach($arr as $value) {
                                     $user = get_user_by('id', $value);
-                                    $display .= '<a href="' . getImagePressProfileUri($value) . '">' . get_avatar($value, 40) . '</a> ';
+                                    $display .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
                                 }
                                 unset($value);
                             $display .= '</div>';
@@ -779,7 +779,7 @@ function cinnamon_profile_edit($atts, $content = null) {
                             <input name="updateuser" type="submit" class="button" id="updateuser" value="' . __('Update', 'imagepress') . '">';
                             wp_nonce_field('update-user');
                             $out .= '<input name="action" type="hidden" id="action" value="update-user">
-                            <i class="fa fa-share-square"></i> <a href="' . getImagePressProfileUri($userid) . '">' . __('View and share your profile', 'imagepress') . '</a>
+                            <i class="fa fa-share-square"></i> <a href="' . getImagePressProfileUri($userid, false) . '">' . __('View and share your profile', 'imagepress') . '</a>
                         </td>
                     </tr>
                 </table>

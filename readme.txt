@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
 Tested up to: 4.8.3
-Stable tag: 7.5.4
+Stable tag: 7.5.5
 Text Domain: imagepress
 
 == Description ==
@@ -18,6 +18,9 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 3. A new ImagePress menu will appear in WordPress with options and general help
 
 == Changelog ==
+
+= 7.5.5 =
+* FIX: Fixed author link in several places
 
 = 7.5.4 =
 * FIX: Fixed author link in several places
