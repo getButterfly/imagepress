@@ -61,7 +61,7 @@ function imagepress_like() {
 				$user_likes = count($liked_POSTS); // recount user likes
 				update_post_meta($post_id, '_user_liked', $liked_USERS); // remove user ID from post meta
 				update_post_meta($post_id, $ip_vote_meta, --$like_count); // -1 count post meta
-				update_user_option($user_id, '_liked_posts', $liked_POSTS); // remove post ID from user meta			
+				update_user_option($user_id, '_liked_posts', $liked_POSTS); // remove post ID from user meta
 				update_user_option($user_id, '_user_like_count', $user_likes); // -1 count user meta
 				echo 'already' . $like_count; // update count on front end
 			}
@@ -150,10 +150,10 @@ function ipGetPostLikeLink($post_id) {
 	if (is_user_logged_in()) {
 		if (ipAlreadyLiked($post_id)) {
 			$class = esc_attr(' liked');
-			$like = '<i class="fa fa-fw fa-heart-o"></i> ' . $ip_vote_unlike;
+			$like = '<i class="fa fa-fw fa-heart-o"></i><span class="ip-icon-label"> ' . $ip_vote_unlike . '</span>';
 		} else {
 			$class = esc_attr('');
-			$like = '<i class="fa fa-fw fa-heart"></i> ' . $ip_vote_like;
+			$like = '<i class="fa fa-fw fa-heart"></i><span class="ip-icon-label"> ' . $ip_vote_like . '</span>';
 		}
 		$output = '<a href="#" class="thin-ui-button imagepress-like' . $class . '" data-post_id="' . $post_id . '">' . $like . '</a>';
 	}

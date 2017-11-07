@@ -201,7 +201,7 @@ function ip_collections_display_custom($atts) {
 
 // FRONT END BUTTON
 function ip_frontend_add_collection($ip_id) {
-    if(isset($_POST['collectme'])) {
+    if (isset($_POST['collectme'])) {
         global $wpdb, $current_user;
 
         $ip_collections = intval($_POST['ip_collections']);
@@ -209,7 +209,7 @@ function ip_frontend_add_collection($ip_id) {
         $current_user = wp_get_current_user();
         $ip_collection_author_id = $current_user->ID;
 
-        if(!empty($_POST['ip_collections_new'])) {
+        if (!empty($_POST['ip_collections_new'])) {
             $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
             $ip_collection_status = intval($_POST['collection_status']);
 
@@ -225,10 +225,10 @@ function ip_frontend_add_collection($ip_id) {
         $collection_time = current_time('mysql', true);
         $wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, postKeyID, actionType, actionIcon, actionTime) VALUES (null, $ip_collection_author_id, " . $ip_id . ", " . $ipc . ", 'collected', 'fa-folder', '" . $collection_time . "')");
     }
-    if(is_user_logged_in()) {
+    if (is_user_logged_in()) {
         $current_user = wp_get_current_user();
         ?>
-        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><i class="fa fa-fw fa-plus"></i> <?php echo __('Add to collection', 'imagepress'); ?></a> <?php if(isset($_POST['collectme'])) { echo ' <i class="fa fa-check"></i>'; } ?>
+        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><i class="fa fa-fw fa-plus"></i><span class="ip-icon-label"> <?php echo __('Add to collection', 'imagepress'); ?></span></a> <?php if (isset($_POST['collectme'])) { echo ' <i class="fa fa-check"></i>'; } ?>
 
         <div class="frontEndModal ui">
             <h2><?php echo __('Add to collection', 'imagepress'); ?></h2>

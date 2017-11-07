@@ -61,9 +61,9 @@ a img { border: none; }
 .ip_icon_hover { position: absolute; padding: 8px; display: block; bottom: 8px; left: 8px; }
 
 #cinnamon-cards .list {
-    -webkit-flex-flow: row wrap; 
-    -moz-flex-flow: row wrap; 
-    flex-flow: row wrap; 
+    -webkit-flex-flow: row wrap;
+    -moz-flex-flow: row wrap;
+    flex-flow: row wrap;
 
     display: -webkit-flex;
     display: -moz-flex;
@@ -552,8 +552,8 @@ section[role="navigation"] a { display: inline; }
     display: -ms-flexbox;
     -ms-flex-wrap: wrap;
     -ms-flex-direction: column;
-    -webkit-flex-flow: row wrap; 
-    flex-flow: row wrap; 
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
     display: -webkit-box;
     display: flex;
     /**/
@@ -1026,7 +1026,7 @@ span.imagelikes:before {
 }
 /**/
 
-@media all and (min-width: 420px){
+@media all and (min-width: 480px){
     .list .ip_box,
     .list .gap {
         width: 35%;
@@ -1036,6 +1036,28 @@ span.imagelikes:before {
     .list .ip_box,
     .list .gap {
         width: 25%;
+    }
+}
+
+@media all and (max-width: 720px) {
+    .ip_box,
+    .ip_collections_edit {
+        width: 50% !important;
+    }
+}
+@media all and (max-width: 480px) {
+    .ip_box,
+    .ip_collections_edit {
+        width: 100% !important;
+    }
+
+    .ip-sorter-primary input,
+    .ip-sorter-primary select {
+        width: 100%;
+    }
+
+    .ip-icon-label {
+        display: none;
     }
 }
 

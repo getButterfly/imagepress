@@ -3,8 +3,8 @@ Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
-Tested up to: 4.8.3
-Stable tag: 7.5.5
+Tested up to: 4.9
+Stable tag: 7.5.6-beta1
 Text Domain: imagepress
 
 == Description ==
@@ -18,6 +18,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 3. A new ImagePress menu will appear in WordPress with options and general help
 
 == Changelog ==
+
+= 7.5.6-beta1 =
+* UI: Added download icon to single image template
+* UI: Added better mobile responsiveness for image grid
+* UI: Removed icon labels for mobile screens (single page)
+* TODO: UI: Fixed author tools layout
+* TODO: UI: Added colour control for profile pages (light text vs dark text)
 
 = 7.5.5 =
 * FIX: Fixed author link in several places

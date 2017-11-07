@@ -191,7 +191,7 @@ function ip_editor() {
     // check if user is author // show author tools
     if ($post->post_author == $current_user->ID) { ?>
         <span class="ip-editor-display-container">
-            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><i class="fa fa-wrench"></i> <?php esc_html_e('Author tools', 'imagepress'); ?></a>
+            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><i class="fa fa-wrench"></i><span class="ip-icon-label"> <?php esc_html_e('Author tools', 'imagepress'); ?></span></a>
         </span>
         <?php
         $edit_id = get_the_ID();
@@ -479,12 +479,13 @@ function ip_main($i) {
 
     <div class="ip-bar">
         <?php echo ipGetPostLikeLink($i); ?><em> | </em><i class="fa fa-eye"></i> <?php echo ip_getPostViews($i); ?><?php echo $ip_comments; ?>
-        <?php if(get_imagepress_option('ip_mod_collections') == 1) { ?>
+        <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
             <em> | </em>
-            <?php if(function_exists('ip_frontend_add_collection')) ip_frontend_add_collection(get_the_ID()); ?>
+            <?php if (function_exists('ip_frontend_add_collection')) ip_frontend_add_collection(get_the_ID()); ?>
         <?php } ?>
 
         <a href="<?php echo $post_thumbnail_url; ?>" class="thin-ui-button"><i class="fa fa-fw fa-arrows-alt"></i></a>
+        <?php echo imagepress_image_download(get_the_post_thumbnail_url()); ?>
 
         <?php
         // show image editor
@@ -828,7 +829,7 @@ function ip_get_field($atts, $content = null) {
 }
 
 function imagepress_image_download($path) {
-    $out = '<a href="' . $path . '" class="thin-ui-button" download><i class="fa fa-fw fa-download" aria-hidden="true"></i> ' . __('Download', 'noir-ui') . '</a>';
+    $out = '<a href="' . $path . '" class="thin-ui-button" download><i class="fa fa-fw fa-download" aria-hidden="true"></i><span class="ip-icon-label"> ' . __('Download', 'noir-ui') . '</span></a>';
 
     return $out;
 }
