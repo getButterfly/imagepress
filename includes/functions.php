@@ -278,11 +278,18 @@ function ip_editor() {
                 <input type="hidden" name="post_id" value="<?php echo $edit_id; ?>">
                 <?php wp_nonce_field('update_post_' . $edit_id, 'update_post_nonce'); ?>
 
-                <p><label for="post_title"><?php esc_html_e('Title', 'imagepress'); ?></label><input type="text" id="post_title" name="post_title" value="<?php echo get_the_title($edit_id); ?>"></p>
-                <p><label for="postcontent"><?php esc_html_e('Description', 'imagepress'); ?></label><textarea id="postcontent" name="postcontent" rows="3"><?php echo strip_tags(get_post_field('post_content', $edit_id)); ?></textarea></p>
+                <p>
+                    <label for="post_title"><?php esc_html_e('Title', 'imagepress'); ?></label><br>
+                    <input type="text" id="post_title" name="post_title" value="<?php echo get_the_title($edit_id); ?>">
+                </p>
+                <p>
+                    <label for="postcontent"><?php esc_html_e('Description', 'imagepress'); ?></label><br>
+                    <textarea id="postcontent" name="postcontent" rows="3"><?php echo strip_tags(get_post_field('post_content', $edit_id)); ?></textarea></p>
                 <hr>
                 <?php if ('' != get_imagepress_option('ip_video_label')) { ?>
-                    <p><input type="url" name="imagepress_video" value="<?php echo get_post_meta($edit_id, 'imagepress_video', true); ?>" placeholder="<?php echo get_imagepress_option('ip_video_label'); ?>"></p>
+                    <p>
+                        <input type="url" name="imagepress_video" value="<?php echo get_post_meta($edit_id, 'imagepress_video', true); ?>" placeholder="<?php echo get_imagepress_option('ip_video_label'); ?>">
+                    </p>
                 <?php } ?>
 
                 <?php
@@ -299,15 +306,15 @@ function ip_editor() {
                     $fieldName = sanitize_text_field($field['field_name']);
 
                     if ($fieldType === 1) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 2) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="url" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="url" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 3) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="email" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="email" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 4) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="number" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="number" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 5) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
                     } else if ($fieldType === 6) {
                         if ($ps_meta == 1) {
                             $checked = 'checked';
@@ -345,7 +352,7 @@ function ip_editor() {
                         $fieldType === 23 ||
                         $fieldType === 24
                     ) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     }
                 }
                 //
@@ -473,7 +480,9 @@ function ip_main($i) {
     ?>
 
     <div class="imagepress-container">
-        <?php the_post_thumbnail('full'); ?>
+        <a href="<?php echo $post_thumbnail_url; ?>">
+            <?php the_post_thumbnail('full'); ?>
+        </a>
         <?php ip_setPostViews($i); ?>
     </div>
 
