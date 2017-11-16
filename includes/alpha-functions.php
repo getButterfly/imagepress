@@ -28,7 +28,7 @@ function ipUriBuilder($sort, $range, $taxonomy, $q = '') {
     }
 
     $uriParameters = array(
-        'sort' => $sort, 
+        'sort' => $sort,
         'range' => $range,
         't' => $taxonomy,
         'q' => $q
@@ -126,20 +126,16 @@ function imagepress_loop($atts, $content = null) {
         'post_type' => $ipSlug,
         'paged' => $paged,
         'posts_per_page' => $ipp,
-        //'author__in' => array($user),
         'post_status' => 'publish',
     );
 
     // Search query arguments
-    if (isset($_GET['q'])) {
+    if (isset($_GET['q']) && !empty($_GET['q'])) {
         $query = sanitize_text_field($_GET['q']);
 
         $args1['s'] = (string) $query;
     }
 
-    // some alternatives:
-    // https://stackoverflow.com/questions/17455484/query-posts-by-custom-meta-and-current-date
-    // https://stackoverflow.com/questions/16994364/get-posts-no-older-than-x-days-wordpress
     if (isset($_GET['t']) && !empty($_GET['t'])) {
         $taxonomy = (string) sanitize_text_field($_GET['t']);
         $tax_query = array(
@@ -226,7 +222,7 @@ function imagepress_loop($atts, $content = null) {
             $date_query = array(
                 'date_query'    => array(
                     'column'  => 'post_date',
-                    'after'   => date('Y-m-d', strtotime('-30 days')) 
+                    'after'   => date('Y-m-d', strtotime('-30 days'))
                 )
             );
             $args1['date_query'] = $date_query;
@@ -234,7 +230,7 @@ function imagepress_loop($atts, $content = null) {
             $date_query = array(
                 'date_query'    => array(
                     'column'  => 'post_date',
-                    'after'   => date('Y-m-d', strtotime('-7 days')) 
+                    'after'   => date('Y-m-d', strtotime('-7 days'))
                 )
             );
             $args1['date_query'] = $date_query;
@@ -242,7 +238,7 @@ function imagepress_loop($atts, $content = null) {
             $date_query = array(
                 'date_query'    => array(
                     'column'  => 'post_date',
-                    'after'   => date('Y-m-d', strtotime('-1 days')) 
+                    'after'   => date('Y-m-d', strtotime('-1 days'))
                 )
             );
             $args1['date_query'] = $date_query;
@@ -404,7 +400,7 @@ function pagination($pages = '', $range = 2) {
             if ($paged > 1 && $showitems < $pages) {
                 $display .= '<a href="' . get_pagenum_link($paged - 1) . '">&lsaquo;</a>';
             }
- 
+
             for ($i=1; $i <= $pages; $i++) {
                 if (1 != $pages && (!($i >= $paged + $range + 1 || $i <= $paged - $range - 1) || $pages <= $showitems)) {
                     $display .= ($paged == $i) ? '<span class="current">' . $i . '</span>' : '<a href="' . get_pagenum_link($i) . '" class="inactive">' . $i . '</a>';

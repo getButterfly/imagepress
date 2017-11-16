@@ -1,6 +1,6 @@
 # ImagePress
 
-Version: 7.5.6-beta2
+Version: 7.5.6
 
 [![Version](https://cdn.rawgit.com/getbutterfly/imagepress/master/imagepress-version.svg)](https://getbutterfly.com/wordpress-plugins/imagepress/)
 [![Build Status](https://getbutterfly.com/web/imagepress-build.svg)](https://getbutterfly.com/wordpress-plugins/imagepress)
@@ -8,7 +8,6 @@ Version: 7.5.6-beta2
 [![CodeFactor](https://www.codefactor.io/repository/github/getbutterfly/imagepress/badge/master)](https://www.codefactor.io/repository/github/getbutterfly/imagepress/overview/master)
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/getbutterfly/imagepress.svg)](http://isitmaintained.com/project/getbutterfly/imagepress "Average time to resolve an issue")
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Support me on Patreon](http://ionicabizau.github.io/badges/patreon.svg)](https://www.patreon.com/getbutterfly)
 [![PayPal Donate](http://ionicabizau.github.io/badges/paypal.svg)](https://www.paypal.me/getbutterfly/5eur)
 

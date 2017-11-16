@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 7.5.6-beta2
+Stable tag: 7.5.6
 Text Domain: imagepress
 
 == Description ==
@@ -19,12 +19,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
-= 7.5.6-beta2 =
-* UI: Added media link to single image template
-* UI: Fixed author tools layout (basic)
+= 7.5.7 =
 * TODO: UI: Added colour control for profile pages (light text vs dark text)
 
-= 7.5.6-beta1 =
+= 7.5.6 =
+* FIX: Fixed search query parameter with taxonomy filtering
+* UI: Added media link to single image template
+* UI: Fixed author tools layout (basic)
 * UI: Added download icon to single image template
 * UI: Added better mobile responsiveness for image grid
 * UI: Removed icon labels for mobile screens (single page)
