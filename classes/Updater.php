@@ -373,7 +373,9 @@ class WP_GitHub_Updater {
 	public function get_plugin_info( $false, $action, $response ) {
 
 		// Check if this call API is for the right plugin
-		if ( !isset( $response->slug ) || $response->slug != $this->config['slug'] )
+		// Fix for Details link: https://github.com/radishconcepts/WordPress-GitHub-Plugin-Updater/issues/63
+		if ( !isset( $response->slug ) || $response->slug != $this->config['proper_folder_name'] )
+		//if ( !isset( $response->slug ) || $response->slug != $this->config['slug'] )
 			return false;
 
 		$response->slug = $this->config['slug'];
