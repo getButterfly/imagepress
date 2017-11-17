@@ -40,7 +40,6 @@ function imagepress_admin_page() {
             global $wpdb;
 
             // Get the WP built-in version
-            $wp_jquery_ver = $GLOBALS['wp_scripts']->registered['jquery']->ver;
             $ipdata = get_plugin_data(IP_PLUGIN_FILE_PATH);
 
             echo '<div id="gb-ad">
@@ -252,10 +251,8 @@ function imagepress_admin_page() {
                                         $ip_image_size = get_imagepress_option('ip_image_size');
                                         $thumbsize = isset($ip_image_size) ? esc_attr($ip_image_size) : '';
                                         $image_sizes = ip_return_image_sizes();
-                                        foreach($image_sizes as $size => $atts) {
-                                            $attributes = implode('x', $atts);
-                                                //echo '<option>' . $atts[0] . 'x' . $atts[1] . '</option>';
-                                            if((int) $atts[0] !== 0 && (int) $atts[1] !== 0) {
+                                        foreach ($image_sizes as $size => $atts) {
+                                            if ((int) $atts[0] !== 0 && (int) $atts[1] !== 0) {
                                                 ?>
                                                 <option value="<?php echo $size ;?>" <?php selected($thumbsize, $size); ?>><?php echo $size . ' - ' . implode('x', $atts); ?></option>
                                                 <?php
@@ -1438,7 +1435,6 @@ function imagepress_admin_page() {
                     else if($action == 'replied to a comment on') {
                         $comment_id = get_comment($result->postID);
                         $comment_post_ID = $comment_id->comment_post_ID;
-                        $b = $comment_id->user_id;
 
                         $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-comment"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> replied to a comment on <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a> <time>' . $time . '</time>';
                     }

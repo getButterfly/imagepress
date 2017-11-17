@@ -91,7 +91,7 @@ function getImagePressDiscoverFilters() {
     return $out;
 }
 
-function imagepress_loop($atts, $content = null) {
+function imagepress_loop($atts) {
     extract(shortcode_atts(array(
         'category'      => '',
         'count'         => 0,
@@ -282,7 +282,6 @@ function imagepress_loop($atts, $content = null) {
                 $ip_query->the_post();
                 $i = get_the_ID();
 
-                $user_info = get_userdata(get_the_author_meta('ID'));
                 $post_thumbnail_id = get_post_thumbnail_id($i);
 
                 $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'imagepress_pt_std_ps');

@@ -7,15 +7,15 @@ function cinnamon_count_user_posts_by_type($userid, $post_type = 'post') {
     $where = get_posts_by_author_sql($ip_slug, true, $userid);
     $count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts $where");
 
-      return apply_filters('get_usernumposts', $count, $userid);
+    return apply_filters('get_usernumposts', $count, $userid);
 }
 
 function cinnamon_PostViews($id, $count = true) {
     $axCount = get_user_meta($id, 'ax_post_views', true);
-    if($axCount == '')
-        $axcount = 0;
+    if ($axCount == '')
+        $axCount = 0;
 
-    if($count == true) {
+    if ($count == true) {
         $axCount++;
         update_user_meta($id, 'ax_post_views', $axCount);
     }
@@ -32,8 +32,6 @@ function cinnamon_author_base() {
 }
 
 function cinnamon_get_related_author_posts($author) {
-    global $post;
-
     $ip_slug = get_imagepress_option('ip_slug');
     $authors_posts = get_posts(array(
         'author' => $author,
@@ -69,7 +67,7 @@ function cinnamon_extra_contact_info($contactmethods) {
 
 
 /* CINNAMON CARD SHORTCODE */
-function cinnamon_card($atts, $content = null) {
+function cinnamon_card($atts) {
     extract(shortcode_atts(array(
         'author' => '',
         'count' => 10,
@@ -163,7 +161,7 @@ function cinnamon_card($atts, $content = null) {
 
 
 /* CINNAMON PROFILE SHORTCODE */
-function cinnamon_profile($atts, $content = null) {
+function cinnamon_profile($atts) {
     extract(shortcode_atts(array(
         'author' => '',
         'username' => '',
@@ -213,7 +211,6 @@ function cinnamon_profile($atts, $content = null) {
     $logged_in_user = wp_get_current_user();
 
     $display .= '<div class="profile-hub-container">';
-        $hub_url = $hub_user_info->user_url;
         $hub_field = get_the_author_meta('hub_field', $author);
         $hub_employer = get_the_author_meta('hub_employer', $author);
         $hub_location = get_the_author_meta('hub_location', $author);
@@ -430,7 +427,7 @@ function cinnamon_profile($atts, $content = null) {
     return $display;
 }
 
-function cinnamon_profile_edit($atts, $content = null) {
+function cinnamon_profile_edit($atts) {
     extract(shortcode_atts(array('author' => ''), $atts));
 
     global $wpdb;
@@ -745,7 +742,6 @@ function cinnamon_profile_edit($atts, $content = null) {
                                 if($posts) {
                                     foreach($posts as $user_image) {
                                         $i = $user_image->ID;
-                                        $menu_order = $user_image->menu_order;
 
                                         $post_thumbnail_id = get_post_thumbnail_id($i);
                                         $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
@@ -836,7 +832,6 @@ function save_cinnamon_profile_fields($user_id) {
         }
 
         if (!empty($_POST['award'])) {
-            $tax = get_taxonomy('award');
             $term = $_POST['award'];
             wp_set_object_terms($user_id, $term, 'award', false);
             clean_object_term_cache($user_id, 'award');

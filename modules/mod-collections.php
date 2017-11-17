@@ -304,7 +304,7 @@ function ip_frontend_view_image_collection($ip_id) {
 
 
 
-function imagepress_collection($atts, $content = null) {
+function imagepress_collection($atts) {
     extract(shortcode_atts(array(
         'count'         => 0,
         'limit'         => 999999,
@@ -318,7 +318,8 @@ function imagepress_collection($atts, $content = null) {
         'perrow' => 0,
     ), $atts));
 
-    global $wpdb, $current_user;
+    global $wpdb;
+
     $ip_unique_id = uniqid();
 
     if(empty($type))
@@ -348,7 +349,6 @@ function imagepress_collection($atts, $content = null) {
 
     foreach($collectionables as $collectable) {
         $cs[] = $collectable['image_ID'];
-        $cm = $collectable['image_collection_ID'];
     }
 
     $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "ip_collections SET collection_views = collection_views + 1 WHERE collection_ID = %d", $collection_page));
@@ -388,7 +388,6 @@ function imagepress_collection($atts, $content = null) {
     );
 
     $posts = get_posts($args);
-    $found = count($posts);
 
     if($posts) {
         $out .= '<div class="ip_clear"></div>';
@@ -409,7 +408,6 @@ function imagepress_collection($atts, $content = null) {
         // get options
         $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
         $get_ip_title_optional = get_imagepress_option('ip_title_optional');
-        $get_ip_author_optional = get_imagepress_option('ip_author_optional');
         $get_ip_meta_optional = get_imagepress_option('ip_meta_optional');
         $get_ip_views_optional = get_imagepress_option('ip_views_optional');
         $get_ip_likes_optional = get_imagepress_option('ip_likes_optional');

@@ -189,14 +189,13 @@ function ipFrontEndUserLikes($author) {
 
 
 function imagepress_get_like_users($id) {
-    $meta_USERS = get_post_meta($id, '_user_liked');
-    $totalUsers = array_sum(array_map('count', $meta_USERS));
+	$meta_USERS = get_post_meta($id, '_user_liked');
 
-    foreach($meta_USERS as $users) {
-        foreach($users as $user) {
-            echo '<a href="' . get_author_posts_url($user) . '" title="' . get_the_author_meta('nickname', $user) . '">' . get_avatar($user, 40) . '</a> ';
-        }
-    }
+	foreach ($meta_USERS as $users) {
+		foreach ($users as $user) {
+			echo '<a href="' . get_author_posts_url($user) . '" title="' . get_the_author_meta('nickname', $user) . '">' . get_avatar($user, 40) . '</a> ';
+		}
+	}
 }
 
 function imagepress_get_like_count($id) {

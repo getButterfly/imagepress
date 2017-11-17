@@ -623,15 +623,13 @@ function ip_get_the_term_list( $id = 0, $taxonomy, $before = '', $sep = '', $aft
 }
 
 function imagepress_get_images($post_id) {
-    global $post;
-
     $thumbnail_ID = get_post_thumbnail_id();
     $images = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
 
-    if($images && count($images) > 1) {
+    if ($images && count($images) > 1) {
         echo '<div class="ip-more">';
-            foreach($images as $attachment_id => $image) {
-                if($image->ID != $thumbnail_ID) {
+            foreach ($images as $attachment_id => $image) {
+                if ($image->ID != $thumbnail_ID) {
                     $big_array = image_downsize($image->ID, 'full');
 
                     echo '<img src="' . $big_array[0] . '" alt="">';
@@ -644,16 +642,6 @@ function imagepress_get_images($post_id) {
 function kformat($number) {
     $number = (int) $number;
 
-    /**
-    $prefixes = 'KMGTPEZY';
-    if($number >= 1000) {
-        $log1000 = floor(log10($number)/3);
-
-        return floor($number/pow(1000, (int) $log1000)) . $prefixes[(int) $log1000 - 1];
-    }
-
-    return $number;
-    /**/
     return number_format($number, 0, '.', ',');
 }
 
@@ -801,7 +789,7 @@ function ip_get_user_role() {
     return $user_role;
 }
 
-function ip_get_field($atts, $content = null) {
+function ip_get_field($atts) {
     extract(shortcode_atts(array(
         'field' => '',
     ), $atts));

@@ -26,7 +26,7 @@ function pwuf_process_unfollow() {
 add_action('wp_ajax_unfollow', 'pwuf_process_unfollow');
 
 // Shows the links to follow/unfollow a user
-function pwuf_follow_links_shortcode( $atts, $content = null ) {
+function pwuf_follow_links_shortcode($atts) {
 	extract( shortcode_atts( array(
 			'follow_id' => get_the_author_meta( 'ID' )
 		),
@@ -124,7 +124,7 @@ function pwuf_follow_user( $user_id = 0, $user_to_follow = 0 ) {
 	$followers = update_user_meta( $user_to_follow, '_pwuf_followers', $followers );
 
 	// increase the followers count
-	$followed_count = pwuf_increase_followed_by_count( $user_to_follow );
+	$followed_count = pwuf_increase_followed_by_count($user_to_follow);
 
 	if ( $followed ) {
         // notification

@@ -5,26 +5,25 @@ add_shortcode('notifications', 'imagepress_notifications');
 
 function notification_count($count = 50) {
     global $wpdb;
+
     $user_ID = get_current_user_id();
     $n = 0;
 
     $sql = "SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = 0 ORDER BY actionTime DESC LIMIT " . $count . "";
     $res = $wpdb->get_results($sql);
-    foreach($res as $line) {
+    foreach ($res as $line) {
         $postdata = get_post($line->postID, ARRAY_A);
         $authorID = $postdata['post_author'];
         $action = $line->actionType;
 
-        $following = array(pwuf_get_following($user_ID));
-
         if(
-            ($action == 'loved' && $user_ID == $authorID) || 
-            ($action == 'collected' && $user_ID == $authorID) || 
+            ($action == 'loved' && $user_ID == $authorID) ||
+            ($action == 'collected' && $user_ID == $authorID) ||
             ($action == 'added' && pwuf_is_following($user_ID, $authorID)) ||
-            ($action == 'followed' && $user_ID == $line->postID) || 
-            ($action == 'commented on' && $user_ID == $authorID && $user_ID != $line->userID) || 
-            ($action == 'replied to a comment on' && $user_ID == get_comment($line->postID)->user_id) || 
-            ($action == 'featured' && $user_ID == $authorID) || 
+            ($action == 'followed' && $user_ID == $line->postID) ||
+            ($action == 'commented on' && $user_ID == $authorID && $user_ID != $line->userID) ||
+            ($action == 'replied to a comment on' && $user_ID == get_comment($line->postID)->user_id) ||
+            ($action == 'featured' && $user_ID == $authorID) ||
             (0 == $line->postID || '-1' == $line->postID || $user_ID == $line->postID)
         ) {
             ++$n;
@@ -45,16 +44,14 @@ function notification_reset() {
         $authorID = $postdata['post_author'];
         $action = $line->actionType;
 
-        $following = array(pwuf_get_following($user_ID));
-
         if(
-            ($action == 'loved' && $user_ID == $authorID) || 
-            ($action == 'collected' && $user_ID == $authorID) || 
+            ($action == 'loved' && $user_ID == $authorID) ||
+            ($action == 'collected' && $user_ID == $authorID) ||
             ($action == 'added' && pwuf_is_following($user_ID, $authorID)) ||
-            ($action == 'followed' && $user_ID == $line->postID) || 
-            ($action == 'commented on' && $user_ID == $authorID && $user_ID != $line->userID) || 
-            ($action == 'replied to a comment on' && $user_ID == get_comment($line->postID)->user_id) || 
-            ($action == 'featured' && $user_ID == $authorID) || 
+            ($action == 'followed' && $user_ID == $line->postID) ||
+            ($action == 'commented on' && $user_ID == $authorID && $user_ID != $line->userID) ||
+            ($action == 'replied to a comment on' && $user_ID == get_comment($line->postID)->user_id) ||
+            ($action == 'featured' && $user_ID == $authorID) ||
             (0 == $line->postID || '-1' == $line->postID || $user_ID == $line->postID)
         ) {
             $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "notifications SET status = 1 WHERE ID = %d", $line->ID));
@@ -73,7 +70,6 @@ function imagepress_notifications($atts, $content = null) {
     global $wpdb;
 
     $user_ID = get_current_user_id();
-    $following = array(pwuf_get_followers($user_ID));
 
     $ip_slug = get_imagepress_option('ip_slug');
     $display = '';

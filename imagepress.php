@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.6.4
+Version: 7.5.6.5
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -389,7 +389,7 @@ function imagepress_add($atts) {
     return $out;
 }
 
-function imagepress_add_bulk($atts, $content = null) {
+function imagepress_add_bulk($atts) {
     extract(shortcode_atts(array(
         'category' => ''
     ), $atts));
@@ -910,7 +910,7 @@ register_deactivation_hook(__FILE__, 'imagepress_deactivate');
 // enqueue admin scripts and styles
 // colour picker
 add_action('admin_enqueue_scripts', 'ip_enqueue_color_picker');
-function ip_enqueue_color_picker($hook_suffix) {
+function ip_enqueue_color_picker() {
     wp_enqueue_style('wp-color-picker');
     wp_enqueue_style('fa', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style('imagepress', plugins_url('css/ip-admin.css', __FILE__));
@@ -920,7 +920,7 @@ function ip_enqueue_color_picker($hook_suffix) {
 
 
 add_action('wp_enqueue_scripts', 'ip_enqueue_scripts');
-function ip_enqueue_scripts($hook_suffix) {
+function ip_enqueue_scripts() {
     wp_enqueue_style('fa', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 
     wp_enqueue_style('ip-reset', plugins_url('css/ip-reset.css', __FILE__));
@@ -956,7 +956,7 @@ function ip_enqueue_scripts($hook_suffix) {
 }
 // end
 
-function imagepress_search($atts, $content = null) {
+function imagepress_search($atts) {
     extract(shortcode_atts(array(
         'type' => '',
     ), $atts));
@@ -1014,7 +1014,7 @@ function imagepress_notify_status($new_status, $old_status, $post) {
  * Main shortcode function [imagepress]
  *
  */
-function imagepress_widget($atts, $content = null) {
+function imagepress_widget($atts) {
     extract(shortcode_atts(array(
         'type' => 'list', // list, top
         'mode' => 'views', // views, likes
