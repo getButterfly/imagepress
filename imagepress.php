@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.6.2
+Version: 7.5.6.3
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -277,7 +277,7 @@ function imagepress_add($atts) {
         $notificationMessage = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
 
         if (!empty($_FILES['imagepress_image_file'])) {
-            if ($post_id = wp_insert_post($user_image_data)) {
+            if ($post_id == wp_insert_post($user_image_data)) {
                 imagepress_process_image('imagepress_image_file', $post_id);
 
                 // multiple images
@@ -413,9 +413,9 @@ function imagepress_add_bulk($atts, $content = null) {
         // alpha
         $files = $_FILES['imagepress_image_file_bulk'];
         if(!empty($files)) {
-            require_once(ABSPATH . 'wp-admin' . '/includes/image.php');
-            require_once(ABSPATH . 'wp-admin' . '/includes/file.php');
-            require_once(ABSPATH . 'wp-admin' . '/includes/media.php');
+            require_once ABSPATH . 'wp-admin' . '/includes/image.php';
+            require_once ABSPATH . 'wp-admin' . '/includes/file.php';
+            require_once ABSPATH . 'wp-admin' . '/includes/media.php';
 
             foreach($files['name'] as $key => $value) {
                 if($files['name'][$key]) {
@@ -438,7 +438,7 @@ function imagepress_add_bulk($atts, $content = null) {
                         'post_author' => $ip_image_author,
                         'post_type' => get_imagepress_option('ip_slug')
                     );
-                    if($post_id = wp_insert_post($user_image_data)) {
+                    if ($post_id == wp_insert_post($user_image_data)) {
                         update_post_meta($post_id, '_thumbnail_id', $attach_id);
                     }
 
@@ -478,9 +478,9 @@ add_filter('jpeg_quality', 'imagepress_jpeg_quality', 10, 2);
 
 
 function imagepress_process_image($file, $post_id, $feature = 1) {
-    require_once(ABSPATH . 'wp-admin' . '/includes/image.php');
-    require_once(ABSPATH . 'wp-admin' . '/includes/file.php');
-    require_once(ABSPATH . 'wp-admin' . '/includes/media.php');
+    require_once ABSPATH . 'wp-admin' . '/includes/image.php';
+    require_once ABSPATH . 'wp-admin' . '/includes/file.php';
+    require_once ABSPATH . 'wp-admin' . '/includes/media.php';
 
     $attachment_id = media_handle_upload($file, $post_id);
 

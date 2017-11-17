@@ -740,39 +740,16 @@ function imagepress_login_footer() {
     echo '<p class="imagepress-login-footer">' . get_imagepress_option('ip_login_copyright') . '</p>';
 }
 function imagepress_change_register_page_msg($message) {
-    if(strpos($message, 'Register For This Site') == true) {
+    if (strpos($message, 'Register For This Site') == true) {
         $message = '<p class="message">' . __('Register for ImagePress', 'imagepress') . '</p>';
     }
 
     return $message;
 }
 
-
-
-// Frontend login/registration redirect
-$cinnamon_mod_login = get_imagepress_option('cinnamon_mod_login');
-
-if((int) $cinnamon_mod_login === 1) {
-    //add_action('init', 'imagepress_fe_prevent_wp_login');
-}
-
-function imagepress_fe_prevent_wp_login() {
-    global $pagenow;
-
-    $action = (isset($_GET['action'])) ? $_GET['action'] : '';
-    // Check if we're on the login page, and ensure the action is not 'logout'
-    if($pagenow == 'wp-login.php' && (!$action || ($action && !in_array($action, array('logout', 'lostpassword', 'rp'))))) {
-        $cinnamon_account_page = (string) get_imagepress_option('cinnamon_account_page');
-
-        wp_redirect($cinnamon_account_page);
-
-        exit();
-    }
-}
-//
-
 $ip_mod_login = get_imagepress_option('ip_mod_login');
-if($ip_mod_login == 1) {
+
+if ($ip_mod_login == 1) {
     add_action('init', 'imagepress_login_checked_remember_me');
 
     add_action('login_head', 'imagepress_login_head');

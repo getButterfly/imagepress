@@ -366,11 +366,11 @@ function imagepress_collection($atts, $content = null) {
     $out .= '</div>';
 
     $hmc = count($collectionables);
-    if($hmc == 0 or empty($hmc)) {
+
+    if ($hmc == 0 or empty($hmc)) {
         $out .= '<p>' . __('This collection is empty.', 'imagepress') . '</p>';
+
         return $out;
-        get_footer();
-        die();
     }
 
     $args = array(

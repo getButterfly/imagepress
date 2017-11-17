@@ -140,7 +140,7 @@ jQuery(document).ready(function() {
         }
     });
 
-    jQuery('#imagepress_upload_image_form').submit(function(e){
+    jQuery('#imagepress_upload_image_form').submit(function() {
         jQuery('#imagepress-errors').html('');
         jQuery('#imagepress_submit').prop('disabled', true);
         jQuery('#imagepress_submit').css('opacity', '0.5');
@@ -520,10 +520,10 @@ jQuery(document).ready(function() {
         return false;
     });
 
-    jQuery('.editableImage').click(function (e) {
+    jQuery('.editableImage').click(function () {
         jQuery(this).addClass('editableImageActive');
     });
-    jQuery('.editableImage').blur(function (e) {
+    jQuery('.editableImage').blur(function () {
         jQuery(this).removeClass('editableImageActive');
     });
 
@@ -624,15 +624,15 @@ jQuery(document).ready(function() {
         }
 
         // Check if dropdown has changed on page load
-        sorterDropdown.onchange = function (e) {
+        sorterDropdown.onchange = function () {
             document.getElementById('ip-sorter-loader').innerHTML = '<i class="fa fa-cog fa-spin fa-fw"></i>';
             location.href = sorterDropdown.value;
         }
-        rangerDropdown.onchange = function (e) {
+        rangerDropdown.onchange = function () {
             document.getElementById('ip-sorter-loader').innerHTML = '<i class="fa fa-cog fa-spin fa-fw"></i>';
             location.href = rangerDropdown.value;
         }
-        taxxxerDropdown.onchange = function (e) {
+        taxxxerDropdown.onchange = function () {
             document.getElementById('ip-sorter-loader').innerHTML = '<i class="fa fa-cog fa-spin fa-fw"></i>';
             location.href = taxxxerDropdown.value;
         }

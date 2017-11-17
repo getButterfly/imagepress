@@ -231,7 +231,7 @@ function imagepress_loop($atts, $content = null) {
                 )
             );
             $args1['date_query'] = $date_query;
-        } else if($range == 'lastweek') {
+        } else if ($range == 'lastweek') {
             $date_query = array(
                 'date_query'    => array(
                     'column'  => 'post_date',
@@ -239,7 +239,7 @@ function imagepress_loop($atts, $content = null) {
                 )
             );
             $args1['date_query'] = $date_query;
-        } else if($range == 'lastday') {
+        } else if ($range == 'lastday') {
             $date_query = array(
                 'date_query'    => array(
                     'column'  => 'post_date',
@@ -247,14 +247,7 @@ function imagepress_loop($atts, $content = null) {
                 )
             );
             $args1['date_query'] = $date_query;
-        } else if($range == 'alltime') {
-        } else {
-            // Sorting defaults to newest posters
-            //$query->set('orderby', 'date');
-            //$query->set('order', 'DESC');
         }
-        // Category filter
-        // $query->set( 'cat', '-4' );
     }
 
     $ip_query = new WP_Query($args1);
