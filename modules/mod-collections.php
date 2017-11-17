@@ -338,6 +338,10 @@ function imagepress_collection($atts, $content = null) {
     $out = '';
     $cs = [];
 
+    if (!isset($_GET['collection']) || empty($_GET['collection'])) {
+        return;
+    }
+
     $collection_page = (int) sanitize_text_field($_GET['collection']);
 
     $collectionables = $wpdb->get_results("SELECT image_ID, image_collection_ID FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection_page . "'", ARRAY_A);

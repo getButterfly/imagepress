@@ -180,6 +180,11 @@ function cinnamon_profile($atts, $content = null) {
         $userArray = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->users WHERE user_login = '%s'", $userLogin));
     }
 
+    // If no profile is provided
+    if (empty($userLogin) || empty($userArray)) {
+        return;
+    }
+
     if (empty($author)) {
         $author = $userArray->ID;
     }
@@ -188,7 +193,7 @@ function cinnamon_profile($atts, $content = null) {
     }
 
     $ip_slug = get_imagepress_option('ip_slug');
-    $hub_user_info = get_userdata($author);
+    $hub_user_info = get_userdata((int) $author);
 
     $display = '';
 

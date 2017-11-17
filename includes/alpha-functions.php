@@ -34,7 +34,12 @@ function ipUriBuilder($sort, $range, $taxonomy, $q = '') {
         'q' => $q
     );
 
-    return strtok($_SERVER['REQUEST_URI'], '?') . '?' . http_build_query($uriParameters);
+    // Get position where '/page' text starts
+    $pos = strpos($_SERVER['REQUEST_URI'], '/page');
+    // Remove string from specific position
+    $finalUri = substr($_SERVER['REQUEST_URI'], 0, $pos);
+
+    return strtok($finalUri, '?') . '?' . http_build_query($uriParameters);
 }
 
 function getImagePressDiscoverFilters() {
