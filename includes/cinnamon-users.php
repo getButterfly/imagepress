@@ -169,6 +169,10 @@ function cinnamon_profile($atts) {
 
     global $wpdb;
 
+    if (!isset($_GET[$cinnamon_author_slug])) {
+        return;
+    }
+
     $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
     $userLogin = (string) sanitize_text_field($_GET[$cinnamon_author_slug]);
 

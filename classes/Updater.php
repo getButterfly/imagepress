@@ -73,12 +73,6 @@ class WP_GitHub_Updater {
 		// Hook into the plugin details screen
 		add_filter('plugins_api', array($this, 'get_plugin_info'), 10, 3);
 		add_filter('upgrader_post_install', array($this, 'upgrader_post_install'), 10, 3);
-
-		// set timeout
-		add_filter( 'http_request_timeout', array( $this, 'http_request_timeout' ) );
-
-		// set sslverify for zip download
-		add_filter( 'http_request_args', array( $this, 'http_request_sslverify' ), 10, 2 );
 	}
 
 	public function has_minimum_config() {
@@ -196,7 +190,8 @@ class WP_GitHub_Updater {
 	public function get_new_version() {
 		$version = get_site_transient( md5($this->config['slug']).'_new_version' );
 
-		if ( $this->overrule_transients() || ( !isset( $version ) || !$version || '' == $version ) ) {
+		if (($this->overrule_transients() || (!isset($version) || !$version || '' == $version)) || (isset($_GET['force-check']) && (int) $_GET['force-check'] === 1)) {
+		//if ( $this->overrule_transients() || ( !isset( $version ) || !$version || '' == $version ) ) {
 
 			$raw_response = $this->remote_get( trailingslashit( $this->config['raw_url'] ) . basename( $this->config['slug'] ) );
 
@@ -248,12 +243,22 @@ class WP_GitHub_Updater {
 	 * @return mixed
 	 */
 	public function remote_get( $query ) {
+		// set timeout
+		add_filter( 'http_request_timeout', array( $this, 'http_request_timeout' ) );
+
+		// set sslverify for zip download
+		add_filter( 'http_request_args', array( $this, 'http_request_sslverify' ), 10, 2 );
+
 		if ( ! empty( $this->config['access_token'] ) )
 			$query = add_query_arg( array( 'access_token' => $this->config['access_token'] ), $query );
 
 		$raw_response = wp_remote_get( $query, array(
 			'sslverify' => $this->config['sslverify']
 		) );
+
+		// Remove filters so we don't globally impact http requets.
+		remove_filter( 'http_request_timeout', array( $this, 'http_request_timeout' ) );
+		remove_filter( 'http_request_args', array( $this, 'http_request_sslverify' ) );
 
 		return $raw_response;
 	}
