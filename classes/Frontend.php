@@ -107,8 +107,6 @@ class Cinnamon_Frontend_User_Manager {
 				'registered' => true,
 				'message' => __('Registration was successful!', 'imagepress'),
 			));
-
-			$user_id = $errors;
         } else {
 			$registrationErrors = $errors->errors;
 			$display_errors = '<ul>';

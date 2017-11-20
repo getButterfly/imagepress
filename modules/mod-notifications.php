@@ -16,14 +16,13 @@ function notification_count($count = 50) {
         $authorID = $postdata['post_author'];
         $action = $line->actionType;
 
-        if(
+        if (
             ($action == 'loved' && $user_ID == $authorID) ||
             ($action == 'collected' && $user_ID == $authorID) ||
             ($action == 'added' && pwuf_is_following($user_ID, $authorID)) ||
             ($action == 'followed' && $user_ID == $line->postID) ||
             ($action == 'commented on' && $user_ID == $authorID && $user_ID != $line->userID) ||
             ($action == 'replied to a comment on' && $user_ID == get_comment($line->postID)->user_id) ||
-            ($action == 'featured' && $user_ID == $authorID) ||
             (0 == $line->postID || '-1' == $line->postID || $user_ID == $line->postID)
         ) {
             ++$n;
@@ -51,7 +50,6 @@ function notification_reset() {
             ($action == 'followed' && $user_ID == $line->postID) ||
             ($action == 'commented on' && $user_ID == $authorID && $user_ID != $line->userID) ||
             ($action == 'replied to a comment on' && $user_ID == get_comment($line->postID)->user_id) ||
-            ($action == 'featured' && $user_ID == $authorID) ||
             (0 == $line->postID || '-1' == $line->postID || $user_ID == $line->postID)
         ) {
             $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "notifications SET status = 1 WHERE ID = %d", $line->ID));
@@ -120,9 +118,6 @@ function imagepress_notifications($atts, $content = null) {
             if($user_ID == $b)
                 $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><div class="navatar">' . get_avatar($line->userID, 48) . '</div><i class="fa fa-fw fa-comment"></i> <a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> replied to your comment on <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a><time>' . $time . '</time></div>';
         }
-
-        if($action == 'featured' && $user_ID == $authorID && $user_ID != $line->userID)
-            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><div class="navatar">' . get_the_post_thumbnail($line->postID, array(48,48)) . '</div><i class="fa fa-fw fa-star"></i> Your <a href="' . get_permalink($line->postID) . '">' . get_the_title($line->postID) . '</a> ' . $ip_slug . ' was ' . $action . '<time>' . $time . '</time></div>';
 
         // custom
         if(0 == $line->postID || '-1' == $line->postID) {

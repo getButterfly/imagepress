@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.6.10
+Version: 7.5.7
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -210,12 +210,12 @@ function ip_column_action($column) {
 function ip_manage_users_custom_column($output = '', $column_name, $user_id) {
     if ($column_name === 'post_type_quota') {
         $quota = get_the_author_meta('ip_upload_limit', $user_id);
+        $limit = __('No quota', 'imagepress');
+
         if (isset($quota) && !empty($quota)) {
             $limit = $quota;
         } else if (!empty(get_imagepress_option('ip_global_upload_limit'))) {
             $limit = get_imagepress_option('ip_global_upload_limit');
-        } else {
-            $limit = __('No quota', 'imagepress');
         }
 
         // get current user uploads
@@ -245,7 +245,7 @@ function imagepress_add($atts) {
         'category' => ''
     ), $atts));
 
-    global $current_user;
+    global $wpdb, $current_user;
 
     $out = '';
     $ipModerate = (int) get_imagepress_option('ip_moderate');
@@ -329,8 +329,6 @@ function imagepress_add($atts) {
                     add_post_meta($post_id, 'imagepress_email', $_POST['imagepress_email'], true);
 
                 // custom fields
-                global $wpdb;
-
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
                 foreach ($result as $field) {
