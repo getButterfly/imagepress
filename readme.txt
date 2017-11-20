@@ -23,7 +23,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO: UI: Add colour control for profile pages (light text vs dark text)
 * TODO: FIX: Fix updater issue - https://core.trac.wordpress.org/ticket/33330
 
-= 7.5.6.7 =
+= 7.5.6.8 =
 * TEST: Tested updater fix
 
 = 7.5.6.6 =

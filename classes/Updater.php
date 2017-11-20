@@ -54,9 +54,24 @@ class WP_GitHub_Updater {
 			'proper_folder_name' => dirname(plugin_basename(__FILE__)),
 			'sslverify' => true,
 			'access_token' => '',
+			'branch' => 'master',
 		);
 
 		$this->config = wp_parse_args($config, $defaults);
+
+		if (isset($this->config['github_url'])) {
+			if (!array_key_exists('api_url')) {
+				$this->config['api_url'] = str_replace("github.com", "api.github.com/repos", $this->config['github_url']);
+			}
+			if (!array_key_exists('raw_url')) {
+				// the github raw url of your github repo
+				$this->config['raw_url'] = str_replace("github.com", "raw.github.com", $this->config['github_url']) . '/' . $this->config['branch'];
+			}
+			if (!array_key_exists('zip_url')) {
+				// the zip url of the github repo
+				$this->config['zip_url'] = $this->config['github_url'] . '/zipball/' . $this->config['branch'];
+			}
+		}
 
 		// if the minimum config isn't set, issue a warning and bail
 		if (!$this->has_minimum_config()) {
@@ -188,45 +203,23 @@ class WP_GitHub_Updater {
 	 * @return int $version the version number
 	 */
 	public function get_new_version() {
-		$version = get_site_transient( md5($this->config['slug']).'_new_version' );
+		$version = get_site_transient(md5($this->config['slug']) . '_new_version');
 
-		if (($this->overrule_transients() || (!isset($version) || !$version || '' == $version)) || (isset($_GET['force-check']) && (int) $_GET['force-check'] === 1)) {
-		//if ( $this->overrule_transients() || ( !isset( $version ) || !$version || '' == $version ) ) {
+		if ($this->overrule_transients() || empty($version) || (isset($_GET['force-check']) && (int) $_GET['force-check'] === 1)) {
+			$version = null;
 
 			$raw_response = $this->remote_get( trailingslashit( $this->config['raw_url'] ) . basename( $this->config['slug'] ) );
 
-			if ( is_wp_error( $raw_response ) )
+			if (!is_wp_error($raw_response)) {
 				$version = false;
+				preg_match('#^\s*Version\:\s*(.*)$#im', $raw_response['body'], $matches);
 
-			if (is_array($raw_response)) {
-				if (!empty($raw_response['body']))
-					preg_match( '/.*Version\:\s*(.*)$/mi', $raw_response['body'], $matches );
-			}
-
-			if ( empty( $matches[1] ) )
-				$version = false;
-			else
-				$version = $matches[1];
-
-			// back compat for older readme version handling
-			// only done when there is no version found in file name
-			if ( false === $version ) {
-				$raw_response = $this->remote_get( trailingslashit( $this->config['raw_url'] ) . $this->config['readme'] );
-
-				if ( is_wp_error( $raw_response ) )
-					return $version;
-
-				preg_match( '#^\s*`*~Current Version\:\s*([^~]*)~#im', $raw_response['body'], $__version );
-
-				if ( isset( $__version[1] ) ) {
-					$version_readme = $__version[1];
-					if ( -1 == version_compare( $version, $version_readme ) )
-						$version = $version_readme;
-				}
+				if (!empty($matches[1]))
+					$version = $matches[1];
 			}
 
 			// refresh every 6 hours
-			if ( false !== $version )
+			if ( ! empty( $version ) )
 				set_site_transient( md5($this->config['slug']).'_new_version', $version, 60*60*6 );
 		}
 

@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.6.7
+Version: 7.5.6.8
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -60,14 +60,10 @@ if (defined('ALLOW_IMAGEPRESS_UPDATE')) {
         $config = array(
             'slug' => plugin_basename(__FILE__),
             'proper_folder_name' => 'imagepress',
-            'api_url' => 'https://api.github.com/repos/getButterfly/imagepress',
-            'raw_url' => 'https://raw.github.com/getButterfly/imagepress/master',
             'github_url' => 'https://github.com/getButterfly/imagepress',
-            'zip_url' => 'https://github.com/getButterfly/imagepress/zipball/master',
-            'sslverify' => true,
             'requires' => '4.6',
             'tested' => '4.9',
-            'readme' => 'README.MD'
+            'readme' => 'README.MD',
         );
         new WP_GitHub_Updater($config);
     }
