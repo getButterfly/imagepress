@@ -60,14 +60,14 @@ class WP_GitHub_Updater {
 		$this->config = wp_parse_args($config, $defaults);
 
 		if (isset($this->config['github_url'])) {
-			if (!array_key_exists('api_url')) {
+			if (!array_key_exists('api_url', $defaults)) {
 				$this->config['api_url'] = str_replace("github.com", "api.github.com/repos", $this->config['github_url']);
 			}
-			if (!array_key_exists('raw_url')) {
+			if (!array_key_exists('raw_url', $defaults)) {
 				// the github raw url of your github repo
 				$this->config['raw_url'] = str_replace("github.com", "raw.github.com", $this->config['github_url']) . '/' . $this->config['branch'];
 			}
-			if (!array_key_exists('zip_url')) {
+			if (!array_key_exists('zip_url', $defaults)) {
 				// the zip url of the github repo
 				$this->config['zip_url'] = $this->config['github_url'] . '/zipball/' . $this->config['branch'];
 			}
