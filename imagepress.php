@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.7.2
+Version: 7.5.8
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -273,96 +273,95 @@ function imagepress_add($atts) {
         $notificationMessage = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
 
         if (!empty($_FILES['imagepress_image_file'])) {
-            if ($post_id == wp_insert_post($user_image_data)) {
-                imagepress_process_image('imagepress_image_file', $post_id);
+            $post_id = wp_insert_post($user_image_data);
+            imagepress_process_image('imagepress_image_file', $post_id);
 
-                // multiple images
-                if (1 == get_imagepress_option('ip_upload_secondary')) {
-                    $files = $_FILES['imagepress_image_additional'];
-                    if ($files) {
-                        foreach ($files['name'] as $key => $value) {
-                            if ($files['name'][$key]) {
-                                $file = array(
-                                    'name' => $files['name'][$key],
-                                    'type' => $files['type'][$key],
-                                    'tmp_name' => $files['tmp_name'][$key],
-                                    'error' => $files['error'][$key],
-                                    'size' => $files['size'][$key]
-                                );
-                            }
-                            $_FILES = array("attachment" => $file);
-                            foreach ($_FILES as $file => $array) {
-                                $attach_id = media_handle_upload($file, $post_id);
-                            }
+            // multiple images
+            if (1 == get_imagepress_option('ip_upload_secondary')) {
+                $files = $_FILES['imagepress_image_additional'];
+                if ($files) {
+                    foreach ($files['name'] as $key => $value) {
+                        if ($files['name'][$key]) {
+                            $file = array(
+                                'name' => $files['name'][$key],
+                                'type' => $files['type'][$key],
+                                'tmp_name' => $files['tmp_name'][$key],
+                                'error' => $files['error'][$key],
+                                'size' => $files['size'][$key]
+                            );
+                        }
+                        $_FILES = array("attachment" => $file);
+                        foreach ($_FILES as $file => $array) {
+                            $attach_id = media_handle_upload($file, $post_id);
                         }
                     }
                 }
-                // end multiple images
+            }
+            // end multiple images
 
-                if (isset($_POST['imagepress_image_category']))
-                    wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
+            if (isset($_POST['imagepress_image_category']))
+                wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
 
-                if (isset($_POST['imagepress_image_tag']))
-                    wp_set_object_terms($post_id, (int) $_POST['imagepress_image_tag'], 'imagepress_image_tag');
+            if (isset($_POST['imagepress_image_tag']))
+                wp_set_object_terms($post_id, (int) $_POST['imagepress_image_tag'], 'imagepress_image_tag');
 
-                // always moderate this category
-                $moderatedCategory = get_imagepress_option('ip_cat_moderation_include');
-                if (!empty($moderatedCategory)) {
-                    if ($_POST['imagepress_image_category'] == $moderatedCategory) {
-                        $ip_post = array();
-                        $ip_post['ID'] = $post_id;
-                        $ip_post['post_status'] = 'pending';
+            // always moderate this category
+            $moderatedCategory = get_imagepress_option('ip_cat_moderation_include');
+            if (!empty($moderatedCategory)) {
+                if ($_POST['imagepress_image_category'] == $moderatedCategory) {
+                    $ip_post = array();
+                    $ip_post['ID'] = $post_id;
+                    $ip_post['post_status'] = 'pending';
 
-                        wp_update_post($ip_post);
-                    }
+                    wp_update_post($ip_post);
                 }
-                //
+            }
+            //
 
-                if (isset($_POST['imagepress_video']))
-                    add_post_meta($post_id, 'imagepress_video', $_POST['imagepress_video'], true);
-                else
-                    add_post_meta($post_id, 'imagepress_video', '', true);
+            if (isset($_POST['imagepress_video']))
+                add_post_meta($post_id, 'imagepress_video', $_POST['imagepress_video'], true);
+            else
+                add_post_meta($post_id, 'imagepress_video', '', true);
 
-                if (isset($_POST['imagepress_author']))
-                    add_post_meta($post_id, 'imagepress_author', $_POST['imagepress_author'], true);
-                if (isset($_POST['imagepress_email']))
-                    add_post_meta($post_id, 'imagepress_email', $_POST['imagepress_email'], true);
+            if (isset($_POST['imagepress_author']))
+                add_post_meta($post_id, 'imagepress_author', $_POST['imagepress_author'], true);
+            if (isset($_POST['imagepress_email']))
+                add_post_meta($post_id, 'imagepress_email', $_POST['imagepress_email'], true);
 
-                // custom fields
-                $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
+            // custom fields
+            $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
-                foreach ($result as $field) {
-                    add_post_meta($post_id, $field['field_slug'], $_POST[$field['field_slug']], true);
+            foreach ($result as $field) {
+                add_post_meta($post_id, $field['field_slug'], $_POST[$field['field_slug']], true);
+            }
+            //
+
+            // collections
+            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+                $ip_collections = (int) ($_POST['ip_collections']);
+
+                if (!empty($_POST['ip_collections_new'])) {
+                    $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
+                    $ip_collection_status = (int) ($_POST['collection_status']);
+
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
+                } else {
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
                 }
-                //
+            }
+            //
 
-                // collections
-                if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                    $ip_collections = (int) ($_POST['ip_collections']);
+            imagepress_post_add_custom($post_id, $ip_image_author);
 
-                    if (!empty($_POST['ip_collections_new'])) {
-                        $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
-                        $ip_collection_status = (int) ($_POST['collection_status']);
+            $headers[] = "MIME-Version: 1.0\r\n";
+            $headers[] = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\r\n";
+            wp_mail($notificationEmail, $notificationSubject, $notificationMessage, $headers);
 
-                        $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
-                        $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
-                    } else {
-                        $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
-                    }
-                }
-                //
-
-                imagepress_post_add_custom($post_id, $ip_image_author);
-
-                $headers[] = "MIME-Version: 1.0\r\n";
-                $headers[] = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\r\n";
-                wp_mail($notificationEmail, $notificationSubject, $notificationMessage, $headers);
-
-                $ip_upload_redirection = get_imagepress_option('ip_upload_redirection');
-                if (!empty($ip_upload_redirection)) {
-                    wp_redirect(get_imagepress_option('ip_upload_redirection'));
-                    exit;
-                }
+            $ip_upload_redirection = get_imagepress_option('ip_upload_redirection');
+            if (!empty($ip_upload_redirection)) {
+                wp_redirect(get_imagepress_option('ip_upload_redirection'));
+                exit;
             }
         }
 
