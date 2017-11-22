@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.7.1
+Version: 7.5.7.2
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -109,7 +109,7 @@ function imagepress_menu() {
 
     add_submenu_page('edit.php?post_type=' . get_imagepress_option('ip_slug'), 'ImagePress Settings', 'ImagePress Settings', 'manage_options', 'imagepress_admin_page', 'imagepress_admin_page');
 
-    $url = 'https://getbutterfly.com/members/documentation/imagepress/';
+    $url = 'https://getbutterfly.com/support/documentation/imagepress/';
     $submenu['edit.php?post_type=' . get_imagepress_option('ip_slug')][] = array('<span style="color: #F1C40F;">Documentation</span>', 'manage_options', $url);
 
     $args = array(
@@ -344,10 +344,10 @@ function imagepress_add($atts) {
                         $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
                         $ip_collection_status = (int) ($_POST['collection_status']);
 
-                        $wpdb->query("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES ('$ip_collections_new', $ip_collection_status, $ip_image_author);");
-                        $wpdb->query("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES ($post_id, $wpdb->insert_id, $ip_image_author);");
+                        $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
+                        $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
                     } else {
-                        $wpdb->query("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES ($post_id, $ip_collections, $ip_image_author);");
+                        $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
                     }
                 }
                 //
@@ -818,73 +818,67 @@ function imagepress_activate() {
 
     // notifications table
     $table_name = $wpdb->prefix . 'notifications';
-    if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
+        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS %s (
             `ID` int(11) NOT NULL AUTO_INCREMENT,
             `userID` int(11) NOT NULL,
             `postID` int(11) NOT NULL,
-            `actionType` text COLLATE utf8_unicode_ci NOT NULL,
-            `actionIcon` text COLLATE utf8_unicode_ci NOT NULL,
+            `postKeyID` int(11) NOT NULL,
+            `actionType` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+            `actionIcon` mediumtext COLLATE utf8_unicode_ci NOT NULL,
             `actionTime` datetime NOT NULL,
             `status` tinyint(1) NOT NULL DEFAULT '0',
-
             PRIMARY KEY (`ID`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", $table_name);
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);
-
-        // this column holds the collection IDs
-        $wpdb->query("ALTER TABLE `" . $wpdb->prefix . "notifications` ADD `postKeyID` INT NOT NULL AFTER `postID`;");
     }
 
     // collections table
     $table_name = $wpdb->prefix . 'ip_collections';
-    if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-            `collection_ID` int(11) NOT NULL,
-            `collection_title` text COLLATE utf8_unicode_ci NOT NULL,
-            `collection_title_slug` text COLLATE utf8_unicode_ci NOT NULL,
+    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
+        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS %s (
+            `collection_ID` int(11) NOT NULL AUTO_INCREMENT,
+            `collection_title` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+            `collection_title_slug` mediumtext COLLATE utf8_unicode_ci NOT NULL,
             `collection_status` tinyint(4) NOT NULL DEFAULT '1',
             `collection_views` int(11) NOT NULL,
-            `collection_author_ID` int(11) NOT NULL
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+            `collection_author_ID` int(11) NOT NULL,
+            PRIMARY KEY (`collection_ID`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", $table_name);
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);
-
-        $wpdb->query("ALTER TABLE `" . $wpdb->prefix . "ip_collections` ADD PRIMARY KEY (`collection_ID`);");
-        $wpdb->query("ALTER TABLE `" . $wpdb->prefix . "ip_collections` MODIFY `collection_ID` int(11) NOT NULL AUTO_INCREMENT;");
     }
     $table_name = $wpdb->prefix . 'ip_collectionmeta';
-    if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-            `image_meta_ID` int(11) NOT NULL,
+    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
+        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS %s (
+            `image_meta_ID` int(11) NOT NULL AUTO_INCREMENT,
             `image_ID` int(11) NOT NULL,
             `image_collection_ID` int(11) NOT NULL,
-            `image_collection_author_ID` int(11) NOT NULL
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+            `image_collection_author_ID` int(11) NOT NULL,
+            PRIMARY KEY (`image_meta_ID`),
+            UNIQUE KEY `image_meta_ID` (`image_meta_ID`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", $table_name);
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);
-
-        $wpdb->query("ALTER TABLE `" . $wpdb->prefix . "ip_collectionmeta` ADD UNIQUE KEY `image_meta_ID` (`image_meta_ID`);");
-        $wpdb->query("ALTER TABLE `" . $wpdb->prefix . "ip_collectionmeta` MODIFY `image_meta_ID` int(11) NOT NULL AUTO_INCREMENT;");
     }
 
     // custom fields table
     $table_name = $wpdb->prefix . 'ip_fields';
-    if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
+        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS %s (
             `field_id` int(11) NOT NULL AUTO_INCREMENT,
             `field_order` int(11) NOT NULL,
             `field_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
             `field_slug` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
             `field_type` tinyint(4) NOT NULL,
-            `field_content` text COLLATE utf8_unicode_ci NOT NULL,
+            `field_content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
             PRIMARY KEY (`field_id`),
             UNIQUE KEY `field_id` (`field_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1", $table_name);
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);
