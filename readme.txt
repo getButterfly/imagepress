@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
 Tested up to: 4.9.1
-Stable tag: 7.5.8.1
+Stable tag: 7.6.0
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -21,12 +21,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
-= 7.6 =
-* TODO: UI: Add colour control for profile pages (light text vs dark text)
-* TODO: FIX: Fix updater issue - https://core.trac.wordpress.org/ticket/33330
-* TODO: FEATURE: Add beta updates
-
-= 7.5.8.1 =
+= 7.6.0 =
 * FIX: Fixed JS function being applied globally
 * FIX: Fixed registration not obeying WordPress native settings
 * FIX: Code quality fixes
