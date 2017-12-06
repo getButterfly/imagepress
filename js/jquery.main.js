@@ -262,21 +262,19 @@ jQuery(document).ready(function() {
 
 
     /* profile specific functions */
-    (function($) {
-        $('.ip-tab .ip-tabs').addClass('active').find('> li:eq(0)').addClass('current');
-        $('.ip-tab .ip-tabs li a:not(.imagepress-button)').click(function(g) {
-            var tab = $(this).closest('.ip-tab'),
-                index = $(this).closest('li').index();
+    jQuery('.ip-tab .ip-tabs').addClass('active').find('> li:eq(0)').addClass('current');
+    jQuery('.ip-tab .ip-tabs li a:not(.imagepress-button)').click(function(g) {
+        var tab = jQuery(this).closest('.ip-tab'),
+            index = jQuery(this).closest('li').index();
 
-            tab.find('.ip-tabs > li').removeClass('current');
-            $(this).closest('li').addClass('current');
+        tab.find('.ip-tabs > li').removeClass('current');
+        jQuery(this).closest('li').addClass('current');
 
-            tab.find('.tab_content').find('.ip-tabs-item').not('.ip-tabs-item:eq(' + index + ')').hide();
-            tab.find('.tab_content').find('.ip-tabs-item:eq(' + index + ')').show();
+        tab.find('.tab_content').find('.ip-tabs-item').not('.ip-tabs-item:eq(' + index + ')').hide();
+        tab.find('.tab_content').find('.ip-tabs-item:eq(' + index + ')').show();
 
-            g.preventDefault();
-        });
-    })(jQuery);
+        g.preventDefault();
+    });
 
     jQuery('.imagepress-follow a').on('click', function(e) {
         e.preventDefault();
@@ -495,6 +493,7 @@ jQuery(document).ready(function() {
                 });
             }
         }).enableSelection();
+    }
 
     jQuery('.editor-image-delete').click(function(e){
         if(confirm('Delete this image?')) {
