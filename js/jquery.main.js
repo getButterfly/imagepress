@@ -12,36 +12,34 @@ function addMoreFiles() {
 }
 
 /* ImagePress */
-(function($){
-    jQuery.fn.jConfirmAction = function(options) {
-        var theOptions = jQuery.extend({
-            question: "Are you sure you want to delete this image? This action is irreversible!",
-            yesAnswer: "Yes",
-            cancelAnswer: "No"
-        }, options);
+jQuery.fn.jConfirmAction = function(options) {
+    var theOptions = jQuery.extend({
+        question: "Are you sure you want to delete this image? This action is irreversible!",
+        yesAnswer: "Yes",
+        cancelAnswer: "No"
+    }, options);
 
-        return this.each(function(){
-            $(this).bind('click', function(e){
-                e.preventDefault();
-                var thisHref = $(this).attr("href");
-                if($(this).next('.question').length <= 0) {
-                    $(this).after('<div class="question"><i class="fa fa-exclamation-triangle"></i> ' + theOptions.question + '<br><span class="yes button noir-secondary">' + theOptions.yesAnswer + '</span><span class="cancel button">' + theOptions.cancelAnswer + '</span></div>');
-                }
+    return this.each(function(){
+        jQuery(this).bind('click', function(e){
+            e.preventDefault();
+            var thisHref = jQuery(this).attr("href");
+            if(jQuery(this).next('.question').length <= 0) {
+                jQuery(this).after('<div class="question"><i class="fa fa-exclamation-triangle"></i> ' + theOptions.question + '<br><span class="yes button noir-secondary">' + theOptions.yesAnswer + '</span><span class="cancel button">' + theOptions.cancelAnswer + '</span></div>');
+            }
 
-                $(this).next('.question').animate({opacity: 1}, 300);
-                $('.yes').bind('click', function() {
-                    window.location = thisHref;
-                });
+            jQuery(this).next('.question').animate({opacity: 1}, 300);
+            jQuery('.yes').bind('click', function() {
+                window.location = thisHref;
+            });
 
-                $('.cancel').bind('click', function() {
-                    $(this).parents('.question').fadeOut(300, function() {
-                        $(this).remove();
-                    });
+            jQuery('.cancel').bind('click', function() {
+                jQuery(this).parents('.question').fadeOut(300, function() {
+                    jQuery(this).remove();
                 });
             });
         });
-    };
-})(jQuery);
+    });
+};
 
 
 
@@ -561,48 +559,48 @@ jQuery(document).ready(function() {
      *
      * Allow AJAX processing of login, registration and password reset forms
      */
-    $("#regform").on("submit", function(e){
+    jQuery("#regform").on("submit", function(e){
         e.preventDefault();
 
-		$('#regform p.message').remove();
-        $('#regform h2').after('<p class="message notice">' + ipAjaxVar.registrationloadingmessage + '</p>');
+		jQuery('#regform p.message').remove();
+        jQuery('#regform h2').after('<p class="message notice">' + ipAjaxVar.registrationloadingmessage + '</p>');
 
-        $.ajax({
+        jQuery.ajax({
             type: "GET",
             dataType: "json",
             url: ipAjaxVar.ajaxurl,
-            data: $("#regform").serialize() + "&action=cinnamon_process_registration",
+            data: jQuery("#regform").serialize() + "&action=cinnamon_process_registration",
             success: function(results) {
                 if(results.registered === true) {
-                    $("#regform p.message").removeClass("notice").addClass("success").text(results.message).show();
+                    jQuery("#regform p.message").removeClass("notice").addClass("success").text(results.message).show();
                 } else {
-                    $("#regform p.message").removeClass("notice").addClass("error").html(results.message).show();
+                    jQuery("#regform p.message").removeClass("notice").addClass("error").html(results.message).show();
                 }
             }
         });
     });
 
-	$('#pswform').on('submit', function(e){
+	jQuery('#pswform').on('submit', function(e){
         e.preventDefault();
 
-        $("#pswform p.message").remove();
-        $("#pswform h2").after('<p class="message notice">' + ipAjaxVar.loadingmessage + '</p>');
+        jQuery("#pswform p.message").remove();
+        jQuery("#pswform h2").after('<p class="message notice">' + ipAjaxVar.loadingmessage + '</p>');
 
-        $.ajax({
+        jQuery.ajax({
             type: 'GET',
             dataType: 'json',
             url: ipAjaxVar.ajaxurl,
             data: {
                 'action': "cinnamon_process_psw_recovery", // Calls our wp_ajax_nopriv_ajaxlogin
-                'username': $('#pswform #forgot_login').val(),
-                'forgotten': $('#pswform input[name="forgotten"]').val(),
-                'security': $('#pswform #security').val()
+                'username': jQuery('#pswform #forgot_login').val(),
+                'forgotten': jQuery('#pswform input[name="forgotten"]').val(),
+                'security': jQuery('#pswform #security').val()
             },
             success: function(results) {
                 if(results.reset === true) {
-                    $('#pswform p.message').removeClass('notice').addClass('success').text(results.message).show();
+                    jQuery('#pswform p.message').removeClass('notice').addClass('success').text(results.message).show();
                 } else {
-                    $('#pswform p.message').removeClass('notice').addClass('error').html(results.message).show();
+                    jQuery('#pswform p.message').removeClass('notice').addClass('error').html(results.message).show();
                 }
             }
         });

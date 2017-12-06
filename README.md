@@ -1,6 +1,6 @@
 # ImagePress
 
-Version: 7.6.1
+Version: 7.6.2
 
 [![Version](https://cdn.rawgit.com/getbutterfly/imagepress/master/imagepress-version.svg)](https://getbutterfly.com/wordpress-plugins/imagepress/)
 [![Build Status](https://getbutterfly.com/web/imagepress-build.svg)](https://getbutterfly.com/wordpress-plugins/imagepress)
