@@ -38,7 +38,7 @@ function pwuf_follow_links_shortcode($atts) {
 add_shortcode( 'follow_links', 'pwuf_follow_links_shortcode' );
 
 // Shows the posts from users that the current user follows
-function pwuf_following_posts_shortcode($atts, $content = null) {
+function pwuf_following_posts_shortcode($atts) {
 	$following = pwuf_get_following();
 
 	if(empty($following))

@@ -1,5 +1,5 @@
 <?php
-function cinnamon_count_user_posts_by_type($userid, $post_type = 'post') {
+function cinnamon_count_user_posts_by_type($userid) {
     global $wpdb;
 
     $ip_slug = get_imagepress_option('ip_slug');

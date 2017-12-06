@@ -60,7 +60,7 @@ function notification_reset() {
 	die();
 }
 
-function imagepress_notifications($atts, $content = null) {
+function imagepress_notifications($atts) {
     extract(shortcode_atts(array(
         'count' => 50
     ), $atts));

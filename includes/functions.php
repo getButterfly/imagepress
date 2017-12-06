@@ -645,7 +645,7 @@ function kformat($number) {
     return number_format($number, 0, '.', ',');
 }
 
-function ip_related($i) {
+function ip_related() {
     global $post;
     ?>
     <h3><?php echo __('More by the same author', 'imagepress'); ?></h3>
@@ -794,10 +794,7 @@ function ip_get_field($atts) {
         'field' => '',
     ), $atts));
 
-    global $post;
-
-    $i = get_the_ID();
-    $field = get_post_meta($i, $field, true);
+    $field = get_post_meta(get_the_ID(), $field, true);
 
     return $field;
 }

@@ -375,15 +375,15 @@ class WP_GitHub_Updater {
 			return false;
 
 		$response->slug = $this->config['slug'];
-		$response->plugin_name  = $this->config['plugin_name'];
+		$response->plugin_name = $this->config['plugin_name'];
 		$response->version = $this->config['new_version'];
 		$response->author = $this->config['author'];
 		$response->homepage = $this->config['homepage'];
 		$response->requires = $this->config['requires'];
 		$response->tested = $this->config['tested'];
-		$response->downloaded   = 0;
+		$response->downloaded = 0;
 		$response->last_updated = $this->config['last_updated'];
-		$response->sections = array( 'description' => $this->config['description'] );
+		$response->sections = array('description' => $this->config['description']);
 		$response->download_link = $this->config['zip_url'];
 
 		return $response;
@@ -400,21 +400,20 @@ class WP_GitHub_Updater {
 	 * @param array   $result     the result of the move
 	 * @return array $result the result of the move
 	 */
-	public function upgrader_post_install( $true, $hook_extra, $result ) {
-
+	public function upgrader_post_install($true, $hook_extra, $result) {
 		global $wp_filesystem;
 
 		// Move & Activate
-		$proper_destination = WP_PLUGIN_DIR.'/'.$this->config['proper_folder_name'];
-		$wp_filesystem->move( $result['destination'], $proper_destination );
+		$proper_destination = WP_PLUGIN_DIR . '/' . $this->config['proper_folder_name'];
+		$wp_filesystem->move($result['destination'], $proper_destination);
 		$result['destination'] = $proper_destination;
-		$activate = activate_plugin( WP_PLUGIN_DIR.'/'.$this->config['slug'] );
+		$activate = activate_plugin(WP_PLUGIN_DIR . '/' . $this->config['slug']);
 
 		// Output the update message
-		$fail  = __( 'The plugin has been updated, but could not be reactivated. Please reactivate it manually.', 'github_plugin_updater' );
-		$success = __( 'Plugin reactivated successfully.', 'github_plugin_updater' );
+		$fail  = __('The plugin has been updated, but could not be reactivated. Please reactivate it manually.', 'github_plugin_updater');
+		$success = __('Plugin reactivated successfully.', 'github_plugin_updater');
 		echo is_wp_error( $activate ) ? $fail : $success;
-		return $result;
 
+		return $result;
 	}
 }

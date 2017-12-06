@@ -3,9 +3,7 @@ add_action('wp_ajax_nopriv_imagepress-like', 'imagepress_like');
 add_action('wp_ajax_imagepress-like', 'imagepress_like');
 
 function imagepress_like() {
-    $nonce = $_POST['nonce'];
-
-    if(isset($_POST['imagepress_like'])) {
+    if (isset($_POST['imagepress_like'])) {
         $post_id = $_POST['post_id']; // post id
 		$ip_vote_meta = '_like_count';
 		$like_count = get_post_meta($post_id, $ip_vote_meta, true); // post like count
@@ -143,7 +141,6 @@ function ipAlreadyLiked($post_id) { // test if user liked before
  */
 function ipGetPostLikeLink($post_id) {
     $output = '';
-	$ip_vote_meta = '_like_count';
 	$ip_vote_like = get_imagepress_option('ip_vote_like');
 	$ip_vote_unlike = get_imagepress_option('ip_vote_unlike');
 

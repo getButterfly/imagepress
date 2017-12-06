@@ -16,7 +16,7 @@ function imagepress_quota($atts) {
     }
 
     // get current user uploads
-    $userUploads = cinnamon_count_user_posts_by_type($user_id, get_imagepress_option('ip_slug'));
+    $userUploads = cinnamon_count_user_posts_by_type($user_id);
 
     return '<span class="imagepress-quota">' . $userUploads . '/<span>' . $limit . '</span></span>';
 }

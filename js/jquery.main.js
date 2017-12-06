@@ -13,7 +13,7 @@ function addMoreFiles() {
 
 /* ImagePress */
 (function($){
-    jQuery.fn.jConfirmAction = function(options){
+    jQuery.fn.jConfirmAction = function(options) {
         var theOptions = jQuery.extend({
             question: "Are you sure you want to delete this image? This action is irreversible!",
             yesAnswer: "Yes",
@@ -24,15 +24,16 @@ function addMoreFiles() {
             $(this).bind('click', function(e){
                 e.preventDefault();
                 var thisHref = $(this).attr("href");
-                if($(this).next('.question').length <= 0)
+                if($(this).next('.question').length <= 0) {
                     $(this).after('<div class="question"><i class="fa fa-exclamation-triangle"></i> ' + theOptions.question + '<br><span class="yes button noir-secondary">' + theOptions.yesAnswer + '</span><span class="cancel button">' + theOptions.cancelAnswer + '</span></div>');
+                }
 
                 $(this).next('.question').animate({opacity: 1}, 300);
-                $('.yes').bind('click', function(){
+                $('.yes').bind('click', function() {
                     window.location = thisHref;
                 });
 
-                $('.cancel').bind('click', function(){
+                $('.cancel').bind('click', function() {
                     $(this).parents('.question').fadeOut(300, function() {
                         $(this).remove();
                     });
@@ -99,19 +100,19 @@ jQuery(document).ready(function() {
         like.html('<i class="fa fa-heart"></i> <i class="fa fa-spinner fa-spin"></i>');
         jQuery.ajax({
             type: 'post',
-            url: ip_ajax_var.ajaxurl,
-            data: 'action=imagepress-like&nonce=' + ip_ajax_var.nonce + '&imagepress_like=&post_id=' + pid,
+            url: ipAjaxVar.ajaxurl,
+            data: 'action=imagepress-like&nonce=' + ipAjaxVar.nonce + '&imagepress_like=&post_id=' + pid,
             success: function(count){
                 if(count.indexOf('already') !== -1) {
                     var lecount = count.replace("already", "");
                     if(lecount === '0') {
-                        lecount = ip_ajax_var.likelabel;
+                        lecount = ipAjaxVar.likelabel;
                     }
                     like.removeClass('liked');
                     like.html('<i class="fa fa-heart"></i> ' + lecount);
                 }
                 else {
-                    count = ip_ajax_var.unlikelabel;
+                    count = ipAjaxVar.unlikelabel;
                     like.addClass('liked');
                     like.html('<i class="fa fa-heart-o"></i> ' + count);
                 }
@@ -165,7 +166,7 @@ jQuery(document).ready(function() {
             var post = jQuery(this).parents('.post:first');
             jQuery.ajax({
                 type: 'post',
-                url: ip_ajax_var.ajaxurl,
+                url: ipAjaxVar.ajaxurl,
                 data: {
                     action: 'ip_delete_post',
                     nonce: nonce,
@@ -193,7 +194,7 @@ jQuery(document).ready(function() {
             var nonce = jQuery(this).data('nonce');
             jQuery.ajax({
                 type: 'post',
-                url: ip_ajax_var.ajaxurl,
+                url: ipAjaxVar.ajaxurl,
                 data: {
                     action: 'ip_featured_post',
                     nonce: nonce,
@@ -216,7 +217,7 @@ jQuery(document).ready(function() {
         var id = jQuery(this).data('id');
         jQuery.ajax({
             type: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'notification_read',
                 id: id
@@ -230,7 +231,7 @@ jQuery(document).ready(function() {
         var userid = jQuery(this).data('userid');
         jQuery.ajax({
             type: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'notification_read_all',
                 userid: userid
@@ -280,8 +281,8 @@ jQuery(document).ready(function() {
     jQuery('.imagepress-follow a').on('click', function(e) {
         e.preventDefault();
         var $this = jQuery(this);
-        if(ip_ajax_var.logged_in != 'undefined' && ip_ajax_var.logged_in != 'true') {
-            alert(ip_ajax_var.login_required);
+        if(ipAjaxVar.logged_in != 'undefined' && ipAjaxVar.logged_in != 'true') {
+            alert(ipAjaxVar.login_required);
             return;
         }
 
@@ -289,17 +290,17 @@ jQuery(document).ready(function() {
             action: $this.hasClass('follow') ? 'follow' : 'unfollow',
             user_id: $this.data('user-id'),
             follow_id: $this.data('follow-id'),
-            nonce: ip_ajax_var.nonce
+            nonce: ipAjaxVar.nonce
         };
 
         jQuery('img.pwuf-ajax').show();
 
-        jQuery.post(ip_ajax_var.ajaxurl, data, function(response) {
+        jQuery.post(ipAjaxVar.ajaxurl, data, function(response) {
             if(response == 'success') {
                 jQuery('.imagepress-follow a').toggle();
             }
             else {
-                alert(ip_ajax_var.processing_error);
+                alert(ipAjaxVar.processing_error);
             }
 
             jQuery('img.pwuf-ajax').hide();
@@ -335,7 +336,7 @@ jQuery(document).ready(function() {
         jQuery('.collection-progress').fadeIn();
         jQuery.ajax({
             method: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'addCollection',
                 collection_author_id: jQuery('#collection_author_id').val(),
@@ -356,7 +357,7 @@ jQuery(document).ready(function() {
         var ipc = jQuery(this).data('collection-id');
         jQuery.ajax({
             method: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'deleteCollection',
                 collection_id: ipc,
@@ -372,7 +373,7 @@ jQuery(document).ready(function() {
         var ipc = jQuery(this).data('image-id');
         jQuery.ajax({
             method: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'deleteCollectionImage',
                 image_id: ipc,
@@ -389,7 +390,7 @@ jQuery(document).ready(function() {
         var ipc = jQuery(this).data('collection-id');
         jQuery.ajax({
             method: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'editCollectionTitle',
                 collection_id: ipc,
@@ -409,7 +410,7 @@ jQuery(document).ready(function() {
 
         jQuery.ajax({
             method: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'editCollectionStatus',
                 collection_id: ipc,
@@ -425,7 +426,7 @@ jQuery(document).ready(function() {
     jQuery('.modal .close').click(function(e){
         jQuery.ajax({
             method: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'ip_collections_display',
             }
@@ -439,7 +440,7 @@ jQuery(document).ready(function() {
         jQuery('.ip-loadingCollections').show();
         jQuery.ajax({
             method: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 action: 'ip_collections_display',
             }
@@ -457,7 +458,7 @@ jQuery(document).ready(function() {
 
         jQuery.ajax({
             method: 'post',
-            url: ip_ajax_var.ajaxurl,
+            url: ipAjaxVar.ajaxurl,
             data: {
                 collection_id: ipc,
                 action: 'ip_collection_display',
@@ -481,19 +482,19 @@ jQuery(document).ready(function() {
         return $helper;
     };
 
-    jQuery('.editor-image-manager').sortable({
-        helper: fixHelperModified,
-        handle: '.editor-image-handle',
-        opacity: 0.75,
-        update: function() {
-            var image_order = jQuery(this).sortable('serialize') + '&action=imagepress_list_update_order';
+    if (jQuery('.editor-image-manager').length) {
+        jQuery('.editor-image-manager').sortable({
+            helper: fixHelperModified,
+            handle: '.editor-image-handle',
+            opacity: 0.75,
+            update: function() {
+                var image_order = jQuery(this).sortable('serialize') + '&action=imagepress_list_update_order';
 
-            jQuery.post(ip_ajax_var.ajaxurl, image_order, function(response) {
-                //alert(response);
-                //console.log(image_order);
-            });
-        }
-    }).enableSelection();
+                jQuery.post(ipAjaxVar.ajaxurl, image_order, function(response) {
+                    // image order changed
+                });
+            }
+        }).enableSelection();
 
     jQuery('.editor-image-delete').click(function(e){
         if(confirm('Delete this image?')) {
@@ -502,7 +503,7 @@ jQuery(document).ready(function() {
             var id = jQuery(this).data('image-id');
             jQuery.ajax({
                 type: 'post',
-                url: ip_ajax_var.ajaxurl,
+                url: ipAjaxVar.ajaxurl,
                 data: {
                     action: 'ip_delete_post_simple',
                     id: id
@@ -538,7 +539,7 @@ jQuery(document).ready(function() {
 
             jQuery.ajax({
                 type: 'post',
-                url: ip_ajax_var.ajaxurl,
+                url: ipAjaxVar.ajaxurl,
                 data: {
                     action: 'ip_update_post_title',
                     title: title,
@@ -553,6 +554,63 @@ jQuery(document).ready(function() {
             });
         }
     });
+
+
+
+    /*
+     * Cinnamon Login
+     *
+     * Allow AJAX processing of login, registration and password reset forms
+     */
+    $("#regform").on("submit", function(e){
+        e.preventDefault();
+
+		$('#regform p.message').remove();
+        $('#regform h2').after('<p class="message notice">' + ipAjaxVar.registrationloadingmessage + '</p>');
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: ipAjaxVar.ajaxurl,
+            data: $("#regform").serialize() + "&action=cinnamon_process_registration",
+            success: function(results) {
+                if(results.registered === true) {
+                    $("#regform p.message").removeClass("notice").addClass("success").text(results.message).show();
+                } else {
+                    $("#regform p.message").removeClass("notice").addClass("error").html(results.message).show();
+                }
+            }
+        });
+    });
+
+	$('#pswform').on('submit', function(e){
+        e.preventDefault();
+
+        $("#pswform p.message").remove();
+        $("#pswform h2").after('<p class="message notice">' + ipAjaxVar.loadingmessage + '</p>');
+
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: ipAjaxVar.ajaxurl,
+            data: {
+                'action': "cinnamon_process_psw_recovery", // Calls our wp_ajax_nopriv_ajaxlogin
+                'username': $('#pswform #forgot_login').val(),
+                'forgotten': $('#pswform input[name="forgotten"]').val(),
+                'security': $('#pswform #security').val()
+            },
+            success: function(results) {
+                if(results.reset === true) {
+                    $('#pswform p.message').removeClass('notice').addClass('success').text(results.message).show();
+                } else {
+                    $('#pswform p.message').removeClass('notice').addClass('error').html(results.message).show();
+                }
+            }
+        });
+    });
+    /*
+     * End Cinnamon Login
+     */
 });
 
 
@@ -660,7 +718,7 @@ function replaceQueryParam(param, newval, search) {
 
 // ImagePress Grid UI
 jQuery(window).load(function() {
-    var gridUi = ip_ajax_var.grid_ui;
+    var gridUi = ipAjaxVar.grid_ui;
 
     if (gridUi === 'masonry') {
         if (jQuery('#ip-boxes').length) {
@@ -724,7 +782,7 @@ jQuery(document).ready(function () {
     if (jQuery('.profile-hub-container').length) {
         var sizeTotal = jQuery('#ip-boxes .ip_box').length,
             sizePerRow = jQuery('.ip-profile').data('ipw'),
-            sizePerPage = ip_ajax_var.imagesperpage;
+            sizePerPage = ipAjaxVar.imagesperpage;
 
         if (sizeTotal === 0) {
             jQuery('#ipProfileShowMore').hide();

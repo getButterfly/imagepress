@@ -460,7 +460,6 @@ function imagepress_admin_page() {
                     </thead>';
                     foreach ($result as $collection) {
                         echo '<tr>';
-                            $postslist = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['collection_ID'] . "' AND image_collection_author_ID = '" . get_current_user_id() . "' LIMIT 4", ARRAY_A);
                             $postslistcount = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['collection_ID'] . "' AND image_collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
                             $collectionUser = get_user_by('id', $collection['collection_author_ID']);
 
@@ -1403,7 +1402,6 @@ function imagepress_admin_page() {
                     <a href="#" class="ajax_trash" data-post="<?php echo $result->ID; ?>"><i class="fa fa-fw fa-trash"></i></a>&nbsp;
                     <?php
                     $display = '';
-                    $id = $result->ID;
                     $action = $result->actionType;
                     $nickname = get_the_author_meta('nickname', $result->userID);
                     $time = human_time_diff(strtotime($result->actionTime), current_time('timestamp')) . ' ago';

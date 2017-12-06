@@ -3,13 +3,16 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.5.8
+Version: 7.5.8.1
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
+License: GPL3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
 
-Copyright 2013, 2014, 2015, 2016, 2017 Ciprian Popescu (email: getbutterfly@gmail.com)
+ImagePress  Copyright (c) 2013-2018 Ciprian Popescu (email: getbutterfly@gmail.com)
+Ezdz        Copyright (c) 2016 Jay Salvat (https://github.com/jaysalvat/ezdz) (MIT)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -219,7 +222,7 @@ function ip_manage_users_custom_column($output = '', $column_name, $user_id) {
         }
 
         // get current user uploads
-        $userUploads = cinnamon_count_user_posts_by_type($user_id, get_imagepress_option('ip_slug'));
+        $userUploads = cinnamon_count_user_posts_by_type($user_id);
 
         if ($userUploads > 0) {
             $userUploads = '<a href="' . admin_url('edit.php?post_type=' . get_imagepress_option('ip_slug') . '&author=' . $user_id) . '">' . $userUploads . '</a>';
@@ -516,7 +519,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
     $ip_global_upload_limit_message = get_imagepress_option('ip_global_upload_limit_message');
 
     // get current user uploads
-    $user_uploads = cinnamon_count_user_posts_by_type($current_user->ID, $ip_slug);
+    $user_uploads = cinnamon_count_user_posts_by_type($current_user->ID);
 
     // get upload limit for current user
     $ip_user_upload_limit = get_the_author_meta('ip_upload_limit', $current_user->ID);
@@ -926,19 +929,25 @@ function ip_enqueue_scripts() {
         $grid_ui = 'basic';
     }
 
+	$accountPageUri = get_option('cinnamon_account_page');
+
     wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), '6.8.0', true);
-    wp_localize_script('ipjs-main', 'ip_ajax_var', array(
-        'imagesperpage' 	=> get_imagepress_option('ip_ipp'),
-        'authorsperpage' 	=> get_imagepress_option('ip_app'),
-        'likelabel' 		=> get_imagepress_option('ip_vote_like'),
-        'unlikelabel' 		=> get_imagepress_option('ip_vote_unlike'),
-        'processing_error' 	=> __('There was a problem processing your request.', 'imagepress'),
-        'login_required' 	=> __('Oops, you must be logged-in to follow users.', 'imagepress'),
-        'logged_in' 		=> is_user_logged_in() ? 'true' : 'false',
-        'ajaxurl' 			=> admin_url('admin-ajax.php'),
-        'nonce'             => wp_create_nonce('ajax-nonce'),
-        'ip_url'            => IP_PLUGIN_URL,
+    wp_localize_script('ipjs-main', 'ipAjaxVar', array(
+        'imagesperpage' => get_imagepress_option('ip_ipp'),
+        'authorsperpage' => get_imagepress_option('ip_app'),
+        'likelabel' => get_imagepress_option('ip_vote_like'),
+        'unlikelabel' => get_imagepress_option('ip_vote_unlike'),
+        'processing_error' => __('There was a problem processing your request.', 'imagepress'),
+        'login_required' => __('Oops, you must be logged-in to follow users.', 'imagepress'),
+        'logged_in' => is_user_logged_in() ? 'true' : 'false',
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('ajax-nonce'),
+        'ip_url' => IP_PLUGIN_URL,
         'grid_ui' => $grid_ui,
+
+        'redirecturl' => apply_filters('fum_redirect_to', $accountPageUri),
+		'loadingmessage' => __('Checking credentials...', 'imagepress'),
+		'registrationloadingmessage' => __('Processing registration...', 'imagepress'),
     ));
 }
 // end
