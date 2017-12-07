@@ -840,7 +840,7 @@ function imagepress_activate() {
     // collections table
     $table_name = $wpdb->prefix . 'ip_collections';
     if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
-        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS `$table_name` (
+        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `collection_ID` int(11) NOT NULL AUTO_INCREMENT,
             `collection_title` mediumtext COLLATE utf8_unicode_ci NOT NULL,
             `collection_title_slug` mediumtext COLLATE utf8_unicode_ci NOT NULL,
