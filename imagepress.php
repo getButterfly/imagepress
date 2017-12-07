@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.6.2
+Version: 7.6.3
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -65,7 +65,7 @@ if (defined('ALLOW_IMAGEPRESS_UPDATE')) {
             'proper_folder_name' => 'imagepress',
             'github_url' => 'https://github.com/getButterfly/imagepress',
             'requires' => '4.6',
-            'tested' => '4.9',
+            'tested' => '4.9.1',
             'readme' => 'README.MD',
         );
         new WP_GitHub_Updater($config);
@@ -820,8 +820,8 @@ function imagepress_activate() {
 
     // notifications table
     $table_name = $wpdb->prefix . 'notifications';
-    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
-        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS %s (
+    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `ID` int(11) NOT NULL AUTO_INCREMENT,
             `userID` int(11) NOT NULL,
             `postID` int(11) NOT NULL,
@@ -831,7 +831,7 @@ function imagepress_activate() {
             `actionTime` datetime NOT NULL,
             `status` tinyint(1) NOT NULL DEFAULT '0',
             PRIMARY KEY (`ID`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", $table_name);
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);
@@ -839,8 +839,8 @@ function imagepress_activate() {
 
     // collections table
     $table_name = $wpdb->prefix . 'ip_collections';
-    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
-        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS %s (
+    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS `$table_name` (
             `collection_ID` int(11) NOT NULL AUTO_INCREMENT,
             `collection_title` mediumtext COLLATE utf8_unicode_ci NOT NULL,
             `collection_title_slug` mediumtext COLLATE utf8_unicode_ci NOT NULL,
@@ -848,21 +848,21 @@ function imagepress_activate() {
             `collection_views` int(11) NOT NULL,
             `collection_author_ID` int(11) NOT NULL,
             PRIMARY KEY (`collection_ID`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", $table_name);
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);
     }
     $table_name = $wpdb->prefix . 'ip_collectionmeta';
-    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
-        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS %s (
+    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `image_meta_ID` int(11) NOT NULL AUTO_INCREMENT,
             `image_ID` int(11) NOT NULL,
             `image_collection_ID` int(11) NOT NULL,
             `image_collection_author_ID` int(11) NOT NULL,
             PRIMARY KEY (`image_meta_ID`),
             UNIQUE KEY `image_meta_ID` (`image_meta_ID`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", $table_name);
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);
@@ -870,8 +870,8 @@ function imagepress_activate() {
 
     // custom fields table
     $table_name = $wpdb->prefix . 'ip_fields';
-    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
-        $sql = $wpdb->prepare("CREATE TABLE IF NOT EXISTS %s (
+    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `field_id` int(11) NOT NULL AUTO_INCREMENT,
             `field_order` int(11) NOT NULL,
             `field_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
@@ -880,7 +880,7 @@ function imagepress_activate() {
             `field_content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
             PRIMARY KEY (`field_id`),
             UNIQUE KEY `field_id` (`field_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1", $table_name);
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1";
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);
