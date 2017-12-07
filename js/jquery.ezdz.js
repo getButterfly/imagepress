@@ -79,7 +79,7 @@
             // Build the container
             $container = $('<div class="' + settings.classes.main + '" />')
 
-            .on('dragover.ezdz', function() {
+            .on("dragover.ezdz", function() {
                 $(this).addClass(settings.classes.enter);
 
                 if ($.isFunction(settings.enter)) {
@@ -87,7 +87,7 @@
                 }
             })
 
-            .on('dragleave.ezdz', function() {
+            .on("dragleave.ezdz", function() {
                 $(this).removeClass(settings.classes.enter);
 
                 if ($.isFunction(settings.leaved)) {
@@ -100,12 +100,12 @@
             // Build the whole dropzone
             $input
                 .wrap($container)
-                .before('<div>' + settings.text + '</div>');
+                .before("<div>" + settings.text + "</div>");
 
             $ezdz = $input.parent('.' + settings.classes.main);
 
             // Preview a file at start if it's defined
-            value = settings.value || $input.data('value');
+            value = settings.value || $input.data("value");
 
             if (value) {
                 self.preview(value);
@@ -119,15 +119,15 @@
             // Events on the input
             $input
 
-            .on('focus.ezdz', function() {
+            .on("focus.ezdz", function() {
                 $ezdz.addClass(settings.classes.focus);
             })
 
-            .on('blur.ezdz', function() {
+            .on("blur.ezdz", function() {
                 $ezdz.removeClass(settings.classes.focus);
             })
 
-            .on('change.ezdz', function() {
+            .on("change.ezdz", function() {
                 var file = this.files[0];
 
                 // No file, so user has cancelled
@@ -136,25 +136,25 @@
                 }
 
                 // Info about the dropped or selected file
-                var basename  = file.name.replace(/\\/g,'/').replace( /.*\//, ''),
-                    extension = file.name.split('.').pop(),
+                var basename  = file.name.replace(/\\/g,'/').replace( /.*\//, ""),
+                    extension = file.name.split(".").pop(),
                     formatted = settings.format(basename);
 
                 file.extension = extension;
 
                 // Mime-Types
-                var allowed  = $input.attr('accept'),
+                var allowed  = $input.attr("accept"),
                     accepted = false,
                     valid    = true,
                     errors   = {
-                        'mimeType':  false,
-                        'maxSize':   false,
-                        'width':     false,
-                        'minWidth':  false,
-                        'maxWidth':  false,
-                        'height':    false,
-                        'minHeight': false,
-                        'maxHeight': false
+                        "mimeType":  false,
+                        "maxSize":   false,
+                        "width":     false,
+                        "minWidth":  false,
+                        "maxWidth":  false,
+                        "height":    false,
+                        "minHeight": false,
+                        "maxHeight": false
                     };
 
                 // Check the accepted Mime-Types from the input file
@@ -164,7 +164,7 @@
                     $.each(types, function(i, type) {
                         type = $.trim(type);
 
-                        if ('.' + extension === type) {
+                        if ("." + extension === type) {
                             accepted = true;
                             return false;
                         }
@@ -175,9 +175,9 @@
                         }
 
                         // Mime-Type with wildcards ex. image/*
-                        if (type.indexOf('/*') !== false) {
-                            var a = type.replace('/*', ''),
-                                b = file.type.replace(/(\/.*)$/g, '');
+                        if (type.indexOf("/*") !== false) {
+                            var a = type.replace("/*", ""),
+                                b = file.type.replace(/(\/.*)$/g, "");
 
                             if (a === b) {
                                 accepted = true;
@@ -194,11 +194,11 @@
                 }
 
                 // Reset the accepted / rejected classes
-                $ezdz.removeClass(settings.classes.reject + ' ' + settings.classes.accept);
+                $ezdz.removeClass(settings.classes.reject + " " + settings.classes.accept);
 
                 // If the Mime-Type is not accepted
                 if (accepted !== true) {
-                    $input.val('');
+                    $input.val("");
                     $ezdz.addClass(settings.classes.reject);
                     self.preview(null);
 
@@ -267,12 +267,12 @@
 
                         // The file is validated, so added to input
                         if (valid === true) {
-                            $ezdz.find('img').remove();
+                            $ezdz.find("img").remove();
 
                             if (isImage && settings.previewImage === true) {
-                                $ezdz.find('div').html($(img).fadeIn());
+                                $ezdz.find("div").html($(img).fadeIn());
                             } else {
-                                $ezdz.find('div').html('<span>' + formatted + '</span>');
+                                $ezdz.find("div").html("<span>" + formatted + "</span>");
                             }
 
                             $ezdz.addClass(settings.classes.accept);
