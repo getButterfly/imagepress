@@ -89,36 +89,33 @@ function my_edit_user_award_section($user) {
 	$terms = get_terms('award', array('hide_empty' => false));
 
 	if(is_admin()) { ?>
-		<h3><?php _e('ImagePress Details', 'imagepress'); ?></h3>
+		<h3><?php esc_html_e('ImagePress Details', 'imagepress'); ?></h3>
 		<table class="form-table">
 			<tr>
-				<th><label for="user_title"><?php _e('Status', 'imagepress'); ?></label></th>
+				<th><label for="user_title"><?php esc_html_e('Status', 'imagepress'); ?></label></th>
 				<td>
 					<select name="user_title" id="user_title">
 						<option selected><?php echo esc_attr(get_the_author_meta('user_title', $user->ID)); ?></option>
 						<option>Verified</option>
 						<option>Regular</option>
 					</select>
-					<span class="description"><?php _e('Select user verification status', 'imagepress'); ?></span>
+					<span class="description"><?php esc_html_e('Select user verification status', 'imagepress'); ?></span>
 				</td>
 			</tr>
 			<tr>
-				<th><label for="ip_upload_limit"><?php _e('User upload limit', 'imagepress'); ?></label></th>
+				<th><label for="ip_upload_limit"><?php esc_html_e('User upload limit', 'imagepress'); ?></label></th>
 				<td>
 					<input type="number" min="0" max="999999" step="1" name="ip_upload_limit" id="ip_upload_limit" value="<?php echo esc_attr(get_the_author_meta('ip_upload_limit', $user->ID)); ?>">
-					<span class="description"><?php _e('Set user upload limit', 'imagepress'); ?></span>
+					<span class="description"><?php esc_html_e('Set user upload limit', 'imagepress'); ?></span>
 				</td>
 			</tr>
 			<tr>
-				<th><label for="award"><?php _e('Select award(s)', 'imagepress'); ?></label></th>
+				<th><label for="award"><?php esc_html_e('Select award(s)', 'imagepress'); ?></label></th>
 				<td><?php
-				if(!empty($terms)) {
+				if (!empty($terms)) {
 					foreach($terms as $term) { ?>
 						<input type="checkbox" name="award[]" id="award-<?php echo esc_attr($term->slug); ?>" value="<?php echo esc_attr($term->slug); ?>" <?php checked(true, is_object_in_term($user->ID, 'award', $term)); ?>> <label for="award-<?php echo esc_attr($term->slug); ?>"><?php echo $term->name; ?></label><br>
 					<?php }
-				}
-				else {
-					_e('There are no awards available.', 'imagepress');
 				}
 				?></td>
 			</tr>
@@ -136,10 +133,10 @@ function extra_edit_tax_fields($tag) {
     $t_id = $tag->term_id;
     $term_meta = get_option("taxonomy_$t_id"); ?>
     <tr class="form-field">
-        <th scope="row" valign="top"><label for="cat_Image_url"><?php _e('Award Icon', 'imagepress'); ?></label></th>
+        <th scope="row" valign="top"><label for="cat_Image_url"><?php esc_html_e('Award Icon', 'imagepress'); ?></label></th>
         <td>
             <input type="text" name="term_meta[img]" id="term_meta[img]" value="<?php echo esc_attr($term_meta['img']) ? esc_attr($term_meta['img']) : ''; ?>">
-            <p class="description"><?php _e('Enter the FontAwesome icon name (e.g. fa-trophy)', 'imagepress'); ?></p>
+            <p class="description"><?php esc_html_e('Enter the FontAwesome icon name (e.g. fa-trophy)', 'imagepress'); ?></p>
         </td>
     </tr>
 <?php
@@ -150,9 +147,9 @@ function extra_add_tax_fields($tag) {
     $t_id = $tag->term_id;
     $term_meta = get_option("taxonomy_$t_id"); ?>
     <div class="form-field">
-        <label for="cat_Image_url"><?php _e('Award Icon', 'imagepress'); ?></label>
+        <label for="cat_Image_url"><?php esc_html_e('Award Icon', 'imagepress'); ?></label>
         <input type="text" name="term_meta[img]" id="term_meta[img]" value="<?php echo esc_attr($term_meta['img']) ? esc_attr($term_meta['img']) : ''; ?>">
-        <p class="description"><?php _e('Enter the FontAwesome icon name (e.g. fa-trophy)', 'imagepress'); ?></p>
+        <p class="description"><?php esc_html_e('Enter the FontAwesome icon name (e.g. fa-trophy)', 'imagepress'); ?></p>
     </div>
 <?php
 }
@@ -173,4 +170,3 @@ function save_extra_taxonomy_fields($term_id) {
 }
 add_action('edited_award', 'save_extra_taxonomy_fields', 10, 2);
 add_action('create_award', 'save_extra_taxonomy_fields', 10, 2);
-?>
