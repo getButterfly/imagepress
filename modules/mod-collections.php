@@ -158,21 +158,21 @@ function ip_collections_display_custom($atts) {
     ), $atts));
 
     global $wpdb;
-    $i = 0;
+    $collectionCount = 0;
 
-    if($mode == 'random')
+    if ($mode == 'random')
         $mode = 'RAND()';
 
-    $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = 1 ORDER BY $mode", ARRAY_A);
+    $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = %d ORDER BY $mode", 1), ARRAY_A);
 
     $out = '<div class="the">';
     foreach($result as $collection) {
-        $postslistcount = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['collection_ID'] . "'", ARRAY_A);
+        $postslistcount = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d", $collection['collection_ID']), ARRAY_A);
 
         if(count($postslistcount) >= 1) {
-            if($i < $count) {
+            if($collectionCount < $count) {
                 $out .= '<div class="ip_collections_edit ipc' . $collection['collection_ID'] . '" data-collection-edit="' . $collection['collection_ID'] . '">';
-                    $postslist = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['collection_ID'] . "' LIMIT 4", ARRAY_A);
+                    $postslist = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d LIMIT 4", $collection['collection_ID']), ARRAY_A);
 
                     $out .= '<div class="ip_collection_box">';
                         foreach($postslist as $collectable) {
@@ -189,7 +189,7 @@ function ip_collections_display_custom($atts) {
                     $out .= '</div>';
                 $out .= '</div>';
             }
-            ++$i;
+            ++$collectionCount;
         }
     }
     $out .= '</div><div style="clear:both;"></div>';
@@ -207,23 +207,23 @@ function ip_frontend_add_collection($ip_id) {
         $ip_collections = intval($_POST['ip_collections']);
 
         $current_user = wp_get_current_user();
-        $ip_collection_author_id = $current_user->ID;
+        $ipCollectionAuthorId = $current_user->ID;
 
         if (!empty($_POST['ip_collections_new'])) {
             $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
             $ip_collection_status = intval($_POST['collection_status']);
 
-            $wpdb->query("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES ('$ip_collections_new', $ip_collection_status, $ip_collection_author_id);");
-            $wpdb->query("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES ($ip_id, $wpdb->insert_id, $ip_collection_author_id);");
+            $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ipCollectionAuthorId));
+            $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d, %d, %d)", $ip_id, $wpdb->insert_id, $ipCollectionAuthorId));
             $ipc = $wpdb->insert_id;
         } else {
-            $wpdb->query("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES ($ip_id, $ip_collections, $ip_collection_author_id);");
+            $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d, %d, %d)", $ip_id, $ip_collections, $ipCollectionAuthorId));
             $ipc = $ip_collections;
         }
 
         // add notification
         $collection_time = current_time('mysql', true);
-        $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, postKeyID, actionType, actionIcon, actionTime) VALUES (null, %d, %d, %d, 'collected', 'fa-folder', %s)", $ip_collection_author_id, $ip_id, $ipc, $collection_time));
+        $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, postKeyID, actionType, actionIcon, actionTime) VALUES (null, %d, %d, %d, 'collected', 'fa-folder', %s)", $ipCollectionAuthorId, $ip_id, $ipc, $collection_time));
     }
     if (is_user_logged_in()) {
         $current_user = wp_get_current_user();
@@ -241,12 +241,12 @@ function ip_frontend_add_collection($ip_id) {
                     <?php
                     global $wpdb;
 
-                    $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
+                    $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = %d", get_current_user_id()), ARRAY_A);
 
                     echo '<select name="ip_collections">
                         <option value="">' . esc_html__('Choose a collection...', 'imagepress') . '</option>';
                         foreach($result as $collection) {
-                            $disabled = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_ID = '" . get_the_ID() . "' AND image_collection_ID = '" . $collection['collection_ID'] . "'", ARRAY_A);
+                            $disabled = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_ID = %d AND image_collection_ID = %d", get_the_ID(), $collection['collection_ID']), ARRAY_A);
 
                             echo '<option value="' . $collection['collection_ID'] . '"';
                             if(count($disabled) > 0)
