@@ -917,7 +917,7 @@ function ip_enqueue_scripts() {
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
 
     if (get_imagepress_option('ip_ezdz') === '1') {
-        wp_enqueue_script('ezdz', plugins_url('js/jquery.ezdz.min.js', __FILE__), array(), '0.5.1', true);
+        wp_enqueue_script('ezdz', plugins_url('js/jquery.ezdz.js', __FILE__), array(), '0.5.1', true);
     }
 
     if (get_imagepress_option('ip_grid_ui') === 'masonry') {
