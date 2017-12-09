@@ -279,11 +279,11 @@ function ip_editor() {
                 <?php wp_nonce_field('update_post_' . $edit_id, 'update_post_nonce'); ?>
 
                 <p>
-                    <label for="post_title"><?php esc_html_e('Title', 'imagepress'); ?></label><br>
+                    <label for="post_title"><?php esc_html_e('Title', 'imagepress'); ?></label>
                     <input type="text" id="post_title" name="post_title" value="<?php echo get_the_title($edit_id); ?>">
                 </p>
                 <p>
-                    <label for="postcontent"><?php esc_html_e('Description', 'imagepress'); ?></label><br>
+                    <label for="postcontent"><?php esc_html_e('Description', 'imagepress'); ?></label>
                     <textarea id="postcontent" name="postcontent" rows="3"><?php echo strip_tags(get_post_field('post_content', $edit_id)); ?></textarea></p>
                 <hr>
                 <?php if ('' != get_imagepress_option('ip_video_label')) { ?>
@@ -306,15 +306,15 @@ function ip_editor() {
                     $fieldName = sanitize_text_field($field['field_name']);
 
                     if ($fieldType === 1) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 2) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="url" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="url" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 3) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="email" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="email" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 4) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="number" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="number" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 5) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
                     } else if ($fieldType === 6) {
                         if ($ps_meta == 1) {
                             $checked = 'checked';
@@ -352,7 +352,7 @@ function ip_editor() {
                         $fieldType === 23 ||
                         $fieldType === 24
                     ) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     }
                 }
                 //
@@ -372,7 +372,7 @@ function ip_editor() {
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
                 ?>
-                <p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
+                <p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
 
                 <?php if(1 == get_imagepress_option('ip_upload_secondary')) { ?>
                     <hr>
@@ -405,7 +405,7 @@ function ip_editor() {
                     }
                     ?>
 
-                    <p><label for="imagepress_image_additional"><i class="fa fa-cloud-upload"></i> <?php esc_html_e('Add more images', 'imagepress'); ?> (<?php echo $uploadsize; ?>MB <?php esc_html_e('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple></p>
+                    <p><label for="imagepress_image_additional"><i class="fa fa-cloud-upload"></i> <?php esc_html_e('Add more images', 'imagepress'); ?> (<?php echo $uploadsize; ?>MB <?php esc_html_e('maximum', 'imagepress'); ?>)...</label><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple></p>
                 <?php } ?>
 
                 <hr>
