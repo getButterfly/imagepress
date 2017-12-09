@@ -754,7 +754,7 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
 
-                $out .= '<p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> ' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file_bulk[]" id="imagepress_image_file_bulk"></p>
+                $out .= '<p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> ' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file_bulk[]" id="imagepress_image_file_bulk"></p>
                 <hr>
             </div>
             <div id="endOfForm"></div>';

@@ -120,7 +120,7 @@ function imagepress_notifications($atts) {
         }
 
         // custom
-        if(0 == $line->postID || '-1' == $line->postID) {
+        if(0 == $line->userID || '-1' == $line->userID) {
             $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><i class="fa fa-fw ' . $line->actionIcon . '"></i> ' . $line->actionType . '<time>' . $time . '</time></div>';
         }
     }
