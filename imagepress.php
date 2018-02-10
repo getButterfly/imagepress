@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.6.3
+Version: 7.6.5
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -97,6 +97,7 @@ if (get_imagepress_option('cinnamon_mod_login') == 1) {
 //
 
 include IP_PLUGIN_PATH . '/includes/shortcodes.php';
+include IP_PLUGIN_PATH . '/includes/extra.php';
 
 add_action('init', 'imagepress_registration');
 
@@ -654,7 +655,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
                 $ip_ezdz_label = get_imagepress_option('ip_ezdz_label');
                 $out .= '<hr>';
                 $out .= '<div id="imagepress-errors"></div>';
-                $out .= '<p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> ' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" data-ezdz-label="' . $ip_ezdz_label . '" name="imagepress_image_file" id="imagepress_image_file" required></p>';
+                $out .= '<p><label for="imagepress_image_file"><i class="fas fa-cloud-upload-alt"></i> ' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" data-ezdz-label="' . $ip_ezdz_label . '" name="imagepress_image_file" id="imagepress_image_file" required></p>';
                 $out .= '<hr>';
 
                 if($ip_dropbox_enable === '1') {
@@ -673,7 +674,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
                 }
 
                 if(1 == $ip_upload_secondary) {
-                    $out .= '<p><label for="imagepress_image_additional"><i class="fa fa-cloud-upload"></i> Select file(s) (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple><br><small>Additional images (variants, making of, progress shots)</small></p><hr>';
+                    $out .= '<p><label for="imagepress_image_additional"><i class="fas fa-cloud-upload-alt"></i> Select file(s) (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple><br><small>Additional images (variants, making of, progress shots)</small></p><hr>';
                 }
 
                 if ($ip_upload_tos == 1 && !empty($ip_upload_tos_content)) {
@@ -755,12 +756,12 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
 
-                $out .= '<p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> ' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file_bulk[]" id="imagepress_image_file_bulk"></p>
+                $out .= '<p><label for="imagepress_image_file"><i class="fas fa-cloud-upload-alt"></i> ' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file_bulk[]" id="imagepress_image_file_bulk"></p>
                 <hr>
             </div>
             <div id="endOfForm"></div>';
 
-            $out .= '<div class="ip-addmore"><a href="#" onclick="addMoreFiles(); return false;" class="button noir-secondary"><i class="fa fa-plus-circle"></i> ' . __('Add more', 'imagepress') . '</a></div>';
+            $out .= '<div class="ip-addmore"><a href="#" onclick="addMoreFiles(); return false;" class="button noir-secondary"><i class="fas fa-plus-circle"></i> ' . __('Add more', 'imagepress') . '</a></div>';
 
             $out .= '<p>';
                 $out .= '<input type="submit" id="imagepress_submit_bulk" name="imagepress_submit_bulk" value="' . get_imagepress_option('ip_upload_label') . '" class="button noir-secondary">';
@@ -903,7 +904,7 @@ register_deactivation_hook(__FILE__, 'imagepress_deactivate');
 add_action('admin_enqueue_scripts', 'ip_enqueue_color_picker');
 function ip_enqueue_color_picker() {
     wp_enqueue_style('wp-color-picker');
-    wp_enqueue_style('fa', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.6/js/all.js', array(), '5.0.6', true);
     wp_enqueue_style('imagepress', plugins_url('css/ip-admin.css', __FILE__));
     wp_enqueue_script('ip.functions', plugins_url('js/functions.js', __FILE__), array('wp-color-picker'), false, true);
 }
@@ -912,7 +913,7 @@ function ip_enqueue_color_picker() {
 
 add_action('wp_enqueue_scripts', 'ip_enqueue_scripts');
 function ip_enqueue_scripts() {
-    wp_enqueue_style('fa', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.6/js/all.js', array(), '5.0.6', true);
 
     wp_enqueue_style('ip-reset', plugins_url('css/ip-reset.css', __FILE__));
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
@@ -1065,7 +1066,7 @@ function imagepress_widget($atts) {
         $display .= '';
         foreach ($getImages as $image) {
             if (get_imagepress_option('ip_comments') == 1)
-                $ip_comments = '<i class="fa fa-comments"></i> ' . get_comments_number($image->ID) . '';
+                $ip_comments = '<i class="fas fa-comments"></i> ' . get_comments_number($image->ID) . '';
             if (get_imagepress_option('ip_comments') == 0)
                 $ip_comments = '';
 
@@ -1079,7 +1080,7 @@ function imagepress_widget($atts) {
 
             $display .= '<div id="ip_container_2"><div class="ip_icon_hover">' .
                     '<div><strong>' . get_the_title($image->ID) . '</strong></div>' .
-                    '<div><small><i class="fa fa-eye"></i> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <i class="fa fa-heart"></i> ' . imagepress_get_like_count($image->ID) . '</small></div>
+                    '<div><small><i class="fas fa-eye"></i> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <i class="fas fa-heart"></i> ' . imagepress_get_like_count($image->ID) . '</small></div>
                 </div><a href="' . $ip_image_link . '" class="ip-link">' . wp_get_attachment_image($post_thumbnail_id, 'full') . '</a></div>';
         }
     }

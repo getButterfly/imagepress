@@ -689,7 +689,8 @@ ul, li {padding: 0; margin: 0; list-style: none}
     margin: 0 !important;
     list-style: none !important;
 }
-.ip-tabs .current a, .ip-tabs a:hover { background: none; color: #ffffff; }
+.ip-tabs .current a, .ip-tabs a:hover { background: none; }
+.ip-tabs .current a { font-weight: 600; }
 
 .ip-tabs-item p { margin: 0 0 8px 0; }
 

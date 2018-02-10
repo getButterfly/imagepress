@@ -109,7 +109,7 @@ function cinnamon_card($atts) {
                 $display .= '<div class="avatar-holder"><a href="' . getImagePressProfileUri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
 
                 if (get_the_author_meta('user_title', $author) == 'Verified')
-                    $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fa fa-check-square"></i></span>';
+                    $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fas fa-check-square"></i></span>';
                 else
                     $verified = '';
 
@@ -127,7 +127,7 @@ function cinnamon_card($atts) {
                 $display .= '</h3>';
 
                 if (!empty($hub_location))
-                    $display .= '<div class="location-holder"><small><i class="fa fa-map-marker teal"></i> <span class="location">' . get_the_author_meta('hub_location', $author) . '</span></small></div>';
+                    $display .= '<div class="location-holder"><small><i class="fas fa-map-marker-alt teal"></i> <span class="location">' . get_the_author_meta('hub_location', $author) . '</span></small></div>';
 
                 $display .= '<div class="cinnamon-stats">
                     <div class="cinnamon-meta"><span class="views">' . kformat(cinnamon_PostViews($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
@@ -167,12 +167,18 @@ function cinnamon_profile($atts) {
         'username' => '',
     ), $atts));
 
-    global $wpdb;
+    global $wpdb, $current_user;
 
     $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
 
+    // If no user is provided, get logged in user
     if (!isset($_GET[$cinnamon_author_slug])) {
-        return;
+        $current_user = wp_get_current_user();
+        if (!($current_user instanceof WP_User)) {
+            return;
+        } else {
+            $_GET[$cinnamon_author_slug] = $current_user->user_login;
+        }
     }
 
     $userLogin = (string) sanitize_text_field($_GET[$cinnamon_author_slug]);
@@ -202,11 +208,11 @@ function cinnamon_profile($atts) {
 
     $hub_googleplus = ''; $hub_facebook = ''; $hub_twitter = ''; $hub_user_url = '';
     if ($hub_user_info->googleplus != '')
-        $hub_googleplus = ' <a href="' . $hub_user_info->googleplus . '" target="_blank"><i class="fa fa-google-plus-square"></i></a>';
+        $hub_googleplus = ' <a href="' . $hub_user_info->googleplus . '" target="_blank"><i class="fab fa-google-plus-square"></i></a>';
     if ($hub_user_info->facebook != '')
-        $hub_facebook = ' <a href="' . $hub_user_info->facebook . '" target="_blank"><i class="fa fa-facebook-square"></i></a>';
+        $hub_facebook = ' <a href="' . $hub_user_info->facebook . '" target="_blank"><i class="fab fa-facebook-square"></i></a>';
     if ($hub_user_info->twitter != '')
-        $hub_twitter = ' <a href="https://twitter.com/' . $hub_user_info->twitter . '" target="_blank"><i class="fa fa-twitter-square"></i></a>';
+        $hub_twitter = ' <a href="https://twitter.com/' . $hub_user_info->twitter . '" target="_blank"><i class="fab fa-twitter-square"></i></a>';
 
     $hca = get_the_author_meta('hub_custom_cover', $author);
     $hca = wp_get_attachment_url($hca);
@@ -229,7 +235,7 @@ function cinnamon_profile($atts) {
                     $display .= '</div>';
 
                     if (get_the_author_meta('user_title', $author) == 'Verified')
-                        $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fa fa-check-square"></i></span>';
+                        $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fas fa-check-square"></i></span>';
                     else
                         $verified = '';
 
@@ -242,12 +248,14 @@ function cinnamon_profile($atts) {
                         $hub_name = $hubuser;
 
                     if ($hub_user_info->user_url != '')
-                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fa fa-link"></i></a>';
+                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
 
+                    $hub_anchor = getImagePressProfileUri($author, false);
                     $display .= '<div>
                         <div class="ph-nametag">
                             ' . $hub_name . $verified;
                             if(is_user_logged_in() && $username == $logged_in_user->user_login) {
+                                $display .= ' <a href="' . $hub_anchor . '">#</a>';
                                 $display .= ' <small><a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
                             }
                         $display .= '</div>
@@ -259,7 +267,7 @@ function cinnamon_profile($atts) {
                             $display .= '<br><b>' . __('Connect', 'imagepress') . '</b> ' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
                             if(get_the_author_meta('hub_status', $author) == 1)
-                                $display .= ' <a href="mailto:' . get_the_author_meta('email', $author) . '"><i class="fa fa-envelope"></i></a>';
+                                $display .= ' <a href="mailto:' . get_the_author_meta('email', $author) . '"><i class="fas fa-envelope"></i></a>';
                         $display .= '</div>
                     </div>';
                 $display .= '</div>';
@@ -271,7 +279,7 @@ function cinnamon_profile($atts) {
                     $display .= '<div class="imagepress-follow">' . do_shortcode('[follow_links follow_id="' . $author . '"]') . '</div>';
 
                 if(get_the_author_meta('user_title', $author) == 'Verified')
-                    $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fa fa-check-square"></i></span>';
+                    $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fas fa-check-square"></i></span>';
                 else
                     $verified = '';
 
@@ -284,7 +292,7 @@ function cinnamon_profile($atts) {
                     $hub_name = $hubuser;
 
                 if($hub_user_info->user_url != '')
-                    $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fa fa-link"></i></a>';
+                    $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
 
                 $display .= '<h2>' . $hub_name . $verified . '</h2>
                 <p>';
@@ -295,7 +303,7 @@ function cinnamon_profile($atts) {
                     $display .= $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
                     if(is_user_logged_in() && $username == $logged_in_user->user_login)
-                        $display .= ' | <a href="' . get_imagepress_option('cinnamon_edit_page') . '"><i class="fa fa-pencil-square-o"></i> ' . get_imagepress_option('cinnamon_edit_label') . '</a>';
+                        $display .= ' | <a href="' . get_imagepress_option('cinnamon_edit_page') . '"><i class="fas fa-pen-square"></i> ' . get_imagepress_option('cinnamon_edit_label') . '</a>';
                 $display .= '</p>';
             $display .= '</div>';
         }
@@ -401,7 +409,7 @@ function cinnamon_profile($atts) {
                                         if(isset($term_data['img']))
                                             $display .= '<i class="fa ' . $term_data['img'] . '"></i> ';
                                         else
-                                            $display .= '<i class="fa fa-trophy"></i> ';
+                                            $display .= '<i class="fas fa-trophy"></i> ';
                                     $display .= $term->name . '</span>';
                                 }
                             }
@@ -620,15 +628,15 @@ function cinnamon_profile_edit($atts) {
                         <div class="ip-tabs-item" style="display: none;">
                             <table class="form-table">
                                 <tr>
-                                    <th><label for="facebook"><i class="fa fa-facebook-square"></i> ' . __('Facebook profile URL', 'imagepress') . '</label></th>
+                                    <th><label for="facebook"><i class="fab fa-facebook-square"></i> ' . __('Facebook profile URL', 'imagepress') . '</label></th>
                                     <td><input name="facebook" type="url" id="facebook" value="' . get_the_author_meta('facebook', $userid) . '"></td>
                                 </tr>
                                 <tr>
-                                    <th><label for="twitter"><i class="fa fa-twitter-square"></i> ' . __('Twitter username', 'imagepress') . '</label></th>
+                                    <th><label for="twitter"><i class="fab fa-twitter-square"></i> ' . __('Twitter username', 'imagepress') . '</label></th>
                                     <td><input name="twitter" type="text" id="twitter" value="' . get_the_author_meta('twitter', $userid) . '"></td>
                                 </tr>
                                 <tr>
-                                    <th><label for="googleplus"><i class="fa fa-google-plus-square"></i> ' . __('Google+ profile URL', 'imagepress') . '</label></th>
+                                    <th><label for="googleplus"><i class="fab fa-google-plus-square"></i> ' . __('Google+ profile URL', 'imagepress') . '</label></th>
                                     <td><input name="googleplus" type="url" id="googleplus" value="' . get_the_author_meta('googleplus', $userid) . '"></td>
                                 </tr>
                             </table>
@@ -701,22 +709,22 @@ function cinnamon_profile_edit($atts) {
                         if(get_imagepress_option('ip_mod_collections') == 1) {
                             $out .= '<div class="ip-tabs-item" style="display: none;">
                                 <p>
-                                    <a href="#" class="toggleModal button noir-secondary"><i class="fa fa-plus"></i> ' . __('Create new collection', 'imagepress') . '</a>
-                                    <span class="ip-loadingCollections"><i class="fa fa-cog fa-spin"></i> ' . __('Loading collections...', 'imagepress') . '</span>
-                                    <span class="ip-loadingCollectionImages"><i class="fa fa-cog fa-spin"></i> ' . __('Loading collection images...', 'imagepress') . '</span>
-                                    <a href="#" class="imagepress-collections imagepress-float-right button"><i class="fa fa-refresh"></i></a>
+                                    <a href="#" class="toggleModal button noir-secondary"><i class="fas fa-plus"></i> ' . __('Create new collection', 'imagepress') . '</a>
+                                    <span class="ip-loadingCollections"><i class="fas fa-cog fa-spin"></i> ' . __('Loading collections...', 'imagepress') . '</span>
+                                    <span class="ip-loadingCollectionImages"><i class="fas fa-cog fa-spin"></i> ' . __('Loading collection images...', 'imagepress') . '</span>
+                                    <a href="#" class="imagepress-collections imagepress-float-right button"><i class="fas fa-sync-alt"></i></a>
                                 </p>
                                 <div class="modal">
                                     <h2>' . __('Create new collection', 'imagepress') . '</h2>
-                                    <a href="#" class="close toggleModal"><i class="fa fa-times"></i> ' . __('Close', 'imagepress') . '</a>
+                                    <a href="#" class="close toggleModal"><i class="fas fa-times"></i> ' . __('Close', 'imagepress') . '</a>
 
                                     <input type="hidden" id="collection_author_id" name="collection_author_id" value="' . $userid . '">
                                     <p><input type="text" id="collection_title" name="collection_title" placeholder="' . __('Collection title', 'imagepress') . '"></p>
                                     <p><label>Make this collection</label> <select id="collection_status"><option value="1">' . __('Public', 'imagepress') . '</option><option value="0">' . __('Private', 'imagepress') . '</option></select></p>
                                     <p>
                                         <input type="submit" value="' . __('Create', 'imagepress') . '" class="addCollection">
-                                        <label class="collection-progress"><i class="fa fa-cog fa-spin"></i></label>
-                                        <label class="showme"> <i class="fa fa-check"></i> ' . __('Collection created!', 'imagepress') . '</label>
+                                        <label class="collection-progress"><i class="fas fa-cog fa-spin"></i></label>
+                                        <label class="showme"> <i class="fas fa-check"></i> ' . __('Collection created!', 'imagepress') . '</label>
                                     </p>
                                 </div>
 
@@ -762,7 +770,7 @@ function cinnamon_profile_edit($atts) {
                                                 <a href="' . $ip_image_link . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a>
                                             </div>
                                             <div class="editor-image-tools">
-                                                <a href="#" class="editor-image-delete" data-image-id="' . $i . '"><i class="fa fa-trash" aria-hidden="true"></i> ' . __('Delete', 'imagepress') . '</a>
+                                                <a href="#" class="editor-image-delete" data-image-id="' . $i . '"><i class="fas fa-trash-alt" aria-hidden="true"></i> ' . __('Delete', 'imagepress') . '</a>
                                             </div>
                                             <input type="text" class="editableImage" id="listImage_' . $i . '" data-image-id="' . $i . '" value="' . get_the_title($i) . '">
                                             <span class="editableImageStatus editableImageStatus_' . $i . '"></span>
@@ -785,7 +793,7 @@ function cinnamon_profile_edit($atts) {
                             <input name="updateuser" type="submit" class="button" id="updateuser" value="' . __('Update', 'imagepress') . '">';
                             wp_nonce_field('update-user');
                             $out .= '<input name="action" type="hidden" id="action" value="update-user">
-                            <i class="fa fa-share-square"></i> <a href="' . getImagePressProfileUri($userid, false) . '">' . __('View and share your profile', 'imagepress') . '</a>
+                            <i class="fas fa-share-alt-square"></i> <a href="' . getImagePressProfileUri($userid, false) . '">' . __('View and share your profile', 'imagepress') . '</a>
                         </td>
                     </tr>
                 </table>
@@ -875,7 +883,7 @@ function cinnamon_awards() {
                 if(isset($term_data['img']))
                     echo '<i class="fa ' . $term_data['img'] . '"></i> ';
                 else
-                    echo '<i class="fa fa-trophy"></i> ';
+                    echo '<i class="fas fa-trophy"></i> ';
                 echo $term->name . '</span> <span>' . $term->description . '<br><small>(' . $term->count . ' author(s) received this award)</small></span>';
             echo '</p>';
         }

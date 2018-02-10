@@ -92,12 +92,12 @@ function ip_collections_display() {
                 }
             echo '</div>';
 
-            echo '<div class="ip_collections_overlay">' . (($collection['collection_status'] == 0) ? '<i class="fa fa-fw fa-eye-slash"></i> ' : '') . '<i class="fa fa-fw fa-file"></i> ' . count($postslistcount) . '</div>';
+            echo '<div class="ip_collections_overlay">' . (($collection['collection_status'] == 0) ? '<i class="fas fa-fw fa-eye-slash"></i> ' : '') . '<i class="fas fa-fw fa-file"></i> ' . count($postslistcount) . '</div>';
 
             echo '<div class="collection_details">';
                 echo '<h3 class="collection-title" data-collection-id="' . $collection['collection_ID'] . '"><a href="#" class="editCollection" data-collection-id="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></h3>';
 
-                echo '<div><a href="#" class="changeCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fa fa-pencil"></i> ' . esc_html__('Edit', 'imagepress') . '</a></div>';
+                echo '<div><a href="#" class="changeCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-pencil-alt"></i> ' . esc_html__('Edit', 'imagepress') . '</a></div>';
             echo '</div>';
 
             echo '<div class="collection_details_edit cde' . $collection['collection_ID'] . '">
@@ -112,9 +112,9 @@ function ip_collections_display() {
                 $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
                 echo '<p><label>' . esc_html__('Share your collection', 'imagepress') . '</label><input type="url" value="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '" readonly></p>';
 
-                echo '<a href="#" class="saveCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fa fa-check"></i></a>';
-                echo '<a href="#" class="closeCollectionEdit button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fa fa-times"></i></a>';
-                echo '<a href="#" class="deleteCollection button" data-collection-id="' . $collection['collection_ID'] . '"><i class="fa fa-trash"></i></a>';
+                echo '<a href="#" class="saveCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-check"></i></a>';
+                echo '<a href="#" class="closeCollectionEdit button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-times"></i></a>';
+                echo '<a href="#" class="deleteCollection button" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-trash"></i></a>';
             echo '</div>';
         echo '</div>';
     }
@@ -138,7 +138,7 @@ function ip_collections_display_public($author_ID) {
                 }
             $out .= '</div>';
 
-            $out .= '<div class="ip_collections_overlay"><i class="fa fa-file"></i> ' . count($postslistcount) . '</div>';
+            $out .= '<div class="ip_collections_overlay"><i class="fas fa-file"></i> ' . count($postslistcount) . '</div>';
 
             $out .= '<div class="collection_details">';
                 $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
@@ -180,7 +180,7 @@ function ip_collections_display_custom($atts) {
                         }
                     $out .= '</div>';
 
-                    $out .= '<div class="ip_collections_overlay"><i class="fa fa-file"></i> ' . count($postslistcount) . '</div>';
+                    $out .= '<div class="ip_collections_overlay"><i class="fas fa-file"></i> ' . count($postslistcount) . '</div>';
 
                     $out .= '<div class="collection_details">';
                         $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
@@ -228,11 +228,11 @@ function ip_frontend_add_collection($ip_id) {
     if (is_user_logged_in()) {
         $current_user = wp_get_current_user();
         ?>
-        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><i class="fa fa-fw fa-plus"></i><span class="ip-icon-label"> <?php echo esc_html__('Add to collection', 'imagepress'); ?></span></a> <?php if (isset($_POST['collectme'])) { echo ' <i class="fa fa-check"></i>'; } ?>
+        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><i class="fas fa-fw fa-plus"></i><span class="ip-icon-label"> <?php echo esc_html__('Add to collection', 'imagepress'); ?></span></a> <?php if (isset($_POST['collectme'])) { echo ' <i class="fas fa-check"></i>'; } ?>
 
         <div class="frontEndModal ui">
             <h2><?php echo esc_html__('Add to collection', 'imagepress'); ?></h2>
-            <a href="#" class="close toggleFrontEndModal"><i class="fa fa-times"></i> <?php echo esc_html__('Close', 'imagepress'); ?></a>
+            <a href="#" class="close toggleFrontEndModal"><i class="fas fa-times"></i> <?php echo esc_html__('Close', 'imagepress'); ?></a>
 
             <form method="post" class="thin-ui-form">
                 <input type="hidden" id="collection_author_id" name="collection_author_id" value="<?php echo $current_user->ID; ?>">
@@ -267,8 +267,8 @@ function ip_frontend_add_collection($ip_id) {
                 </p>
                 <p>
                     <input type="submit" name="collectme" value="<?php echo esc_html__('Add', 'imagepress'); ?>">
-                    <label class="collection-progress"><i class="fa fa-cog fa-spin"></i></label>
-                    <label class="showme"> <i class="fa fa-check"></i> <?php echo esc_html__('Collection created!', 'imagepress'); ?></label>
+                    <label class="collection-progress"><i class="fas fa-cog fa-spin"></i></label>
+                    <label class="showme"> <i class="fas fa-check"></i> <?php echo esc_html__('Collection created!', 'imagepress'); ?></label>
                 </p>
             </form>
         </div>
@@ -361,7 +361,7 @@ function imagepress_collection($atts) {
         $out .= '<div class="imagepress-float-right">' . $collection_row['collection_views'] . ' ' . esc_html__('views', 'imagepress') . ' | ' . count($collectionables) . ' ' . esc_html__('images', 'imagepress') . '</div>';
         $out .= '<div class="imagepress-float-left"><a href="' . get_permalink($last_image_row['image_ID']) . '">' . get_the_post_thumbnail($last_image_row['image_ID'], 'thumbnail') . '</a></div>';
         $out .= '<div class="tcm-title">' . $collection_row['collection_title'] . '</div>';
-        $out .= '<i class="fa fa-user"></i> ' . getImagePressProfileUri($collection_row['collection_author_ID']);
+        $out .= '<i class="fas fa-user-circle"></i> ' . getImagePressProfileUri($collection_row['collection_author_ID']);
         $out .= '<div class="ipclear"></div>';
     $out .= '</div>';
 
@@ -469,7 +469,7 @@ function imagepress_collection($atts) {
 
                     $logged_in_user = wp_get_current_user();
                     if ($collection_row['collection_author_ID'] == $logged_in_user->ID) {
-                        $out .= '<div class="ip_box_bottom"><a href="#" class="deleteCollectionImage" data-image-id="' . $i . '"><i class="fa fa-times"></i> Remove</a></div>';
+                        $out .= '<div class="ip_box_bottom"><a href="#" class="deleteCollectionImage" data-image-id="' . $i . '"><i class="fas fa-times"></i> Remove</a></div>';
                     }
 
                     $out .= '</div>';

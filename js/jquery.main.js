@@ -24,7 +24,7 @@ jQuery.fn.jConfirmAction = function(options) {
             e.preventDefault();
             var thisHref = jQuery(this).attr("href");
             if(jQuery(this).next('.question').length <= 0) {
-                jQuery(this).after('<div class="question"><i class="fa fa-exclamation-triangle"></i> ' + theOptions.question + '<br><span class="yes button noir-secondary">' + theOptions.yesAnswer + '</span><span class="cancel button">' + theOptions.cancelAnswer + '</span></div>');
+                jQuery(this).after('<div class="question"><i class="fas fa-exclamation-triangle"></i> ' + theOptions.question + '<br><span class="yes button noir-secondary">' + theOptions.yesAnswer + '</span><span class="cancel button">' + theOptions.cancelAnswer + '</span></div>');
             }
 
             jQuery(this).next('.question').animate({opacity: 1}, 300);
@@ -95,7 +95,7 @@ jQuery(document).ready(function() {
         e.stopImmediatePropagation();
         var like = jQuery(this);
         var pid = like.data('post_id');
-        like.html('<i class="fa fa-heart"></i> <i class="fa fa-spinner fa-spin"></i>');
+        like.html('<i class="fas fa-heart"></i> <i class="fas fa-spinner fa-spin"></i>');
         jQuery.ajax({
             type: 'post',
             url: ipAjaxVar.ajaxurl,
@@ -107,12 +107,12 @@ jQuery(document).ready(function() {
                         lecount = ipAjaxVar.likelabel;
                     }
                     like.removeClass('liked');
-                    like.html('<i class="fa fa-heart"></i> ' + lecount);
+                    like.html('<i class="fas fa-heart"></i> ' + lecount);
                 }
                 else {
                     count = ipAjaxVar.unlikelabel;
                     like.addClass('liked');
-                    like.html('<i class="fa fa-heart-o"></i> ' + count);
+                    like.html('<i class="far fa-heart"></i> ' + count);
                 }
             }
         });
@@ -143,7 +143,7 @@ jQuery(document).ready(function() {
         jQuery('#imagepress-errors').html('');
         jQuery('#imagepress_submit').prop('disabled', true);
         jQuery('#imagepress_submit').css('opacity', '0.5');
-        jQuery('#ipload').html('<i class="fa fa-cog fa-spin"></i> Uploading...');
+        jQuery('#ipload').html('<i class="fas fa-cog fa-spin"></i> Uploading...');
     });
     /* end upload */
 
@@ -236,7 +236,7 @@ jQuery(document).ready(function() {
             }
         });
 
-        jQuery('.notifications-bell').html('<i class="fa fa-bell-o"></i><sup>0</sup>');
+        jQuery('.notifications-bell').html('<i class="far fa-bell"></i><sup>0</sup>');
     });
 
     jQuery('.notifications-container .notifications-inner').greedyScroll(25);
@@ -532,7 +532,7 @@ jQuery(document).ready(function() {
             var id = jQuery(this).data('image-id');
             var title = jQuery(this).val();
 
-            jQuery('.editableImageStatus_' + id).show().html('<i class="fa fa-cog fa-spin fa-fw"></i>');
+            jQuery('.editableImageStatus_' + id).show().html('<i class="fas fa-cog fa-spin fa-fw"></i>');
 
             jQuery.ajax({
                 type: 'post',
@@ -545,7 +545,7 @@ jQuery(document).ready(function() {
                 success: function(result) {
                     if(result == 'success') {
                         jQuery('#listImage_' + id).removeClass('editableImageActive');
-                        jQuery('.editableImageStatus_' + id).show().html('<i class="fa fa-check" aria-hidden="true"></i>');
+                        jQuery('.editableImageStatus_' + id).show().html('<i class="fas fa-check" aria-hidden="true"></i>');
                     }
                 }
             });
@@ -680,15 +680,15 @@ jQuery(document).ready(function() {
 
         // Check if dropdown has changed on page load
         sorterDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fa fa-cog fa-spin fa-fw"></i>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
             location.href = sorterDropdown.value;
         }
         rangerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fa fa-cog fa-spin fa-fw"></i>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
             location.href = rangerDropdown.value;
         }
         taxxxerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fa fa-cog fa-spin fa-fw"></i>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
             location.href = taxxxerDropdown.value;
         }
 
