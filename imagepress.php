@@ -97,7 +97,6 @@ if (get_imagepress_option('cinnamon_mod_login') == 1) {
 //
 
 include IP_PLUGIN_PATH . '/includes/shortcodes.php';
-include IP_PLUGIN_PATH . '/includes/extra.php';
 
 add_action('init', 'imagepress_registration');
 
