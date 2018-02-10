@@ -1,6 +1,4 @@
 <?php
-// Notifications module 0.4.4
-
 add_shortcode('notifications', 'imagepress_notifications');
 
 function notification_count($count = 50) {
@@ -162,16 +160,21 @@ function imagepress_post_add_custom($post, $author) {
 function imagepress_comment_add($act_comment) {
     global $wpdb, $user_ID;
 
+    $ip_slug = get_imagepress_option('ip_slug');
+
     $comment_id = get_comment($act_comment);
     $comment_post_ID = $comment_id->comment_post_ID;
     $comment_parent = $comment_id->comment_parent;
 
     $act_time = current_time('mysql', true);
 
-    if(empty($comment_parent))
-        $wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, $user_ID, " . $comment_post_ID . ", 'commented on', '" . $act_time . "')");
-    else
-        $wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, $user_ID, " . $comment_parent . ", 'replied to a comment on', '" . $act_time . "')");
+    if (get_post_type($comment_id->comment_post_ID) == $ip_slug) {
+        if (empty($comment_parent)) {
+            $wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, $user_ID, " . $comment_post_ID . ", 'commented on', '" . $act_time . "')");
+        } else {
+            $wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, $user_ID, " . $comment_parent . ", 'replied to a comment on', '" . $act_time . "')");
+        }
+    }
 }
 
 

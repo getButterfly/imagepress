@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.6.3
+Version: 7.6.4
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -84,6 +84,7 @@ include IP_PLUGIN_PATH . '/modules/mod-awards.php';
 include IP_PLUGIN_PATH . '/modules/mod-user-following.php';
 include IP_PLUGIN_PATH . '/modules/mod-likes.php';
 include IP_PLUGIN_PATH . '/modules/mod-notifications.php';
+include IP_PLUGIN_PATH . '/modules/mod-feed.php';
 
 if (get_imagepress_option('ip_mod_collections') == 1) {
     include IP_PLUGIN_PATH . '/modules/mod-collections.php';
@@ -96,6 +97,7 @@ if (get_imagepress_option('cinnamon_mod_login') == 1) {
 //
 
 include IP_PLUGIN_PATH . '/includes/shortcodes.php';
+include IP_PLUGIN_PATH . '/includes/extra.php';
 
 add_action('init', 'imagepress_registration');
 

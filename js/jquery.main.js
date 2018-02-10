@@ -789,12 +789,14 @@ jQuery(document).ready(function () {
          * Loop through first X visible images and lazy load them
          */
         jQuery('#ip-boxes .ip_box:lt(' + sizePerPage + ')').show();
+        /**
         jQuery('#ip-boxes .ip_box:lt(' + sizePerPage + ')').each(function() {
             var src = jQuery(this).find('a[data-src]').data('src');
 
             jQuery(this).find('a[data-src]').append('<img src="' + src + '" class="ip-deferred" alt="">');
             jQuery(this).find('a[data-src]').data('src', '');
         });
+        /**/
 
         jQuery(document).on('click', '#ipProfileShowMore', function() {
             sizePerRow = (sizePerRow + sizePerPage <= sizeTotal) ? sizePerRow + sizePerPage : sizeTotal;
@@ -807,19 +809,23 @@ jQuery(document).ready(function () {
             /*
              * Loop through visible images and lazy load them
              */
+            /**
             jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').each(function() {
                 var src = jQuery(this).find('a[data-src]').data('src');
 
                 jQuery(this).find('a[data-src]').append('<img src="' + src + '" class="ip-deferred" alt="">');
                 jQuery(this).find('a[data-src]').data('src', '');
             });
+            /**/
         });
     } else if (jQuery('.ip_box').length) {
+        /**
         jQuery('#ip-boxes .ip_box').each(function() {
             var src = jQuery(this).find('a[data-src]').data('src');
 
             jQuery(this).find('a[data-src]').append('<img src="' + src + '" class="ip-deferred" alt="">');
             jQuery(this).find('a[data-src]').data('src', '');
         });
+        /**/
     }
 });

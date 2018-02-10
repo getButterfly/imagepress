@@ -1416,10 +1416,10 @@ function imagepress_admin_page() {
                     $display .= ' [' . $result->ID . '] ';
 
                     if($action == 'loved')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-heart"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-heart"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
                     else if($action == 'collected')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-folder"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ip_collections_page_id) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-folder"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ip_collections_page_id) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
 
                     else if($action == 'added')
                         $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-arrow-circle-up"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
@@ -1427,8 +1427,13 @@ function imagepress_admin_page() {
                     else if($action == 'followed')
                         $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-plus-circle"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $result->actionType . ' you <time>' . $time . '</time>';
 
-                    else if($action == 'commented on')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-comment"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' a poster <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                    else if ((string) $action == 'commented on') {
+                        $who = '<a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a>';
+                        if ((int) $result->userID === 0) {
+                            $who = 'Someone';
+                        }
+                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fa fa-fw fa-comment"></i> ' . $who . ' ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                    }
 
                     else if($action == 'replied to a comment on') {
                         $comment_id = get_comment($result->postID);
