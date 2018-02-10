@@ -369,10 +369,11 @@ function ip_editor() {
 
                 <?php
                 $ip_upload_size = get_imagepress_option('ip_upload_size');
+                $ip_ezdz_label = get_imagepress_option('ip_ezdz_label');
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
                 ?>
-                <p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
+                <p><label for="imagepress_image_file"><i class="fa fa-cloud-upload"></i> Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" data-ezdz-label="<? echo $ip_ezdz_label;?>" name="imagepress_image_file" id="imagepress_image_file"></p>
 
                 <?php if(1 == get_imagepress_option('ip_upload_secondary')) { ?>
                     <hr>
