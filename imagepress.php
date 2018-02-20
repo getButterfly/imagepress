@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.6.6
+Version: 7.6.7
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -12,7 +12,7 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
 
 ImagePress  Copyright (c) 2013-2018 Ciprian Popescu (email: getbutterfly@gmail.com)
-Ezdz        Copyright (c) 2016 Jay Salvat (https://github.com/jaysalvat/ezdz) (MIT)
+Ezdz        Copyright (c) 2016-2017 Jay Salvat (https://github.com/jaysalvat/ezdz) (MIT)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -55,22 +55,6 @@ function imagepress_init() {
 add_action('plugins_loaded', 'imagepress_init');
 
 
-
-if (defined('ALLOW_IMAGEPRESS_UPDATE')) {
-    require_once IP_PLUGIN_PATH . '/classes/Updater.php';
-
-    if (is_admin()) {
-        $config = array(
-            'slug' => plugin_basename(__FILE__),
-            'proper_folder_name' => 'imagepress',
-            'github_url' => 'https://github.com/getButterfly/imagepress',
-            'requires' => '4.6',
-            'tested' => '4.9.4',
-            'readme' => 'README.MD',
-        );
-        new WP_GitHub_Updater($config);
-    }
-}
 
 include_once IP_PLUGIN_PATH . '/includes/imagepress-install.php';
 include_once IP_PLUGIN_PATH . '/includes/functions.php';
@@ -391,7 +375,7 @@ function imagepress_add_bulk($atts) {
         'category' => ''
     ), $atts));
 
-    global $current_user;
+    global $wpdb, $current_user;
     $out = '';
 
     if(isset($_POST['imagepress_upload_image_form_submitted_bulk']) && wp_verify_nonce($_POST['imagepress_upload_image_form_submitted_bulk'], 'imagepress_upload_image_form_bulk')) {
@@ -410,9 +394,9 @@ function imagepress_add_bulk($atts) {
         // alpha
         $files = $_FILES['imagepress_image_file_bulk'];
         if(!empty($files)) {
-            require_once ABSPATH . 'wp-admin' . '/includes/image.php';
-            require_once ABSPATH . 'wp-admin' . '/includes/file.php';
-            require_once ABSPATH . 'wp-admin' . '/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/media.php';
 
             foreach($files['name'] as $key => $value) {
                 if($files['name'][$key]) {
@@ -435,13 +419,30 @@ function imagepress_add_bulk($atts) {
                         'post_author' => $ip_image_author,
                         'post_type' => get_imagepress_option('ip_slug')
                     );
-                    if ($post_id == wp_insert_post($user_image_data)) {
+                    $post_id = wp_insert_post($user_image_data);
+                    //if ($post_id == wp_insert_post($user_image_data)) {
                         update_post_meta($post_id, '_thumbnail_id', $attach_id);
-                    }
+                    //}
 
                     wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'][$key], 'imagepress_image_category');
                 }
             }
+
+            // collections
+            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+                $ip_collections = (int) ($_POST['ip_collections']);
+
+                if (!empty($_POST['ip_collections_new'])) {
+                    $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
+                    $ip_collection_status = (int) ($_POST['collection_status']);
+
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
+                } else {
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
+                }
+            }
+            //
         }
 
         $headers[] = "MIME-Version: 1.0\r\n";
@@ -475,9 +476,9 @@ add_filter('jpeg_quality', 'imagepress_jpeg_quality', 10, 2);
 
 
 function imagepress_process_image($file, $post_id, $feature = 1) {
-    require_once ABSPATH . 'wp-admin' . '/includes/image.php';
-    require_once ABSPATH . 'wp-admin' . '/includes/file.php';
-    require_once ABSPATH . 'wp-admin' . '/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
 
     $attachment_id = media_handle_upload($file, $post_id);
 
@@ -748,6 +749,28 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
                         $out .= imagepress_get_image_categories_dropdown_bulk('imagepress_image_category', '') . '';
                     }
                 $out .= '</p>';
+
+                // Add to collection on upload
+                if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+                    global $wpdb;
+
+                    $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
+
+                    $out .= '<hr>
+                    <p>
+                        <select name="ip_collections" id="ip-collections">
+                            <option value="">' . __('Choose a collection...', 'imagepress') . '</option>';
+                            foreach ($result as $collection) {
+                                $out .= '<option value="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</option>';
+                            }
+                        $out .= '</select> <span class="ip-collection-create-new">' . __('or', 'imagepress') . ' <input type="text" name="ip_collections_new" id="ip-collections-new" placeholder="' . __('Create new collection...', 'imagepress') . '">
+                        <select name="collection_status" id="collection_status">
+                            <option value="1">' . __('Public', 'imagepress') . '</option>
+                            <option value="0">' . __('Private', 'imagepress') . '</option>
+                        </select></span>
+                    </p>
+                    <hr>';
+                }
 
                 $out .= '<hr>';
                 $out .= '<div id="imagepress-errors"></div>';

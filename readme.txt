@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
 Tested up to: 4.9.4
-Stable tag: 7.6.6
+Stable tag: 7.6.7
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -20,6 +20,12 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 3. A new ImagePress menu will appear in WordPress with options and general help
 
 == Changelog ==
+
+= 7.6.7 =
+* FIX: Fixed bulk uploaded
+* UPDATE: Added collections to bulk updater
+* UPDATE: Removed GitHub updater as it's not appropriate for Envato files
+* UPDATE: Updated drag & drop uploader to latest version (0.6.1)
 
 = 7.6.6 =
 * FIX: Fixed missing file

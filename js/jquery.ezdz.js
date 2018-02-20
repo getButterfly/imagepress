@@ -1,12 +1,12 @@
-/* ----------------------------------------------------------------------------
-// Ezdz [izy-dizy]
-// v0.5.1 - released 2016-05-10 14:52
-// Licensed under the MIT license.
-// https://github.com/jaysalvat/ezdz
-// ----------------------------------------------------------------------------
-// Copyright (C) 2016 Jay Salvat
-// http://jaysalvat.com/
-// ---------------------------------------------------------------------------*/
+ /* ----------------------------------------------------------------------------
+ // Ezdz [izy-dizy]
+ // v0.6.1 - released 2017-12-30 21:01
+ // Licensed under the MIT license.
+ // https://github.com/jaysalvat/ezdz
+ // ----------------------------------------------------------------------------
+ // Copyright (C) 2017 Jay Salvat
+ // http://jaysalvat.com/
+ // ---------------------------------------------------------------------------*/
 
 /* global define: true, require: true, jQuery */
 
@@ -79,15 +79,19 @@
             // Build the container
             $container = $('<div class="' + settings.classes.main + '" />')
 
-            .on("dragover.ezdz", function() {
-                $(this).addClass(settings.classes.enter);
+            .on('dragover.ezdz', function(e) {
+                var dt = e.originalEvent.dataTransfer;
 
-                if ($.isFunction(settings.enter)) {
-                     settings.enter.apply(this);
+                if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+                    $(this).addClass(settings.classes.enter);
+
+                    if ($.isFunction(settings.enter)) {
+                        settings.enter.apply(this);
+                    }
                 }
             })
 
-            .on("dragleave.ezdz", function() {
+            .on('dragleave.ezdz', function() {
                 $(this).removeClass(settings.classes.enter);
 
                 if ($.isFunction(settings.leaved)) {
@@ -100,12 +104,12 @@
             // Build the whole dropzone
             $input
                 .wrap($container)
-                .before("<div>" + settings.text + "</div>");
+                .before('<div>' + settings.text + '</div>');
 
             $ezdz = $input.parent('.' + settings.classes.main);
 
             // Preview a file at start if it's defined
-            value = settings.value || $input.data("value");
+            value = settings.value || $input.data('value');
 
             if (value) {
                 self.preview(value);
@@ -119,15 +123,15 @@
             // Events on the input
             $input
 
-            .on("focus.ezdz", function() {
+            .on('focus.ezdz', function() {
                 $ezdz.addClass(settings.classes.focus);
             })
 
-            .on("blur.ezdz", function() {
+            .on('blur.ezdz', function() {
                 $ezdz.removeClass(settings.classes.focus);
             })
 
-            .on("change.ezdz", function() {
+            .on('change.ezdz', function() {
                 var file = this.files[0];
 
                 // No file, so user has cancelled
@@ -136,25 +140,25 @@
                 }
 
                 // Info about the dropped or selected file
-                var basename  = file.name.replace(/\\/g,'/').replace( /.*\//, ""),
-                    extension = file.name.split(".").pop(),
+                var basename  = file.name.replace(/\\/g,'/').replace( /.*\//, ''),
+                    extension = file.name.split('.').pop(),
                     formatted = settings.format(basename);
 
                 file.extension = extension;
 
                 // Mime-Types
-                var allowed  = $input.attr("accept"),
+                var allowed  = $input.attr('accept'),
                     accepted = false,
                     valid    = true,
                     errors   = {
-                        "mimeType":  false,
-                        "maxSize":   false,
-                        "width":     false,
-                        "minWidth":  false,
-                        "maxWidth":  false,
-                        "height":    false,
-                        "minHeight": false,
-                        "maxHeight": false
+                        'mimeType':  false,
+                        'maxSize':   false,
+                        'width':     false,
+                        'minWidth':  false,
+                        'maxWidth':  false,
+                        'height':    false,
+                        'minHeight': false,
+                        'maxHeight': false
                     };
 
                 // Check the accepted Mime-Types from the input file
@@ -164,7 +168,7 @@
                     $.each(types, function(i, type) {
                         type = $.trim(type);
 
-                        if ("." + extension === type) {
+                        if ('.' + extension === type) {
                             accepted = true;
                             return false;
                         }
@@ -175,9 +179,9 @@
                         }
 
                         // Mime-Type with wildcards ex. image/*
-                        if (type.indexOf("/*") !== false) {
-                            var a = type.replace("/*", ""),
-                                b = file.type.replace(/(\/.*)$/g, "");
+                        if (type.indexOf('/*') !== false) {
+                            var a = type.replace('/*', ''),
+                                b = file.type.replace(/(\/.*)$/g, '');
 
                             if (a === b) {
                                 accepted = true;
@@ -194,11 +198,11 @@
                 }
 
                 // Reset the accepted / rejected classes
-                $ezdz.removeClass(settings.classes.reject + " " + settings.classes.accept);
+                $ezdz.removeClass(settings.classes.reject + ' ' + settings.classes.accept);
 
                 // If the Mime-Type is not accepted
                 if (accepted !== true) {
-                    $input.val("");
+                    $input.val('');
                     $ezdz.addClass(settings.classes.reject);
                     self.preview(null);
 
@@ -267,12 +271,12 @@
 
                         // The file is validated, so added to input
                         if (valid === true) {
-                            $ezdz.find("img").remove();
+                            $ezdz.find('img').remove();
 
                             if (isImage && settings.previewImage === true) {
-                                $ezdz.find("div").html($(img).fadeIn());
+                                $ezdz.find('div').html($(img).fadeIn());
                             } else {
-                                $ezdz.find("div").html("<span>" + formatted + "</span>");
+                                $ezdz.find('div').html('<span>' + formatted + '</span>');
                             }
 
                             $ezdz.addClass(settings.classes.accept);
@@ -400,28 +404,3 @@
         });
     };
 }));
-
-
-
-jQuery(window).on("load", function(){
-    var ezdz = jQuery("#imagepress_image_file").data("ezdz-label");
-
-    jQuery("#imagepress_image_file").ezdz({
-        text: '<i class="fa fa-upload" aria-hidden="true"></i><br>' + ezdz,
-        validators: {
-            maxWidth: 6144, // 36 megapixels
-            maxHeight: 6144
-        },
-        reject: function(file, errors) {
-            if (errors.mimeType) {
-                alert(file.name + " must be an image");
-            }
-            if (errors.maxWidth) {
-                alert(file.name + " must be width:5616px max");
-            }
-            if (errors.maxHeight) {
-                alert(file.name + " must be height:5616px max");
-            }
-        }
-    });
-});
