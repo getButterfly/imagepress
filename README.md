@@ -1,6 +1,6 @@
 # ImagePress
 
-Version: 7.6.8
+Version: 7.6.9
 
 [![Build Status](https://getbutterfly.com/web/imagepress-build.svg)](https://getbutterfly.com/wordpress-plugins/imagepress)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/22b07233e3ec434ab3be3216364c8e90)](https://www.codacy.com/app/getButterfly/imagepress?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=getButterfly/imagepress&amp;utm_campaign=Badge_Grade)

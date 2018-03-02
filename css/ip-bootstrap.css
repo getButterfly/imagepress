@@ -385,13 +385,6 @@ a img { border: none; }
 .ip-sorter-primary form input:hover {
     border: 1px solid #0cb8fc;
 }
-.ip-sorter-primary form:after {
-    color: #999999;
-    font-family: 'FontAwesome';
-    content: '\f002';
-    display: inline-block;
-    margin-left: -32px;
-}
 .ip-sorter-secondary {
     position: relative;
     margin: 0;
@@ -877,18 +870,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
 
 
 
-span.imageviews:before {
-    content: "\f06e\0020";
-    font-family: "fontawesome";
-}
-span.imagecomments:before {
-    content: "\f086\0020";
-    font-family: "fontawesome";
-}
-span.imagelikes:before {
-    content: "\f004\0020";
-    font-family: "fontawesome";
-}
 
 
 

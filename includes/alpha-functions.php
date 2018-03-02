@@ -326,15 +326,15 @@ function imagepress_loop($atts) {
 
                 $ip_views_optional = '';
                 if ($get_ip_views_optional == 1)
-                    $ip_views_optional = '<span class="imageviews">' . ip_getPostViews($i) . '</span> ';
+                    $ip_views_optional = '<span class="imageviews"><i class="fas fa-eye"></i> ' . ip_getPostViews($i) . '</span> ';
 
                 $ip_comments = '';
                 if ($get_ip_comments == 1)
-                    $ip_comments = '<span class="imagecomments">' . get_comments_number($i) . '</span> ';
+                    $ip_comments = '<span class="imagecomments"><i class="fas fa-comments"></i> ' . get_comments_number($i) . '</span> ';
 
                 $ip_likes_optional = '';
                 if ($get_ip_likes_optional == 1)
-                    $ip_likes_optional = '<span class="imagelikes">' . imagepress_get_like_count($i) . '</span> ';
+                    $ip_likes_optional = '<span class="imagelikes"><i class="fas fa-heart"></i> ' . imagepress_get_like_count($i) . '</span> ';
 
                 if (empty($size)) {
                     $size = get_imagepress_option('ip_image_size');
