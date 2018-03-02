@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.6.7
+Version: 7.6.8
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -926,7 +926,7 @@ register_deactivation_hook(__FILE__, 'imagepress_deactivate');
 add_action('admin_enqueue_scripts', 'ip_enqueue_color_picker');
 function ip_enqueue_color_picker() {
     wp_enqueue_style('wp-color-picker');
-    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.6/js/all.js', array(), '5.0.6', true);
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.8/js/all.js', array(), '5.0.8', true);
     wp_enqueue_style('imagepress', plugins_url('css/ip-admin.css', __FILE__));
     wp_enqueue_script('ip.functions', plugins_url('js/functions.js', __FILE__), array('wp-color-picker'), false, true);
 }
@@ -935,7 +935,7 @@ function ip_enqueue_color_picker() {
 
 add_action('wp_enqueue_scripts', 'ip_enqueue_scripts');
 function ip_enqueue_scripts() {
-    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.6/js/all.js', array(), '5.0.6', true);
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.8/js/all.js', array(), '5.0.8', true);
 
     wp_enqueue_style('ip-reset', plugins_url('css/ip-reset.css', __FILE__));
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));

@@ -407,7 +407,7 @@ function cinnamon_profile($atts) {
 
                                     $display .= '<span class="cinnamon-award-list-item" title="' . $term->description . '">';
                                         if(isset($term_data['img']))
-                                            $display .= '<i class="fa ' . $term_data['img'] . '"></i> ';
+                                            $display .= '<i class="fas ' . $term_data['img'] . '"></i> ';
                                         else
                                             $display .= '<i class="fas fa-trophy"></i> ';
                                     $display .= $term->name . '</span>';

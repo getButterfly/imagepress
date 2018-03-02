@@ -18,11 +18,11 @@ class Cinnamon_Frontend_User_Manager {
 	public function cinnamon_login_form() { ?>
         <div class="ip-tab">
             <ul class="ip-tabs active">
-                <li class="current"><a href="#"><i class="fa fa-sign-in"></i> <?php esc_html_e('Log in', 'imagepress'); ?></a></li>
+                <li class="current"><a href="#"><i class="fas fa-sign-in-alt"></i> <?php esc_html_e('Log in', 'imagepress'); ?></a></li>
                 <?php if (get_option('users_can_register')) { ?>
-                    <li class=""><a href="#"><i class="fa fa-user"></i> <?php esc_html_e('Sign up', 'imagepress'); ?></a></li>
+                    <li class=""><a href="#"><i class="fas fa-user-circle"></i> <?php esc_html_e('Sign up', 'imagepress'); ?></a></li>
                 <?php } ?>
-                <li class=""><a href="#"><i class="fa fa-question-circle"></i> <?php esc_html_e('Lost password', 'imagepress'); ?></a></li>
+                <li class=""><a href="#"><i class="fas fa-question-circle"></i> <?php esc_html_e('Lost password', 'imagepress'); ?></a></li>
             </ul>
             <div class="tab_content">
                 <div class="ip-tabs-item" style="display: block;">
