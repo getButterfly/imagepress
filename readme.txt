@@ -21,6 +21,11 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
+= 7.7.0 =
+* FIX: Fixed URL strings
+* FIX: Fixed (non)countable arrays
+* UPDATE: Added most liked images shortcode
+
 = 7.6.9 =
 * FIX: Removed font icon pseudo elements for performance reasons
 

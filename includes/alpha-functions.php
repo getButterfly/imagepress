@@ -189,6 +189,15 @@ function imagepress_loop($atts) {
         $args1['meta_query'] = $field_query;
     }
 
+    // Most liked images
+    if ((string) $sort !== 'no') {
+        $args1['meta_query'] = array(
+            'key' => '_like_count'
+        );
+        $args1['meta_key'] = '_like_count';
+        $args1['orderby'] = 'meta_value_num';
+        $args1['order'] = 'DESC';
+    }
 
     if (isset($_GET['sort']) || isset($_GET['range'])) {
         $sort = (string) trim($_GET['sort']);
@@ -225,25 +234,25 @@ function imagepress_loop($atts) {
         // Range filtering
         if ($range == 'lastmonth') {
             $date_query = array(
-                'date_query'    => array(
-                    'column'  => 'post_date',
-                    'after'   => date('Y-m-d', strtotime('-30 days'))
+                'date_query' => array(
+                    'column' => 'post_date',
+                    'after' => date('Y-m-d', strtotime('-30 days'))
                 )
             );
             $args1['date_query'] = $date_query;
         } else if ($range == 'lastweek') {
             $date_query = array(
-                'date_query'    => array(
-                    'column'  => 'post_date',
-                    'after'   => date('Y-m-d', strtotime('-7 days'))
+                'date_query' => array(
+                    'column' => 'post_date',
+                    'after' => date('Y-m-d', strtotime('-7 days'))
                 )
             );
             $args1['date_query'] = $date_query;
         } else if ($range == 'lastday') {
             $date_query = array(
-                'date_query'    => array(
-                    'column'  => 'post_date',
-                    'after'   => date('Y-m-d', strtotime('-1 days'))
+                'date_query' => array(
+                    'column' => 'post_date',
+                    'after' => date('Y-m-d', strtotime('-1 days'))
                 )
             );
             $args1['date_query'] = $date_query;
@@ -251,10 +260,6 @@ function imagepress_loop($atts) {
     }
 
     $ip_query = new WP_Query($args1);
-    //echo '<pre><code>';
-    //print_r($ip_query);
-    //print_r($args1);
-    //echo '</code></pre>';
 
     // Get loop options
     $ip_rel_tag = get_imagepress_option('ip_rel_tag');
@@ -287,7 +292,7 @@ function imagepress_loop($atts) {
                 $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'imagepress_pt_std_ps');
 
                 if ($ip_click_behaviour === 'media') {
-                    // get attachment source
+                    // Get attachment source
                     $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
 
                     $ip_image_link = $image_attributes[0];
@@ -295,7 +300,7 @@ function imagepress_loop($atts) {
                     $ip_image_link = get_permalink($i);
                 }
 
-                // make all "brick" elements optional and active by default
+                // Make all "brick" elements optional and active by default
                 $ip_title_optional = '';
                 if ($get_ip_title_optional == 1) {
                     $ip_title_optional = '<span class="imagetitle">' . get_the_title($i) . '</span>';
@@ -306,16 +311,9 @@ function imagepress_loop($atts) {
                     if (get_post_meta($i, 'imagepress_author', true) !== '') {
                         $ip_author_optional = '<span class="name">' . get_post_meta($i, 'imagepress_author', true) . '</span>';
                     } else {
-                        // get post author ID
+                        // Get post author ID
                         $post_author_id = get_post_field('post_author', $i);
 
-                        /**
-                        $ip_profile_page = (int) get_imagepress_option('ip_profile_page');
-                        $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
-                        $ip_author_page = get_permalink($ip_profile_page);
-
-                        $ip_author_optional = '<span class="name"><a href="' . $ip_author_page . '?' . $cinnamon_author_slug . '=' . get_the_author_meta('user_nicename', $post_author_id) . '">' . get_the_author_meta('user_nicename', $post_author_id) . '</a></span>';
-                        /**/
                         $ip_author_optional = getImagePressProfileUri($post_author_id);
                     }
                 }

@@ -244,7 +244,7 @@ function ip_editor() {
                 // end multiple images
 
                 $images = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
-                $count = count($images);
+                $count = $images ? count($images) : 0;
                 if ($count == 1 || !has_post_thumbnail($post_id)) {
                     foreach ($images as $attachment_id => $image) {
                         set_post_thumbnail($post_id, $image->ID);
@@ -384,7 +384,7 @@ function ip_editor() {
                     <?php
                     $thumbnail_ID = get_post_thumbnail_id();
                     $images = get_children(array('post_parent' => $edit_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
-                    $count = count($images);
+                    $count = $images ? count($images) : 0;
 
                     if($count > 1) {
                         echo '<div>';

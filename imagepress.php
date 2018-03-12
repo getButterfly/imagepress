@@ -105,7 +105,7 @@ function imagepress_menu() {
         'post_status' => 'pending',
         'showposts' => -1,
     );
-    $draft_ip_links = count(get_posts($args));
+    $draft_ip_links = get_posts($args) ? count(get_posts($args)) : 0;
 
     if ($draft_ip_links) {
         foreach ($menu as $key => $value) {

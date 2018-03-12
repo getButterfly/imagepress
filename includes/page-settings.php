@@ -53,14 +53,14 @@ function imagepress_admin_page() {
                         if($noir_ui_theme->exists()) {
                             echo '<h4>You are using <strong>' . $noir_ui_theme->get('Name') . '</strong> theme version ' . $noir_ui_theme->get('Version') . '</h4>';
                         } else {
-                            echo '<h4>Check out <a href="https://getbutterfly.com/marketplace/noir-ui-theme-wordpress/" rel="external" target="_blank">Noir UI</a>, our accompanying theme for ImagePress. With customizable elements and colours, Noir UI lets your image gallery stand out from less developed alternatives.</h4>';
+                            echo '<h4>Check out <a href="https://getbutterfly.com/downloads/noir-ui/" rel="external" target="_blank">Noir UI</a>, our accompanying theme for ImagePress. With customizable elements and colours, Noir UI lets your image gallery stand out from less developed alternatives.</h4>';
                         }
 
                         echo '<hr>
                         <p>If you enjoy this plugin, do not forget to <a href="https://codecanyon.net/item/imagepress/4252736" rel="external">rate it on CodeCanyon</a>! We work hard to update it, fix bugs, add new features and make it compatible with the latest web technologies.</p>
                     </div>
                     <div class="gb-footer">
-                        <p>For support, feature requests and bug reporting, please visit the <a href="https://getbutterfly.com/?utm_source=plugin&utm_medium=link&utm_campaign=imagepress" rel="external">official website</a>.<br>&copy;' . date('Y') . ' <a href="https://getbutterfly.com/" rel="external"><strong>getButterfly</strong>.com</a> &middot; <a href="https://getbutterfly.com/members/documentation/imagepress/">Documentation</a> &middot; <small>Code wrangling since 2005</small></p>
+                        <p>For support, feature requests and bug reporting, please visit the <a href="https://getbutterfly.com/" rel="external">official website</a>.<br>&copy;' . date('Y') . ' <a href="https://getbutterfly.com/" rel="external"><strong>getButterfly</strong>.com</a> &middot; <a href="https://getbutterfly.com/support/documentation/imagepress/">Documentation</a> &middot; <small>Code wrangling since 2005</small></p>
                     </div>
                 </div>
             </div>';
@@ -82,12 +82,13 @@ function imagepress_admin_page() {
                 <br>
                 <code>[imagepress-search]</code> - show the search form.<br>
                 <br>
-                <code>[imagepress-loop]</code> <sup class="ip-new">new</sup> - display all images.<br>
-                <code>[imagepress-loop user="7"]</code> <sup class="ip-new">new</sup> - filter images by user ID.<br>
-                <code>[imagepress-loop count="4"]</code> <sup class="ip-new">new</sup> - display a specific number of images.<br>
-                <code>[imagepress-loop filters="yes"]</code> <sup class="ip-new">new</sup> - display all images with filters/sorters.<br>
-                <code>[imagepress-loop category="landscapes"]</code> <sup class="ip-new">new</sup> - display all images in a specific category. Use the category <b>slug</b>.<br>
-                <code>[imagepress-loop fieldname="album" fieldvalue="red"]</code> <sup class="ip-new">new</sup> - display all images with a specific custom field value.<br>
+                <code>[imagepress-loop]</code> - display all images.<br>
+                <code>[imagepress-loop user="7"]</code> - filter images by user ID.<br>
+                <code>[imagepress-loop count="4"]</code> - display a specific number of images.<br>
+                <code>[imagepress-loop filters="yes"]</code> - display all images with filters/sorters.<br>
+                <code>[imagepress-loop sort="likes" count="10"]</code> <sup class="ip-new">new</sup> - display images sorted by likes.<br>
+                <code>[imagepress-loop category="landscapes"]</code> - display all images in a specific category. Use the category <b>slug</b>.<br>
+                <code>[imagepress-loop fieldname="album" fieldvalue="red"]</code> - display all images with a specific custom field value.<br>
                 <br>
                 <code>[imagepress mode="views" count="10"]</code> - display most viewed images (list).<br>
                 <code>[imagepress mode="views" type="top" count="1"]</code> - display the most viewed image.<br>
@@ -1498,6 +1499,7 @@ function imagepress_admin_page() {
                                     <option value="4">Input (number)</option>
                                     <option value="5">Textarea</option>
                                     <option value="6">Checkbox</option>
+                                    <option value="9">Checkbox group</option>
                                     <option value="7">Radiobox</option>
                                     <option value="8">Dropdown</option>
 
@@ -1668,7 +1670,7 @@ function imagepress_admin_page() {
             <div class="grid flex-grid-thirds">
                 <div class="ip-card">
                     <h3>Noir UI</h3>
-                    <p>Noir UI is the official WordPress theme for ImagePress. Noir UI features custom widgets, a single image template and many tweaks and integration functions.</p>
+                    <p>Noir UI is the official WordPress theme for ImagePress. Noir UI features custom widgets, a single image template and many tweaks and integration functions.</p>
                     <div class="ip-card-cta">
                         <a href="https://getbutterfly.com/downloads/noir-ui/" class="button button-primary">Get it!</a>
                     </div>

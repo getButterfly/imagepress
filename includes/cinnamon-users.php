@@ -84,8 +84,8 @@ function cinnamon_card($atts) {
     $offset = ($paged - 1) * $number;
     $users = get_users();
     $query = get_users('&offset='.$offset.'&number='.$number);
-    $total_users = count($users);
-    $total_query = count($query);
+    $total_users = $users ? count($users) : 0;
+    $total_query = $query ? count($query) : 0;
     $total_pages = intval($total_users / $number) + 1;
 
     $display .= '<ul class="list">';
