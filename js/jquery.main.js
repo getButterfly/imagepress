@@ -486,8 +486,8 @@ jQuery(document).ready(function() {
             update: function() {
                 var image_order = jQuery(this).sortable('serialize') + '&action=imagepress_list_update_order';
 
-                jQuery.post(ipAjaxVar.ajaxurl, image_order, function(response) {
-                    // image order changed
+                jQuery.post(ipAjaxVar.ajaxurl, image_order, function() {
+                    // image order changed // should return var response
                 });
             }
         }).enableSelection();

@@ -917,6 +917,12 @@ ul, li {padding: 0; margin: 0; list-style: none}
     background-color: rgba(0, 0, 0, 0.15);
     text-decoration: none;
 }
+.editor-image-manager .editor-image-handle {
+    display: inline-block;
+    float: left;
+    padding: 0 8px 0 0;
+    font-size: 16px;
+}
 .editor-image-manager .editor-image .editor-image-thumbnail {
     float: left;
     margin: 0 8px 0 0;
@@ -924,15 +930,10 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .editor-image-manager .editor-image .editor-image-thumbnail img {
     border-radius: 3px;
     width: auto;
-    height: 72px;
-    margin: 0 0 0 8px;
-}
-.editor-image-manager .editor-image .editor-image-tools {
-    float: right;
+    height: 90px;
 }
 .editor-image .editableImage {
     display: inline-block;
-    font-weight: 700;
     overflow: hidden;
     white-space: nowrap;
     outline: 0 none;

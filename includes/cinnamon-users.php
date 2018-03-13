@@ -764,19 +764,16 @@ function cinnamon_profile_edit($atts) {
                                         if($ip_click_behaviour == 'custom')
                                             $ip_image_link = get_permalink($i);
 
-                                        $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '">';
-                                        $out .= '<div class="editor-image-thumbnail">
-                                                <span class="editor-image-handle"><span class="dashicons dashicons-move"></span></span>
+                                        $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '">
+                                            <div class="editor-image-handle"><i class="fas fa-fw fa-arrows-alt-v"></i></div>
+                                            <div class="editor-image-thumbnail">
                                                 <a href="' . $ip_image_link . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a>
-                                            </div>
-                                            <div class="editor-image-tools">
-                                                <a href="#" class="editor-image-delete" data-image-id="' . $i . '"><i class="fas fa-trash-alt" aria-hidden="true"></i> ' . __('Delete', 'imagepress') . '</a>
                                             </div>
                                             <input type="text" class="editableImage" id="listImage_' . $i . '" data-image-id="' . $i . '" value="' . get_the_title($i) . '">
                                             <span class="editableImageStatus editableImageStatus_' . $i . '"></span>
                                             <br><small>' . __('in', 'imagepress') . ' ' .  strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . ' ' . __('on', 'imagepress') . ' ' . get_the_date('Y-m-d H:i', $i) . '</small>
-                                            <br><a href="' . $ip_image_link . '">' . __('View/Edit', 'imagepress') . '</a>';
-                                        $out .= '</div>';
+                                            <br><small><a href="' . $ip_image_link . '">' . __('View/Edit', 'imagepress') . '</a> | <a href="#" class="editor-image-delete" data-image-id="' . $i . '">' . __('Delete', 'imagepress') . '</a></small>
+                                        </div>';
                                     }
                                 }
                             $out .= '</div>';
