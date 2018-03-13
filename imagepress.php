@@ -906,7 +906,7 @@ function ip_enqueue_scripts() {
 
 	$accountPageUri = get_option('cinnamon_account_page');
 
-    wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), '6.8.0', true);
+    wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable', 'sweetalert2'), '7.7.0', true);
     wp_localize_script('ipjs-main', 'ipAjaxVar', array(
         'imagesperpage' => get_imagepress_option('ip_ipp'),
         'authorsperpage' => get_imagepress_option('ip_app'),

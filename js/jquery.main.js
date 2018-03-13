@@ -1,8 +1,10 @@
 /**
  * ImagePress Javascript functions
  *
- * @copyright 2014, 2015, 2016, 2017 Ciprian Popescu
+ * @copyright 2014-2018 Ciprian Popescu
  */
+
+/* global jQuery, ipAjaxVar, swal, Masonry */
 
 function addMoreFiles() {
     var newElement = jQuery("#fileuploads").clone().prop({
@@ -35,7 +37,7 @@ jQuery.fn.extend({
 
 function bytesToSize(bytes) {
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
-        i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
 
     if (bytes === 0) {
         return 'n/a';
@@ -445,7 +447,7 @@ jQuery(document).ready(function() {
         var $originals = tr.children();
         var $helper = tr.clone();
         $helper.children().each(function(index) {
-            jQuery(this).width($originals.eq(index).width())
+            jQuery(this).width($originals.eq(index).width());
         });
         return $helper;
     };
@@ -467,8 +469,6 @@ jQuery(document).ready(function() {
                         showConfirmButton: false,
                         timer: 3000,
                     });
-
-                    // image order changed // should return var response
                 });
             }
         }).enableSelection();
@@ -657,7 +657,7 @@ jQuery(document).ready(function() {
 
     if (jQuery('#ip-sorter-primary').length) {
         var uriParameters = new URLSearchParams(window.location.search),
-            request_uri = location.pathname + location.search,
+            request_uri = window.location.pathname + window.location.search,
             sorterDropdown = document.getElementById('sorter'),
             rangerDropdown = document.getElementById('ranger'),
             taxxxerDropdown = document.getElementById('taxxxer'),
@@ -685,18 +685,18 @@ jQuery(document).ready(function() {
         // Check if dropdown has changed on page load
         sorterDropdown.onchange = function () {
             document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
-            location.href = sorterDropdown.value;
-        }
+            window.location.href = sorterDropdown.value;
+        };
         rangerDropdown.onchange = function () {
             document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
-            location.href = rangerDropdown.value;
-        }
+            window.location.href = rangerDropdown.value;
+        };
         taxxxerDropdown.onchange = function () {
             document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
-            location.href = taxxxerDropdown.value;
-        }
+            window.location.href = taxxxerDropdown.value;
+        };
 
-        queryElement.onkeypress = function(e) {
+        queryElement.onkeypress = function (e) {
             var event = e || window.event;
             var charCode = event.which || event.keyCode;
 
@@ -706,7 +706,7 @@ jQuery(document).ready(function() {
                 window.location = replaceQueryParam('q', queryElement.value, window.location.search);
                 return false;
             }
-        }
+        };
     }
 });
 
@@ -719,7 +719,8 @@ function replaceQueryParam(param, newval, search) {
 
 // ImagePress Grid UI
 jQuery(window).load(function() {
-    var gridUi = ipAjaxVar.grid_ui;
+    var gridUi = ipAjaxVar.grid_ui,
+        currentDiv;
 
     if (gridUi === 'masonry') {
         if (jQuery('#ip-boxes').length) {
@@ -731,7 +732,7 @@ jQuery(window).load(function() {
             });
         }
     } else if (gridUi === 'default') {
-        equalHeight = function(container) {
+        var equalHeight = function(container) {
             var currentTallest = 0,
                 currentRowStart = 0,
                 rowDivs = new Array(),
@@ -760,7 +761,7 @@ jQuery(window).load(function() {
                     rowDivs[currentDiv].height(currentTallest);
                 }
             });
-        }
+        };
 
         // Create equal height image containers // onload
         if (jQuery('.list .ip_box').length) {
