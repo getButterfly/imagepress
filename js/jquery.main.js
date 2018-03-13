@@ -11,36 +11,6 @@ function addMoreFiles() {
     newElement.find("input, textarea, select").val("").end().insertBefore("#endOfForm");
 }
 
-/* ImagePress */
-jQuery.fn.jConfirmAction = function(options) {
-    var theOptions = jQuery.extend({
-        question: "Are you sure you want to delete this image? This action is irreversible!",
-        yesAnswer: "Yes",
-        cancelAnswer: "No"
-    }, options);
-
-    return this.each(function(){
-        jQuery(this).bind('click', function(e){
-            e.preventDefault();
-            var thisHref = jQuery(this).attr("href");
-            if(jQuery(this).next('.question').length <= 0) {
-                jQuery(this).after('<div class="question"><i class="fas fa-exclamation-triangle"></i> ' + theOptions.question + '<br><span class="yes button noir-secondary">' + theOptions.yesAnswer + '</span><span class="cancel button">' + theOptions.cancelAnswer + '</span></div>');
-            }
-
-            jQuery(this).next('.question').animate({opacity: 1}, 300);
-            jQuery('.yes').bind('click', function() {
-                window.location = thisHref;
-            });
-
-            jQuery('.cancel').bind('click', function() {
-                jQuery(this).parents('.question').fadeOut(300, function() {
-                    jQuery(this).remove();
-                });
-            });
-        });
-    });
-};
-
 
 
 jQuery.fn.extend({
@@ -147,38 +117,40 @@ jQuery(document).ready(function() {
     });
     /* end upload */
 
+    /* ip_editor() related actions */
     jQuery(document).on('click', '#ip-editor-open', function(e){
         jQuery('.ip-editor').slideToggle('fast');
         e.preventDefault();
     });
 
-    jQuery('.ask').jConfirmAction();
+    jQuery(document).on('click', '#ip-editor-delete-image', function (e) {
+        var id = jQuery(this).data('image-id'),
+            redirect = jQuery(this).data('redirect');
 
-    /* ip_editor() related actions */
-    jQuery('.delete-post').click(function(e){
-        if(confirm('Delete this image?')) {
-            jQuery(this).parent().parent().fadeOut();
+        swal({
+            title: '',
+            text: ipAjaxVar.swal_confirm_operation,
+            showCancelButton: true,
+            confirmButtonText: ipAjaxVar.swal_confirm_button,
+            cancelButtonText: ipAjaxVar.swal_cancel_button,
+        }).then(function(response) {
+            if (response.value) {
+                jQuery.ajax({
+                    type: 'post',
+                    url: ipAjaxVar.ajaxurl,
+                    data: {
+                        action: 'ip_delete_post',
+                        id: id,
+                    },
+                    success: function(result) {
+                        if (result === 'success') {
+                            window.location = redirect;
+                        }
+                    },
+                });
+            }
+        });
 
-            var id = jQuery(this).data('id');
-            var nonce = jQuery(this).data('nonce');
-            var post = jQuery(this).parents('.post:first');
-            jQuery.ajax({
-                type: 'post',
-                url: ipAjaxVar.ajaxurl,
-                data: {
-                    action: 'ip_delete_post',
-                    nonce: nonce,
-                    id: id
-                },
-                success: function(result) {
-                    if(result == 'success') {
-                        post.fadeOut(function(){
-                            post.remove();
-                        });
-                    }
-                }
-            });
-        }
         e.preventDefault();
         return false;
     });
@@ -487,33 +459,52 @@ jQuery(document).ready(function() {
                 var image_order = jQuery(this).sortable('serialize') + '&action=imagepress_list_update_order';
 
                 jQuery.post(ipAjaxVar.ajaxurl, image_order, function() {
+                    swal({
+                        toast: true,
+                        position: 'top-end',
+                        title: '',
+                        html: '<i class="far fa-fw fa-check-circle"></i>',
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+
                     // image order changed // should return var response
                 });
             }
         }).enableSelection();
     }
 
-    jQuery('.editor-image-delete').click(function(e){
-        if(confirm('Delete this image?')) {
-            jQuery(this).parent().parent().fadeOut();
+    jQuery(document).on('click', '.editor-image-delete', function (e) {
+        var id = jQuery(this).data('image-id');
 
-            var id = jQuery(this).data('image-id');
-            jQuery.ajax({
-                type: 'post',
-                url: ipAjaxVar.ajaxurl,
-                data: {
-                    action: 'ip_delete_post_simple',
-                    id: id
-                },
-                success: function(result) {
-                    if(result == 'success') {
-                        jQuery('#listItem_' + id).fadeOut(function(){
-                            jQuery('#listItem_' + id).remove();
-                        });
-                    }
-                }
-            });
-        }
+        swal({
+            title: '',
+            text: ipAjaxVar.swal_confirm_operation,
+            showCancelButton: true,
+            confirmButtonText: ipAjaxVar.swal_confirm_button,
+            cancelButtonText: ipAjaxVar.swal_cancel_button,
+        }).then(function(response) {
+            if (response.value) {
+                jQuery(this).parent().parent().fadeOut();
+
+                jQuery.ajax({
+                    type: 'post',
+                    url: ipAjaxVar.ajaxurl,
+                    data: {
+                        action: 'ip_delete_post',
+                        id: id,
+                    },
+                    success: function(result) {
+                        if (result === 'success') {
+                            jQuery('#listItem_' + id).fadeOut(function(){
+                                jQuery('#listItem_' + id).remove();
+                            });
+                        }
+                    },
+                });
+            }
+        });
+
         e.preventDefault();
         return false;
     });

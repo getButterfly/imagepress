@@ -196,16 +196,6 @@ function ip_editor() {
         <?php
         $edit_id = get_the_ID();
 
-        if (isset($_GET['d'])) {
-            $post_id = $_GET['d'];
-            wp_delete_post($post_id);
-
-            $ipDeleteRedirection = get_imagepress_option('ip_delete_redirection');
-            if (empty($ipDeleteRedirection)) {
-                $ipDeleteRedirection = home_url();
-            }
-            echo '<script>window.location.href="' . home_url() . '?deleted"</script>';
-        }
         if ('POST' == $_SERVER['REQUEST_METHOD'] && !empty($_POST['post_id']) && !empty($_POST['post_title']) && isset($_POST['update_post_nonce']) && isset($_POST['postcontent'])) {
             $post_id = $_POST['post_id'];
             $post_type = get_post_type($post_id);
@@ -401,9 +391,15 @@ function ip_editor() {
                 <?php } ?>
 
                 <hr>
+                <?php
+                $ipDeleteRedirection = get_imagepress_option('ip_delete_redirection');
+                if (empty($ipDeleteRedirection)) {
+                    $ipDeleteRedirection = home_url();
+                }
+                ?>
                 <p>
                     <input type="submit" id="submit" value="<?php esc_html_e('Update image', 'imagepress'); ?>">
-                    <a href="?d=<?php echo get_the_ID(); ?>" class="ask button ip-floatright"><i class="fas fa-trash-alt"></i></a>
+                    <a href="#" data-redirect="<?php echo $ipDeleteRedirection; ?>" data-image-id="<?php echo get_the_ID(); ?>" class="button ip-floatright" id="ip-editor-delete-image"><i class="fas fa-trash-alt"></i></a>
                 </p>
             </form>
         </div>
@@ -414,20 +410,13 @@ function ip_editor() {
 // ip_editor() related actions
 add_action('wp_ajax_ip_delete_post', 'ip_delete_post');
 function ip_delete_post() {
-    $permission = check_ajax_referer('ip_delete_post_nonce', 'nonce', false);
-    if($permission == false) {
-        echo 'error';
-    }
-    else {
-        wp_delete_post($_REQUEST['id']);
+    $id = (int) $_POST['id'];
+
+    if (wp_delete_post($id)) {
         echo 'success';
+    } else {
+        echo '';
     }
-    die();
-}
-add_action('wp_ajax_ip_delete_post_simple', 'ip_delete_post_simple');
-function ip_delete_post_simple() {
-    wp_delete_post($_REQUEST['id']);
-    echo 'success';
     die();
 }
 add_action('wp_ajax_ip_update_post_title', 'ip_update_post_title');

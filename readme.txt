@@ -33,6 +33,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed hardcoded imagepress email post meta
 * UPDATE: Refactored upload limits/restrictions
 * FEATURE: Added cleanup/migration script for ImagePress pre-7.7
+* FEATURE: Converted browser confirmations to sweetAlert2 library
 * TODO: Merge uploaders (single and bulk)
 * TODO: Gutenberg compatibility
 * TODO: More functional approach in order to decrease code complexity

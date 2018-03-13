@@ -883,8 +883,13 @@ add_action('wp_enqueue_scripts', 'ip_enqueue_scripts');
 function ip_enqueue_scripts() {
     wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.8/js/all.js', array(), '5.0.8', true);
 
+    // Include a polyfill for ES6 Promises for IE11 and Android browser
+    wp_enqueue_script('corejs', 'https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js', array(), '2.4.1', true);
+    wp_enqueue_script('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.15.1/sweetalert2.all.min.js', array('corejs'), '7.15.1', true);
+
     wp_enqueue_style('ip-reset', plugins_url('css/ip-reset.css', __FILE__));
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
+    wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.15.1/sweetalert2.min.css');
 
     if (get_imagepress_option('ip_ezdz') === '1') {
         wp_enqueue_script('ezdz', plugins_url('js/jquery.ezdz.js', __FILE__), array(), '0.5.1', true);
@@ -919,6 +924,10 @@ function ip_enqueue_scripts() {
 		'loadingmessage' => __('Checking credentials...', 'imagepress'),
 		'registrationloadingmessage' => __('Processing registration...', 'imagepress'),
 		'ip_global_upload_limit_message' => get_imagepress_option('ip_global_upload_limit_message'),
+
+        'swal_confirm_operation' => __("Are you sure? You won't be able to revert this!", 'imagepress'),
+        'swal_confirm_button' => __('Yes', 'imagepress'),
+        'swal_cancel_button' => __('No', 'imagepress'),
     ));
 }
 // end
