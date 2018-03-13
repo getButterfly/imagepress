@@ -161,6 +161,20 @@ function imagepress_admin_page() {
                 $wpdb->query("UPDATE " . $wpdb->prefix . "postmeta SET meta_value = '0' WHERE meta_key = '_like_count'");
                 echo '<div class="updated notice is-dismissible"><p>Action completed successfully!</p></div>';
             }
+            if (isset($_POST['isCleanupSubmit'])) {
+                // Check ImagePress version for cleanup
+                $ipdata = get_plugin_data(IP_PLUGIN_FILE_PATH);
+                if (version_compare($ipdata['Version'], '7.7.0', '<')) {
+                    delete_post_meta_by_key('imagepress_author');
+                    delete_post_meta_by_key('imagepress_email');
+                    delete_post_meta_by_key('imagepress_video');
+
+                    // unset from options array: remove ip_request_user_details
+                    // unset from options array: remove ip_name_label
+                    // unset from options array: remove ip_email_label
+                    // unset from options array: remove ip_video_label
+                }
+            }
             ?>
 
             <h3><?php _e('Maintenance', 'imagepress'); ?></h3>
@@ -168,6 +182,10 @@ function imagepress_admin_page() {
                 <p>
                     <input type="submit" name="isResetSubmit" value="Reset all likes" class="button-primary">
                     <br><small>This option resets all image likes to 0. This action is irreversible.</small>
+                </p>
+                <p>
+                    <input type="submit" name="isCleanupSubmit" value="Pre-7.7 Cleanup" class="button-secondary">
+                    <br><small>This option removes all orphaned/unused options from ImagePress pre-<code>7.7</code>. This action is irreversible.</small>
                 </p>
             </form>
         <?php }

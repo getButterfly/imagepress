@@ -608,6 +608,19 @@ jQuery(document).ready(function() {
     /*
      * End Cinnamon Login
      */
+
+
+
+    if (jQuery('.ip-uploader').length) {
+        var userUploads = jQuery('.ip-uploader').data('user-uploads'),
+            uploadLimit = jQuery('.ip-uploader').data('upload-limit'),
+            globalUploadLimitMessage = ipAjaxVar.ip_global_upload_limit_message;
+
+        if (!isNaN(uploadLimit) && userUploads >= uploadLimit) {
+            jQuery('<div>' + globalUploadLimitMessage + ' (' + userUploads + '/' + uploadLimit + ')</div>').insertBefore('.ip-uploader');
+            jQuery('.ip-uploader').remove();
+        }
+    }
 });
 
 

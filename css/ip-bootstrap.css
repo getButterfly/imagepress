@@ -735,27 +735,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
 }
 
 
-.social-hub {
-    margin: 0;
-    padding: 24px 0;
-    float: right;
-}
-.social-hub a {
-    display: block;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
-    text-align: center;
-    color: #ffffff;
-    font-size: 18px;
-    float: left;
-    margin: 2px 1px 0 0;
-}
-.social-hub a:hover {
-    background-color: #000000 !important;
-}
-
-
 
 /* upload functionality */
 #imagepress-errors {

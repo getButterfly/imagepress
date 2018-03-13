@@ -565,10 +565,6 @@ function ip_main($i) {
 
     <?php imagepress_get_images($i); ?>
 
-    <div class="social-hub">
-        <div class="clearfix"></div>
-    </div>
-
     <section>
         <?php the_content(); ?>
     </section>

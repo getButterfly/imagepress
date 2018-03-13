@@ -522,147 +522,142 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
         $ip_upload_limit = 999999;
     }
 
-    $out = '<div class="ip-uploader" id="fileuploads">';
-        if (is_numeric($ip_upload_limit) && $user_uploads >= $ip_upload_limit) {
-            $out .= '<p>' . $ip_global_upload_limit_message . ' (' . $user_uploads . '/' . $ip_upload_limit . ')</p>';
-        } else {
-            $out .= '<form id="imagepress_upload_image_form" method="post" action="" enctype="multipart/form-data" class="imagepress-form imagepress-upload-form">';
-                $out .= wp_nonce_field('imagepress_upload_image_form', 'imagepress_upload_image_form_submitted');
+    $out = '<div class="ip-uploader" id="fileuploads" data-user-uploads="' . $user_uploads . '" data-upload-limit="' . $ip_upload_limit . '">
+        <form id="imagepress_upload_image_form" method="post" action="" enctype="multipart/form-data" class="imagepress-form imagepress-upload-form">';
+            $out .= wp_nonce_field('imagepress_upload_image_form', 'imagepress_upload_image_form_submitted');
 
-                if (!empty($ip_caption_label))
-                    $out .= '<p>
-                        <label>' . $ip_caption_label . '</label>
-                        <input type="text" id="imagepress_image_caption" name="imagepress_image_caption" placeholder="' . $ip_caption_label . '" required>
-                    </p>';
+            if (!empty($ip_caption_label))
+                $out .= '<p>
+                    <label>' . $ip_caption_label . '</label>
+                    <input type="text" id="imagepress_image_caption" name="imagepress_image_caption" placeholder="' . $ip_caption_label . '" required>
+                </p>';
 
-                if (!empty($ip_description_label)) {
-                    $out .= '<p>
-                        <label>' . get_imagepress_option('ip_description_label') . '</label>
-                        <textarea id="imagepress_image_description" name="imagepress_image_description" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6"></textarea>
-                    </p>';
+            if (!empty($ip_description_label)) {
+                $out .= '<p>
+                    <label>' . get_imagepress_option('ip_description_label') . '</label>
+                    <textarea id="imagepress_image_description" name="imagepress_image_description" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6"></textarea>
+                </p>';
+            }
+
+            $out .= '<p>';
+                if ('' != $imagepress_hardcoded_category) {
+                    $iphcc = get_term_by('slug', $imagepress_hardcoded_category, 'imagepress_image_category'); // ImagePress hard-coded category
+                    $out .= '<input type="hidden" id="imagepress_image_category" name="imagepress_image_category" value="' . $iphcc->term_id . '">';
+                } else {
+                    $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', '');
                 }
 
-                $out .= '<p>';
-                    if ('' != $imagepress_hardcoded_category) {
-                        $iphcc = get_term_by('slug', $imagepress_hardcoded_category, 'imagepress_image_category'); // ImagePress hard-coded category
-                        $out .= '<input type="hidden" id="imagepress_image_category" name="imagepress_image_category" value="' . $iphcc->term_id . '">';
-                    } else {
-                        $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', '');
-                    }
-
-                    if ((int) $ip_allow_tags === 1) {
-                        $out .= imagepress_get_image_tags_dropdown('imagepress_image_tag', '');
-                    }
-                $out .= '</p>';
-
-                // Add to collection on upload
-                if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                    $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
-
-                    $out .= '<hr>
-                    <p>
-                        <select name="ip_collections" id="ip-collections">
-                            <option value="">' . __('Choose a collection...', 'imagepress') . '</option>';
-                            foreach ($result as $collection) {
-                                $out .= '<option value="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</option>';
-                            }
-                        $out .= '</select> <span class="ip-collection-create-new">' . __('or', 'imagepress') . ' <input type="text" name="ip_collections_new" id="ip-collections-new" placeholder="' . __('Create new collection...', 'imagepress') . '">
-                        <select name="collection_status" id="collection_status">
-                            <option value="1">' . __('Public', 'imagepress') . '</option>
-                            <option value="0">' . __('Private', 'imagepress') . '</option>
-                        </select></span>
-                    </p>
-                    <hr>';
+                if ((int) $ip_allow_tags === 1) {
+                    $out .= imagepress_get_image_tags_dropdown('imagepress_image_tag', '');
                 }
+            $out .= '</p>';
 
-                // Custom fields
-                $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
+            // Add to collection on upload
+            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+                $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
 
-                foreach($result as $field) {
-                    if((int) $field['field_type'] === 1) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="text" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                    } else if((int) $field['field_type'] === 2) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="url" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                    } else if((int) $field['field_type'] === 3) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="email" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                    } else if((int) $field['field_type'] === 4) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="number" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                    } else if((int) $field['field_type'] === 5) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><textarea id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" rows="6" placeholder="' . $field['field_name'] . '"></textarea></p>';
-                    } else if((int) $field['field_type'] === 6) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '"><input type="checkbox" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="1"> ' . $field['field_name'] . '</label></p>';
-                    } else if((int) $field['field_type'] === 7) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '"><input type="radio" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="1">' . $field['field_name'] . '</label></p>';
-                    } else if((int) $field['field_type'] === 8) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><select id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '">';
-                            $options = $wpdb->get_var($wpdb->prepare("SELECT field_content FROM  " . $wpdb->prefix . "ip_fields WHERE field_name = '%s'", $field['field_name']));
-                            $options = explode(',', $options);
-                            foreach($options as $option) {
-                                $out .= '<option>' . trim($option) . '</option>';
-                            }
-                        $out .= '</select></p>';
-                    } else if(
-                        (int) $field['field_type'] === 20 ||
-                        (int) $field['field_type'] === 21 ||
-                        (int) $field['field_type'] === 22 ||
-                        (int) $field['field_type'] === 23 ||
-                        (int) $field['field_type'] === 24
-                    ) {
-                        $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="text" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                    }
-                }
-                //
-
-                $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
-                $datauploadsize = $uploadsize * 1024000;
-
-                $ip_ezdz_label = get_imagepress_option('ip_ezdz_label');
-                $out .= '<hr>';
-                $out .= '<div id="imagepress-errors"></div>';
-                $out .= '<p><label for="imagepress_image_file"><i class="fas fa-cloud-upload-alt"></i> ' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" data-ezdz-label="' . $ip_ezdz_label . '" name="imagepress_image_file" id="imagepress_image_file" required></p>';
-                $out .= '<hr>';
-
-                if($ip_dropbox_enable === '1') {
-                    $out .= '<script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="' . $ip_dropbox_key . '"></script>';
-                    $out .= '<p id="droptarget"></p>';
-                    $out .= '<script>
-                    options = {
-                        success: function(files) {
-                            document.getElementById("imagepress_dropbox_file").value = files[0].link;
-                        },
-                        linkType: "direct",
-                        extensions: ["images"]
-                    };
-                    var button = Dropbox.createChooseButton(options); document.getElementById("droptarget").appendChild(button);</script>';
-                    $out .= '<input type="hidden" id="imagepress_dropbox_file" name="imagepress_dropbox_file">';
-                }
-
-                if(1 == $ip_upload_secondary) {
-                    $out .= '<p><label for="imagepress_image_additional"><i class="fas fa-cloud-upload-alt"></i> Select file(s) (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple><br><small>Additional images (variants, making of, progress shots)</small></p><hr>';
-                }
-
-                if ($ip_upload_tos == 1 && !empty($ip_upload_tos_content)) {
-                    $oninvalid = get_imagepress_option('ip_upload_tos_error');
-
-                    $out .= '<p><input type="checkbox" id="imagepress_agree" name="imagepress_agree" value="1" onchange="this.setCustomValidity(validity.valueMissing ? \'' . $oninvalid . '\' : \'\');" required> ';
-
-                        if(!empty($ip_upload_tos_url)) {
-                            $out .= '<a href="' . $ip_upload_tos_url . '" target="_blank">' . $ip_upload_tos_content . '</a>';
-                        } else {
-                            $out .= $ip_upload_tos_content;
+                $out .= '<hr>
+                <p>
+                    <select name="ip_collections" id="ip-collections">
+                        <option value="">' . __('Choose a collection...', 'imagepress') . '</option>';
+                        foreach ($result as $collection) {
+                            $out .= '<option value="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</option>';
                         }
+                    $out .= '</select> <span class="ip-collection-create-new">' . __('or', 'imagepress') . ' <input type="text" name="ip_collections_new" id="ip-collections-new" placeholder="' . __('Create new collection...', 'imagepress') . '">
+                    <select name="collection_status" id="collection_status">
+                        <option value="1">' . __('Public', 'imagepress') . '</option>
+                        <option value="0">' . __('Private', 'imagepress') . '</option>
+                    </select></span>
+                </p>
+                <hr>';
+            }
 
-                    $out .= '</p>';
-                    $out .= '<script>document.getElementById("imagepress_agree").setCustomValidity("' . $oninvalid . '");</script>';
+            // Custom fields
+            $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
+
+            foreach($result as $field) {
+                if((int) $field['field_type'] === 1) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="text" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
+                } else if((int) $field['field_type'] === 2) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="url" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
+                } else if((int) $field['field_type'] === 3) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="email" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
+                } else if((int) $field['field_type'] === 4) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="number" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
+                } else if((int) $field['field_type'] === 5) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><textarea id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" rows="6" placeholder="' . $field['field_name'] . '"></textarea></p>';
+                } else if((int) $field['field_type'] === 6) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '"><input type="checkbox" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="1"> ' . $field['field_name'] . '</label></p>';
+                } else if((int) $field['field_type'] === 7) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '"><input type="radio" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="1">' . $field['field_name'] . '</label></p>';
+                } else if((int) $field['field_type'] === 8) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><select id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '">';
+                        $options = $wpdb->get_var($wpdb->prepare("SELECT field_content FROM  " . $wpdb->prefix . "ip_fields WHERE field_name = '%s'", $field['field_name']));
+                        $options = explode(',', $options);
+                        foreach($options as $option) {
+                            $out .= '<option>' . trim($option) . '</option>';
+                        }
+                    $out .= '</select></p>';
+                } else if(
+                    (int) $field['field_type'] === 20 ||
+                    (int) $field['field_type'] === 21 ||
+                    (int) $field['field_type'] === 22 ||
+                    (int) $field['field_type'] === 23 ||
+                    (int) $field['field_type'] === 24
+                ) {
+                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="text" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
                 }
+            }
+            //
 
-                $out .= '<p>';
-                    $out .= '<input type="submit" id="imagepress_submit" name="imagepress_submit" value="' . $ip_upload_label . '" class="button noir-secondary">';
-                    $out .= ' <span id="ipload"></span>';
-                $out .= '</p>';
-            $out .= '</form>';
-        }
-    $out .= '</div>';
+            $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
+            $datauploadsize = $uploadsize * 1024000;
+
+            $ip_ezdz_label = get_imagepress_option('ip_ezdz_label');
+            $out .= '<hr>
+            <div id="imagepress-errors"></div>
+            <p><label for="imagepress_image_file"><i class="fas fa-cloud-upload-alt"></i> ' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" data-ezdz-label="' . $ip_ezdz_label . '" name="imagepress_image_file" id="imagepress_image_file" required></p>
+            <hr>';
+
+            if($ip_dropbox_enable === '1') {
+                $out .= '<script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="' . $ip_dropbox_key . '"></script>
+                <p id="droptarget"></p>
+                <script>
+                options = {
+                    success: function(files) {
+                        document.getElementById("imagepress_dropbox_file").value = files[0].link;
+                    },
+                    linkType: "direct",
+                    extensions: ["images"]
+                };
+                var button = Dropbox.createChooseButton(options); document.getElementById("droptarget").appendChild(button);</script>
+                <input type="hidden" id="imagepress_dropbox_file" name="imagepress_dropbox_file">';
+            }
+
+            if(1 == $ip_upload_secondary) {
+                $out .= '<p><label for="imagepress_image_additional"><i class="fas fa-cloud-upload-alt"></i> Select file(s) (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple><br><small>Additional images (variants, making of, progress shots)</small></p><hr>';
+            }
+
+            if ($ip_upload_tos == 1 && !empty($ip_upload_tos_content)) {
+                $oninvalid = get_imagepress_option('ip_upload_tos_error');
+
+                $out .= '<p><input type="checkbox" id="imagepress_agree" name="imagepress_agree" value="1" onchange="this.setCustomValidity(validity.valueMissing ? \'' . $oninvalid . '\' : \'\');" required> ';
+
+                    if (!empty($ip_upload_tos_url)) {
+                        $out .= '<a href="' . $ip_upload_tos_url . '" target="_blank">' . $ip_upload_tos_content . '</a>';
+                    } else {
+                        $out .= $ip_upload_tos_content;
+                    }
+
+                $out .= '</p>
+                <script>document.getElementById("imagepress_agree").setCustomValidity("' . $oninvalid . '");</script>';
+            }
+
+            $out .= '<p>
+                <input type="submit" id="imagepress_submit" name="imagepress_submit" value="' . $ip_upload_label . '" class="button noir-secondary"> <span id="ipload"></span>
+            </p>
+        </form>
+    </div>';
 
     return $out;
 }
@@ -923,6 +918,7 @@ function ip_enqueue_scripts() {
         'redirecturl' => apply_filters('fum_redirect_to', $accountPageUri),
 		'loadingmessage' => __('Checking credentials...', 'imagepress'),
 		'registrationloadingmessage' => __('Processing registration...', 'imagepress'),
+		'ip_global_upload_limit_message' => get_imagepress_option('ip_global_upload_limit_message'),
     ));
 }
 // end
