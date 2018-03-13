@@ -308,14 +308,10 @@ function imagepress_loop($atts) {
 
                 $ip_author_optional = '';
                 if ($get_ip_author_optional == 1) {
-                    if (get_post_meta($i, 'imagepress_author', true) !== '') {
-                        $ip_author_optional = '<span class="name">' . get_post_meta($i, 'imagepress_author', true) . '</span>';
-                    } else {
-                        // Get post author ID
-                        $post_author_id = get_post_field('post_author', $i);
+                    // Get post author ID
+                    $post_author_id = get_post_field('post_author', $i);
 
-                        $ip_author_optional = getImagePressProfileUri($post_author_id);
-                    }
+                    $ip_author_optional = getImagePressProfileUri($post_author_id);
                 }
 
                 $ip_meta_optional = '';

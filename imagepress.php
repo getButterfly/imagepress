@@ -306,16 +306,6 @@ function imagepress_add($atts) {
             }
             //
 
-            if (isset($_POST['imagepress_video']))
-                add_post_meta($post_id, 'imagepress_video', $_POST['imagepress_video'], true);
-            else
-                add_post_meta($post_id, 'imagepress_video', '', true);
-
-            if (isset($_POST['imagepress_author']))
-                add_post_meta($post_id, 'imagepress_author', $_POST['imagepress_author'], true);
-            if (isset($_POST['imagepress_email']))
-                add_post_meta($post_id, 'imagepress_email', $_POST['imagepress_email'], true);
-
             // custom fields
             $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
@@ -490,6 +480,8 @@ function imagepress_process_image($file, $post_id, $feature = 1) {
 }
 
 function imagepress_get_upload_image_form($imagepress_image_caption = '', $imagepress_image_category = 0, $imagepress_image_description = '', $imagepress_hardcoded_category) {
+    global $wpdb;
+
     $current_user = wp_get_current_user();
 
     // upload form // customize
@@ -499,14 +491,12 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
     $ip_caption_label = get_imagepress_option('ip_caption_label');
     $ip_description_label = get_imagepress_option('ip_description_label');
-    $ip_video_label = get_imagepress_option('ip_video_label');
     $ip_upload_label = get_imagepress_option('ip_upload_label');
 
     $ip_upload_tos = get_imagepress_option('ip_upload_tos');
     $ip_upload_tos_url = get_imagepress_option('ip_upload_tos_url');
     $ip_upload_tos_content = get_imagepress_option('ip_upload_tos_content');
 
-    $ip_request_user_details = get_imagepress_option('ip_request_user_details');
     $ip_allow_tags = get_imagepress_option('ip_allow_tags');
     $ip_upload_size = get_imagepress_option('ip_upload_size');
     $ip_dropbox_enable = get_imagepress_option('ip_dropbox_enable');
@@ -532,36 +522,20 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
         $ip_upload_limit = 999999;
     }
 
-    $out = '';
-
-    $out .= '<div class="ip-uploader" id="fileuploads">';
-        if(is_numeric($ip_upload_limit) && $user_uploads >= $ip_upload_limit) {
+    $out = '<div class="ip-uploader" id="fileuploads">';
+        if (is_numeric($ip_upload_limit) && $user_uploads >= $ip_upload_limit) {
             $out .= '<p>' . $ip_global_upload_limit_message . ' (' . $user_uploads . '/' . $ip_upload_limit . ')</p>';
         } else {
             $out .= '<form id="imagepress_upload_image_form" method="post" action="" enctype="multipart/form-data" class="imagepress-form imagepress-upload-form">';
                 $out .= wp_nonce_field('imagepress_upload_image_form', 'imagepress_upload_image_form_submitted');
-                // name and email
-                if($ip_request_user_details == 1) {
-                    $out .= '<p>
-                        <label>' . get_imagepress_option('ip_name_label') . '</label>
-                        <input type="text" name="imagepress_author" value="' . $current_user->display_name . '" placeholder="' . get_imagepress_option('ip_name_label') . '" required>
-                    </p>
-                    <p>
-                        <label>' . get_imagepress_option('ip_email_label') . '</label>
-                        <input type="email" name="imagepress_email" value="' . $current_user->user_email . '" placeholder="' . get_imagepress_option('ip_email_label') . '" required>
-                    </p>';
-                } else {
-                    $out .= '<input type="hidden" name="imagepress_author" value="' . $current_user->display_name . '">
-                    <input type="hidden" name="imagepress_email" value="' . $current_user->user_email . '">';
-                }
 
-                if(!empty($ip_caption_label))
+                if (!empty($ip_caption_label))
                     $out .= '<p>
                         <label>' . $ip_caption_label . '</label>
                         <input type="text" id="imagepress_image_caption" name="imagepress_image_caption" placeholder="' . $ip_caption_label . '" required>
                     </p>';
 
-                if(!empty($ip_description_label)) {
+                if (!empty($ip_description_label)) {
                     $out .= '<p>
                         <label>' . get_imagepress_option('ip_description_label') . '</label>
                         <textarea id="imagepress_image_description" name="imagepress_image_description" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6"></textarea>
@@ -569,22 +543,20 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
                 }
 
                 $out .= '<p>';
-                    if('' != $imagepress_hardcoded_category) {
+                    if ('' != $imagepress_hardcoded_category) {
                         $iphcc = get_term_by('slug', $imagepress_hardcoded_category, 'imagepress_image_category'); // ImagePress hard-coded category
                         $out .= '<input type="hidden" id="imagepress_image_category" name="imagepress_image_category" value="' . $iphcc->term_id . '">';
-                    }
-                    else {
-                        $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', '') . '';
+                    } else {
+                        $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', '');
                     }
 
-                    if($ip_allow_tags == 1)
-                        $out .= imagepress_get_image_tags_dropdown('imagepress_image_tag', '') . '';
+                    if ((int) $ip_allow_tags === 1) {
+                        $out .= imagepress_get_image_tags_dropdown('imagepress_image_tag', '');
+                    }
                 $out .= '</p>';
 
                 // Add to collection on upload
                 if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                    global $wpdb;
-
                     $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
 
                     $out .= '<hr>
@@ -603,15 +575,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
                     <hr>';
                 }
 
-                if(!empty($ip_video_label))
-                    $out .= '<p>
-                        <label for="imagepress_video">' . $ip_video_label . '</label>
-                        <input type="url" id="imagepress_video" name="imagepress_video" placeholder="' . $ip_video_label . '">
-                    </p>';
-
-                // custom fields
-                global $wpdb;
-
+                // Custom fields
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
                 foreach($result as $field) {
@@ -714,38 +678,25 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
     $ip_caption_label = get_imagepress_option('ip_caption_label');
     $ip_description_label = get_imagepress_option('ip_description_label');
 
-    $ip_request_user_details = get_imagepress_option('ip_request_user_details');
     $ip_upload_size = get_imagepress_option('ip_upload_size');
 
     $out = '<div class="ip-uploader">';
         $out .= '<form id="imagepress_upload_image_form_bulk" method="post" action="" enctype="multipart/form-data" class="imagepress-upload-form">';
             $out .= wp_nonce_field('imagepress_upload_image_form_bulk', 'imagepress_upload_image_form_submitted_bulk');
-            // name and email
-            if($ip_request_user_details == 1) {
-                $out .= '<p><input type="text" name="imagepress_author" value="' . $current_user->display_name . '" placeholder="' . get_imagepress_option('ip_name_label') . '"></p>';
-                $out .= '<p><input type="email" name="imagepress_email" value="' . $current_user->user_email . '" placeholder="' . get_imagepress_option('ip_email_label') . '"></p>';
-            } else {
-                $out .= '<input type="hidden" name="imagepress_author" value="' . $current_user->display_name . '">';
-                $out .= '<input type="hidden" name="imagepress_email" value="' . $current_user->user_email . '">';
-            }
-
-            $out .= '<input type="hidden" name="imagepress_author" value="' . $current_user->display_name . '">';
-            $out .= '<input type="hidden" name="imagepress_email" value="' . $current_user->user_email . '">';
 
             $out .= '<div id="fileuploads">';
-                if(!empty($ip_caption_label))
+                if (!empty($ip_caption_label))
                     $out .= '<p><input type="text" id="imagepress_image_caption" name="imagepress_image_caption[]" placeholder="' . $ip_caption_label . '" required></p>';
 
-                if(!empty($ip_description_label)) {
+                if (!empty($ip_description_label)) {
                     $out .= '<p><textarea id="imagepress_image_description" name="imagepress_image_description[]" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6"></textarea></p>';
                 }
 
                 $out .= '<p>';
-                    if('' != $imagepress_hardcoded_category) {
+                    if ('' != $imagepress_hardcoded_category) {
                         $iphcc = get_term_by('slug', $imagepress_hardcoded_category, 'imagepress_image_category'); // ImagePress hard-coded category
                         $out .= '<input type="hidden" id="imagepress_image_category" name="imagepress_image_category[]" value="' . $iphcc->term_id . '">';
-                    }
-                    else {
+                    } else {
                         $out .= imagepress_get_image_categories_dropdown_bulk('imagepress_image_category', '') . '';
                     }
                 $out .= '</p>';

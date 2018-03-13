@@ -25,6 +25,27 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Fixed URL strings
 * FIX: Fixed (non)countable arrays
 * UPDATE: Added most liked images shortcode
+* UPDATE: Removed old (unused) functions
+* UPDATE: Removed unused labels
+* UPDATE: Removed hardcoded video post meta
+* UPDATE: Removed hardcoded imagepress author post meta
+* UPDATE: Removed hardcoded imagepress email post meta
+* TODO: Merge uploaders (single and bulk)
+* TODO: Gutenberg compatibility
+* TODO: Remove 'social-hub' (search for it)
+
+* TODO: cleanup imagepress_author (DB)
+* TODO: cleanup imagepress_video (DB)
+* TODO: cleanup imagepress_email (DB)
+
+* TODO: remove ip_request_user_details
+* TODO: remove ip_name_label
+* TODO: remove ip_email_label
+* TODO: remove ip_video_label
+
+* TODO: more functional approach in order to decrease complexity
+* TODO: migration script (detect version less than 7.7) and rewrite all post metas and remove all old ones
+* TODO: move upload limits to JS
 
 = 7.6.9 =
 * FIX: Removed font icon pseudo elements for performance reasons

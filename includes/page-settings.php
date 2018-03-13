@@ -1,11 +1,5 @@
 <?php
 function imagepress_admin_page() {
-
-    /**
-    if (empty(get_imagepress_option('ip_tracking'))) {
-        echo '<div class="notice-warning settings-error notice is-dismissible"><p>We need your <a href="' . admin_url('edit.php?post_type=' . get_imagepress_option('ip_slug') . '&page=imagepress_admin_page&tab=settings_tab#tracking') . '">approval to collect data</a> regarding ImagePress plugin usage and its environment.</p></div>';
-    }
-    /**/
     ?>
     <div class="wrap">
         <h1>ImagePress Settings</h1>
@@ -591,7 +585,6 @@ function imagepress_admin_page() {
                     'ip_upload_redirection' => $_POST['ip_upload_redirection'],
                     'ip_delete_redirection' => $_POST['ip_delete_redirection'],
                     'ip_notification_email' => $_POST['ip_notification_email'],
-                    //'ip_tracking' => (int) $_POST['ip_tracking'],
                 );
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
@@ -719,26 +712,6 @@ function imagepress_admin_page() {
                         </tr>
                     </tbody>
                 </table>
-
-                <?php /** ?>
-                <hr>
-                <h2 id="tracking">Tracking and Data Collection <sup class="ip-beta">BETA</sup></h2>
-                <p>To maintain a plugin, we need to know what we're dealing with, what kinds of other plugins our users are using, what themes, what settings, and so on. Please allow us to track that data from your install. It will not track any user details, so your security and privacy are safe with us.</p>
-                <p>The benefits of providing tracking statistics is that the information sent back to us can be used to improve the plugin and its compatibility with other plugins and themes, making for a better all round plugin.</p>
-                <p><small>Note that this is a beta feature and it may be removed or changed in the future. As there are privacy concerns around this feature, we will let you know in advance.</small></p>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row"><label for="ip_tracking">Tracking</label></th>
-                            <td>
-                                <p>
-                                    <input type="checkbox" name="ip_tracking" value="1" <?php if (get_imagepress_option('ip_tracking') === '1') echo 'checked'; ?>> <label>Enable tracking and data collection</label>
-                                </p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <?php /**/ ?>
 
                 <hr>
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
@@ -940,8 +913,6 @@ function imagepress_admin_page() {
         <?php } else if ($tab == 'label_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
-                    'ip_name_label' => $_POST['ip_name_label'],
-                    'ip_email_label' => $_POST['ip_email_label'],
                     'ip_caption_label' => $_POST['ip_caption_label'],
                     'ip_category_label' => $_POST['ip_category_label'],
                     'ip_tag_label' => $_POST['ip_tag_label'],
@@ -949,7 +920,6 @@ function imagepress_admin_page() {
                     'ip_ezdz_label' => $_POST['ip_ezdz_label'],
                     'ip_upload_label' => $_POST['ip_upload_label'],
                     'ip_image_label' => $_POST['ip_image_label'],
-                    'ip_video_label' => $_POST['ip_video_label'],
                     'ip_notifications_mark' => $_POST['ip_notifications_mark'],
                     'ip_notifications_all' => $_POST['ip_notifications_all'],
                     'cms_verified_profile' => $_POST['cms_verified_profile'],
@@ -978,18 +948,6 @@ function imagepress_admin_page() {
                 <p><?php _e('Configure, set or translate any of ImagePress labels. Leave a label blank to disable/hide it.', 'imagepress'); ?></p>
                 <table class="form-table">
                     <tbody>
-                        <tr>
-                            <th scope="row"><label for="ip_name_label">Name label</label></th>
-                            <td>
-                                <input type="text" name="ip_name_label" id="ip_name_label" value="<?php echo get_imagepress_option('ip_name_label'); ?>" class="regular-text">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_email_label">Email address label</label></th>
-                            <td>
-                                <input type="text" name="ip_email_label" id="ip_email_label" value="<?php echo get_imagepress_option('ip_email_label'); ?>" class="regular-text">
-                            </td>
-                        </tr>
                         <tr>
                             <th scope="row"><label for="ip_caption_label">Image caption label<br><small>Leave blank to disable</small></label></th>
                             <td>
@@ -1034,12 +992,6 @@ function imagepress_admin_page() {
                                 </td>
                             </tr>
                         <?php } ?>
-                        <tr>
-                            <th scope="row"><label for="ip_video_label">Image video link<br><small>(Youtube/Vimeo)<br>Leave blank to disable</small></label></th>
-                            <td>
-                                <input type="text" name="ip_video_label" id="ip_video_label" value="<?php echo get_imagepress_option('ip_video_label'); ?>" class="regular-text">
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
 
@@ -1158,7 +1110,6 @@ function imagepress_admin_page() {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
                     'ip_ezdz' => $_POST['ip_ezdz'],
-                    'ip_request_user_details' => $_POST['ip_request_user_details'],
                     'ip_upload_secondary' => $_POST['ip_upload_secondary'],
                     'ip_allow_tags' => $_POST['ip_allow_tags'],
                     'ip_upload_tos' => $_POST['ip_upload_tos'],
@@ -1221,15 +1172,6 @@ function imagepress_admin_page() {
                             <td>
                                 <input type="text" name="ip_cat_exclude" id="ip_cat_exclude" value="<?php echo get_imagepress_option('ip_cat_exclude'); ?>">
                                 <br><small>Exclude these categories from the upload form (separate IDs with comma).</small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label>Upload details</label></th>
-                            <td>
-                                <select name="ip_request_user_details" id="ip_request_user_details">
-                                    <option value="1"<?php if(get_imagepress_option('ip_request_user_details') == 1) echo ' selected'; ?>>Request user name and email</option>
-                                    <option value="0"<?php if(get_imagepress_option('ip_request_user_details') == 0) echo ' selected'; ?>>Do not request user name and email</option>
-                                </select>
                             </td>
                         </tr>
                         <tr>

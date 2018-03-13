@@ -437,13 +437,9 @@ function imagepress_collection($atts) {
                         $ip_title_optional = '<span class="imagetitle">' . get_the_title($i) . '</span>';
                     }
 
-                    if (get_post_meta($i, 'imagepress_author', true) != '') {
-                        $ip_author_optional = '<span class="name">' . get_post_meta($i, 'imagepress_author', true) . '</span>';
-                    } else {
-                        // get post author ID
-                        $post_author_id = get_post_field('post_author', $i);
-                        $ip_author_optional = getImagePressProfileUri($post_author_id);
-                    }
+                    // get post author ID
+                    $post_author_id = get_post_field('post_author', $i);
+                    $ip_author_optional = getImagePressProfileUri($post_author_id);
 
                     if ($get_ip_meta_optional == 1)
                         $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '">' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '</span>';

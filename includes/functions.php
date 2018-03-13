@@ -255,9 +255,6 @@ function ip_editor() {
                 if (get_imagepress_option('ip_allow_tags') == 1)
                     wp_set_object_terms($post_id, (int) $_POST['imagepress_image_tag'], 'imagepress_image_tag');
 
-                if ('' != get_imagepress_option('ip_video_label'))
-                    update_post_meta($post_id, 'imagepress_video', (string) $_POST['imagepress_video']);
-
                 // custom fields
                 global $wpdb;
 
@@ -286,11 +283,6 @@ function ip_editor() {
                     <label for="postcontent"><?php esc_html_e('Description', 'imagepress'); ?></label><br>
                     <textarea id="postcontent" name="postcontent" rows="3"><?php echo strip_tags(get_post_field('post_content', $edit_id)); ?></textarea></p>
                 <hr>
-                <?php if ('' != get_imagepress_option('ip_video_label')) { ?>
-                    <p>
-                        <input type="url" name="imagepress_video" value="<?php echo get_post_meta($edit_id, 'imagepress_video', true); ?>" placeholder="<?php echo get_imagepress_option('ip_video_label'); ?>">
-                    </p>
-                <?php } ?>
 
                 <?php
                 // custom fields
@@ -572,16 +564,6 @@ function ip_main($i) {
     ?>
 
     <?php imagepress_get_images($i); ?>
-
-    <?php
-    $imagepress_video = get_post_meta($i, 'imagepress_video', true);
-    if(!empty($imagepress_video)) {
-        echo '<br>';
-        $embed_code = wp_oembed_get($imagepress_video);
-        echo $embed_code;
-        echo '<br>';
-    }
-    ?>
 
     <div class="social-hub">
         <div class="clearfix"></div>
