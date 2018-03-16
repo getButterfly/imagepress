@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
 Tested up to: 4.9.4
-Stable tag: 7.6.9
+Stable tag: 7.7.0
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -21,6 +21,11 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
+= 7.7.1 =
+* TODO: Gutenberg compatibility
+* TODO: Merge uploaders (single and bulk)
+* TODO: More functional approach in order to decrease code complexity
+
 = 7.7.0 =
 * FIX: Fixed URL strings
 * FIX: Fixed (non)countable arrays
@@ -32,11 +37,9 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed hardcoded imagepress author post meta
 * UPDATE: Removed hardcoded imagepress email post meta
 * UPDATE: Refactored upload limits/restrictions
+* UPDATE: Updated CoreJS library for better IE compatibility
 * FEATURE: Added cleanup/migration script for ImagePress pre-7.7
 * FEATURE: Converted browser confirmations to sweetAlert2 library
-* TODO: Merge uploaders (single and bulk)
-* TODO: Gutenberg compatibility
-* TODO: More functional approach in order to decrease code complexity
 
 = 7.6.9 =
 * FIX: Removed font icon pseudo elements for performance reasons
