@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.6
 Tested up to: 4.9.4
-Stable tag: 7.7.0
+Stable tag: 7.7.1
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -22,6 +22,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 == Changelog ==
 
 = 7.7.1 =
+* FIX: Fixed collection maintenance action
 * TODO: Gutenberg compatibility
 * TODO: Merge uploaders (single and bulk)
 * TODO: More functional approach in order to decrease code complexity

@@ -504,14 +504,14 @@ function imagepress_admin_page() {
                     </select>
                     <input type="submit" name="ip_new_collection_add" class="button button-secondary" value="<?php _e('Add new collection', 'imagepress'); ?>">
                 </p>
-            </form>
 
-            <hr>
-            <h2><?php _e('Maintenance', 'imagepress'); ?></h2>
-            <p><?php _e('Whenever users permanently delete an image, the collection reference is not updated. Use the button below to remove all references to missing images from the collections table.', 'imagepress'); ?></p>
-            <p>
-                <input type="submit" name="isCollectionCU" value="Remove <?php echo $orphan_count; ?> missing image references" class="button button-secondary">
-            </p>
+                <hr>
+                <h2><?php _e('Maintenance', 'imagepress'); ?></h2>
+                <p><?php _e('Whenever users permanently delete an image, the collection reference is not updated. Use the button below to remove all references to missing images from the collections table.', 'imagepress'); ?></p>
+                <p>
+                    <input type="submit" name="isCollectionCU" value="Remove <?php echo $orphan_count; ?> missing image references" class="button button-secondary">
+                </p>
+            </form>
         <?php } else if ($tab == 'login_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
