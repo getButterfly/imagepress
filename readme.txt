@@ -2,9 +2,9 @@
 Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
-Requires at least: 4.6
+Requires at least: 4.7
 Tested up to: 4.9.4
-Stable tag: 7.7.1
+Stable tag: 7.7.2
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -20,6 +20,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 3. A new ImagePress menu will appear in WordPress with options and general help
 
 == Changelog ==
+
+= 7.7.2 =
+* FIX: Removed unused CSS stylesheets (-weight)
+* UPDATE: Merged CSS reset stylesheet (+speed)
+* UPDATE: Updated sweetAlert2 library (+speed)
+* UPDATE: Removed a redundant condition (+speed)
+* TODO: Make a list of all used icons and decide if it's better to move to images or SVGs
 
 = 7.7.1 =
 * FIX: Fixed collection maintenance action

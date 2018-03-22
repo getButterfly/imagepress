@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.7.1
+Version: 7.7.2
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com
@@ -885,28 +885,27 @@ function ip_enqueue_scripts() {
 
     // Include a polyfill for ES6 Promises for IE11 and Android browser
     wp_enqueue_script('corejs', 'https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.3/core.min.js', array(), '2.5.3', true);
-    wp_enqueue_script('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.15.1/sweetalert2.all.min.js', array('corejs'), '7.15.1', true);
+    wp_enqueue_script('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.17.0/sweetalert2.all.min.js', array('corejs'), '7.17.0', true);
 
-    wp_enqueue_style('ip-reset', plugins_url('css/ip-reset.css', __FILE__));
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
-    wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.15.1/sweetalert2.min.css');
+    wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.17.0/sweetalert2.min.css');
 
     if (get_imagepress_option('ip_ezdz') === '1') {
         wp_enqueue_script('ezdz', plugins_url('js/jquery.ezdz.js', __FILE__), array(), '0.5.1', true);
     }
+
+    $grid_ui = 'basic';
 
     if (get_imagepress_option('ip_grid_ui') === 'masonry') {
         wp_enqueue_script('masonry');
         $grid_ui = 'masonry'; // jQuery Masonry
     } else if (get_imagepress_option('ip_grid_ui') === 'default') {
         $grid_ui = 'default'; // jQuery equalHeight
-    } else {
-        $grid_ui = 'basic';
     }
 
 	$accountPageUri = get_option('cinnamon_account_page');
 
-    wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable', 'sweetalert2'), '7.7.0', true);
+    wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable', 'sweetalert2'), '7.7.2', true);
     wp_localize_script('ipjs-main', 'ipAjaxVar', array(
         'imagesperpage' => get_imagepress_option('ip_ipp'),
         'authorsperpage' => get_imagepress_option('ip_app'),

@@ -1,3 +1,60 @@
+/*
+ * ImagePress Reset Library
+ */
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="tel"],
+input[type="search"],
+input[type="number"],
+input[type="file"],
+input[type="password"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+input[type="date"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="color"],
+button,
+select,
+textarea {
+    display: inline-block;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 12px;
+    margin: 2px;
+    border: 0 none;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 100ms all ease-in-out;
+}
+
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+input[type="file"],
+button {
+    cursor: pointer;
+}
+
+input:hover,
+button:hover,
+select:hover,
+textarea:hover {
+    border-color: #95A5A6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+
+/*
+ * ImagePress Bootstrap
+ */
 .imagepress-form { margin: 8px 0; }
 
 .imagepress-form p {
