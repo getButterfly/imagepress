@@ -175,6 +175,7 @@ function imagepress_admin_page() {
                     // unset from options array: remove ip_name_label
                     // unset from options array: remove ip_email_label
                     // unset from options array: remove ip_video_label
+                    // unset from options array: remove cms_verified_profile
                 }
             }
             ?>
@@ -942,7 +943,6 @@ function imagepress_admin_page() {
                     'ip_image_label' => $_POST['ip_image_label'],
                     'ip_notifications_mark' => $_POST['ip_notifications_mark'],
                     'ip_notifications_all' => $_POST['ip_notifications_all'],
-                    'cms_verified_profile' => $_POST['cms_verified_profile'],
                     'ip_upload_success_title' => $_POST['ip_upload_success_title'],
                     'ip_upload_success' => $_POST['ip_upload_success'],
                     'ip_vote_like' => stripslashes_deep($_POST['ip_vote_like']),
@@ -1029,20 +1029,6 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_notifications_all">"View all notifications" label</label></th>
                             <td>
                                 <input type="text" name="ip_notifications_all" id="ip_notifications_all" value="<?php echo get_imagepress_option('ip_notifications_all'); ?>" class="regular-text">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <hr>
-                <h2><?php _e('Tooltips', 'imagepress'); ?></h2>
-                <p>The tooltip text will appear when the icon is hovered.</p>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row"><label for="cms_verified_profile">Verified profile tooltip</label></th>
-                            <td>
-                                <input type="text" name="cms_verified_profile" id="cms_verified_profile" value="<?php echo get_imagepress_option('cms_verified_profile'); ?>" class="regular-text">
                             </td>
                         </tr>
                     </tbody>
@@ -1326,7 +1312,7 @@ function imagepress_admin_page() {
                 <p>
                     <input type="text" name="notification_type_custom" id="notification_type_custom" class="regular-text">
                     <label for="notification_type_custom">Notification type (custom)</label>
-                    <br><small>This is the notification body text (e.g. <em>Check out this great new feature!</em> or <em>You have been verified!</em>).</small>
+                    <br><small>This is the notification body text (e.g. <em>Check out this great new feature!</em>).</small>
                 </p>
                 <p>
                     <input type="url" name="notification_link_custom" id="notification_link_custom" class="regular-text" placeholder="https://">

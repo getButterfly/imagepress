@@ -41,7 +41,6 @@ $optionArray = array(
     'ip_image_label' => 'Select Image',
     'ip_notifications_mark' => 'Mark all as read',
     'ip_notifications_all' => 'View all notifications',
-    'cms_verified_profile' => 'Verified Profile',
     'ip_upload_success_title' => 'Image uploaded!',
     'ip_upload_success' => 'Click here to view your image.',
     'ip_vote_like' => 'Like',

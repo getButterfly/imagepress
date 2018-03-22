@@ -108,11 +108,6 @@ function cinnamon_card($atts) {
                 }
                 $display .= '<div class="avatar-holder"><a href="' . getImagePressProfileUri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
 
-                if (get_the_author_meta('user_title', $author) == 'Verified')
-                    $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fas fa-check-square"></i></span>';
-                else
-                    $verified = '';
-
                 $hub_user_info = get_userdata($author);
                 $hub_location = get_the_author_meta('hub_location', $author);
 
@@ -123,8 +118,8 @@ function cinnamon_card($atts) {
                         } else {
                             $display .= $hub_user_info->display_name;
                         }
-                    $display .= '</a>' . $verified . ' ';
-                $display .= '</h3>';
+                    $display .= '</a>
+                </h3>';
 
                 if (!empty($hub_location))
                     $display .= '<div class="location-holder"><small><i class="fas fa-map-marker-alt teal"></i> <span class="location">' . get_the_author_meta('hub_location', $author) . '</span></small></div>';
@@ -234,11 +229,6 @@ function cinnamon_profile($atts) {
                         $display .= '<div class="imagepress-follow">' . do_shortcode('[follow_links follow_id="' . $author . '"]') . '</div>';
                     $display .= '</div>';
 
-                    if (get_the_author_meta('user_title', $author) == 'Verified')
-                        $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fas fa-check-square"></i></span>';
-                    else
-                        $verified = '';
-
                     // get custom URL
                     $hubdomain = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']);
                     $hubuser = get_user_by('id', $author);
@@ -253,7 +243,7 @@ function cinnamon_profile($atts) {
                     $hub_anchor = getImagePressProfileUri($author, false);
                     $display .= '<div>
                         <div class="ph-nametag">
-                            ' . $hub_name . $verified;
+                            ' . $hub_name;
                             if(is_user_logged_in() && $username == $logged_in_user->user_login) {
                                 $display .= ' <a href="' . $hub_anchor . '">#</a>';
                                 $display .= ' <small><a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
@@ -278,11 +268,6 @@ function cinnamon_profile($atts) {
                 if(is_user_logged_in() && $username != $logged_in_user->user_login)
                     $display .= '<div class="imagepress-follow">' . do_shortcode('[follow_links follow_id="' . $author . '"]') . '</div>';
 
-                if(get_the_author_meta('user_title', $author) == 'Verified')
-                    $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fas fa-check-square"></i></span>';
-                else
-                    $verified = '';
-
                 // get custom URL
                 $hubdomain = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']);
                 $hubuser = get_user_by('id', $author);
@@ -294,7 +279,7 @@ function cinnamon_profile($atts) {
                 if($hub_user_info->user_url != '')
                     $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
 
-                $display .= '<h2>' . $hub_name . $verified . '</h2>
+                $display .= '<h2>' . $hub_name . '</h2>
                 <p>';
                     if(!empty($hub_field))
                         $display .= $hub_field . ' | ';
@@ -834,9 +819,6 @@ function save_cinnamon_profile_fields($user_id) {
 
     // awards
     if (current_user_can('manage_options', $user_id)) {
-        if (!empty($_POST['user_title'])) {
-            update_user_meta($user_id, 'user_title', $_POST['user_title']);
-        }
         if (!empty($_POST['ip_upload_limit'])) {
             update_user_meta($user_id, 'ip_upload_limit', $_POST['ip_upload_limit']);
         }

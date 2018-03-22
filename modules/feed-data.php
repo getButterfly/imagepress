@@ -13,15 +13,10 @@ foreach ($res as $line) {
 	if ((string) $action === 'added' /*&& pwuf_is_following($user_ID, $authorID)*/) {
         // Check if post exists and is published
         if ('publish' === get_post_status($line->postID) && has_post_thumbnail($line->postID)) {
-            $verified = '';
-            if (get_the_author_meta('user_title', $line->userID) == 'Verified') {
-                $verified = ' <span class="teal hint hint--right" data-hint="' . get_option('cms_verified_profile') . '"><i class="fas fa-check-circle"></i></span>';
-            }
-
             echo '<div class="feed-item n' . $line->ID . '" data-id="' . $line->ID . '" id="item' . $line->ID . '">
                 <div class="feed-meta-primary">
                     <div class="feed-avatar">' . get_avatar($line->userID, 48) . '</div>
-                    <a href="' . get_author_posts_url($line->userID) . '" class="regular-link">' . $nickname . '</a> ' . $verified . ' uploaded <a href="' . get_permalink($line->postID) . '" class="regular-link">' . get_the_title($line->postID) . '</a>
+                    <a href="' . get_author_posts_url($line->userID) . '" class="regular-link">' . $nickname . '</a> uploaded <a href="' . get_permalink($line->postID) . '" class="regular-link">' . get_the_title($line->postID) . '</a>
                 </div>
                 <div class="feed-meta-tertiary">
                     <small>

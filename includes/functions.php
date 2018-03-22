@@ -509,13 +509,7 @@ function ip_main($i) {
         <div style="float: left; margin: 0 8px 0 0;">
             <?php echo get_avatar($post->post_author, 40); ?>
         </div>
-        <?php
-        $verified = '';
-        if (get_the_author_meta('user_title', $post->post_author) == 'Verified') {
-            $verified = ' <span class="teal hint hint--right" data-hint="' . get_imagepress_option('cms_verified_profile') . '"><i class="fas fa-check-square"></i></span>';
-        }
-        ?>
-        <?php esc_html_e('by', 'imagepress'); ?> <b><?php echo getImagePressProfileUri($post->post_author); ?></b> <?php echo $verified; ?>
+        <?php esc_html_e('by', 'imagepress'); ?> <b><?php echo getImagePressProfileUri($post->post_author); ?></b>
         <br><small><?php esc_html_e('Uploaded', 'imagepress'); ?> <time title="<?php the_time(get_option('date_format')); ?>"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?></time> <?php esc_html_e('in', 'imagepress'); ?> <?php echo get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', ''); ?></small>
     </p>
 
