@@ -90,11 +90,6 @@
     -webkit-box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.15);
             box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.15);
 }
-#gb-ad img {
-    width: 90px;
-    margin: 0 24px 16px 0;
-    float: left;
-}
 #gb-ad hr {
     border: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -126,7 +121,9 @@ small .codor {
 .gb-assistant .dashicons {
     color: rgba(0, 0, 0, 0.25);
 }
-
+.highlighted {
+    color: #E74C3C;
+}
 
 
 @media all and (max-width: 480px) {

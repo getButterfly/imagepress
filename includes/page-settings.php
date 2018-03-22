@@ -5,32 +5,35 @@ function imagepress_admin_page() {
         <h1>ImagePress Settings</h1>
 
         <?php
-        $tab = (filter_has_var(INPUT_GET, 'tab')) ? filter_input(INPUT_GET, 'tab') : 'dashboard_tab';
-
         $i = get_imagepress_option('ip_slug');
+
+        $tab = (filter_has_var(INPUT_GET, 'tab')) ? filter_input(INPUT_GET, 'tab') : 'dashboard_tab';
+        $section = 'edit.php?post_type=' . $i . '&page=imagepress_admin_page&amp;tab=';
         ?>
         <h2 class="nav-tab-wrapper ip-nav-tab-wrapper">
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=dashboard_tab" class="nav-tab <?php echo $tab == 'dashboard_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Dashboard', 'imagepress'); ?></a>
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=install_tab" class="nav-tab <?php echo $tab == 'install_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Installation', 'imagepress'); ?></a>
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=settings_tab" class="nav-tab <?php echo $tab == 'settings_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', 'imagepress'); ?></a>
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=configurator_tab" class="nav-tab <?php echo $tab == 'configurator_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Configurator', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>dashboard_tab" class="nav-tab <?php echo $tab == 'dashboard_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Dashboard', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>install_tab" class="nav-tab <?php echo $tab == 'install_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Installation', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>settings_tab" class="nav-tab <?php echo $tab == 'settings_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>configurator_tab" class="nav-tab <?php echo $tab == 'configurator_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Configurator', 'imagepress'); ?></a>
+
             <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
-                <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=collections_tab" class="nav-tab <?php echo $tab == 'collections_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Collections', 'imagepress'); ?></a>
+                <a href="<?php echo $section; ?>collections_tab" class="nav-tab <?php echo $tab == 'collections_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Collections', 'imagepress'); ?></a>
             <?php } ?>
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=label_tab" class="nav-tab <?php echo $tab == 'label_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Labels', 'imagepress'); ?></a>
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=upload_tab" class="nav-tab <?php echo $tab == 'upload_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Upload', 'imagepress'); ?></a>
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=authors_tab" class="nav-tab <?php echo $tab == 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors', 'imagepress'); ?></a>
+
+            <a href="<?php echo $section; ?>label_tab" class="nav-tab <?php echo $tab == 'label_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Labels', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>upload_tab" class="nav-tab <?php echo $tab == 'upload_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Upload', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>authors_tab" class="nav-tab <?php echo $tab == 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors', 'imagepress'); ?></a>
+
             <?php if (get_imagepress_option('ip_mod_login') == 1) { ?>
-                <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=login_tab" class="nav-tab <?php echo $tab == 'login_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Login', 'imagepress'); ?></a>
+                <a href="<?php echo $section; ?>login_tab" class="nav-tab <?php echo $tab == 'login_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Login', 'imagepress'); ?></a>
             <?php } ?>
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=fields_tab" class="nav-tab <?php echo $tab == 'fields_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Fields', 'imagepress'); ?></a>
 
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=notifications_tab" class="nav-tab <?php echo $tab == 'notifications_tab' ? 'nav-tab-active' : ''; ?>"><i class="fas fa-fw fa-bell"></i>&nbsp;</a>
-
-            <a href="edit.php?post_type=<?php echo $i; ?>&page=imagepress_admin_page&amp;tab=extensions" class="nav-tab <?php echo $tab == 'extensions' ? 'nav-tab-active' : ''; ?>"><i class="fas fa-star" aria-hidden="true" style="color:#E74C3C;"></i> Extensions</a>
+            <a href="<?php echo $section; ?>fields_tab" class="nav-tab <?php echo $tab == 'fields_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Fields', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>notifications_tab" class="nav-tab <?php echo $tab == 'notifications_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Notifications', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>extensions" class="nav-tab <?php echo $tab == 'extensions' ? 'nav-tab-active' : ''; ?> highlighted"><?php _e('Extensions', 'imagepress'); ?></a>
         </h2>
 
-        <?php if($tab == 'dashboard_tab') {
+        <?php if ($tab === 'dashboard_tab') {
             global $wpdb;
 
             // Get the WP built-in version
@@ -39,12 +42,11 @@ function imagepress_admin_page() {
             echo '<div id="gb-ad">
                 <h3 class="gb-handle">Thank you for using ImagePress!</h3>
                 <div id="gb-ad-content">
-                    <div class="inside">
-                        <img src="' . IP_PLUGIN_URL . '/img/gb-logo-white-512.png" alt="getButterfly">';
+                    <div class="inside">';
 
                         // Check if Noir UI theme exists
                         $noir_ui_theme = wp_get_theme('noir-ui');
-                        if($noir_ui_theme->exists()) {
+                        if ($noir_ui_theme->exists()) {
                             echo '<h4>You are using <strong>' . $noir_ui_theme->get('Name') . '</strong> theme version ' . $noir_ui_theme->get('Version') . '</h4>';
                         } else {
                             echo '<h4>Check out <a href="https://getbutterfly.com/downloads/noir-ui/" rel="external" target="_blank">Noir UI</a>, our accompanying theme for ImagePress. With customizable elements and colours, Noir UI lets your image gallery stand out from less developed alternatives.</h4>';
@@ -57,9 +59,9 @@ function imagepress_admin_page() {
                         <p>For support, feature requests and bug reporting, please visit the <a href="https://getbutterfly.com/" rel="external">official website</a>.<br>&copy;' . date('Y') . ' <a href="https://getbutterfly.com/" rel="external"><strong>getButterfly</strong>.com</a> &middot; <a href="https://getbutterfly.com/support/documentation/imagepress/">Documentation</a> &middot; <small>Code wrangling since 2005</small></p>
                     </div>
                 </div>
-            </div>';
+            </div>
 
-            echo '<p>
+            <p>
                 <small>You are using ImagePress plugin version <strong>' . $ipdata['Version'] . '</strong>.</small><br>
                 <small>You are using PHP version ' . PHP_VERSION . ' and MySQL server version ' . $wpdb->db_version() . '.</small>
             </p>

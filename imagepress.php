@@ -885,10 +885,10 @@ function ip_enqueue_scripts() {
 
     // Include a polyfill for ES6 Promises for IE11 and Android browser
     wp_enqueue_script('corejs', 'https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.3/core.min.js', array(), '2.5.3', true);
-    wp_enqueue_script('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.17.0/sweetalert2.all.min.js', array('corejs'), '7.17.0', true);
+    wp_enqueue_script('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.16.0/sweetalert2.all.min.js', array('corejs'), '7.16.0', true);
 
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
-    wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.17.0/sweetalert2.min.css');
+    wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.16.0/sweetalert2.min.css');
 
     if (get_imagepress_option('ip_ezdz') === '1') {
         wp_enqueue_script('ezdz', plugins_url('js/jquery.ezdz.js', __FILE__), array(), '0.5.1', true);

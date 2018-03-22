@@ -26,6 +26,8 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Merged CSS reset stylesheet (+speed)
 * UPDATE: Updated sweetAlert2 library (+speed)
 * UPDATE: Removed a redundant condition (+speed)
+* UPDATE: Removed getButterfly logo (-weight)
+* UPDATE: Refactored settings page (+speed)
 * TODO: Make a list of all used icons and decide if it's better to move to images or SVGs
 
 = 7.7.1 =
