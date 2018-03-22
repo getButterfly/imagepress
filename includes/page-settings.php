@@ -482,7 +482,7 @@ function imagepress_admin_page() {
                             echo '<td><b><a href="' . get_permalink($ip_collections_page_id) . '?collection=' . (int) $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></b></td>';
                             echo '<td><a href="' . admin_url('user-edit.php?user_id=' . $collectionUser->ID) . '">' . $collectionUser->user_nicename . '</a></td>';
                             echo '<td>' . ((count($postslistcount) === 1) ? count($postslistcount) . ' image' : count($postslistcount) . ' images') . '</td>';
-                            echo '<td>' . (($collection['collection_status'] == 0) ? '<i class="fas fa-fw fa-eye-slash"></i> private' : '<i class="fas fa-fw fa-eye"></i> public') . '</td>';
+                            echo '<td>' . (($collection['collection_status'] == 0) ? 'private' : 'public') . '</td>';
                             echo '<td><a href="' . admin_url('edit.php?post_type=' . $ip_slug . '&page=imagepress_admin_page&tab=collections_tab&c=' . $collection['collection_ID']) . '"><span class="dashicons dashicons-trash"></span></a></td>';
                         echo '</tr>';
                     }
@@ -1267,7 +1267,7 @@ function imagepress_admin_page() {
                 <table class="form-table">
                     <tbody>
                         <tr>
-                            <th scope="row"><label><i class="fab fa-dropbox"></i> Dropbox</label></th>
+                            <th scope="row"><label>Dropbox</label></th>
                             <td>
                                 <p>
                                     <input type="checkbox" name="ip_dropbox_enable" value="1" <?php if(get_imagepress_option('ip_dropbox_enable') === '1') echo 'checked'; ?>> <label>Enable Dropbox upload</label>
@@ -1288,7 +1288,6 @@ function imagepress_admin_page() {
                 global $wpdb;
 
                 $notification_type_custom = $_POST['notification_type_custom'];
-                $notification_icon_custom = $_POST['notification_icon_custom'];
                 $notification_link_custom = $_POST['notification_link_custom'];
                 $notification_user = $_POST['notification_user'];
                 $when = date('Y-m-d H:i:s');
@@ -1298,7 +1297,7 @@ function imagepress_admin_page() {
                 else
                     $notification_type = '' . $notification_type_custom . '';
 
-                $sql = "INSERT INTO " . $wpdb->prefix . "notifications (`userID`, `postID`, `actionType`, `actionIcon`, `actionTime`) VALUES (0, '$notification_user', '$notification_type', '$notification_icon_custom', '$when')";
+                $sql = "INSERT INTO " . $wpdb->prefix . "notifications (`userID`, `postID`, `actionType`, `actionTime`) VALUES (0, '$notification_user', '$notification_type', '$when')";
                 $wpdb->query($sql);
 
                 echo '<div class="updated notice is-dismissible"><p>Notification added successfully!</p></div>';
@@ -1325,9 +1324,6 @@ function imagepress_admin_page() {
             <form method="post">
                 <h3>Add new notification</h3>
                 <p>
-                    <input type="text" name="notification_icon_custom" id="notification_icon_custom" class="regular-text" placeholder="fa-bicycle">
-                    <label for="notification_icon_custom">Notification icon (FontAwesome)</label>
-                    <br>
                     <input type="text" name="notification_type_custom" id="notification_type_custom" class="regular-text">
                     <label for="notification_type_custom">Notification type (custom)</label>
                     <br><small>This is the notification body text (e.g. <em>Check out this great new feature!</em> or <em>You have been verified!</em>).</small>
@@ -1362,7 +1358,7 @@ function imagepress_admin_page() {
             foreach($results as $result) {
                 ?>
                 <div id="notification-<?php echo $result->ID; ?>">
-                    <a href="#" class="ajax_trash" data-post="<?php echo $result->ID; ?>"><i class="fas fa-fw fa-trash"></i></a>&nbsp;
+                    <a href="#" class="ajax_trash" data-post="<?php echo $result->ID; ?>"><span class="dashicons dashicons-trash"></span></a>&nbsp;
                     <?php
                     $display = '';
                     $action = $result->actionType;
@@ -1370,47 +1366,39 @@ function imagepress_admin_page() {
                     $time = human_time_diff(strtotime($result->actionTime), current_time('timestamp')) . ' ago';
                     $ip_collections_page_id = get_imagepress_option('ip_collections_page');
 
-                    if($result->status == 0)
-                        $status = '<i class="fas fa-fw fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;';
-                    if($result->status == 1)
-                        $status = '<i class="fas fa-fw fa-check-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;';
-
-                    $display .= $status;
-                    $display .= ' [' . $result->ID . '] ';
-
                     if($action == 'loved')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fas fa-fw fa-heart"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                        $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
                     else if($action == 'collected')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fas fa-fw fa-folder"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ip_collections_page_id) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
+                        $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ip_collections_page_id) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
 
                     else if($action == 'added')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fas fa-fw fa-arrow-circle-up"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                        $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
                     else if($action == 'followed')
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fas fa-fw fa-plus-circle"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $result->actionType . ' you <time>' . $time . '</time>';
+                        $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $result->actionType . ' you <time>' . $time . '</time>';
 
                     else if ((string) $action == 'commented on') {
                         $who = '<a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a>';
                         if ((int) $result->userID === 0) {
                             $who = 'Someone';
                         }
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fas fa-fw fa-comment"></i> ' . $who . ' ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
+                        $display .= get_avatar($result->userID, 16) . ' ' . $who . ' ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
                     }
 
                     else if($action == 'replied to a comment on') {
                         $comment_id = get_comment($result->postID);
                         $comment_post_ID = $comment_id->comment_post_ID;
 
-                        $display .= '' . get_avatar($result->userID, 16) . ' <i class="fas fa-fw fa-comment"></i> <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> replied to a comment on <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a> <time>' . $time . '</time>';
+                        $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> replied to a comment on <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a> <time>' . $time . '</time>';
                     }
 
                     else if($action == 'featured')
-                        $display .= '' . get_the_post_thumbnail($result->postID, array(16,16)) . ' <i class="fas fa-fw fa-star"></i> <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> poster was ' . $action . ' <time>' . $time . '</time>';
+                        $display .= get_the_post_thumbnail($result->postID, array(16,16)) . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> poster was ' . $action . ' <time>' . $time . '</time>';
 
                     // custom
                     else if(0 == $result->postID || '-1' == $result->postID) {
-                        $display .= '<i class="fas fa-fw ' . $result->actionIcon . '"></i> ' . $result->actionType . ' <time>' . $time . '</time>';
+                        $display .= $result->actionType . ' <time>' . $time . '</time>';
                     }
 
                     echo $display;
@@ -1551,7 +1539,7 @@ function imagepress_admin_page() {
 
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
-                echo '<div id="ip-info"><p><i class="fas fa-arrows-alt"></i> ' . __('Drag custom fields to reorder them', 'imagepress') . '</p></div>
+                echo '<div id="ip-info"><p><span class="dashicons dashicons-move"></span> ' . __('Drag custom fields to reorder them', 'imagepress') . '</p></div>
                 <table id="ip-sortable" class="wp-list-table widefat striped posts">
                     <thead>
                         <tr>

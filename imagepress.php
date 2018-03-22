@@ -872,8 +872,8 @@ register_deactivation_hook(__FILE__, 'imagepress_deactivate');
 add_action('admin_enqueue_scripts', 'ip_enqueue_color_picker');
 function ip_enqueue_color_picker() {
     wp_enqueue_style('wp-color-picker');
-    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.8/js/all.js', array(), '5.0.8', true);
     wp_enqueue_style('imagepress', plugins_url('css/ip-admin.css', __FILE__));
+
     wp_enqueue_script('ip.functions', plugins_url('js/functions.js', __FILE__), array('wp-color-picker'), false, true);
 }
 

@@ -28,6 +28,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed a redundant condition (+speed)
 * UPDATE: Removed getButterfly logo (-weight)
 * UPDATE: Refactored settings page (+speed)
+* UPDATE: Removed FontAwesome from Dashboard (+speed)
 * TODO: Make a list of all used icons and decide if it's better to move to images or SVGs
 
 = 7.7.1 =
