@@ -86,7 +86,6 @@ $optionArray = array(
     'declinednotification' => 1,
 
     // Upload tab
-    'ip_ezdz' => 0,
     'ip_upload_secondary' => 0,
     'ip_allow_tags' => 0,
     'ip_upload_tos' => 0,

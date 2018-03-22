@@ -11,8 +11,7 @@ License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
 
-ImagePress  Copyright (c) 2013-2018 Ciprian Popescu (email: getbutterfly@gmail.com)
-Ezdz        Copyright (c) 2016-2017 Jay Salvat (https://github.com/jaysalvat/ezdz) (MIT)
+ImagePress Copyright (c) 2013-2018 Ciprian Popescu (email: getbutterfly@gmail.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -889,10 +888,6 @@ function ip_enqueue_scripts() {
 
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
     wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.16.0/sweetalert2.min.css');
-
-    if ((int) get_imagepress_option('ip_ezdz') === 1) {
-        wp_enqueue_script('ezdz', plugins_url('js/jquery.ezdz.js', __FILE__), array(), '0.5.1', true);
-    }
 
     $grid_ui = 'basic';
 

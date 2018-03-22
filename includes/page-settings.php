@@ -176,6 +176,9 @@ function imagepress_admin_page() {
                     // unset from options array: remove ip_email_label
                     // unset from options array: remove ip_video_label
                     // unset from options array: remove cms_verified_profile
+                    // unset from options array: remove ip_ezdz
+                    // unset from options array: remove ip_ezdz_label
+                    // unset user meta: user_title
                 }
             }
             ?>
@@ -1004,14 +1007,12 @@ function imagepress_admin_page() {
                                 <input type="text" name="ip_image_label" id="ip_image_label" value="<?php echo get_imagepress_option('ip_image_label'); ?>" class="regular-text">
                             </td>
                         </tr>
-                        <?php if(get_imagepress_option('ip_ezdz') === '1') { ?>
-                            <tr>
-                                <th scope="row"><label for="ip_image_label">Drag and drop upload label</label></th>
-                                <td>
-                                    <input type="text" name="ip_ezdz_label" id="ip_ezdz_label" value="<?php echo get_imagepress_option('ip_ezdz_label'); ?>" class="regular-text">
-                                </td>
-                            </tr>
-                        <?php } ?>
+                        <tr>
+                            <th scope="row"><label for="ip_image_label">Drag and drop upload label</label></th>
+                            <td>
+                                <input type="text" name="ip_ezdz_label" id="ip_ezdz_label" value="<?php echo get_imagepress_option('ip_ezdz_label'); ?>" class="regular-text">
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -1115,7 +1116,6 @@ function imagepress_admin_page() {
         <?php } else if ($tab == 'upload_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
-                    'ip_ezdz' => $_POST['ip_ezdz'],
                     'ip_upload_secondary' => $_POST['ip_upload_secondary'],
                     'ip_allow_tags' => $_POST['ip_allow_tags'],
                     'ip_upload_tos' => $_POST['ip_upload_tos'],
@@ -1183,9 +1183,6 @@ function imagepress_admin_page() {
                         <tr>
                             <th scope="row"><label>Upload features</label></th>
                             <td>
-                                <p>
-                                    <input type="checkbox" name="ip_ezdz" value="1" <?php if(get_imagepress_option('ip_ezdz') === '1') echo 'checked'; ?>> <label>Enable drag and drop upload</label>
-                                </p>
                                 <select name="ip_upload_secondary" id="ip_upload_secondary">
                                     <option value="1"<?php if(get_imagepress_option('ip_upload_secondary') == 1) echo ' selected'; ?>>Enable secondary upload button</option>
                                     <option value="0"<?php if(get_imagepress_option('ip_upload_secondary') == 0) echo ' selected'; ?>>Disable secondary upload button</option>
