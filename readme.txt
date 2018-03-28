@@ -32,6 +32,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed profile verification (-confusion)
 * UI: Removed several icons
 * TODO: Make drag&drop default and remove ezdz
+https://codepen.io/ciprian/pen/WzObrQ
 
 = 7.7.1 =
 * FIX: Fixed collection maintenance action
