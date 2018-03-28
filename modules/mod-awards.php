@@ -118,32 +118,6 @@ function my_award_count_text($count) {
 }
 add_action('init', 'ip_awards_taxonomy', 0);
 
-function extra_edit_tax_fields($tag) {
-    $t_id = $tag->term_id;
-    $term_meta = get_option("taxonomy_$t_id"); ?>
-    <tr class="form-field">
-        <th scope="row" valign="top"><label for="cat_Image_url"><?php esc_html_e('Award Icon', 'imagepress'); ?></label></th>
-        <td>
-            <input type="text" name="term_meta[img]" id="term_meta[img]" value="<?php echo esc_attr($term_meta['img']) ? esc_attr($term_meta['img']) : ''; ?>">
-            <p class="description"><?php esc_html_e('Enter the FontAwesome icon name (e.g. fa-trophy)', 'imagepress'); ?></p>
-        </td>
-    </tr>
-<?php
-}
-add_action('award_edit_form_fields', 'extra_edit_tax_fields', 10, 2);
-
-function extra_add_tax_fields($tag) {
-    $t_id = $tag->term_id;
-    $term_meta = get_option("taxonomy_$t_id"); ?>
-    <div class="form-field">
-        <label for="cat_Image_url"><?php esc_html_e('Award Icon', 'imagepress'); ?></label>
-        <input type="text" name="term_meta[img]" id="term_meta[img]" value="<?php echo esc_attr($term_meta['img']) ? esc_attr($term_meta['img']) : ''; ?>">
-        <p class="description"><?php esc_html_e('Enter the FontAwesome icon name (e.g. fa-trophy)', 'imagepress'); ?></p>
-    </div>
-<?php
-}
-add_action('award_add_form_fields', 'extra_add_tax_fields', 10, 2);
-
 function save_extra_taxonomy_fields($term_id) {
     if(isset($_POST['term_meta'])) {
         $t_id = $term_id;

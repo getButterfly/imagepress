@@ -728,7 +728,7 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
             </div>
             <div id="endOfForm"></div>';
 
-            $out .= '<div class="ip-addmore"><a href="#" onclick="addMoreFiles(); return false;" class="button noir-secondary"><i class="fas fa-plus-circle"></i> ' . __('Add more', 'imagepress') . '</a></div>';
+            $out .= '<div class="ip-addmore"><a href="#" onclick="addMoreFiles(); return false;" class="button noir-secondary">' . __('Add more', 'imagepress') . '</a></div>';
 
             $out .= '<p>';
                 $out .= '<input type="submit" id="imagepress_submit_bulk" name="imagepress_submit_bulk" value="' . get_imagepress_option('ip_upload_label') . '" class="button noir-secondary">';
@@ -1052,7 +1052,7 @@ function imagepress_widget($atts) {
 
             $display .= '<div id="ip_container_2"><div class="ip_icon_hover">' .
                     '<div><strong>' . get_the_title($image->ID) . '</strong></div>' .
-                    '<div><small><i class="fas fa-eye"></i> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <i class="fas fa-heart"></i> ' . imagepress_get_like_count($image->ID) . '</small></div>
+                    '<div><small><span class="ua-icon">&#128065;</span> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <span class="ua-icon">&#10084;</span> ' . imagepress_get_like_count($image->ID) . '</small></div>
                 </div><a href="' . $ip_image_link . '" class="ip-link">' . wp_get_attachment_image($post_thumbnail_id, 'full') . '</a></div>';
         }
     }

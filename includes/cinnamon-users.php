@@ -122,7 +122,7 @@ function cinnamon_card($atts) {
                 </h3>';
 
                 if (!empty($hub_location))
-                    $display .= '<div class="location-holder"><small><i class="fas fa-map-marker-alt teal"></i> <span class="location">' . get_the_author_meta('hub_location', $author) . '</span></small></div>';
+                    $display .= '<div class="location-holder"><small><span class="location">' . get_the_author_meta('hub_location', $author) . '</span></small></div>';
 
                 $display .= '<div class="cinnamon-stats">
                     <div class="cinnamon-meta"><span class="views">' . kformat(cinnamon_PostViews($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
@@ -135,7 +135,7 @@ function cinnamon_card($atts) {
 
     if ($total_users > $total_query) {
         $display .= '<div id="pagination" class="native-pagination">';
-        $display .= '<span class="pages">Pages:</span>';
+        $display .= '<span class="pages">' . __('Pages:', 'imagepress') . '</span>';
         $current_page = max(1, get_query_var('paged'));
         $display .= paginate_links(array(
             'base' => get_pagenum_link(1) . '%_%',
@@ -238,7 +238,7 @@ function cinnamon_profile($atts) {
                         $hub_name = $hubuser;
 
                     if ($hub_user_info->user_url != '')
-                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
+                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><span class="ua-icon">&#128279;</span></a>';
 
                     $hub_anchor = getImagePressProfileUri($author, false);
                     $display .= '<div>
@@ -256,8 +256,8 @@ function cinnamon_profile($atts) {
                                 $display .= '<br><b>' . __('Field', 'imagepress') . '</b> ' . $hub_field;
                             $display .= '<br><b>' . __('Connect', 'imagepress') . '</b> ' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
-                            if(get_the_author_meta('hub_status', $author) == 1)
-                                $display .= ' <a href="mailto:' . get_the_author_meta('email', $author) . '"><i class="fas fa-envelope"></i></a>';
+                            if ((int) get_the_author_meta('hub_status', $author) === 1)
+                                $display .= ' <a href="mailto:' . get_the_author_meta('email', $author) . '"><span class="ua-icon">&#9993;</span></a>';
                         $display .= '</div>
                     </div>';
                 $display .= '</div>';
@@ -265,7 +265,7 @@ function cinnamon_profile($atts) {
         } else {
             $display .= '<div class="cinnamon-cover-blank">';
                 $display .= '<p>' . get_avatar($author, 60) . '</p>';
-                if(is_user_logged_in() && $username != $logged_in_user->user_login)
+                if (is_user_logged_in() && $username != $logged_in_user->user_login)
                     $display .= '<div class="imagepress-follow">' . do_shortcode('[follow_links follow_id="' . $author . '"]') . '</div>';
 
                 // get custom URL
@@ -273,22 +273,22 @@ function cinnamon_profile($atts) {
                 $hubuser = get_user_by('id', $author);
                 $hubuser = sanitize_title($hubuser->user_login);
                 $hub_name = $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
-                if(empty($hub_user_info->first_name) && empty($hub_user_info->last_name))
+                if (empty($hub_user_info->first_name) && empty($hub_user_info->last_name))
                     $hub_name = $hubuser;
 
-                if($hub_user_info->user_url != '')
-                    $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
+                if ($hub_user_info->user_url != '')
+                    $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><span class="ua-icon">&#128279;</span></a>';
 
                 $display .= '<h2>' . $hub_name . '</h2>
                 <p>';
-                    if(!empty($hub_field))
+                    if (!empty($hub_field))
                         $display .= $hub_field . ' | ';
-                    if(!empty($hub_location))
+                    if (!empty($hub_location))
                         $display .= $hub_location . ' | ';
                     $display .= $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
-                    if(is_user_logged_in() && $username == $logged_in_user->user_login)
-                        $display .= ' | <a href="' . get_imagepress_option('cinnamon_edit_page') . '"><i class="fas fa-pen-square"></i> ' . get_imagepress_option('cinnamon_edit_label') . '</a>';
+                    if (is_user_logged_in() && $username == $logged_in_user->user_login)
+                        $display .= ' | <a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a>';
                 $display .= '</p>';
             $display .= '</div>';
         }
@@ -394,7 +394,7 @@ function cinnamon_profile($atts) {
                                         if(isset($term_data['img']))
                                             $display .= '<i class="fas ' . $term_data['img'] . '"></i> ';
                                         else
-                                            $display .= '<i class="fas fa-trophy"></i> ';
+                                            $display .= '<span class="ua-icon">&#127942;</span> ';
                                     $display .= $term->name . '</span>';
                                 }
                             }
@@ -858,13 +858,10 @@ function cinnamon_awards() {
             $t_ID = $term->term_id;
             $term_data = get_option("taxonomy_$t_ID");
 
-            echo '<p><span class="cinnamon-award-list-item" title="' . $term->description . '">';
-                if(isset($term_data['img']))
-                    echo '<i class="fa ' . $term_data['img'] . '"></i> ';
-                else
-                    echo '<i class="fas fa-trophy"></i> ';
-                echo $term->name . '</span> <span>' . $term->description . '<br><small>(' . $term->count . ' author(s) received this award)</small></span>';
-            echo '</p>';
+            echo '<p><span class="cinnamon-award-list-item" title="' . $term->description . '">
+                <span class="ua-icon">&#127942;</span> ' .
+                $term->name . '</span> <span>' . $term->description . '<br><small>(' . $term->count . ' author(s) received this award)</small></span>
+            </p>';
         }
     }
 }

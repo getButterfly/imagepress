@@ -21,6 +21,11 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
+= 7.7.3 =
+* UPDATE: Removed FontAwesome (+speed, -weight)
+* UPDATE: Updated all icons and symbols
+* UI: Removed several redundant icons
+
 = 7.7.2 =
 * FIX: Removed unused CSS stylesheets (-weight)
 * UPDATE: Merged CSS reset stylesheet (+speed)
