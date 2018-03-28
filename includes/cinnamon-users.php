@@ -613,15 +613,15 @@ function cinnamon_profile_edit($atts) {
                         <div class="ip-tabs-item" style="display: none;">
                             <table class="form-table">
                                 <tr>
-                                    <th><label for="facebook"><i class="fab fa-facebook-square"></i> ' . __('Facebook profile URL', 'imagepress') . '</label></th>
+                                    <th><label for="facebook">' . __('Facebook profile URL', 'imagepress') . '</label></th>
                                     <td><input name="facebook" type="url" id="facebook" value="' . get_the_author_meta('facebook', $userid) . '"></td>
                                 </tr>
                                 <tr>
-                                    <th><label for="twitter"><i class="fab fa-twitter-square"></i> ' . __('Twitter username', 'imagepress') . '</label></th>
+                                    <th><label for="twitter">' . __('Twitter username', 'imagepress') . '</label></th>
                                     <td><input name="twitter" type="text" id="twitter" value="' . get_the_author_meta('twitter', $userid) . '"></td>
                                 </tr>
                                 <tr>
-                                    <th><label for="googleplus"><i class="fab fa-google-plus-square"></i> ' . __('Google+ profile URL', 'imagepress') . '</label></th>
+                                    <th><label for="googleplus">' . __('Google+ profile URL', 'imagepress') . '</label></th>
                                     <td><input name="googleplus" type="url" id="googleplus" value="' . get_the_author_meta('googleplus', $userid) . '"></td>
                                 </tr>
                             </table>
@@ -694,22 +694,22 @@ function cinnamon_profile_edit($atts) {
                         if(get_imagepress_option('ip_mod_collections') == 1) {
                             $out .= '<div class="ip-tabs-item" style="display: none;">
                                 <p>
-                                    <a href="#" class="toggleModal button noir-secondary"><i class="fas fa-plus"></i> ' . __('Create new collection', 'imagepress') . '</a>
-                                    <span class="ip-loadingCollections"><i class="fas fa-cog fa-spin"></i> ' . __('Loading collections...', 'imagepress') . '</span>
-                                    <span class="ip-loadingCollectionImages"><i class="fas fa-cog fa-spin"></i> ' . __('Loading collection images...', 'imagepress') . '</span>
-                                    <a href="#" class="imagepress-collections imagepress-float-right button"><i class="fas fa-sync-alt"></i></a>
+                                    <a href="#" class="toggleModal button noir-secondary">' . __('Create new collection', 'imagepress') . '</a>
+                                    <span class="ip-loadingCollections"><span class="ua-icon ua-spin">&#128259;</span> ' . __('Loading collections...', 'imagepress') . '</span>
+                                    <span class="ip-loadingCollectionImages"><span class="ua-icon ua-spin">&#128259;</span> ' . __('Loading collection images...', 'imagepress') . '</span>
+                                    <a href="#" class="imagepress-collections imagepress-float-right button"><span class="ua-icon">&#8635;</span></a>
                                 </p>
                                 <div class="modal">
                                     <h2>' . __('Create new collection', 'imagepress') . '</h2>
-                                    <a href="#" class="close toggleModal"><i class="fas fa-times"></i> ' . __('Close', 'imagepress') . '</a>
+                                    <a href="#" class="close toggleModal">' . __('Close', 'imagepress') . '</a>
 
                                     <input type="hidden" id="collection_author_id" name="collection_author_id" value="' . $userid . '">
                                     <p><input type="text" id="collection_title" name="collection_title" placeholder="' . __('Collection title', 'imagepress') . '"></p>
                                     <p><label>Make this collection</label> <select id="collection_status"><option value="1">' . __('Public', 'imagepress') . '</option><option value="0">' . __('Private', 'imagepress') . '</option></select></p>
                                     <p>
                                         <input type="submit" value="' . __('Create', 'imagepress') . '" class="addCollection">
-                                        <label class="collection-progress"><i class="fas fa-cog fa-spin"></i></label>
-                                        <label class="showme"> <i class="fas fa-check"></i> ' . __('Collection created!', 'imagepress') . '</label>
+                                        <label class="collection-progress"><span class="ua-icon ua-spin">&#128259;</span></label>
+                                        <label class="showme">' . __('Collection created!', 'imagepress') . '</label>
                                     </p>
                                 </div>
 
@@ -775,7 +775,7 @@ function cinnamon_profile_edit($atts) {
                             <input name="updateuser" type="submit" class="button" id="updateuser" value="' . __('Update', 'imagepress') . '">';
                             wp_nonce_field('update-user');
                             $out .= '<input name="action" type="hidden" id="action" value="update-user">
-                            <i class="fas fa-share-alt-square"></i> <a href="' . getImagePressProfileUri($userid, false) . '">' . __('View and share your profile', 'imagepress') . '</a>
+                            <a href="' . getImagePressProfileUri($userid, false) . '">' . __('View and share your profile', 'imagepress') . '</a>
                         </td>
                     </tr>
                 </table>

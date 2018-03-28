@@ -326,11 +326,11 @@ function pwuf_get_follow_unfollow_links($follow_id = null) {
 
     ob_start(); ?>
     <?php if (pwuf_is_following($user_ID, $follow_id)) { ?>
-        <a href="#" class="unfollow followed thin-ui-button" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><i class="fas fa-minus"></i> <?php _e('Unfollow', 'imagepress'); ?></a>
-		<a href="#" class="follow thin-ui-button" style="display: none;" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><i class="fas fa-plus"></i> <?php _e('Follow', 'imagepress'); ?></a>
+        <a href="#" class="unfollow followed thin-ui-button" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><?php _e('Unfollow', 'imagepress'); ?></a>
+		<a href="#" class="follow thin-ui-button" style="display: none;" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><?php _e('Follow', 'imagepress'); ?></a>
 	<?php } else { ?>
-		<a href="#" class="follow thin-ui-button" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><i class="fas fa-plus"></i> <?php _e('Follow', 'imagepress'); ?></a>
-		<a href="#" class="followed unfollow thin-ui-button" style="display: none;" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><i class="fas fa-minus"></i> <?php _e('Unfollow', 'imagepress'); ?></a>
+		<a href="#" class="follow thin-ui-button" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><?php _e('Follow', 'imagepress'); ?></a>
+		<a href="#" class="followed unfollow thin-ui-button" style="display: none;" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><?php _e('Unfollow', 'imagepress'); ?></a>
 	<?php } ?>
 	<img src="<?php echo IP_PLUGIN_URL; ?>/img/loading.gif" class="pwuf-ajax" style="display: none;">
 	<?php

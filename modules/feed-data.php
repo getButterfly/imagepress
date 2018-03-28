@@ -20,7 +20,7 @@ foreach ($res as $line) {
                 </div>
                 <div class="feed-meta-tertiary">
                     <small>
-                        <time>' . $time . '</time> | <i class="fas fa-comment" aria-hidden="true"></i> ' . get_comments_number($line->postID) . ' | <i class="fas fa-heart" aria-hidden="true"></i> ' . imagepress_get_like_count($line->postID) . '
+                        <time>' . $time . '</time> | <span class="ua-icon">&#128172;</span> ' . get_comments_number($line->postID) . ' | <span class="ua-icon">&#10084;</span> ' . imagepress_get_like_count($line->postID) . '
                     </small>
                 </div>
                 <div class="feed-meta-secondary">

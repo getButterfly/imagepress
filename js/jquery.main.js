@@ -67,7 +67,7 @@ jQuery(document).ready(function() {
         e.stopImmediatePropagation();
         var like = jQuery(this);
         var pid = like.data('post_id');
-        like.html('<i class="fas fa-heart"></i> <i class="fas fa-spinner fa-spin"></i>');
+        like.html('<span class="ua-icon">&#9829;</span> <span class="ua-icon ua-spin">&#128259;</span>');
         jQuery.ajax({
             type: 'post',
             url: ipAjaxVar.ajaxurl,
@@ -79,12 +79,12 @@ jQuery(document).ready(function() {
                         lecount = ipAjaxVar.likelabel;
                     }
                     like.removeClass('liked');
-                    like.html('<i class="fas fa-heart"></i> ' + lecount);
+                    like.html('<span class="ua-icon">&#9829;</span> ' + lecount);
                 }
                 else {
                     count = ipAjaxVar.unlikelabel;
                     like.addClass('liked');
-                    like.html('<i class="far fa-heart"></i> ' + count);
+                    like.html('<span class="ua-icon">&#9825;</span> ' + count);
                 }
             }
         });
@@ -115,7 +115,7 @@ jQuery(document).ready(function() {
         jQuery('#imagepress-errors').html('');
         jQuery('#imagepress_submit').prop('disabled', true);
         jQuery('#imagepress_submit').css('opacity', '0.5');
-        jQuery('#ipload').html('<i class="fas fa-cog fa-spin"></i> Uploading...');
+        jQuery('#ipload').html('<span class="ua-icon ua-spin">&#128259;</span> Uploading...');
     });
     /* end upload */
 
@@ -210,7 +210,7 @@ jQuery(document).ready(function() {
             }
         });
 
-        jQuery('.notifications-bell').html('<i class="far fa-bell"></i><sup>0</sup>');
+        jQuery('.notifications-bell').html('<span class="ua-icon">&#128277;</span><sup>0</sup>');
     });
 
     jQuery('.notifications-container .notifications-inner').greedyScroll(25);
@@ -523,7 +523,7 @@ jQuery(document).ready(function() {
             var id = jQuery(this).data('image-id');
             var title = jQuery(this).val();
 
-            jQuery('.editableImageStatus_' + id).show().html('<i class="fas fa-cog fa-spin fa-fw"></i>');
+            jQuery('.editableImageStatus_' + id).show().html('<span class="ua-icon ua-spin">&#128259;</span>');
 
             jQuery.ajax({
                 type: 'post',
@@ -684,15 +684,15 @@ jQuery(document).ready(function() {
 
         // Check if dropdown has changed on page load
         sorterDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#128259;</span>';
             window.location.href = sorterDropdown.value;
         };
         rangerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#128259;</span>';
             window.location.href = rangerDropdown.value;
         };
         taxxxerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#128259;</span>';
             window.location.href = taxxxerDropdown.value;
         };
 

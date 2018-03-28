@@ -1038,7 +1038,7 @@ function imagepress_widget($atts) {
         $display .= '';
         foreach ($getImages as $image) {
             if (get_imagepress_option('ip_comments') == 1)
-                $ip_comments = '<i class="fas fa-comments"></i> ' . get_comments_number($image->ID) . '';
+                $ip_comments = '<span class="ua-icon">&#128172;</span> ' . get_comments_number($image->ID) . '';
             if (get_imagepress_option('ip_comments') == 0)
                 $ip_comments = '';
 

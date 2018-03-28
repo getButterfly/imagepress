@@ -67,10 +67,37 @@ textarea:hover {
     -moz-osx-font-smoothing: grayscale;
 }
 .ua-uw {
-    /* Move to separate class */
     display: inline-block;
     text-align: center;
     width: 24px;
+}
+@-webkit-keyframes ua-spin {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ua-spin {
+    from {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.ua-spin {
+    display: inline-block;
+
+    -webkit-animation: ua-spin 2s infinite linear;
+    animation: ua-spin 2s infinite linear;
 }
 
 

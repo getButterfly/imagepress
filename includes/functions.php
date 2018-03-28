@@ -191,7 +191,7 @@ function ip_editor() {
     // check if user is author // show author tools
     if ($post->post_author == $current_user->ID) { ?>
         <span class="ip-editor-display-container">
-            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><i class="fas fa-wrench"></i><span class="ip-icon-label"> <?php esc_html_e('Author tools', 'imagepress'); ?></span></a>
+            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><span class="ua-icon">&#128736;</span><span class="ip-icon-label"> <?php esc_html_e('Author tools', 'imagepress'); ?></span></a>
         </span>
         <?php
         $edit_id = get_the_ID();
@@ -455,7 +455,7 @@ function ip_main($i) {
     $post_thumbnail_url = $image_attributes[0];
 
     if(get_imagepress_option('ip_comments') == 1)
-        $ip_comments = '<em> | </em><a href="' . get_permalink($i) . '"><i class="fas fa-comments"></i> ' . get_comments_number($i) . '</a> ';
+        $ip_comments = '<em> | </em><a href="' . get_permalink($i) . '"><span class="ua-icon">&#128172;</span> ' . get_comments_number($i) . '</a> ';
     if(get_imagepress_option('ip_comments') == 0)
         $ip_comments = '';
     ?>
@@ -468,7 +468,7 @@ function ip_main($i) {
     </div>
 
     <div class="ip-bar">
-        <?php echo ipGetPostLikeLink($i); ?><em> | </em><i class="fas fa-eye"></i> <?php echo ip_getPostViews($i); ?><?php echo $ip_comments; ?>
+        <?php echo ipGetPostLikeLink($i); ?><em> | </em><span class="ua-icon">&#128065;</span> <?php echo ip_getPostViews($i); ?><?php echo $ip_comments; ?>
         <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
             <em> | </em>
             <?php if (function_exists('ip_frontend_add_collection')) ip_frontend_add_collection(get_the_ID()); ?>
@@ -486,7 +486,7 @@ function ip_main($i) {
     <h1 class="ip-title">
         <?php
         if(has_term('featured', 'imagepress_image_category'))
-            echo '<i class="fas fa-star"></i></span> ';
+            echo '<span class="ua-icon">&#9733;</span></span> ';
 
         echo get_the_title($i);
 
@@ -499,7 +499,7 @@ function ip_main($i) {
                     $term_links[] = $term->name;
                 }
                 $tags = join(', ', $term_links);
-                echo '<br><small><i class="fas fa-info-circle"></i> ' . $tags . '</small>';
+                echo '<br><small>' . $tags . '</small>';
             endif;
         }
         ?>
