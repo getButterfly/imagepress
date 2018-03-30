@@ -354,15 +354,15 @@ function ip_editor() {
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
                 ?>
-                <p><label for="imagepress_image_file"><i class="fas fa-cloud-upload-alt"></i> Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
+                <p><label for="imagepress_image_file">Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
 
                 <?php if(1 == get_imagepress_option('ip_upload_secondary')) { ?>
                     <hr>
                     <p>
-                        <?php esc_html_e('Select', 'imagepress'); ?> <i class="fas fa-check-circle"></i> <?php esc_html_e('main image or', 'imagepress'); ?> <i class="fas fa-times-circle"></i> <?php esc_html_e('delete additional images', 'imagepress'); ?>
+                        <?php esc_html_e('Select main image or delete additional images', 'imagepress'); ?>
                         <br><small><?php esc_html_e('Main image will appear first in single image listing and as a thumbnail in gallery view', 'imagepress'); ?></small>
                     </p>
-                    <div class="ip-hide ip-notice"><p><i class="fas fa-check" aria-hidden="true"></i> <?php esc_html_e('Featured image selected succesfully!', 'imagepress'); ?></p></div>
+                    <div class="ip-hide ip-notice"><p><?php esc_html_e('Featured image selected succesfully!', 'imagepress'); ?></p></div>
                     <?php
                     $thumbnail_ID = get_post_thumbnail_id();
                     $images = get_children(array('post_parent' => $edit_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
@@ -378,8 +378,8 @@ function ip_editor() {
                                 if($image->ID != $thumbnail_ID)
                                     echo '<div class="ip-additional">';
                                     echo '<div class="ip-toolbar">';
-                                        echo '<a href="#" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_delete_post_nonce') . '" class="delete-post ip-action-icon ip-floatright"><i class="fas fa-times-circle"></i></a>';
-                                        echo '<a href="#" data-pid="' . $edit_id . '" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_featured_post_nonce') . '" class="featured-post ip-action-icon ip-floatleft"><i class="fas fa-check-circle"></i></a>';
+                                        echo '<a href="#" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_delete_post_nonce') . '" class="delete-post ip-action-icon ip-floatright"><span class="ua-icon">&#128465;</span></a>';
+                                        echo '<a href="#" data-pid="' . $edit_id . '" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_featured_post_nonce') . '" class="featured-post ip-action-icon ip-floatleft"><span class="ua-icon">&#128504;</span></a>';
                                     echo '</div>';
                                 echo '<img src="' . $small_array[0] . '" alt=""></div>';
                             }
@@ -387,7 +387,7 @@ function ip_editor() {
                     }
                     ?>
 
-                    <p><label for="imagepress_image_additional"><i class="fas fa-cloud-upload-alt"></i> <?php esc_html_e('Add more images', 'imagepress'); ?> (<?php echo $uploadsize; ?>MB <?php esc_html_e('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple></p>
+                    <p><label for="imagepress_image_additional"><?php esc_html_e('Add more images', 'imagepress'); ?> (<?php echo $uploadsize; ?>MB <?php esc_html_e('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple></p>
                 <?php } ?>
 
                 <hr>
@@ -399,7 +399,7 @@ function ip_editor() {
                 ?>
                 <p>
                     <input type="submit" id="submit" value="<?php esc_html_e('Update image', 'imagepress'); ?>">
-                    <a href="#" data-redirect="<?php echo $ipDeleteRedirection; ?>" data-image-id="<?php echo get_the_ID(); ?>" class="button ip-floatright" id="ip-editor-delete-image"><i class="fas fa-trash-alt"></i></a>
+                    <a href="#" data-redirect="<?php echo $ipDeleteRedirection; ?>" data-image-id="<?php echo get_the_ID(); ?>" class="button ip-floatright" id="ip-editor-delete-image"><span class="ua-icon">&#128465;</span></a>
                 </p>
             </form>
         </div>
@@ -474,7 +474,7 @@ function ip_main($i) {
             <?php if (function_exists('ip_frontend_add_collection')) ip_frontend_add_collection(get_the_ID()); ?>
         <?php } ?>
 
-        <a href="<?php echo $post_thumbnail_url; ?>" class="thin-ui-button"><i class="fas fa-fw fa-arrows-alt"></i></a>
+        <a href="<?php echo $post_thumbnail_url; ?>" class="thin-ui-button"><span class="ua-icon">&#129125;</span></a>
         <?php echo imagepress_image_download(get_the_post_thumbnail_url()); ?>
 
         <?php
@@ -553,8 +553,8 @@ function ip_main($i) {
     </section>
 
     <section role="navigation">
-        <?php previous_post_link('%link', '<i class="fas fa-fw fa-chevron-left"></i> Previous'); ?>
-        <?php next_post_link('%link', 'Next <i class="fas fa-fw fa-chevron-right"></i>'); ?>
+        <?php previous_post_link('%link', esc_html__('Previous', 'imagepress')); ?>
+        <?php next_post_link('%link', esc_html__('Next', 'imagepress')); ?>
     </section>
     <?php
 }
@@ -761,7 +761,7 @@ function ip_get_field($atts) {
 }
 
 function imagepress_image_download($path) {
-    $out = '<a href="' . $path . '" class="thin-ui-button" download><i class="fas fa-fw fa-download" aria-hidden="true"></i><span class="ip-icon-label"> ' . __('Download', 'noir-ui') . '</span></a>';
+    $out = '<a href="' . $path . '" class="thin-ui-button" download>' . __('Download', 'noir-ui') . '</a>';
 
     return $out;
 }

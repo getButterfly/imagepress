@@ -56,7 +56,10 @@ textarea:hover {
  * UnicodeAwesome: Native unicode icons to replace FontAwesome functionality
  */
 .ua-icon {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Segoe UI Symbol", Helvetica, Arial, sans-serif, "Apple Color Emoji","Segoe UI Emoji";
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Segoe UI Symbol", Helvetica, Arial, sans-serif;
 
     font-size: inherit;
     font-style: normal;
@@ -212,7 +215,6 @@ a img { border: none; }
 
 .ip_box img { margin: 0; }
 .ip_box img:hover { opacity: 0.75; }
-.ip_box .fa-lg { float: left; margin: 4px 0 0 0; }
 
 .imagecategory { height: 18px; overflow: hidden; display: block; margin: 0; font-size: 12px; }
 
@@ -547,7 +549,14 @@ a img { border: none; }
     font-weight: 400;
 }
 
-.imagepress-container { position: relative; text-align: center; }
+.imagepress-container {
+    position: relative;
+    text-align: center;
+}
+.imagepress-container img {
+    max-width: 100%;
+    height: auto;
+}
 
 
 /* twitter like */

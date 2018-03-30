@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.7
 Tested up to: 4.9.4
-Stable tag: 7.7.2
+Stable tag: 7.7.3
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -22,9 +22,12 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 == Changelog ==
 
 = 7.7.3 =
+* FIX: Fixed image width for singular pages
 * UPDATE: Removed FontAwesome (+speed, -weight)
-* UPDATE: Updated all icons and symbols
+* UPDATE: Updated all icons and symbols (+speed, +compatibility)
+* UPDATE: Updated sweetAlert2 library (+speed)
 * UI: Removed several redundant icons
+* TODO: Make drag&drop default and remove EZDZ - https://codepen.io/ciprian/pen/WzObrQ
 
 = 7.7.2 =
 * FIX: Removed unused CSS stylesheets (-weight)
@@ -36,8 +39,6 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed FontAwesome from Dashboard (+speed)
 * UPDATE: Removed profile verification (-confusion)
 * UI: Removed several icons
-* TODO: Make drag&drop default and remove ezdz
-https://codepen.io/ciprian/pen/WzObrQ
 
 = 7.7.1 =
 * FIX: Fixed collection maintenance action

@@ -880,14 +880,12 @@ function ip_enqueue_color_picker() {
 
 add_action('wp_enqueue_scripts', 'ip_enqueue_scripts');
 function ip_enqueue_scripts() {
-    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.8/js/all.js', array(), '5.0.8', true);
-
     // Include a polyfill for ES6 Promises for IE11 and Android browser
     wp_enqueue_script('corejs', 'https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.3/core.min.js', array(), '2.5.3', true);
-    wp_enqueue_script('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.16.0/sweetalert2.all.min.js', array('corejs'), '7.16.0', true);
+    wp_enqueue_script('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.18.0/sweetalert2.min.js', array('corejs'), '7.18.0', true);
 
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
-    wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.16.0/sweetalert2.min.css');
+    wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.18.0/sweetalert2.min.css');
 
     $grid_ui = 'basic';
 

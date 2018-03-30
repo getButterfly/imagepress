@@ -97,7 +97,7 @@ function ip_collections_display() {
             echo '<div class="collection_details">';
                 echo '<h3 class="collection-title" data-collection-id="' . $collection['collection_ID'] . '"><a href="#" class="editCollection" data-collection-id="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></h3>';
 
-                echo '<div><a href="#" class="changeCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-pencil-alt"></i> ' . esc_html__('Edit', 'imagepress') . '</a></div>';
+                echo '<div><a href="#" class="changeCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '">' . esc_html__('Edit', 'imagepress') . '</a></div>';
             echo '</div>';
 
             echo '<div class="collection_details_edit cde' . $collection['collection_ID'] . '">
@@ -112,9 +112,9 @@ function ip_collections_display() {
                 $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
                 echo '<p><label>' . esc_html__('Share your collection', 'imagepress') . '</label><input type="url" value="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '" readonly></p>';
 
-                echo '<a href="#" class="saveCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-check"></i></a>';
-                echo '<a href="#" class="closeCollectionEdit button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-times"></i></a>';
-                echo '<a href="#" class="deleteCollection button" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-trash"></i></a>';
+                echo '<a href="#" class="saveCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><span class="ua-icon">&#128504;</span></a>';
+                echo '<a href="#" class="closeCollectionEdit button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '">' . esc_html__('Close', 'imagepress') . '</a>';
+                echo '<a href="#" class="deleteCollection button" data-collection-id="' . $collection['collection_ID'] . '"><span class="ua-icon">&#128465;</span></a>';
             echo '</div>';
         echo '</div>';
     }
@@ -228,7 +228,7 @@ function ip_frontend_add_collection($ip_id) {
     if (is_user_logged_in()) {
         $current_user = wp_get_current_user();
         ?>
-        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><span class="ip-icon-label"> <?php echo esc_html__('Add to collection', 'imagepress'); ?></span></a> <?php if (isset($_POST['collectme'])) { echo ' <i class="fas fa-check"></i>'; } ?>
+        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><span class="ip-icon-label"> <?php echo esc_html__('Add to collection', 'imagepress'); ?></span></a> <?php if (isset($_POST['collectme'])) { echo ' <span class="ua-icon">&#128504;</span>'; } ?>
 
         <div class="frontEndModal ui">
             <h2><?php echo esc_html__('Add to collection', 'imagepress'); ?></h2>
@@ -361,7 +361,7 @@ function imagepress_collection($atts) {
         $out .= '<div class="imagepress-float-right">' . $collection_row['collection_views'] . ' ' . esc_html__('views', 'imagepress') . ' | ' . count($collectionables) . ' ' . esc_html__('images', 'imagepress') . '</div>';
         $out .= '<div class="imagepress-float-left"><a href="' . get_permalink($last_image_row['image_ID']) . '">' . get_the_post_thumbnail($last_image_row['image_ID'], 'thumbnail') . '</a></div>';
         $out .= '<div class="tcm-title">' . $collection_row['collection_title'] . '</div>';
-        $out .= '<i class="fas fa-user-circle"></i> ' . getImagePressProfileUri($collection_row['collection_author_ID']);
+        $out .= getImagePressProfileUri($collection_row['collection_author_ID']);
         $out .= '<div class="ipclear"></div>';
     $out .= '</div>';
 

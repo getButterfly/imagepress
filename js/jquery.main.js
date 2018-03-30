@@ -465,7 +465,7 @@ jQuery(document).ready(function() {
                         toast: true,
                         position: 'top-end',
                         title: '',
-                        html: '<i class="far fa-fw fa-check-circle"></i>',
+                        html: '<span class="ua-icon ua-uw">&#128504;</span>',
                         showConfirmButton: false,
                         timer: 3000,
                     });
@@ -536,7 +536,7 @@ jQuery(document).ready(function() {
                 success: function(result) {
                     if(result == 'success') {
                         jQuery('#listImage_' + id).removeClass('editableImageActive');
-                        jQuery('.editableImageStatus_' + id).show().html('<i class="fas fa-check" aria-hidden="true"></i>');
+                        jQuery('.editableImageStatus_' + id).show().html('<span class="ua-icon">&#128504;</span>');
                     }
                 }
             });
