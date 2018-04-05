@@ -36,7 +36,6 @@ $optionArray = array(
     'ip_category_label' => 'Image Category',
     'ip_tag_label' => 'Image Tag',
     'ip_description_label' => 'Image Description',
-    'ip_ezdz_label' => 'Drag an image here or click to select.',
     'ip_upload_label' => 'Upload',
     'ip_image_label' => 'Select Image',
     'ip_notifications_mark' => 'Mark all as read',

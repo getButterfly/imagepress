@@ -29,6 +29,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Updated sweetAlert2 library (+speed)
 * UPDATE: Added default, native drag&drop upload (+speed)
 * UPDATE: Removed EZDZ library (+speed, -weight)
+* UPDATE: Updated WordPress compatibility
 * UI: Removed several redundant icons
 
 = 7.7.2 =

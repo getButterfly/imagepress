@@ -974,11 +974,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .ip-uploader .ip-addmore a {
     font-size: 12px;
 }
-#fileuploads {
-    background-color: rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    margin: 0 0 10px 0;
-}
 
 
 
@@ -1222,12 +1217,10 @@ div.list[data-mode="teaser"] .ip_box .ip_box_bottom {
 
 #dropContainer {
     border: 4px dashed #CCCCCC;
-  border-radius: 8px;
-  height: 200px;
-  color: #CCCCCC;
+    border-radius: 8px;
+    height: 200px;
 
     display: -webkit-box;
-
     display: -ms-flexbox;
 
     display: flex;
@@ -1243,15 +1236,15 @@ div.list[data-mode="teaser"] .ip_box .ip_box_bottom {
             align-items: center;
 }
 #dropContainer b {
-  font-size: 24px;
-  font-weight: 400;
+    font-size: 24px;
+    font-weight: 400;
 }
 #fileInput {
-  width: auto;
-  margin: 24px 0 0 0;
-  padding: 8px;
-  font-family: inherit;
-  font-size: inherit;
-  -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+    width: auto;
+    margin: 24px 0 0 0;
+    padding: 8px;
+    font-family: inherit;
+    font-size: inherit;
+    -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
 }

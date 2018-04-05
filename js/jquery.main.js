@@ -93,40 +93,38 @@ jQuery(document).ready(function() {
 
 
 
+    /*
+     * Drag & Drop Uploader
+     */
+    document.getElementById('dropContainer').ondragover = document.getElementById('dropContainer').ondragenter = function(evt) {
+        evt.preventDefault();
+    };
 
-//window.onload = function() {
-  dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
-    evt.preventDefault();
-  };
+    document.getElementById('dropContainer').ondrop = function(evt) {
+        document.getElementById('imagepress_image_file').files = evt.dataTransfer.files;
+        // Display selected image
+        // document.getElementById("dropContainer").innerHTML = document.getElementById('imagepress_image_file').files[0].name;
 
-  dropContainer.ondrop = function(evt) {
-    imagepress_image_file.files = evt.dataTransfer.files;
-    //document.getElementById("dropContainer").innerHTML = imagepress_image_file.files[0].name;
-    evt.preventDefault();
-  };
-//};
-
-
-
+        evt.preventDefault();
+    };
 
 
 
     var fileInput = jQuery('#imagepress_image_file');
     var maxSize = fileInput.data('max-size');
-    jQuery('#imagepress_image_file').change(function(){
-        if(fileInput.get(0).files.length){
+    jQuery('#imagepress_image_file').change(function () {
+        if (fileInput.get(0).files.length){
             var fileSize = fileInput.get(0).files[0].size; // in bytes
-            if(fileSize > maxSize) {
+            if (fileSize > maxSize) {
                 jQuery('#imagepress-errors').append('<p>Warning: File size is too big (' + bytesToSize(fileSize) + ')!</p>');
                 jQuery('#imagepress_submit').attr('disabled', true);
+
                 return false;
-            }
-            else {
+            } else {
                 jQuery('#imagepress-errors').html('');
                 jQuery('#imagepress_submit').removeAttr('disabled');
             }
-        }
-        else {
+        } else {
             return false;
         }
     });
