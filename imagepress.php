@@ -612,10 +612,19 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
             $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
             $datauploadsize = $uploadsize * 1024000;
 
-            $ip_ezdz_label = get_imagepress_option('ip_ezdz_label');
+//            <label for="imagepress_image_file">' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label>
+//            <input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file" id="imagepress_image_file" required>
+
             $out .= '<hr>
             <div id="imagepress-errors"></div>
-            <p><label for="imagepress_image_file">' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" data-ezdz-label="' . $ip_ezdz_label . '" name="imagepress_image_file" id="imagepress_image_file" required></p>
+
+            <div id="dropContainer" class="dropSelector">
+                <b>' . __('Drop files here', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')</b>
+                <br>' . __('or', 'imagepress') . '
+                <br>
+                <input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file" id="imagepress_image_file" required>
+            </div>
+
             <hr>';
 
             if($ip_dropbox_enable === '1') {

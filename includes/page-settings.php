@@ -941,7 +941,6 @@ function imagepress_admin_page() {
                     'ip_category_label' => $_POST['ip_category_label'],
                     'ip_tag_label' => $_POST['ip_tag_label'],
                     'ip_description_label' => $_POST['ip_description_label'],
-                    'ip_ezdz_label' => $_POST['ip_ezdz_label'],
                     'ip_upload_label' => $_POST['ip_upload_label'],
                     'ip_image_label' => $_POST['ip_image_label'],
                     'ip_notifications_mark' => $_POST['ip_notifications_mark'],
@@ -1005,12 +1004,6 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_image_label">Image upload selection label<br><small>(link)</small></label></th>
                             <td>
                                 <input type="text" name="ip_image_label" id="ip_image_label" value="<?php echo get_imagepress_option('ip_image_label'); ?>" class="regular-text">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_image_label">Drag and drop upload label</label></th>
-                            <td>
-                                <input type="text" name="ip_ezdz_label" id="ip_ezdz_label" value="<?php echo get_imagepress_option('ip_ezdz_label'); ?>" class="regular-text">
                             </td>
                         </tr>
                     </tbody>

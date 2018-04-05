@@ -91,6 +91,26 @@ jQuery(document).ready(function() {
         return false;
     });
 
+
+
+
+//window.onload = function() {
+  dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
+    evt.preventDefault();
+  };
+
+  dropContainer.ondrop = function(evt) {
+    imagepress_image_file.files = evt.dataTransfer.files;
+    //document.getElementById("dropContainer").innerHTML = imagepress_image_file.files[0].name;
+    evt.preventDefault();
+  };
+//};
+
+
+
+
+
+
     var fileInput = jQuery('#imagepress_image_file');
     var maxSize = fileInput.data('max-size');
     jQuery('#imagepress_image_file').change(function(){

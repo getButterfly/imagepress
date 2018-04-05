@@ -27,8 +27,9 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed FontAwesome (+speed, -weight)
 * UPDATE: Updated all icons and symbols (+speed, +compatibility)
 * UPDATE: Updated sweetAlert2 library (+speed)
+* UPDATE: Added default, native drag&drop upload (+speed)
+* UPDATE: Removed EZDZ library (+speed, -weight)
 * UI: Removed several redundant icons
-* TODO: Make drag&drop default and remove EZDZ - https://codepen.io/ciprian/pen/WzObrQ
 
 = 7.7.2 =
 * FIX: Removed unused CSS stylesheets (-weight)

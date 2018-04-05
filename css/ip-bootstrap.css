@@ -1213,3 +1213,45 @@ div.list[data-mode="teaser"] .ip_box .ip_box_bottom {
     font-size: 16px;
     display: block;
 }
+
+
+
+
+
+
+
+#dropContainer {
+    border: 4px dashed #CCCCCC;
+  border-radius: 8px;
+  height: 200px;
+  color: #CCCCCC;
+
+    display: -webkit-box;
+
+    display: -ms-flexbox;
+
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+#dropContainer b {
+  font-size: 24px;
+  font-weight: 400;
+}
+#fileInput {
+  width: auto;
+  margin: 24px 0 0 0;
+  padding: 8px;
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+}
