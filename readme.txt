@@ -3,7 +3,7 @@ Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.7
-Tested up to: 4.9.4
+Tested up to: 4.9.5
 Stable tag: 7.7.3
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -23,6 +23,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 7.7.3 =
 * FIX: Fixed image width for singular pages
+* FIX: Removed image ordering capability on mobile devices
 * UPDATE: Removed FontAwesome (+speed, -weight)
 * UPDATE: Updated all icons and symbols (+speed, +compatibility)
 * UPDATE: Updated sweetAlert2 library (+speed)

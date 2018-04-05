@@ -695,8 +695,8 @@ function cinnamon_profile_edit($atts) {
                             $out .= '<div class="ip-tabs-item" style="display: none;">
                                 <p>
                                     <a href="#" class="toggleModal button noir-secondary">' . __('Create new collection', 'imagepress') . '</a>
-                                    <span class="ip-loadingCollections"><span class="ua-icon ua-spin">&#128259;</span> ' . __('Loading collections...', 'imagepress') . '</span>
-                                    <span class="ip-loadingCollectionImages"><span class="ua-icon ua-spin">&#128259;</span> ' . __('Loading collection images...', 'imagepress') . '</span>
+                                    <span class="ip-loadingCollections"><span class="ua-icon ua-spin">&#11118;</span> ' . __('Loading collections...', 'imagepress') . '</span>
+                                    <span class="ip-loadingCollectionImages"><span class="ua-icon ua-spin">&#11118;</span> ' . __('Loading collection images...', 'imagepress') . '</span>
                                     <a href="#" class="imagepress-collections imagepress-float-right button"><span class="ua-icon">&#8635;</span></a>
                                 </p>
                                 <div class="modal">
@@ -708,7 +708,7 @@ function cinnamon_profile_edit($atts) {
                                     <p><label>Make this collection</label> <select id="collection_status"><option value="1">' . __('Public', 'imagepress') . '</option><option value="0">' . __('Private', 'imagepress') . '</option></select></p>
                                     <p>
                                         <input type="submit" value="' . __('Create', 'imagepress') . '" class="addCollection">
-                                        <label class="collection-progress"><span class="ua-icon ua-spin">&#128259;</span></label>
+                                        <label class="collection-progress"><span class="ua-icon ua-spin">&#11118;</span></label>
                                         <label class="showme">' . __('Collection created!', 'imagepress') . '</label>
                                     </p>
                                 </div>
@@ -775,7 +775,7 @@ function cinnamon_profile_edit($atts) {
                             <input name="updateuser" type="submit" class="button" id="updateuser" value="' . __('Update', 'imagepress') . '">';
                             wp_nonce_field('update-user');
                             $out .= '<input name="action" type="hidden" id="action" value="update-user">
-                            <a href="' . getImagePressProfileUri($userid, false) . '">' . __('View and share your profile', 'imagepress') . '</a>
+                            <a href="' . getImagePressProfileUri($userid, false) . '">' . __('View profile', 'imagepress') . '</a>
                         </td>
                     </tr>
                 </table>

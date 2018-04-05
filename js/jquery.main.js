@@ -67,7 +67,7 @@ jQuery(document).ready(function() {
         e.stopImmediatePropagation();
         var like = jQuery(this);
         var pid = like.data('post_id');
-        like.html('<span class="ua-icon">&#9829;</span> <span class="ua-icon ua-spin">&#128259;</span>');
+        like.html('<span class="ua-icon">&#9829;</span> <span class="ua-icon ua-spin">&#11118;</span>');
         jQuery.ajax({
             type: 'post',
             url: ipAjaxVar.ajaxurl,
@@ -115,7 +115,7 @@ jQuery(document).ready(function() {
         jQuery('#imagepress-errors').html('');
         jQuery('#imagepress_submit').prop('disabled', true);
         jQuery('#imagepress_submit').css('opacity', '0.5');
-        jQuery('#ipload').html('<span class="ua-icon ua-spin">&#128259;</span> Uploading...');
+        jQuery('#ipload').html('<span class="ua-icon ua-spin">&#11118;</span> Uploading...');
     });
     /* end upload */
 
@@ -523,7 +523,7 @@ jQuery(document).ready(function() {
             var id = jQuery(this).data('image-id');
             var title = jQuery(this).val();
 
-            jQuery('.editableImageStatus_' + id).show().html('<span class="ua-icon ua-spin">&#128259;</span>');
+            jQuery('.editableImageStatus_' + id).show().html('<span class="ua-icon ua-spin">&#11118;</span>');
 
             jQuery.ajax({
                 type: 'post',
@@ -684,15 +684,15 @@ jQuery(document).ready(function() {
 
         // Check if dropdown has changed on page load
         sorterDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#128259;</span>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#11118;</span>';
             window.location.href = sorterDropdown.value;
         };
         rangerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#128259;</span>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#11118;</span>';
             window.location.href = rangerDropdown.value;
         };
         taxxxerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#128259;</span>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#11118;</span>';
             window.location.href = taxxxerDropdown.value;
         };
 

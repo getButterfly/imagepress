@@ -228,7 +228,7 @@ function ip_frontend_add_collection($ip_id) {
     if (is_user_logged_in()) {
         $current_user = wp_get_current_user();
         ?>
-        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><span class="ip-icon-label"> <?php echo esc_html__('Add to collection', 'imagepress'); ?></span></a> <?php if (isset($_POST['collectme'])) { echo ' <span class="ua-icon">&#128504;</span>'; } ?>
+        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><?php echo esc_html__('Add to collection', 'imagepress'); ?></a> <?php if (isset($_POST['collectme'])) { echo ' <span class="ua-icon">&#128504;</span>'; } ?>
 
         <div class="frontEndModal ui">
             <h2><?php echo esc_html__('Add to collection', 'imagepress'); ?></h2>
@@ -267,7 +267,7 @@ function ip_frontend_add_collection($ip_id) {
                 </p>
                 <p>
                     <input type="submit" name="collectme" value="<?php echo esc_html__('Add', 'imagepress'); ?>">
-                    <label class="collection-progress"><span class="ua-icon ua-spin">&#128259;</span></label>
+                    <label class="collection-progress"><span class="ua-icon ua-spin">&#11118;</span></label>
                     <label class="showme"><?php echo esc_html__('Collection created!', 'imagepress'); ?></label>
                 </p>
             </form>

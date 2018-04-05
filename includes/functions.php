@@ -191,7 +191,7 @@ function ip_editor() {
     // check if user is author // show author tools
     if ($post->post_author == $current_user->ID) { ?>
         <span class="ip-editor-display-container">
-            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><span class="ua-icon">&#128736;</span><span class="ip-icon-label"> <?php esc_html_e('Author tools', 'imagepress'); ?></span></a>
+            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><?php esc_html_e('Author tools', 'imagepress'); ?></a>
         </span>
         <?php
         $edit_id = get_the_ID();
@@ -399,7 +399,7 @@ function ip_editor() {
                 ?>
                 <p>
                     <input type="submit" id="submit" value="<?php esc_html_e('Update image', 'imagepress'); ?>">
-                    <a href="#" data-redirect="<?php echo $ipDeleteRedirection; ?>" data-image-id="<?php echo get_the_ID(); ?>" class="button ip-floatright" id="ip-editor-delete-image"><span class="ua-icon">&#128465;</span></a>
+                    <a href="#" data-redirect="<?php echo $ipDeleteRedirection; ?>" data-image-id="<?php echo get_the_ID(); ?>" class="button" id="ip-editor-delete-image"><?php esc_html_e('Delete', 'imagepress'); ?></a>
                 </p>
             </form>
         </div>
@@ -471,14 +471,12 @@ function ip_main($i) {
         <?php echo ipGetPostLikeLink($i); ?><em> | </em><span class="ua-icon">&#128065;</span> <?php echo ip_getPostViews($i); ?><?php echo $ip_comments; ?>
         <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
             <em> | </em>
-            <?php if (function_exists('ip_frontend_add_collection')) ip_frontend_add_collection(get_the_ID()); ?>
-        <?php } ?>
+            <?php if (function_exists('ip_frontend_add_collection')) ip_frontend_add_collection(get_the_ID());
+        }
 
-        <a href="<?php echo $post_thumbnail_url; ?>" class="thin-ui-button"><span class="ua-icon">&#129125;</span></a>
-        <?php echo imagepress_image_download(get_the_post_thumbnail_url()); ?>
-
-        <?php
-        // show image editor
+        /*
+         * Image editor
+         */
         ip_editor();
         ?>
     </div>
@@ -758,12 +756,6 @@ function ip_get_field($atts) {
     $field = get_post_meta(get_the_ID(), $field, true);
 
     return $field;
-}
-
-function imagepress_image_download($path) {
-    $out = '<a href="' . $path . '" class="thin-ui-button" download>' . __('Download', 'noir-ui') . '</a>';
-
-    return $out;
 }
 
 function imagepress_order_list() {
