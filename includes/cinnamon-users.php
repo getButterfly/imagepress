@@ -238,7 +238,7 @@ function cinnamon_profile($atts) {
                         $hub_name = $hubuser;
 
                     if ($hub_user_info->user_url != '')
-                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><span class="ua-icon">&#128279;</span></a>';
+                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><svg class="lnr lnr-link"><use xlink:href="#lnr-link"></use></svg></a>';
 
                     $hub_anchor = getImagePressProfileUri($author, false);
                     $display .= '<div>
@@ -257,7 +257,7 @@ function cinnamon_profile($atts) {
                             $display .= '<br><b>' . __('Connect', 'imagepress') . '</b> ' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
                             if ((int) get_the_author_meta('hub_status', $author) === 1)
-                                $display .= ' <a href="mailto:' . get_the_author_meta('email', $author) . '"><span class="ua-icon">&#9993;</span></a>';
+                                $display .= ' <a href="mailto:' . get_the_author_meta('email', $author) . '"><svg class="lnr lnr-envelope"><use xlink:href="#lnr-envelope"></use></svg></a>';
                         $display .= '</div>
                     </div>';
                 $display .= '</div>';
@@ -277,7 +277,7 @@ function cinnamon_profile($atts) {
                     $hub_name = $hubuser;
 
                 if ($hub_user_info->user_url != '')
-                    $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><span class="ua-icon">&#128279;</span></a>';
+                    $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><svg class="lnr lnr-link"><use xlink:href="#lnr-link"></use></svg></a>';
 
                 $display .= '<h2>' . $hub_name . '</h2>
                 <p>';
@@ -390,12 +390,7 @@ function cinnamon_profile($atts) {
                                     $t_ID = $term->term_id;
                                     $term_data = get_option("taxonomy_$t_ID");
 
-                                    $display .= '<span class="cinnamon-award-list-item" title="' . $term->description . '">';
-                                        if(isset($term_data['img']))
-                                            $display .= '<i class="fas ' . $term_data['img'] . '"></i> ';
-                                        else
-                                            $display .= '<span class="ua-icon">&#127942;</span> ';
-                                    $display .= $term->name . '</span>';
+                                    $display .= '<span class="cinnamon-award-list-item" title="' . $term->description . '"><svg class="lnr lnr-paw"><use xlink:href="#lnr-paw"></use></svg> ' . $term->name . '</span>';
                                 }
                             }
                         }
@@ -695,9 +690,9 @@ function cinnamon_profile_edit($atts) {
                             $out .= '<div class="ip-tabs-item" style="display: none;">
                                 <p>
                                     <a href="#" class="toggleModal button noir-secondary">' . __('Create new collection', 'imagepress') . '</a>
-                                    <span class="ip-loadingCollections"><span class="ua-icon ua-spin">&#11118;</span> ' . __('Loading collections...', 'imagepress') . '</span>
-                                    <span class="ip-loadingCollectionImages"><span class="ua-icon ua-spin">&#11118;</span> ' . __('Loading collection images...', 'imagepress') . '</span>
-                                    <a href="#" class="imagepress-collections imagepress-float-right button"><span class="ua-icon">&#8635;</span></a>
+                                    <span class="ip-loadingCollections">' . __('Loading collections...', 'imagepress') . '</span>
+                                    <span class="ip-loadingCollectionImages">' . __('Loading collection images...', 'imagepress') . '</span>
+                                    <a href="#" class="imagepress-collections imagepress-float-right button"><svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg></a>
                                 </p>
                                 <div class="modal">
                                     <h2>' . __('Create new collection', 'imagepress') . '</h2>
@@ -708,7 +703,7 @@ function cinnamon_profile_edit($atts) {
                                     <p><label>Make this collection</label> <select id="collection_status"><option value="1">' . __('Public', 'imagepress') . '</option><option value="0">' . __('Private', 'imagepress') . '</option></select></p>
                                     <p>
                                         <input type="submit" value="' . __('Create', 'imagepress') . '" class="addCollection">
-                                        <label class="collection-progress"><span class="ua-icon ua-spin">&#11118;</span></label>
+                                        <label class="collection-progress">' . __('Creating collection...', 'imagepress') . '</label>
                                         <label class="showme">' . __('Collection created!', 'imagepress') . '</label>
                                     </p>
                                 </div>
@@ -750,7 +745,7 @@ function cinnamon_profile_edit($atts) {
                                             $ip_image_link = get_permalink($i);
 
                                         $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '">
-                                            <div class="editor-image-handle"><span class="ua-icon ua-uw">&#11109;</span></div>
+                                            <div class="editor-image-handle"><svg class="lnr lnr-move"><use xlink:href="#lnr-move"></use></svg></div>
                                             <div class="editor-image-thumbnail">
                                                 <a href="' . $ip_image_link . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a>
                                             </div>
@@ -858,8 +853,8 @@ function cinnamon_awards() {
             $t_ID = $term->term_id;
             $term_data = get_option("taxonomy_$t_ID");
 
-            echo '<p><span class="cinnamon-award-list-item" title="' . $term->description . '">
-                <span class="ua-icon">&#127942;</span> ' .
+            echo '<p>
+                <span class="cinnamon-award-list-item" title="' . $term->description . '"> ' .
                 $term->name . '</span> <span>' . $term->description . '<br><small>(' . $term->count . ' author(s) received this award)</small></span>
             </p>';
         }

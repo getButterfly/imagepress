@@ -208,10 +208,7 @@ add_action('wp_ajax_ajax_trash_action', 'ajax_trash_action_callback');
  * Use these functions inside themes to display various notification-related information
  */
 function ip_notifications_menu_item($count = 50) {
-	if (notification_count($count) > 0)
-		$item = '<a href="#" class="notifications-bell"><span class="ua-icon">&#128276;</span><sup class="ui-accent-background">' . notification_count($count) . '</sup></a><div class="notifications-container ui">' . do_shortcode('[notifications]') . '</div>';
-	else
-		$item = '<a href="#" class="notifications-bell"><span class="ua-icon">&#128277;</span></a><div class="notifications-container ui">' . do_shortcode('[notifications count="' . $count . '"]') . '</div>';
+	$item = '<a href="#" class="notifications-bell"><svg class="lnr lnr-alarm"><use xlink:href="#lnr-alarm"></use></svg><sup class="ui-accent-background">' . notification_count($count) . '</sup></a><div class="notifications-container ui">' . do_shortcode('[notifications]') . '</div>';
 
 	return $item;
 }

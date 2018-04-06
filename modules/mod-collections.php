@@ -92,7 +92,7 @@ function ip_collections_display() {
                 }
             echo '</div>';
 
-            echo '<div class="ip_collections_overlay">' . (($collection['collection_status'] == 0) ? '<span class="ua-icon">&#9678;</span>' : '<span class="ua-icon">&#9673;</span>') . ' ' . count($postslistcount) . '</div>';
+            echo '<div class="ip_collections_overlay">' . (($collection['collection_status'] == 0) ? '<svg class="lnr lnr-lock"><use xlink:href="#lnr-lock"></use></svg>' : '') . ' ' . count($postslistcount) . '</div>';
 
             echo '<div class="collection_details">';
                 echo '<h3 class="collection-title" data-collection-id="' . $collection['collection_ID'] . '"><a href="#" class="editCollection" data-collection-id="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></h3>';
@@ -112,9 +112,9 @@ function ip_collections_display() {
                 $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
                 echo '<p><label>' . esc_html__('Share your collection', 'imagepress') . '</label><input type="url" value="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '" readonly></p>';
 
-                echo '<a href="#" class="saveCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><span class="ua-icon">&#128504;</span></a>';
+                echo '<a href="#" class="saveCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg></a>';
                 echo '<a href="#" class="closeCollectionEdit button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '">' . esc_html__('Close', 'imagepress') . '</a>';
-                echo '<a href="#" class="deleteCollection button" data-collection-id="' . $collection['collection_ID'] . '"><span class="ua-icon">&#128465;</span></a>';
+                echo '<a href="#" class="deleteCollection button" data-collection-id="' . $collection['collection_ID'] . '"><svg class="lnr lnr-trash"><use xlink:href="#lnr-trash"></use></svg></a>';
             echo '</div>';
         echo '</div>';
     }
@@ -228,7 +228,7 @@ function ip_frontend_add_collection($ip_id) {
     if (is_user_logged_in()) {
         $current_user = wp_get_current_user();
         ?>
-        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><?php echo esc_html__('Add to collection', 'imagepress'); ?></a> <?php if (isset($_POST['collectme'])) { echo ' <span class="ua-icon">&#128504;</span>'; } ?>
+        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><?php echo esc_html__('Add to collection', 'imagepress'); ?></a> <?php if (isset($_POST['collectme'])) { echo ' <svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg>'; } ?>
 
         <div class="frontEndModal ui">
             <h2><?php echo esc_html__('Add to collection', 'imagepress'); ?></h2>
@@ -267,7 +267,7 @@ function ip_frontend_add_collection($ip_id) {
                 </p>
                 <p>
                     <input type="submit" name="collectme" value="<?php echo esc_html__('Add', 'imagepress'); ?>">
-                    <label class="collection-progress"><span class="ua-icon ua-spin">&#11118;</span></label>
+                    <label class="collection-progress"><svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg></label>
                     <label class="showme"><?php echo esc_html__('Collection created!', 'imagepress'); ?></label>
                 </p>
             </form>

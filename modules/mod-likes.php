@@ -147,10 +147,10 @@ function ipGetPostLikeLink($post_id) {
 	if (is_user_logged_in()) {
 		if (ipAlreadyLiked($post_id)) {
 			$class = esc_attr(' liked');
-			$like = '<span class="ua-icon">&#9825;</span><span class="ip-icon-label"> ' . $ip_vote_unlike . '</span>';
+			$like = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg><span class="ip-icon-label"> ' . $ip_vote_unlike . '</span>';
 		} else {
 			$class = esc_attr('');
-			$like = '<span class="ua-icon">&#9829;</span><span class="ip-icon-label"> ' . $ip_vote_like . '</span>';
+			$like = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg><span class="ip-icon-label"> ' . $ip_vote_like . '</span>';
 		}
 		$output = '<a href="#" class="thin-ui-button imagepress-like' . $class . '" data-post_id="' . $post_id . '">' . $like . '</a>';
 	}

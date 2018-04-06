@@ -20,7 +20,7 @@ foreach ($res as $line) {
                 </div>
                 <div class="feed-meta-tertiary">
                     <small>
-                        <time>' . $time . '</time> | <span class="ua-icon">&#128172;</span> ' . get_comments_number($line->postID) . ' | <span class="ua-icon">&#10084;</span> ' . imagepress_get_like_count($line->postID) . '
+                        <time>' . $time . '</time> | <svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($line->postID) . ' | <svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' . imagepress_get_like_count($line->postID) . '
                     </small>
                 </div>
                 <div class="feed-meta-secondary">

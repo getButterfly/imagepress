@@ -67,7 +67,7 @@ jQuery(document).ready(function() {
         e.stopImmediatePropagation();
         var like = jQuery(this);
         var pid = like.data('post_id');
-        like.html('<span class="ua-icon">&#9829;</span> <span class="ua-icon ua-spin">&#11118;</span>');
+        like.html('<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> <svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>');
         jQuery.ajax({
             type: 'post',
             url: ipAjaxVar.ajaxurl,
@@ -79,12 +79,12 @@ jQuery(document).ready(function() {
                         lecount = ipAjaxVar.likelabel;
                     }
                     like.removeClass('liked');
-                    like.html('<span class="ua-icon">&#9829;</span> ' + lecount);
+                    like.html('<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' + lecount);
                 }
                 else {
                     count = ipAjaxVar.unlikelabel;
                     like.addClass('liked');
-                    like.html('<span class="ua-icon">&#9825;</span> ' + count);
+                    like.html('<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' + count);
                 }
             }
         });
@@ -96,17 +96,19 @@ jQuery(document).ready(function() {
     /*
      * Drag & Drop Uploader
      */
-    document.getElementById('dropContainer').ondragover = document.getElementById('dropContainer').ondragenter = function(evt) {
-        evt.preventDefault();
-    };
+    if (jQuery('#dropContainer').length) {
+        document.getElementById('dropContainer').ondragover = document.getElementById('dropContainer').ondragenter = function(evt) {
+            evt.preventDefault();
+        };
 
-    document.getElementById('dropContainer').ondrop = function(evt) {
-        document.getElementById('imagepress_image_file').files = evt.dataTransfer.files;
-        // Display selected image
-        // document.getElementById("dropContainer").innerHTML = document.getElementById('imagepress_image_file').files[0].name;
+        document.getElementById('dropContainer').ondrop = function(evt) {
+            document.getElementById('imagepress_image_file').files = evt.dataTransfer.files;
+            // Display selected image
+            // document.getElementById("dropContainer").innerHTML = document.getElementById('imagepress_image_file').files[0].name;
 
-        evt.preventDefault();
-    };
+            evt.preventDefault();
+        };
+    }
 
 
 
@@ -133,7 +135,7 @@ jQuery(document).ready(function() {
         jQuery('#imagepress-errors').html('');
         jQuery('#imagepress_submit').prop('disabled', true);
         jQuery('#imagepress_submit').css('opacity', '0.5');
-        jQuery('#ipload').html('<span class="ua-icon ua-spin">&#11118;</span> Uploading...');
+        jQuery('#ipload').html('<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg> Uploading...');
     });
     /* end upload */
 
@@ -228,7 +230,7 @@ jQuery(document).ready(function() {
             }
         });
 
-        jQuery('.notifications-bell').html('<span class="ua-icon">&#128277;</span><sup>0</sup>');
+        jQuery('.notifications-bell').html('<svg class="lnr lnr-alarm"><use xlink:href="#lnr-alarm"></use></svg><sup>0</sup>');
     });
 
     jQuery('.notifications-container .notifications-inner').greedyScroll(25);
@@ -483,7 +485,7 @@ jQuery(document).ready(function() {
                         toast: true,
                         position: 'top-end',
                         title: '',
-                        html: '<span class="ua-icon ua-uw">&#128504;</span>',
+                        html: '<svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg>',
                         showConfirmButton: false,
                         timer: 3000,
                     });
@@ -541,7 +543,7 @@ jQuery(document).ready(function() {
             var id = jQuery(this).data('image-id');
             var title = jQuery(this).val();
 
-            jQuery('.editableImageStatus_' + id).show().html('<span class="ua-icon ua-spin">&#11118;</span>');
+            jQuery('.editableImageStatus_' + id).show().html('<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>');
 
             jQuery.ajax({
                 type: 'post',
@@ -554,7 +556,7 @@ jQuery(document).ready(function() {
                 success: function(result) {
                     if(result == 'success') {
                         jQuery('#listImage_' + id).removeClass('editableImageActive');
-                        jQuery('.editableImageStatus_' + id).show().html('<span class="ua-icon">&#128504;</span>');
+                        jQuery('.editableImageStatus_' + id).show().html('<svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg>');
                     }
                 }
             });
@@ -702,15 +704,15 @@ jQuery(document).ready(function() {
 
         // Check if dropdown has changed on page load
         sorterDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#11118;</span>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>';
             window.location.href = sorterDropdown.value;
         };
         rangerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#11118;</span>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>';
             window.location.href = rangerDropdown.value;
         };
         taxxxerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<span class="ua-icon ua-spin">&#11118;</span>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>';
             window.location.href = taxxxerDropdown.value;
         };
 
@@ -823,3 +825,28 @@ jQuery(document).ready(function () {
         });
     }
 });
+
+
+
+/*
+Linearicons Free v1.0.0 - https://linearicons.com/free
+By Perxis - https://perxis.com
+(c) 2014-2015 Perxis.com
+License: https://linearicons.com/free/license
+*/
+document.addEventListener && document.addEventListener('DOMContentLoaded', function () {
+    console.log('Loading SVG');
+    var a, f = {},
+        b, d, g, e = !1,
+        h = document.getElementsByTagName("use"),
+        c;
+    XMLHttpRequest && (e = new XMLHttpRequest, e = "withCredentials" in e ? XMLHttpRequest : XDomainRequest ? XDomainRequest : !1);
+    if (e)
+        for (g = function() {
+                var a = document.body,
+                    b = document.createElement("x");
+                b.innerHTML = c.responseText;
+                a.insertBefore(b.firstChild, a.firstChild)
+            }, d = 0; d < h.length; d += 1) b = h[d].getAttribute("xlink:href").split("#"), a = b[0], b = b[1], a.length || !b || document.getElementById(b) ||
+            (a = ipAjaxVar.ip_url + '/img/svgdefs.svg'), a.length && (f[a] = f[a] || new e, c = f[a], c.onload || (c.onload = g, c.open("GET", a), c.send()))
+}, !1);
