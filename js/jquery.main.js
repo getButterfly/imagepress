@@ -828,14 +828,7 @@ jQuery(document).ready(function () {
 
 
 
-/*
-Linearicons Free v1.0.0 - https://linearicons.com/free
-By Perxis - https://perxis.com
-(c) 2014-2015 Perxis.com
-License: https://linearicons.com/free/license
-*/
 document.addEventListener && document.addEventListener('DOMContentLoaded', function () {
-    console.log('Loading SVG');
     var a, f = {},
         b, d, g, e = !1,
         h = document.getElementsByTagName("use"),

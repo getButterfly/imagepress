@@ -21,6 +21,10 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
+= 7.7.4 =
+* TODO: Restyle/reset all form elements
+* TODO/ROADMAP: Remove jQuery dependency
+
 = 7.7.3 =
 * FIX: Fixed image width for singular pages
 * FIX: Removed image ordering capability on mobile devices

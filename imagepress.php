@@ -3,15 +3,16 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.7.2
+Version: 7.7.3
 License: GPLv3
 Author: Ciprian Popescu
-Author URI: https://getbutterfly.com
+Author URI: https://getbutterfly.com/
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
 
-ImagePress Copyright (c) 2013-2018 Ciprian Popescu (email: getbutterfly@gmail.com)
+ImagePress Copyright (c) 2013-2018 Ciprian Popescu (https://getbutterfly.com/)
+Linearicons Free     (c) 2014-2015 Perxis (https://linearicons.com/free)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,6 +27,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
+
 if (!function_exists('add_filter')) {
     header('Status: 403 Forbidden');
     header('HTTP/1.1 403 Forbidden');
