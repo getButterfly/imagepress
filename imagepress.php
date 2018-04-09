@@ -960,32 +960,27 @@ function imagepress_notify_status($new_status, $old_status, $post) {
     $headers[] = "MIME-Version: 1.0\r\n";
     $headers[] = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\r\n";
 
-    if($old_status != 'pending' && $new_status == 'pending') {
-        $emails = get_imagepress_option('ip_notification_email');
-        if(strlen($emails)) {
-            $subject = '[' . get_option('blogname') . '] "' . $post->post_title . '" pending review';
-            $message = "<p>A new post by {$contributor->display_name} is pending review.</p>";
-            $message .= "<p>Author: {$contributor->user_login} <{$contributor->user_email}></p>";
-            $message .= "<p>Title: {$post->post_title}</p>";
-            $category = get_the_category($post->ID);
-            if(isset($category[0]))
-                $message .= "<p>Category: {$category[0]->name}</p>";
-            wp_mail($emails, $subject, $message, $headers);
+    if ($old_status != 'pending' && $new_status == 'pending' && get_imagepress_option('ip_notification_email') != '') {
+        $subject = '[' . get_option('blogname') . '] "' . $post->post_title . '" pending review';
+        $message = "<p>A new post by {$contributor->display_name} is pending review.</p>";
+        $message .= "<p>Author: {$contributor->user_login} <{$contributor->user_email}></p>";
+        $message .= "<p>Title: {$post->post_title}</p>";
+        $category = get_the_category($post->ID);
+        if (isset($category[0])) {
+            $message .= "<p>Category: {$category[0]->name}</p>";
         }
-    }
-    elseif($old_status == 'pending' && $new_status == 'publish') {
-        if(get_imagepress_option('approvednotification') == 'yes') {
-            $subject = '[' . get_option('blogname') . '] "' . $post->post_title . '" approved';
-            $message = "<p>{$contributor->display_name}, your post has been approved and published at " . get_permalink($post->ID) . ".</p>";
-            wp_mail($contributor->user_email, $subject, $message, $headers);
-        }
-    }
-    elseif($old_status == 'pending' && $new_status == 'draft' && $current_user->ID != $contributor->ID) {
-        if(get_imagepress_option('declinednotification') == 'yes') {
-            $subject = '[' . get_option('blogname') . '] "' . $post->post_title . '" declined';
-            $message = "<p>{$contributor->display_name}, your post has not been approved.</p>";
-            wp_mail($contributor->user_email, $subject, $message, $headers);
-        }
+
+        wp_mail(get_imagepress_option('ip_notification_email'), $subject, $message, $headers);
+    } else if ($old_status == 'pending' && $new_status == 'publish' && get_imagepress_option('approvednotification') == 'yes') {
+        $subject = '[' . get_option('blogname') . '] "' . $post->post_title . '" approved';
+        $message = "<p>{$contributor->display_name}, your post has been approved and published at " . get_permalink($post->ID) . ".</p>";
+
+        wp_mail($contributor->user_email, $subject, $message, $headers);
+    } else if ($old_status == 'pending' && $new_status == 'draft' && $current_user->ID != $contributor->ID && get_imagepress_option('declinednotification') == 'yes') {
+        $subject = '[' . get_option('blogname') . '] "' . $post->post_title . '" declined';
+        $message = "<p>{$contributor->display_name}, your post has not been approved.</p>";
+
+        wp_mail($contributor->user_email, $subject, $message, $headers);
     }
 }
 
@@ -1001,13 +996,9 @@ function imagepress_widget($atts) {
     ), $atts));
 
     $display = '';
-    $mode = (string) sanitize_text_field($mode);
-    $type = (string) sanitize_text_field($type);
+    $ip_comments = '';
 
-    $imagepress_meta_key = 'post_views_count';
-    if ($mode === 'likes') {
-        $imagepress_meta_key = '_like_count';
-    }
+    $imagepress_meta_key = ((string) $mode === 'likes') ? '_like_count' : 'post_views_count';
 
     if ($type === 'top') {
         $count = 1;
@@ -1028,41 +1019,43 @@ function imagepress_widget($atts) {
 
     $getImages = get_posts($args);
 
-    if ($getImages && ($type == 'list')) {
-        $display .= '<ul>';
+    if ($getImages) {
+        if ((string) $type === 'list') {
+            $display .= '<ul>';
+                foreach ($getImages as $image) {
+                    if ($mode == 'likes') {
+                        $ip_link_value = imagepress_get_like_count($image->ID);
+                    } else if ($mode == 'views') {
+                        $ip_link_value = ip_getPostViews($image);
+                    }
+                    if (empty($ip_link_value)) {
+                        $ip_link_value = 0;
+                    }
+
+                    $display .= '<li><a href="' . get_permalink($image->ID) . '">' . get_the_title($image->ID) . '</a> <small>(' . $ip_link_value . ')</small></li>';
+                }
+            $display .= '</ul>';
+        } else if ((string) $type === 'top') {
             foreach ($getImages as $image) {
-                if ($mode == 'likes')
-                    $ip_link_value = imagepress_get_like_count($image->ID);
-                if ($mode == 'views')
-                    $ip_link_value = ip_getPostViews($image);
-                if (empty($ip_link_value))
-                    $ip_link_value = 0;
+                if ((int) get_imagepress_option('ip_comments') === 1) {
+                    $ip_comments = '<svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($image->ID);
+                }
 
-                $display .= '<li><a href="' . get_permalink($image->ID) . '">' . get_the_title($image->ID) . '</a> <small>(' . $ip_link_value . ')</small></li>';
-            }
-        $display .= '</ul>';
-    }
-
-    if ($getImages && ($type == 'top')) {
-        $display .= '';
-        foreach ($getImages as $image) {
-            if (get_imagepress_option('ip_comments') == 1)
-                $ip_comments = '<svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($image->ID) . '';
-            if (get_imagepress_option('ip_comments') == 0)
-                $ip_comments = '';
-
-            $post_thumbnail_id = get_post_thumbnail_id($image);
-            $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
-
-            if (get_imagepress_option('ip_click_behaviour') == 'media')
-                $ip_image_link = $image_attributes[0];
-            if (get_imagepress_option('ip_click_behaviour') == 'custom')
+                $post_thumbnail_id = get_post_thumbnail_id($image);
+                $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
                 $ip_image_link = get_permalink($image->ID);
 
-            $display .= '<div id="ip_container_2"><div class="ip_icon_hover">' .
-                    '<div><strong>' . get_the_title($image->ID) . '</strong></div>' .
-                    '<div><small><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' . imagepress_get_like_count($image->ID) . '</small></div>
-                </div><a href="' . $ip_image_link . '" class="ip-link">' . wp_get_attachment_image($post_thumbnail_id, 'full') . '</a></div>';
+                if ((string) get_imagepress_option('ip_click_behaviour') === 'media') {
+                    $ip_image_link = $image_attributes[0];
+                }
+
+                $display .= '<div id="ip_container_2">
+                    <div class="ip_icon_hover">
+                        <div><strong>' . get_the_title($image->ID) . '</strong></div>
+                        <div><small><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' . imagepress_get_like_count($image->ID) . '</small></div>
+                    </div><a href="' . $ip_image_link . '" class="ip-link">' . wp_get_attachment_image($post_thumbnail_id, 'full') . '</a>
+                </div>';
+            }
         }
     }
 
