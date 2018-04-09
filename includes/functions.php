@@ -859,7 +859,7 @@ function ipRenderGridElement($elementId) {
 
     $ip_meta_optional = '';
     if ($get_ip_meta_optional == 1)
-        $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($elementId)) . '">' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '</span>';
+        $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '">' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '</span>';
 
     $ip_views_optional = '';
     if ($get_ip_views_optional == 1)
