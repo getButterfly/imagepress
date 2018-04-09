@@ -309,7 +309,7 @@ jQuery(document).ready(function() {
         e.preventDefault();
     });
     jQuery('.toggleModal').on('click', function(e){
-        jQuery('.modal').toggleClass('active');
+        jQuery('.ip-modal').toggleClass('active');
         e.preventDefault();
     });
     jQuery('.toggleFrontEndModal').on('click', function(e){
@@ -413,7 +413,7 @@ jQuery(document).ready(function() {
         e.preventDefault();
     });
 
-    jQuery('.modal .close').click(function(e){
+    jQuery('.ip-modal .close').click(function(e){
         jQuery.ajax({
             method: 'post',
             url: ipAjaxVar.ajaxurl,

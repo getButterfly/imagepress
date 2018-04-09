@@ -914,11 +914,11 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .ip_collections_private_overlay { font-size: 90%; margin: 4px 0; }
 
 
-.modal { display: none; position: fixed; top: 50%; left: 50%; width: 400px; height: auto; margin-left: -200px; margin-top: -150px; background-color: #1e2833; padding: 25px; border-radius: 5px; z-index: 10; box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.5); }
-.modal.active { display: block; }
-.modal .close { position: absolute; top: 6px; right: 8px; margin: 0; }
-.modal .showme { display: none; }
-.modal .collection-progress { display: none; }
+.ip-modal { display: none; position: fixed; top: 50%; left: 50%; width: 400px; height: auto; margin-left: -200px; margin-top: -150px; background-color: #1e2833; padding: 25px; border-radius: 5px; z-index: 10; box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.5); }
+.ip-modal.active { display: block; }
+.ip-modal .close { position: absolute; top: 6px; right: 8px; margin: 0; }
+.ip-modal .showme { display: none; }
+.ip-modal .collection-progress { display: none; }
 
 
 .toggleFrontEndModal { text-align: center; }

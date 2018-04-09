@@ -645,7 +645,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
             }
 
             if(1 == $ip_upload_secondary) {
-                $out .= '<p><label for="imagepress_image_additional">Select file(s) (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" accept="image/*" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple><br><small>Additional images (variants, making of, progress shots)</small></p><hr>';
+                $out .= '<p><label for="imagepress_image_additional">Select file(s) (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple><br><small>Additional images (variants, making of, progress shots)</small></p><hr>';
             }
 
             if ($ip_upload_tos == 1 && !empty($ip_upload_tos_content)) {

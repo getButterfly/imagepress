@@ -694,7 +694,7 @@ function cinnamon_profile_edit($atts) {
                                     <span class="ip-loadingCollectionImages">' . __('Loading collection images...', 'imagepress') . '</span>
                                     <a href="#" class="imagepress-collections imagepress-float-right button"><svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg></a>
                                 </p>
-                                <div class="modal">
+                                <div class="ip-modal">
                                     <h2>' . __('Create new collection', 'imagepress') . '</h2>
                                     <a href="#" class="close toggleModal">' . __('Close', 'imagepress') . '</a>
 

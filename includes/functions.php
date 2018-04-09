@@ -596,6 +596,21 @@ function imagepress_get_images($post_id) {
             }
         echo '</div>';
     }
+
+    $videos = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
+
+    if ($videos && count($videos) > 1) {
+        echo '<div class="ip-more">';
+            foreach ($videos as $attachment_id => $video) {
+                if (strpos(get_post_mime_type($video->ID), 'video') !== false) {
+                    echo '<video width="100%" class="ip-video-secondary" controls>
+                        <source src="' . wp_get_attachment_url($video->ID) . '" type="' . get_post_mime_type($video->ID) . '">
+                        Your browser does not support HTML5 video.
+                    </video>';
+                }
+            }
+        echo '</div>';
+    }
 }
 
 function kformat($number) {
