@@ -406,8 +406,11 @@ function imagepress_collection($atts) {
                 // Check if post has a featured image. If not, something has gone wrong and remove it.
                 if (has_post_thumbnail($user_image)) { // $user_image->ID
                     // image ID
-                    $i = $user_image; // $user_image->ID
+                    //$i = $user_image; // $user_image->ID
 
+                    $out .= ipRenderGridElement($user_image);
+
+                    /**
                     $post_thumbnail_id = (int) get_post_thumbnail_id($i);
 
                     if ($ip_click_behaviour === 'media') {
@@ -455,6 +458,7 @@ function imagepress_collection($atts) {
                     }
 
                     $out .= '</div>';
+                    /**/
                 }
             }
             // end loop
