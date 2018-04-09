@@ -308,14 +308,11 @@ function imagepress_collection($atts) {
     extract(shortcode_atts(array(
         'count'         => 0,
         'limit'         => 999999,
-        'size'          => '',
         'columns'       => '',
         'type'          => '', // 'random'
         'collection'    => '', // new parameter (will extract all images from a certain collection)
         'collection_id' => '', // new parameter (will extract all images from a certain collection)
         'order'         => '', // only used by profile viewer
-
-        'perrow' => 0,
     ), $atts));
 
     global $wpdb;
@@ -377,87 +374,18 @@ function imagepress_collection($atts) {
         $ip_box_ui = (string) get_imagepress_option('ip_box_ui');
 
         $out .= '<div id="ip-boxes" class="ip-box-container ip-box-container-' . $ip_box_ui . '">';
-            /**
-            $ip_views_optional      = '';
-            $ip_comments            = '';
-            $ip_likes_optional      = '';
-            $ip_author_optional     = '';
-            $ip_meta_optional       = '';
-            $ip_title_optional      = '';
-
-            $ip_rel_tag = get_imagepress_option('ip_rel_tag');
-
-            // get options
-            $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
-            $getIpTitle = get_imagepress_option('ip_title_optional');
-            $get_ip_meta_optional = get_imagepress_option('ip_meta_optional');
-            $getIpViews = get_imagepress_option('ip_views_optional');
-            $getIpLikes = get_imagepress_option('ip_likes_optional');
-            $get_ip_comments = get_imagepress_option('ip_comments');
-
-            $ip_ipw = get_imagepress_option('ip_ipw');
-            if ((int) $perrow !== 0) {
-                $ip_ipw = $perrow;
-            }
-            /**/
-
-            // begin loop
             foreach ($posts as $user_image) {
                 // Check if post has a featured image. If not, something has gone wrong and remove it.
                 if (has_post_thumbnail($user_image)) { // $user_image->ID
                     // image ID
-                    //$i = $user_image; // $user_image->ID
 
                     $out .= ipRenderGridElement($user_image);
 
                     /**
-                    $post_thumbnail_id = (int) get_post_thumbnail_id($i);
-
-                    if ($ip_click_behaviour === 'media') {
-                        // Get attachment source
-                        $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
-
-                        $ip_image_link = $image_attributes[0];
-                    } else if ($ip_click_behaviour === 'custom') {
-                        $ip_image_link = get_permalink($i);
-                    }
-
-                    if ($getIpTitle == 1) {
-                        $ip_title_optional = '<span class="imagetitle">' . get_the_title($i) . '</span>';
-                    }
-
-                    // get post author ID
-                    $post_author_id = get_post_field('post_author', $i);
-                    $ip_author_optional = getImagePressProfileUri($post_author_id);
-
-                    if ($get_ip_meta_optional == 1)
-                        $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '">' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '</span>';
-                    if ($getIpViews == 1)
-                        $ip_views_optional = '<span class="imageviews">' . ip_getPostViews($i) . '</span> ';
-                    if ($get_ip_comments == 1)
-                        $ip_comments = '<span class="imagecomments">' . get_comments_number($i) . '</span> ';
-                    if ($getIpLikes == 1)
-                        $ip_likes_optional = '<span class="imagelikes">' . imagepress_get_like_count($i) . '</span> ';
-
-                    if (empty($size)) {
-                        $size = get_imagepress_option('ip_image_size');
-                        $size = (string) $size;
-                    }
-                    $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, $size);
-
-                    $out .= '<div class="ip_box ip_box_' . $i . '" style="width: ' . (100/$ip_ipw) . '%;">
-                        <a href="' . $ip_image_link . '" rel="' . $ip_rel_tag . '" data-taxonomy="' . strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . '">
-                            <img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '">
-                        </a>
-                        <div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div>
-                        <div class="ip_box_bottom"><span class="imagedate ip-hide">' . get_the_date('YmdHis', $i) . '</span>' . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div>';
-
                     $logged_in_user = wp_get_current_user();
                     if ($collection_row['collection_author_ID'] == $logged_in_user->ID) {
                         $out .= '<div class="ip_box_bottom"><a href="#" class="deleteCollectionImage" data-image-id="' . $i . '">Remove</a></div>';
                     }
-
-                    $out .= '</div>';
                     /**/
                 }
             }
