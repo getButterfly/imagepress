@@ -320,8 +320,6 @@ function imagepress_collection($atts) {
 
     global $wpdb;
 
-    $ip_unique_id = uniqid();
-
     $ip_order_asc_desc = 'DESC';
     $ip_order = empty($type) ? 'date' : 'rand';
 
@@ -375,10 +373,11 @@ function imagepress_collection($atts) {
     $posts = get_posts($args);
 
     if ($posts) {
-        $out .= '<div class="ip_clear"></div>
-        <div id="cinnamon-cards">
-            <div id="ip_container_' . $ip_unique_id . '" class="list" data-imagepress-count="' . get_imagepress_option('ip_ipp') . '" data-imagepress-id="' . $ip_unique_id . '">';
+        // Image box appearance
+        $ip_box_ui = (string) get_imagepress_option('ip_box_ui');
 
+        $out .= '<div id="ip-boxes" class="ip-box-container ip-box-container-' . $ip_box_ui . '">';
+            /**
             $ip_views_optional      = '';
             $ip_comments            = '';
             $ip_likes_optional      = '';
@@ -400,6 +399,7 @@ function imagepress_collection($atts) {
             if ((int) $perrow !== 0) {
                 $ip_ipw = $perrow;
             }
+            /**/
 
             // begin loop
             foreach ($posts as $user_image) {
@@ -467,13 +467,11 @@ function imagepress_collection($atts) {
         if ($count == 0) {
             $out .= '<ul class="pagination"></ul>';
         }
-        $out .= '</div><div class="ip_clear"></div>';
+        $out .= '<div class="ip_clear"></div>';
 
         return $out;
     } else {
         $out .= '<div class="imagepress-not-found">' . esc_html__('No images found!', 'imagepress') . '</div>';
         return $out;
     }
-
-    return $out;
 }

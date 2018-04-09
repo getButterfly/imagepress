@@ -821,7 +821,6 @@ function ipRenderGridElement($elementId) {
 
     // Set default values
     $post_thumbnail_id = get_post_thumbnail_id($elementId);
-    $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'imagepress_pt_std_ps');
 
     // Get ImagePress grid options
     $ip_rel_tag = get_imagepress_option('ip_rel_tag');
@@ -833,6 +832,7 @@ function ipRenderGridElement($elementId) {
     $get_ip_likes_optional = get_imagepress_option('ip_likes_optional');
     $get_ip_comments = get_imagepress_option('ip_comments');
     $ip_ipw = get_imagepress_option('ip_ipw');
+    $size = get_imagepress_option('ip_image_size');
 
     if ($ip_click_behaviour === 'media') {
         // Get attachment source
@@ -873,10 +873,6 @@ function ipRenderGridElement($elementId) {
     if ($get_ip_likes_optional == 1)
         $ip_likes_optional = '<span class="imagelikes"><svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' . imagepress_get_like_count($elementId) . '</span> ';
 
-    if (empty($size)) {
-        $size = get_imagepress_option('ip_image_size');
-        $size = (string) $size;
-    }
     $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, $size);
 
     $out .= '<div class="ip_box ip_box_' . $elementId . '" style="width: ' . (100/$ip_ipw) . '%;">
