@@ -27,6 +27,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 7.7.4 =
 * FIX: Renamed modal class to avoid conflicts with Bootstrap
+* FIX: Use the same image grid structure everywhere (gallery, profile, collections)
 * FEATURE: Allow all file types for secondary uploads (PDFs, videos, etc.)
 
 = 7.7.3 =

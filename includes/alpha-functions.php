@@ -262,6 +262,7 @@ function imagepress_loop($atts) {
     $ip_query = new WP_Query($args1);
 
     // Get loop options
+    /*
     $ip_rel_tag = get_imagepress_option('ip_rel_tag');
 
     $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
@@ -277,6 +278,7 @@ function imagepress_loop($atts) {
     } else {
         $ip_ipw = get_imagepress_option('ip_ipw');
     }
+    /**/
 
     // Image box appearance
     $ip_box_ui = (string) get_imagepress_option('ip_box_ui');
@@ -285,8 +287,11 @@ function imagepress_loop($atts) {
         if ($ip_query->have_posts()) {
             while ($ip_query->have_posts()) {
                 $ip_query->the_post();
-                $i = get_the_ID();
+                //$i = get_the_ID();
 
+                ipRenderGridElement(get_the_ID());
+
+                /*
                 $post_thumbnail_id = get_post_thumbnail_id($i);
 
                 $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'imagepress_pt_std_ps');
@@ -341,6 +346,7 @@ function imagepress_loop($atts) {
                     <div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div>
                     <div class="ip_box_bottom">' . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div>
                 </div>';
+                /**/
             }
 
             // Pagination

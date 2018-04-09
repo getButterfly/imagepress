@@ -815,3 +815,75 @@ function getImagePressProfileUri($authorId, $structure = true) {
 
     return $ipProfileLink;
 }
+
+function ipRenderGridElement($elementId) {
+    $out = '';
+
+    // Set default values
+    $post_thumbnail_id = get_post_thumbnail_id($elementId);
+    $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'imagepress_pt_std_ps');
+
+    // Get ImagePress grid options
+    $ip_rel_tag = get_imagepress_option('ip_rel_tag');
+    $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
+    $get_ip_title_optional = get_imagepress_option('ip_title_optional');
+    $get_ip_author_optional = get_imagepress_option('ip_author_optional');
+    $get_ip_meta_optional = get_imagepress_option('ip_meta_optional');
+    $get_ip_views_optional = get_imagepress_option('ip_views_optional');
+    $get_ip_likes_optional = get_imagepress_option('ip_likes_optional');
+    $get_ip_comments = get_imagepress_option('ip_comments');
+    $ip_ipw = get_imagepress_option('ip_ipw');
+
+    if ($ip_click_behaviour === 'media') {
+        // Get attachment source
+        $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
+
+        $ip_image_link = $image_attributes[0];
+    } else if ($ip_click_behaviour === 'custom') {
+        $ip_image_link = get_permalink($elementId);
+    }
+
+    // Make all "brick" elements optional and active by default
+    $ip_title_optional = '';
+    if ($get_ip_title_optional == 1) {
+        $ip_title_optional = '<span class="imagetitle">' . get_the_title($elementId) . '</span>';
+    }
+
+    $ip_author_optional = '';
+    if ($get_ip_author_optional == 1) {
+        // Get post author ID
+        $post_author_id = get_post_field('post_author', $elementId);
+
+        $ip_author_optional = getImagePressProfileUri($post_author_id);
+    }
+
+    $ip_meta_optional = '';
+    if ($get_ip_meta_optional == 1)
+        $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($elementId)) . '">' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '</span>';
+
+    $ip_views_optional = '';
+    if ($get_ip_views_optional == 1)
+        $ip_views_optional = '<span class="imageviews"><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> ' . ip_getPostViews($elementId) . '</span> ';
+
+    $ip_comments = '';
+    if ($get_ip_comments == 1)
+        $ip_comments = '<span class="imagecomments"><svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($elementId) . '</span> ';
+
+    $ip_likes_optional = '';
+    if ($get_ip_likes_optional == 1)
+        $ip_likes_optional = '<span class="imagelikes"><svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' . imagepress_get_like_count($elementId) . '</span> ';
+
+    if (empty($size)) {
+        $size = get_imagepress_option('ip_image_size');
+        $size = (string) $size;
+    }
+    $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, $size);
+
+    $out .= '<div class="ip_box ip_box_' . $elementId . '" style="width: ' . (100/$ip_ipw) . '%;">
+        <a href="' . $ip_image_link . '" rel="' . $ip_rel_tag . '" data-taxonomy="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '" data-src="' . $image_attributes[0] . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($elementId) . '"></a>
+        <div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div>
+        <div class="ip_box_bottom">' . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div>
+    </div>';
+
+    return $out;
+}

@@ -38,10 +38,10 @@ function pwuf_follow_links_shortcode($atts) {
 add_shortcode( 'follow_links', 'pwuf_follow_links_shortcode' );
 
 // Shows the posts from users that the current user follows
-function pwuf_following_posts_shortcode($atts) {
+function pwuf_following_posts_shortcode() {
 	$following = pwuf_get_following();
 
-	if(empty($following))
+	if (empty($following))
 		return;
 
 	$items = new WP_Query(array(
@@ -50,14 +50,13 @@ function pwuf_following_posts_shortcode($atts) {
 		'author__in'     => pwuf_get_following()
 	));
 
-	ob_start(); ?>
-	<?php if($items->have_posts()) : ?>
-		<?php while($items->have_posts()) : $items->the_post(); ?>
+	ob_start();
+
+	if ($items->have_posts()) : while ($items->have_posts()) : $items->the_post(); ?>
 			<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="cinnamon-followed"><?php the_post_thumbnail('thumbnail'); ?>
-		<?php endwhile; ?>
-		<?php wp_reset_postdata(); ?>
-	<?php endif; ?>
-	<?php
+	<?php endwhile; endif;
+	wp_reset_postdata();
+
 	return ob_get_clean();
 }
 add_shortcode('following_posts', 'pwuf_following_posts_shortcode');

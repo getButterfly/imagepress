@@ -249,7 +249,7 @@ function ip_frontend_add_collection($ip_id) {
                             $disabled = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_ID = %d AND image_collection_ID = %d", get_the_ID(), $collection['collection_ID']), ARRAY_A);
 
                             echo '<option value="' . $collection['collection_ID'] . '"';
-                            if(count($disabled) > 0)
+                            if ($disabled && count($disabled) > 0)
                                 echo ' disabled';
                             echo '>' . $collection['collection_title'];
                             echo '</option>';
@@ -322,21 +322,9 @@ function imagepress_collection($atts) {
 
     $ip_unique_id = uniqid();
 
-    $ip_order = 'rand';
-    if (empty($type)) {
-        $ip_order = 'date';
-    }
-
-    // defaults
     $ip_order_asc_desc = 'DESC';
+    $ip_order = empty($type) ? 'date' : 'rand';
 
-    if ($order == 'custom') {
-        $ip_order = 'menu_order';
-        $ip_order_asc_desc = 'ASC';
-    }
-
-    // main images query
-    $out = '';
     $collectedArray = [];
 
     if (!isset($_GET['collection']) || empty($_GET['collection'])) {
@@ -355,7 +343,7 @@ function imagepress_collection($atts) {
 
     $collection_row = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_ID = %d", $collection_page), ARRAY_A);
 
-    $out .= '<div class="ip-template-collection-meta">';
+    $out = '<div class="ip-template-collection-meta">';
         $last_image_row = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d ORDER BY image_meta_ID DESC LIMIT 1", $collection_row['collection_ID']), ARRAY_A);
 
         $out .= '<div class="imagepress-float-right">' . $collection_row['collection_views'] . ' ' . esc_html__('views', 'imagepress') . ' | ' . count($collectionables) . ' ' . esc_html__('images', 'imagepress') . '</div>';
@@ -381,10 +369,7 @@ function imagepress_collection($atts) {
         'order'                     => $ip_order_asc_desc,
         'post__in'                  => $collectedArray,
         'fields'                    => 'ids',
-        'no_found_rows'             => true,
-        'update_post_term_cache'    => false,
-        'update_post_meta_cache'    => false,
-        'cache_results'             => false,
+        'no_found_rows'             => true
     );
 
     $posts = get_posts($args);
@@ -425,12 +410,13 @@ function imagepress_collection($atts) {
 
                     $post_thumbnail_id = (int) get_post_thumbnail_id($i);
 
-                    $ip_image_link = get_permalink($i);
-                    if ($ip_click_behaviour == 'media') {
-                        // get attachment source
+                    if ($ip_click_behaviour === 'media') {
+                        // Get attachment source
                         $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
 
                         $ip_image_link = $image_attributes[0];
+                    } else if ($ip_click_behaviour === 'custom') {
+                        $ip_image_link = get_permalink($i);
                     }
 
                     if ($getIpTitle == 1) {
