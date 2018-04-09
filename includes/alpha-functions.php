@@ -289,7 +289,7 @@ function imagepress_loop($atts) {
                 $ip_query->the_post();
                 //$i = get_the_ID();
 
-                ipRenderGridElement(get_the_ID());
+                $out .= ipRenderGridElement(get_the_ID());
 
                 /*
                 $post_thumbnail_id = get_post_thumbnail_id($i);
