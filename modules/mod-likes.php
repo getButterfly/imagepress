@@ -140,19 +140,18 @@ function ipAlreadyLiked($post_id) { // test if user liked before
  * Front end button
  */
 function ipGetPostLikeLink($post_id) {
-    $output = '';
+    $output = $class = '';
 	$ip_vote_like = get_imagepress_option('ip_vote_like');
 	$ip_vote_unlike = get_imagepress_option('ip_vote_unlike');
 
 	if (is_user_logged_in()) {
 		if (ipAlreadyLiked($post_id)) {
-			$class = esc_attr(' liked');
+			$class = esc_attr('liked');
 			$like = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg><span class="ip-icon-label"> ' . $ip_vote_unlike . '</span>';
 		} else {
-			$class = esc_attr('');
 			$like = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg><span class="ip-icon-label"> ' . $ip_vote_like . '</span>';
 		}
-		$output = '<a href="#" class="thin-ui-button imagepress-like' . $class . '" data-post_id="' . $post_id . '">' . $like . '</a>';
+		$output = '<a href="#" class="thin-ui-button imagepress-like ' . $class . '" data-post_id="' . $post_id . '">' . $like . '</a>';
 	}
 
     return $output;

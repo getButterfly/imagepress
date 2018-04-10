@@ -147,7 +147,7 @@ class Cinnamon_Frontend_User_Manager {
 
 		if (empty($user_data)) {
 			$errors->add('empty_username', __('Please enter a username or email address.', 'imagepress'));
-		} else if(strpos($user_data, '@')) {
+		} else if (strpos($user_data, '@')) {
 			$user_data = get_user_by('email', trim($user_data));
 			if (empty($user_data)) {
 				$errors->add('invalid_email', __('There is no user registered with that email address.', 'imagepress'));
@@ -173,7 +173,7 @@ class Cinnamon_Frontend_User_Manager {
 
 		if (!$allow) {
 			return new WP_Error('no_password_reset', __('Password reset is not allowed for this user', 'imagepress'));
-		} else if(is_wp_error($allow)) {
+		} else if (is_wp_error($allow)) {
 			return $allow;
 		}
 
@@ -192,8 +192,11 @@ class Cinnamon_Frontend_User_Manager {
 		$title = apply_filters('retrieve_password_title', $title);
 		$message = apply_filters('retrieve_password_message', $message, $key);
 
-		if ($message && ! wp_mail($user_email, $title, $message)) {
-			$errors->add('noemail', __('The e-mail could not be sent. Possible reason: your host may have disabled the mail() function.', 'imagepress'));
+	    $headers[] = "MIME-Version: 1.0\r\n";
+    	$headers[] = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\r\n";
+
+		if ($message && !wp_mail($user_email, $title, $message, $headers)) {
+			$errors->add('noemail', __('The email could not be sent.', 'imagepress'));
 
 			return $errors;
 			wp_die();

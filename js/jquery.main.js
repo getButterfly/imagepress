@@ -663,40 +663,44 @@ jQuery(document).ready(function() {
 
 
 
+function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
 
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+}
 
 
 jQuery(document).ready(function() {
-    /*
-     * https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-     *
-     * var uriParameters = new URLSearchParams(window.location.search);
-     * var sortValue = uriParameters.get('sort');
-     * uriParameters.has('ie') // true
-     */
-
     if (jQuery('#ip-sorter-primary').length) {
-        var uriParameters = new URLSearchParams(window.location.search),
-            request_uri = window.location.pathname + window.location.search,
+        var request_uri = window.location.pathname + window.location.search,
             sorterDropdown = document.getElementById('sorter'),
             rangerDropdown = document.getElementById('ranger'),
             taxxxerDropdown = document.getElementById('taxxxer'),
             queryElement = document.getElementById('q');
 
         // Check URI parameters, select default values, and redirect based on user selection
-        if (uriParameters.get('sort') !== null && uriParameters.get('sort').length !== 0) {
+        if (getUrlParameter('sort') !== null && getUrlParameter('sort').length) {
             sorterDropdown.value = request_uri;
         } else {
             sorterDropdown.selectedIndex = 0;
         }
 
-        if (uriParameters.get('range') !== null && uriParameters.get('range').length !== 0) {
+        if (getUrlParameter('range') !== null && getUrlParameter('range').length) {
             rangerDropdown.value = request_uri;
         } else {
             rangerDropdown.selectedIndex = 0;
         }
 
-        if (uriParameters.get('t') !== null && uriParameters.get('t').length !== 0) {
+        if (getUrlParameter('t') !== null && getUrlParameter('t').length) {
             taxxxerDropdown.value = request_uri;
         } else {
             taxxxerDropdown.selectedIndex = 0;

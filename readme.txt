@@ -24,10 +24,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 = 7.7.5 =
 * TODO: Restyle/reset all form elements
 * TODO/ROADMAP: Remove jQuery dependency
+* TODO: Reduce the number of tabs on the profile editor
+* TODO: Replace URL fields with page dropdowns
 
 = 7.7.4 =
 * FIX: Renamed modal class to avoid conflicts with Bootstrap
 * FIX: Use the same image grid structure everywhere (gallery, profile, collections)
+* FIX: Fixed a countable issue in PHP 7.2
 * FEATURE: Allow all file types for secondary uploads (PDFs, videos, etc.)
 
 = 7.7.3 =
