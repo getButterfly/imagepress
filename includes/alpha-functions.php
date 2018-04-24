@@ -275,7 +275,7 @@ function imagepress_loop($atts) {
                 $out .= pagination($ip_query->max_num_pages);
             }
         }
-    $out .= '</div>';
+    $out .= '</div><div class="ip-clear"></div>';
 
     wp_reset_postdata();
 

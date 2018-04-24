@@ -678,30 +678,30 @@ function getUrlParameter(sParam) {
     }
 }
 
-
 jQuery(document).ready(function() {
     if (jQuery('#ip-sorter-primary').length) {
-        var request_uri = window.location.pathname + window.location.search,
+        var request_uri = window.location.search,
             sorterDropdown = document.getElementById('sorter'),
             rangerDropdown = document.getElementById('ranger'),
             taxxxerDropdown = document.getElementById('taxxxer'),
             queryElement = document.getElementById('q');
 
         // Check URI parameters, select default values, and redirect based on user selection
-        if (getUrlParameter('sort') !== null && getUrlParameter('sort').length) {
+        if (getUrlParameter('sort') !== null) {
             sorterDropdown.value = request_uri;
         } else {
             sorterDropdown.selectedIndex = 0;
         }
 
-        if (getUrlParameter('range') !== null && getUrlParameter('range').length) {
+        if (getUrlParameter('range') !== null) {
             rangerDropdown.value = request_uri;
         } else {
             rangerDropdown.selectedIndex = 0;
         }
 
-        if (getUrlParameter('t') !== null && getUrlParameter('t').length) {
+        if (getUrlParameter('t') !== null) {
             taxxxerDropdown.value = request_uri;
+            console.log(request_uri);
         } else {
             taxxxerDropdown.selectedIndex = 0;
         }

@@ -1575,18 +1575,13 @@ function imagepress_admin_page() {
             <h2><?php _e('Extensions', 'imagepress'); ?></h2>
             <div class="flex-grid-thirds">
                 <div class="ip-card">
-                    <h3>Bulk Upload</h3>
-                    <p>A backend tool (administrator-only) used to upload multiple images simultaneously. The only limitation is your server configuration.</p>
+                    <h3>ImagePress Elements</h3>
+                    <p>This plugin bundle requires ImagePress and contains several modules including email approval, bulk upload, category listing and a user directory.</p>
                     <div class="ip-card-cta">
-                        <a href="https://getbutterfly.com/downloads/imagepress-bulk-upload/" class="button button-primary">Get it!</a>
+                        <a href="https://getbutterfly.com/downloads/imagepress-elements/" class="button button-primary">Get it!</a>
                     </div>
                 </div>
                 <div class="ip-card">
-                    <h3>Email Post Approval</h3>
-                    <p>Get notification and approve pending image submissions via email with a single click.</p>
-                    <div class="ip-card-cta">
-                        <a href="https://getbutterfly.com/downloads/imagepress-email-post-approval/" class="button button-primary">Get it!</a>
-                    </div>
                 </div>
                 <div class="ip-card">
                 </div>

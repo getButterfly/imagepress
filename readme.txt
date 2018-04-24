@@ -21,6 +21,12 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
+= 8.0.0 =
+* TODO: Refactor notifications and merge with feed
+* TODO: Refactor collections (CPT?)
+* TODO: Refactor custom fields
+* TODO: Remove all generic CSS styles
+
 = 7.7.5 =
 * TODO: Restyle/reset all form elements
 * TODO/ROADMAP: Remove jQuery dependency
