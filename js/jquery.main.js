@@ -180,7 +180,7 @@ jQuery(document).ready(function() {
         return false;
     });
 
-    jQuery(document).on('click', '.featured-post', function(e){
+    jQuery(document).on('click', '.featured-post', function (e) {
         if(confirm('Set this image as main image?')) {
             jQuery(this).parent().parent().css('border', '3px solid #ffffff');
 
@@ -196,8 +196,8 @@ jQuery(document).ready(function() {
                     pid: pid,
                     id: id
                 },
-                success: function(result) {
-                    if(result == 'success') {
+                success: function (result) {
+                    if (result === 'success') {
                         jQuery('.ip-notice').fadeIn();
                     }
                 }
@@ -208,7 +208,7 @@ jQuery(document).ready(function() {
     });
 
     // notifications
-    jQuery('.notifications-container .notification-item.unread').click(function(){
+    jQuery('.notifications-container .notification-item.unread').click(function () {
         var id = jQuery(this).data('id');
         jQuery.ajax({
             type: 'post',
@@ -271,10 +271,10 @@ jQuery(document).ready(function() {
         g.preventDefault();
     });
 
-    jQuery('.imagepress-follow a').on('click', function(e) {
+    jQuery('.imagepress-follow a').on('click', function (e) {
         e.preventDefault();
         var $this = jQuery(this);
-        if(ipAjaxVar.logged_in != 'undefined' && ipAjaxVar.logged_in != 'true') {
+        if (ipAjaxVar.logged_in != 'undefined' && ipAjaxVar.logged_in != 'true') {
             alert(ipAjaxVar.login_required);
             return;
         }
@@ -288,11 +288,10 @@ jQuery(document).ready(function() {
 
         jQuery('img.pwuf-ajax').show();
 
-        jQuery.post(ipAjaxVar.ajaxurl, data, function(response) {
-            if(response == 'success') {
+        jQuery.post(ipAjaxVar.ajaxurl, data, function (response) {
+            if (response === 'success') {
                 jQuery('.imagepress-follow a').toggle();
-            }
-            else {
+            } else {
                 alert(ipAjaxVar.processing_error);
             }
 
@@ -303,28 +302,28 @@ jQuery(document).ready(function() {
 
 
     /* collections */
-    jQuery(document).on('click', '.changeCollection', function(e){
+    jQuery(document).on('click', '.changeCollection', function (e) {
         jQuery(this).parent().parent().next('.collection_details_edit').toggleClass('active');
         e.preventDefault();
     });
-    jQuery(document).on('click', '.closeCollectionEdit', function(e){
+    jQuery(document).on('click', '.closeCollectionEdit', function (e) {
         jQuery(this).parent().toggleClass('active');
         e.preventDefault();
     });
-    jQuery('.toggleModal').on('click', function(e){
+    jQuery('.toggleModal').on('click', function (e) {
         jQuery('.ip-modal').toggleClass('active');
         e.preventDefault();
     });
-    jQuery('.toggleFrontEndModal').on('click', function(e){
+    jQuery('.toggleFrontEndModal').on('click', function (e) {
         jQuery('.frontEndModal').toggleClass('active');
         e.preventDefault();
     });
-    jQuery('.toggleFrontEndModal .close').on('click', function(e){
+    jQuery('.toggleFrontEndModal .close').on('click', function (e) {
         jQuery('.frontEndModal').toggleClass('active');
         e.preventDefault();
     });
 
-    jQuery('.addCollection').click(function(e){
+    jQuery('.addCollection').click(function (e) {
         jQuery('.addCollection').val('Creating...');
         jQuery('.collection-progress').fadeIn();
         jQuery.ajax({
@@ -540,7 +539,7 @@ jQuery(document).ready(function() {
     });
 
     jQuery('.editableImage').keypress(function (e) {
-        if (e.keyCode == 10 || e.keyCode == 13) {
+        if (e.keyCode === 10 || e.keyCode === 13) {
             e.preventDefault();
 
             var id = jQuery(this).data('image-id');
@@ -556,8 +555,8 @@ jQuery(document).ready(function() {
                     title: title,
                     id: id,
                 },
-                success: function(result) {
-                    if(result == 'success') {
+                success: function (result) {
+                    if (result === 'success') {
                         jQuery('#listImage_' + id).removeClass('editableImageActive');
                         jQuery('.editableImageStatus_' + id).show().html('<svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg>');
                     }
@@ -573,7 +572,7 @@ jQuery(document).ready(function() {
      *
      * Allow AJAX processing of login, registration and password reset forms
      */
-    jQuery('#regform').on('submit', function(e){
+    jQuery('#regform').on('submit', function (e) {
         e.preventDefault();
 
 		jQuery('#regform p.message').remove();
@@ -584,8 +583,8 @@ jQuery(document).ready(function() {
             dataType: 'json',
             url: ipAjaxVar.ajaxurl,
             data: jQuery('#regform').serialize() + '&action=cinnamon_process_registration',
-            success: function(results) {
-                if(results.registered === true) {
+            success: function (results) {
+                if (results.registered === true) {
                     jQuery('#regform p.message').removeClass('notice').addClass('success').text(results.message).show();
                 } else {
                     jQuery('#regform p.message').removeClass('notice').addClass('error').html(results.message).show();
@@ -594,7 +593,7 @@ jQuery(document).ready(function() {
         });
     });
 
-	jQuery('#pswform').on('submit', function(e){
+	jQuery('#pswform').on('submit', function (e) {
         e.preventDefault();
 
         jQuery('#pswform p.message').remove();
@@ -766,7 +765,7 @@ jQuery(window).load(function() {
                 jQuery($el).height('auto');
                 topPosition = $el.position().top;
 
-                if (currentRowStart != topPosition) {
+                if (currentRowStart !== topPosition) {
                     for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
                         rowDivs[currentDiv].height(currentTallest);
                     }
