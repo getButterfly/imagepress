@@ -71,7 +71,8 @@ function cinnamon_card($atts) {
     extract(shortcode_atts(array(
         'author' => '',
         'count' => 10,
-        'sort' => 0
+        'sort' => 0,
+        'role' => '',
     ), $atts));
 
     $ip_slug = get_imagepress_option('ip_slug');
@@ -79,11 +80,15 @@ function cinnamon_card($atts) {
     $display = '<div style="clear: both;"></div>
     <div id="author-cards">';
 
+    // Filter users by role
+    $role = sanitize_text_field($role);
+    $role = ((string) $role === '') ? '' : '$role=' . $role;
+
     $number = $count;
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     $offset = ($paged - 1) * $number;
     $users = get_users();
-    $query = get_users('&offset='.$offset.'&number='.$number);
+    $query = get_users('&offset=' . $offset . '&number=' . $number . $role);
     $total_users = $users ? count($users) : 0;
     $total_query = $query ? count($query) : 0;
     $total_pages = intval($total_users / $number) + 1;
@@ -101,7 +106,7 @@ function cinnamon_card($atts) {
                 $authors_posts = get_posts($cardArguments);
                 if ($authors_posts) {
                     $display .= '<div class="mosaicflow">';
-                        foreach($authors_posts as $authors_post) {
+                        foreach ($authors_posts as $authors_post) {
                             $display .= '<div><a href="' . get_permalink($authors_post->ID) . '">' . get_the_post_thumbnail($authors_post->ID, get_imagepress_option('ip_image_size')) . '</a></div>';
                         }
                     $display .= '</div>';
@@ -142,8 +147,8 @@ function cinnamon_card($atts) {
             'format' => 'page/%#%/',
             'current' => $current_page,
             'total' => $total_pages,
-            'prev_next'    => false,
-            'type'         => 'list',
+            'prev_next' => false,
+            'type' => 'list',
         ));
         $display .= '</div>';
     }
@@ -406,16 +411,9 @@ function cinnamon_profile($atts) {
                 }
 
             $display .= '</div>
-        </div>';
-
-
-
-
-
-        $display .= '<div style="clear: both;"></div>';
-
-
-    $display .= '</div>';
+        </div>
+        <div style="clear: both;"></div>
+    </div>';
 
     return $display;
 }

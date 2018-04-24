@@ -57,7 +57,7 @@ jQuery(document).ready(function() {
     jQuery('#imagepress_image_file_bulk').change(function () {
         var filename = jQuery('#imagepress_image_file_bulk').val();
         jQuery('.file-upload').addClass('active');
-        jQuery('#noFile').text(filename.replace("C:\\fakepath\\", ""));
+        jQuery('#noFile').text(filename.replace('C:\\fakepath\\', ''));
     });
 
     jQuery('.poster-container img').click(function(){
