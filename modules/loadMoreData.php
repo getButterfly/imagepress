@@ -12,8 +12,18 @@ if (!empty($myFollowing[0])) {
     $followers = "AND userID IN (" . $followers . ")";
 }
 
-$sql = "SELECT ID, userID, postID, postKeyID, actionType, actionTime, actionIcon, status FROM {$wpdb->prefix}notifications WHERE actionType = 'added' %s AND ID < %d ORDER BY ID DESC LIMIT 10";
-
-$res = $wpdb->get_results($wpdb->prepare($sql, $followers, $_GET['last_id']));
+$res = $wpdb->get_results($wpdb->prepare("SELECT
+    ID,
+    userID,p
+    ostID,
+    postKeyID,
+    actionType,
+    actionTime,
+    actionIcon,
+    status
+FROM {$wpdb->prefix}notifications
+WHERE actionType = 'added' %s
+    AND ID < %d
+    ORDER BY ID DESC LIMIT 10", $followers, $last_id));
 
 $json = include 'feed-data.php';
