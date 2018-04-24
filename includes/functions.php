@@ -153,24 +153,6 @@ function ip_setPostViews($postID) {
 
 
 
-// front-end image editor
-function ip_get_object_terms_exclude_filter($terms, $object_ids, $taxonomies, $args) {
-    if (isset($args['exclude']) && (isset($args['fields']) && $args['fields'] == 'all')) {
-        foreach ($terms as $key => $term) {
-            foreach ($args['exclude'] as $exclude_term) {
-                if ($term->term_id == $exclude_term) {
-                    unset($terms[$key]);
-                }
-            }
-        }
-    }
-
-    $terms = array_values($terms);
-
-    return $terms;
-}
-add_filter('wp_get_object_terms', 'ip_get_object_terms_exclude_filter', 10, 4);
-
 // frontend image editor
 function ip_editor() {
     global $post;
@@ -330,12 +312,20 @@ function ip_editor() {
                 ?>
                 <hr>
 
-                <?php $ip_category = wp_get_object_terms($edit_id, 'imagepress_image_category', array('exclude' => array(4))); ?>
-                <?php if(get_imagepress_option('ip_allow_tags') == 1) $ip_tag = wp_get_post_terms($edit_id, 'imagepress_image_tag'); ?>
+                <?php
+                $ip_category = wp_get_object_terms($edit_id, 'imagepress_image_category');
+                if ((int) get_imagepress_option('ip_allow_tags') === 1) {
+                    $ip_tag = wp_get_post_terms($edit_id, 'imagepress_image_tag');
+                }
+                ?>
 
                 <p>
-                    <?php echo imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id); ?>
-                    <?php if(get_imagepress_option('ip_allow_tags') == 1) echo imagepress_get_image_tags_dropdown('imagepress_image_tag', $ip_tag[0]->term_id); ?>
+                    <?php
+                    echo imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
+                    if ((int) get_imagepress_option('ip_allow_tags') === 1) {
+                        echo imagepress_get_image_tags_dropdown('imagepress_image_tag', $ip_tag[0]->term_id);
+                    }
+                    ?>
                 </p>
 
                 <?php
