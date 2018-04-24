@@ -674,8 +674,6 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
 
 function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $imagepress_hardcoded_category) {
-    $current_user = wp_get_current_user();
-
     // upload form // customize
 
     // labels
