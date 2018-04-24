@@ -137,29 +137,18 @@ function imagepress_registration() {
 }
 
 function ip_getPostViews($postID) {
-    $count_key = 'post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
+    $count = get_post_meta($postID, 'post_views_count', true);
+    $count = empty($count) ? 0 : $count;
 
-    if (empty($count)) {
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, 0);
-
-        return 0;
-    }
+    update_post_meta($postID, 'post_views_count', $count);
 
     return $count;
 }
 function ip_setPostViews($postID) {
-    $count_key = 'post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
+    $count = get_post_meta($postID, 'post_views_count', true);
+    $count = empty($count) ? 1 : $count + 1;
 
-    if ($count === 0 || empty($count)) {
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, 1);
-    } else {
-        $count++;
-        update_post_meta($postID, $count_key, $count);
-    }
+    update_post_meta($postID, 'post_views_count', $count);
 }
 
 
