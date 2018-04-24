@@ -35,8 +35,7 @@ function imagepress_feed() {
                 status
             FROM {$wpdb->prefix}notifications
             WHERE actionType = 'added' %s
-                AND ID < %d
-                ORDER BY ID DESC LIMIT 20", $followers, $last_id));
+                ORDER BY ID DESC LIMIT 20", $followers));
 
             include 'feed-data.php';
             ?>
