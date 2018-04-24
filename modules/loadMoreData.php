@@ -14,12 +14,11 @@ if (!empty($myFollowing[0])) {
 
 $res = $wpdb->get_results($wpdb->prepare("SELECT
     ID,
-    userID,p
-    ostID,
+    userID,
+    postID,
     postKeyID,
     actionType,
     actionTime,
-    actionIcon,
     status
 FROM {$wpdb->prefix}notifications
 WHERE actionType = 'added' %s

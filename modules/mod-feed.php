@@ -25,9 +25,18 @@ function imagepress_feed() {
         <div id="feed-data">
             <?php
             // Feed loop
-            $sql = "SELECT ID, userID, postID, postKeyID, actionType, actionTime, actionIcon, status FROM " . $wpdb->prefix . "notifications WHERE actionType = 'added' $followers ORDER BY ID DESC LIMIT 20";
-
-            $res = $wpdb->get_results($sql);
+            $res = $wpdb->get_results($wpdb->prepare("SELECT
+                ID,
+                userID,
+                postID,
+                postKeyID,
+                actionType,
+                actionTime,
+                status
+            FROM {$wpdb->prefix}notifications
+            WHERE actionType = 'added' %s
+                AND ID < %d
+                ORDER BY ID DESC LIMIT 20", $followers, $last_id));
 
             include 'feed-data.php';
             ?>
