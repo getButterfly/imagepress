@@ -57,11 +57,11 @@ jQuery(document).ready(function() {
     jQuery('#imagepress_image_file_bulk').change(function () {
         var filename = jQuery('#imagepress_image_file_bulk').val();
         jQuery('.file-upload').addClass('active');
-        jQuery("#noFile").text(filename.replace("C:\\fakepath\\", ""));
+        jQuery('#noFile').text(filename.replace("C:\\fakepath\\", ""));
     });
 
     jQuery('.poster-container img').click(function(){
-        jQuery(this).toggleClass("ip-more-target");
+        jQuery(this).toggleClass('ip-more-target');
     });
 
     /* like action */
@@ -77,7 +77,7 @@ jQuery(document).ready(function() {
             data: 'action=imagepress-like&nonce=' + ipAjaxVar.nonce + '&imagepress_like=&post_id=' + pid,
             success: function(count){
                 if(count.indexOf('already') !== -1) {
-                    var lecount = count.replace("already", "");
+                    var lecount = count.replace('already', '');
                     if(lecount === '0') {
                         lecount = ipAjaxVar.likelabel;
                     }
@@ -687,7 +687,8 @@ jQuery(document).ready(function() {
             sorterDropdown = document.getElementById('sorter'),
             rangerDropdown = document.getElementById('ranger'),
             taxxxerDropdown = document.getElementById('taxxxer'),
-            queryElement = document.getElementById('q');
+            queryElement = document.getElementById('q'),
+            queryLocation;
 
         // Check URI parameters, select default values, and redirect based on user selection
         if (getUrlParameter('sort') !== null) {
@@ -726,22 +727,17 @@ jQuery(document).ready(function() {
             var event = e || window.event;
             var charCode = event.which || event.keyCode;
 
-            if (charCode == '13') {
+            if (charCode === '13') {
                 // Enter key pressed
 
-                window.location = replaceQueryParam('q', queryElement.value, window.location.search);
+                queryLocation = window.location.search.replace(/(q=)[^\&]+/, '$1' + queryElement.value);
+                window.location = queryLocation;
+
                 return false;
             }
         };
     }
 });
-
-function replaceQueryParam(param, newval, search) {
-    var regex = new RegExp("([?;&])" + param + "[^&;]*[;&]?");
-    var query = search.replace(regex, "$1").replace(/&$/, '');
-
-    return (query.length > 2 ? query + '&' : '?') + (newval ? param + '=' + newval : '');
-}
 
 // ImagePress Grid UI
 jQuery(window).load(function() {
