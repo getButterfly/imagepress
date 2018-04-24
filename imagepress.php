@@ -509,7 +509,6 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
     if(empty($ip_global_upload_limit)) {
         $ip_global_upload_limit = 999999;
     }
-    $ip_global_upload_limit_message = get_imagepress_option('ip_global_upload_limit_message');
 
     // get current user uploads
     $user_uploads = cinnamon_count_user_posts_by_type($current_user->ID);
