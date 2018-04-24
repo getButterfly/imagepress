@@ -573,22 +573,22 @@ jQuery(document).ready(function() {
      *
      * Allow AJAX processing of login, registration and password reset forms
      */
-    jQuery("#regform").on("submit", function(e){
+    jQuery('#regform').on('submit', function(e){
         e.preventDefault();
 
 		jQuery('#regform p.message').remove();
         jQuery('#regform h2').after('<p class="message notice">' + ipAjaxVar.registrationloadingmessage + '</p>');
 
         jQuery.ajax({
-            type: "GET",
-            dataType: "json",
+            type: 'GET',
+            dataType: 'json',
             url: ipAjaxVar.ajaxurl,
-            data: jQuery("#regform").serialize() + "&action=cinnamon_process_registration",
+            data: jQuery('#regform').serialize() + '&action=cinnamon_process_registration',
             success: function(results) {
                 if(results.registered === true) {
-                    jQuery("#regform p.message").removeClass("notice").addClass("success").text(results.message).show();
+                    jQuery('#regform p.message').removeClass('notice').addClass('success').text(results.message).show();
                 } else {
-                    jQuery("#regform p.message").removeClass("notice").addClass("error").html(results.message).show();
+                    jQuery('#regform p.message').removeClass('notice').addClass('error').html(results.message).show();
                 }
             }
         });
@@ -597,15 +597,15 @@ jQuery(document).ready(function() {
 	jQuery('#pswform').on('submit', function(e){
         e.preventDefault();
 
-        jQuery("#pswform p.message").remove();
-        jQuery("#pswform h2").after('<p class="message notice">' + ipAjaxVar.loadingmessage + '</p>');
+        jQuery('#pswform p.message').remove();
+        jQuery('#pswform h2').after('<p class="message notice">' + ipAjaxVar.loadingmessage + '</p>');
 
         jQuery.ajax({
             type: 'GET',
             dataType: 'json',
             url: ipAjaxVar.ajaxurl,
             data: {
-                'action': "cinnamon_process_psw_recovery", // Calls our wp_ajax_nopriv_ajaxlogin
+                'action': 'cinnamon_process_psw_recovery', // Calls our wp_ajax_nopriv_ajaxlogin
                 'username': jQuery('#pswform #forgot_login').val(),
                 'forgotten': jQuery('#pswform input[name="forgotten"]').val(),
                 'security': jQuery('#pswform #security').val()
@@ -676,7 +676,7 @@ function getUrlParameter(sParam) {
         sParameterName = sURLVariables[i].split('=');
 
         if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : sParameterName[1];
+            return typeof sParameterName[1] === 'undefined' ? true : sParameterName[1];
         }
     }
 }
@@ -704,7 +704,6 @@ jQuery(document).ready(function() {
 
         if (getUrlParameter('t') !== null) {
             taxxxerDropdown.value = request_uri;
-            console.log(request_uri);
         } else {
             taxxxerDropdown.selectedIndex = 0;
         }
@@ -741,7 +740,7 @@ function replaceQueryParam(param, newval, search) {
     var regex = new RegExp("([?;&])" + param + "[^&;]*[;&]?");
     var query = search.replace(regex, "$1").replace(/&$/, '');
 
-    return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
+    return (query.length > 2 ? query + '&' : '?') + (newval ? param + '=' + newval : '');
 }
 
 // ImagePress Grid UI
@@ -838,15 +837,15 @@ jQuery(document).ready(function () {
 document.addEventListener && document.addEventListener('DOMContentLoaded', function () {
     var a, f = {},
         b, d, g, e = !1,
-        h = document.getElementsByTagName("use"),
+        h = document.getElementsByTagName('use'),
         c;
-    XMLHttpRequest && (e = new XMLHttpRequest, e = "withCredentials" in e ? XMLHttpRequest : XDomainRequest ? XDomainRequest : !1);
+    XMLHttpRequest && (e = new XMLHttpRequest, e = 'withCredentials' in e ? XMLHttpRequest : XDomainRequest ? XDomainRequest : !1);
     if (e)
         for (g = function() {
                 var a = document.body,
-                    b = document.createElement("x");
+                    b = document.createElement('x');
                 b.innerHTML = c.responseText;
                 a.insertBefore(b.firstChild, a.firstChild)
-            }, d = 0; d < h.length; d += 1) b = h[d].getAttribute("xlink:href").split("#"), a = b[0], b = b[1], a.length || !b || document.getElementById(b) ||
-            (a = ipAjaxVar.ip_url + '/img/svgdefs.svg'), a.length && (f[a] = f[a] || new e, c = f[a], c.onload || (c.onload = g, c.open("GET", a), c.send()))
+            }, d = 0; d < h.length; d += 1) b = h[d].getAttribute('xlink:href').split('#'), a = b[0], b = b[1], a.length || !b || document.getElementById(b) ||
+            (a = ipAjaxVar.ip_url + '/img/svgdefs.svg'), a.length && (f[a] = f[a] || new e, c = f[a], c.onload || (c.onload = g, c.open('GET', a), c.send()))
 }, !1);
