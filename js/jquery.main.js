@@ -6,11 +6,14 @@
 
 /* global jQuery, ipAjaxVar, swal, Masonry */
 
+/*eslint quotes: ["error", "single"]*/
+/*eslint-env es6*/
+
 function addMoreFiles() {
-    var newElement = jQuery("#fileuploads").clone().prop({
-        class: "ip-more"
+    var newElement = jQuery('#fileuploads').clone().prop({
+        class: 'ip-more'
     });
-    newElement.find("input, textarea, select").val("").end().insertBefore("#endOfForm");
+    newElement.find('input, textarea, select').val('').end().insertBefore('#endOfForm');
 }
 
 
