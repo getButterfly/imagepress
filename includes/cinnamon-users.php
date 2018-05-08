@@ -464,9 +464,9 @@ function cinnamon_profile_edit($atts) {
 
         // Avatar and cover upload
         if ($_FILES) {
-            require_once admin_url('includes/image.php');
-            require_once admin_url('includes/file.php');
-            require_once admin_url('includes/media.php');
+            require_once ABSPATH . '/wp-admin/includes/image.php';
+            require_once ABSPATH . '/wp-admin/includes/file.php';
+            require_once ABSPATH . '/wp-admin/includes/media.php';
 
             foreach ($_FILES as $file => $array) {
                 if (!empty($_FILES[$file]['name'])) {
