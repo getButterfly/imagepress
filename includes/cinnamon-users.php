@@ -419,7 +419,9 @@ function cinnamon_profile($atts) {
 }
 
 function cinnamon_profile_edit($atts) {
-    extract(shortcode_atts(array('author' => ''), $atts));
+    extract(shortcode_atts(array(
+        'author' => ''
+    ), $atts));
 
     global $wpdb;
 
@@ -429,56 +431,47 @@ function cinnamon_profile_edit($atts) {
     $error = array();
     $out = '';
 
-    if('POST' == $_SERVER['REQUEST_METHOD'] && !empty($_POST['action']) && $_POST['action'] == 'update-user') {
-        if(!empty($_POST['pass1']) && !empty($_POST['pass2'])) {
-            if($_POST['pass1'] == $_POST['pass2'])
+    if (!empty($_POST['action']) && (string) $_POST['action'] === 'update-user') {
+        if (!empty($_POST['pass1']) && !empty($_POST['pass2'])) {
+            if ((string) $_POST['pass1'] === (string) $_POST['pass2']) {
                 wp_update_user(array('ID' => $userid, 'user_pass' => esc_attr($_POST['pass1'])));
-            else
-                $error[] = __('The passwords you entered do not match. Your password was not updated.', 'imagepress');
-        }
-
-        if(!empty($_POST['url']))
-            wp_update_user(array('ID' => $userid, 'user_url' => esc_url($_POST['url'])));
-        if(!empty($_POST['email'])) {
-            if(!is_email(esc_attr($_POST['email'])))
-                $error[] = __('The email you entered is not valid. Please try again.', 'imagepress');
-            elseif(email_exists(esc_attr($_POST['email'])) != $userid)
-                $error[] = __('This email is already used by another user. Try a different one.', 'imagepress');
-            else {
-                wp_update_user(array('ID' => $userid, 'user_email' => esc_attr($_POST['email'])));
+            } else {
+                $error[] = esc_html__('The passwords you entered do not match. Your password was not updated.', 'imagepress');
             }
         }
 
-        if(!empty($_POST['first-name']))
-            update_user_meta($userid, 'first_name', esc_attr($_POST['first-name']));
-        if(!empty($_POST['last-name']))
-            update_user_meta($userid, 'last_name', esc_attr($_POST['last-name']));
+        wp_update_user(array('ID' => $userid, 'user_url' => esc_url($_POST['url'])));
 
-        if(!empty($_POST['nickname'])) {
-            update_user_meta($userid, 'nickname', esc_attr($_POST['nickname']));
-            $wpdb->update($wpdb->users, array('display_name' => $_POST['nickname']), array('ID' => $userid), null, null);
+        if (!is_email(esc_attr($_POST['email']))) {
+            $error[] = esc_html__('The email you entered is not valid. Please try again.', 'imagepress');
+        } else if (email_exists(esc_attr($_POST['email'])) != $userid) {
+            $error[] = esc_html__('This email is already used by another user. Try a different one.', 'imagepress');
+        } else {
+            wp_update_user(array('ID' => $userid, 'user_email' => esc_attr($_POST['email'])));
         }
 
-        if(!empty($_POST['description']))
-            update_user_meta($userid, 'description', esc_attr($_POST['description']));
+        update_user_meta($userid, 'first_name', esc_attr($_POST['first-name']));
+        update_user_meta($userid, 'last_name', esc_attr($_POST['last-name']));
 
-        if(!empty($_POST['facebook']))
-            update_user_meta($userid, 'facebook', esc_attr($_POST['facebook']));
-        if(!empty($_POST['twitter']))
-            update_user_meta($userid, 'twitter', esc_attr($_POST['twitter']));
-        if(!empty($_POST['googleplus']))
-            update_user_meta($userid, 'googleplus', esc_attr($_POST['googleplus']));
+        update_user_meta($userid, 'nickname', esc_attr($_POST['nickname']));
+        $wpdb->update($wpdb->users, array('display_name' => $_POST['nickname']), array('ID' => $userid), null, null);
 
-        // avatar and cover upload
-        if($_FILES) {
-            require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-            require_once(ABSPATH . "wp-admin" . '/includes/file.php');
-            require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+        update_user_meta($userid, 'description', esc_attr($_POST['description']));
 
-            foreach($_FILES as $file => $array) {
-                if(!empty($_FILES[$file]['name'])) {
+        update_user_meta($userid, 'facebook', esc_attr($_POST['facebook']));
+        update_user_meta($userid, 'twitter', esc_attr($_POST['twitter']));
+        update_user_meta($userid, 'googleplus', esc_attr($_POST['googleplus']));
+
+        // Avatar and cover upload
+        if ($_FILES) {
+            require_once admin_url('includes/image.php');
+            require_once admin_url('includes/file.php');
+            require_once admin_url('includes/media.php');
+
+            foreach ($_FILES as $file => $array) {
+                if (!empty($_FILES[$file]['name'])) {
                     $file_id = media_handle_upload($file, 0);
-                    if($file_id > 0) {
+                    if ($file_id > 0) {
                         update_user_meta($userid, $file, $file_id);
                     }
                 }
@@ -486,7 +479,7 @@ function cinnamon_profile_edit($atts) {
         }
         //
 
-        if(count($error) == 0) {
+        if (count($error) == 0) {
             do_action('edit_user_profile_update', $userid);
             $out .= '<p class="message noir-success">' . __('Profile updated successfully!', 'imagepress') . '</p>';
         }
@@ -494,7 +487,7 @@ function cinnamon_profile_edit($atts) {
 
     $out .= '<div id="post-' . get_the_ID() . '">
         <div class="entry-content entry cinnamon">';
-            if(count($error) > 0) {
+            if (count($error) > 0) {
                 $out .= '<p class="error">' . implode('<br>', $error) . '</p>';
             }
 
@@ -506,11 +499,11 @@ function cinnamon_profile_edit($atts) {
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_social') . '</a></li>
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_author') . '</a></li>
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_profile') . '</a></li>';
-                        if(get_imagepress_option('ip_mod_collections') == 1) {
+                        if (get_imagepress_option('ip_mod_collections') == 1) {
                             $out .= '<li><a href="#" class="imagepress-collections">' . get_imagepress_option('cinnamon_pt_collections') . '</a></li>';
                         }
-                        $out .= '<li><a href="#">' . get_imagepress_option('cinnamon_pt_images') . '</a></li>';
-                    $out .= '</ul>
+                        $out .= '<li><a href="#">' . get_imagepress_option('cinnamon_pt_images') . '</a></li>
+                    </ul>
                     <div class="tab_content">
                         <div class="ip-tabs-item" style="display: block;">
                             <h3>' . __('Statistics', 'imagepress') . '</h3>';
@@ -654,7 +647,7 @@ function cinnamon_profile_edit($atts) {
                         </div>
                         <div class="ip-tabs-item" style="display: none;">
                             <table class="form-table">';
-                                if(!is_admin()) {
+                                if (!is_admin()) {
                                     $out .= '<tr>
                                         <th>' . __('Cover/avatar preview', 'imagepress') . '</th>
                                         <td>';
@@ -730,16 +723,16 @@ function cinnamon_profile_edit($atts) {
                             $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
 
                             $out .= '<div class="editor-image-manager">';
-                                if($posts) {
+                                if ($posts) {
                                     foreach($posts as $user_image) {
                                         $i = $user_image->ID;
 
                                         $post_thumbnail_id = get_post_thumbnail_id($i);
                                         $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
 
-                                        if($ip_click_behaviour == 'media')
+                                        if ($ip_click_behaviour == 'media')
                                             $ip_image_link = $image_attributes[0];
-                                        if($ip_click_behaviour == 'custom')
+                                        if ($ip_click_behaviour == 'custom')
                                             $ip_image_link = get_permalink($i);
 
                                         $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '">
@@ -776,7 +769,7 @@ function cinnamon_profile_edit($atts) {
         </div>
     </div>';
 
-    if(!is_user_logged_in()) {
+    if (!is_user_logged_in()) {
         $out = '<p class="warning">' . __('You must be logged in to edit your profile.', 'imagepress') . '</p>';
     }
 
@@ -791,24 +784,13 @@ function cinnamon_profile_edit($atts) {
 
 /* CINNAMON CUSTOM PROFILE FIELDS */
 function save_cinnamon_profile_fields($user_id) {
-    if(!current_user_can('edit_user', $user_id))
+    if (!current_user_can('edit_user', $user_id))
         return false;
 
-    if(!empty($_POST['hub_location'])) {
-        update_user_meta($user_id, 'hub_location', $_POST['hub_location']);
-    }
-
-    if(!empty($_POST['hub_employer'])) {
-        update_user_meta($user_id, 'hub_employer', $_POST['hub_employer']);
-    }
-
-    if(!empty($_POST['hub_field'])) {
-        update_user_meta($user_id, 'hub_field', $_POST['hub_field']);
-    }
-
-    if(!empty($_POST['hub_status'])) {
-        update_user_meta($user_id, 'hub_status', $_POST['hub_status']);
-    }
+    update_user_meta($user_id, 'hub_location', $_POST['hub_location']);
+    update_user_meta($user_id, 'hub_employer', $_POST['hub_employer']);
+    update_user_meta($user_id, 'hub_field', $_POST['hub_field']);
+    update_user_meta($user_id, 'hub_status', $_POST['hub_status']);
 
     // awards
     if (current_user_can('manage_options', $user_id)) {
@@ -831,7 +813,7 @@ function hub_gravatar_filter($avatar, $id_or_email, $size) {
     $image_url = get_user_meta($id_or_email, 'hub_custom_avatar', true);
     $custom_avatar = wp_get_attachment_url($image_url);
 
-    if(!empty($image_url)) {
+    if (!empty($image_url)) {
         return '<img src="' . $custom_avatar . '" class="avatar" width="' . $size . '" height="' . $size . '" alt="' . $current_user->display_name . '">';
     }
 
@@ -845,8 +827,8 @@ function cinnamon_awards() {
     );
     $terms = get_terms('award', $args);
 
-    if(!empty($terms) && !is_wp_error($terms)) {
-        foreach($terms as $term) {
+    if (!empty($terms) && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
             // get custom FontAwesome
             $t_ID = $term->term_id;
             $term_data = get_option("taxonomy_$t_ID");

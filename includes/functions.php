@@ -269,19 +269,11 @@ function ip_editor() {
                     } else if ($fieldType === 5) {
                         echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
                     } else if ($fieldType === 6) {
-                        if ($ps_meta == 1) {
-                            $checked = 'checked';
-                        } else {
-                            $checked = '';
-                        }
+                        $checked = ((int) $ps_meta === 1) ? 'checked' : '';
 
                         echo '<p><label for="' . $fieldSlug . '"><input type="checkbox" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
                     } else if ($fieldType === 7) {
-                        if ($ps_meta == 1) {
-                            $checked = 'checked';
-                        } else {
-                            $checked = '';
-                        }
+                        $checked = ((int) $ps_meta === 1) ? 'checked' : '';
 
                         echo '<p><label for="' . $fieldSlug . '"><input type="radio" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
                     } else if ($fieldType === 8) {
@@ -289,11 +281,7 @@ function ip_editor() {
                             $options = $wpdb->get_var($wpdb->prepare("SELECT field_content FROM  " . $wpdb->prefix . "ip_fields WHERE field_name = '%s'", $fieldName));
                             $options = explode(',', $options);
                             foreach ($options as $option) {
-                                if ($ps_meta == trim($option)) {
-                                    $selected = 'selected';
-                                } else {
-                                    $selected = '';
-                                }
+                                $selected = ($ps_meta == trim($option)) ? 'selected' : '';
 
                                 echo '<option ' . $selected . '>' . trim($option) . '</option>';
                             }
@@ -317,25 +305,19 @@ function ip_editor() {
                 if ((int) get_imagepress_option('ip_allow_tags') === 1) {
                     $ip_tag = wp_get_post_terms($edit_id, 'imagepress_image_tag');
                 }
-                ?>
 
-                <p>
-                    <?php
-                    echo imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
-                    if ((int) get_imagepress_option('ip_allow_tags') === 1) {
-                        echo imagepress_get_image_tags_dropdown('imagepress_image_tag', $ip_tag[0]->term_id);
-                    }
-                    ?>
-                </p>
+                echo imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
+                if ((int) get_imagepress_option('ip_allow_tags') === 1) {
+                    echo '<p>' . imagepress_get_image_tags_dropdown('imagepress_image_tag', $ip_tag[0]->term_id) . '</p>';
+                }
 
-                <?php
                 $ip_upload_size = get_imagepress_option('ip_upload_size');
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
                 ?>
                 <p><label for="imagepress_image_file">Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
 
-                <?php if(1 == get_imagepress_option('ip_upload_secondary')) { ?>
+                <?php if ((int) get_imagepress_option('ip_upload_secondary') === 1) { ?>
                     <hr>
                     <p>
                         <?php esc_html_e('Select main image or delete additional images', 'imagepress'); ?>
@@ -347,14 +329,14 @@ function ip_editor() {
                     $images = get_children(array('post_parent' => $edit_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
                     $count = $images ? count($images) : 0;
 
-                    if($count > 1) {
+                    if ($count > 1) {
                         echo '<div>';
-                            foreach($images as $attachment_id => $image) {
+                            foreach ($images as $attachment_id => $image) {
                                 $small_array = image_downsize($image->ID, 'thumbnail');
 
-                                if($image->ID == $thumbnail_ID)
+                                if ($image->ID == $thumbnail_ID)
                                     echo '<div class="ip-additional-active">';
-                                if($image->ID != $thumbnail_ID)
+                                if ($image->ID != $thumbnail_ID)
                                     echo '<div class="ip-additional">';
                                     echo '<div class="ip-toolbar">';
                                         echo '<a href="#" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_delete_post_nonce') . '" class="delete-post ip-action-icon ip-floatright"><svg class="lnr lnr-trash"><use xlink:href="#lnr-trash"></use></svg></a>';

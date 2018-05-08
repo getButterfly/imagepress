@@ -4,7 +4,7 @@ Tags: image, user, upload, gallery, album, category, profile
 License: GPLv3
 Requires at least: 4.7
 Tested up to: 4.9.5
-Stable tag: 7.7.4
+Stable tag: 7.7.5
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -26,12 +26,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO: Refactor collections (CPT?)
 * TODO: Refactor custom fields
 * TODO: Remove all generic CSS styles
-
-= 7.7.5 =
 * TODO: Restyle/reset all form elements
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Reduce the number of tabs on the profile editor
 * TODO: Replace URL fields with page dropdowns
+
+= 7.7.5 =
+* FIX: Fixed issue with profile fields not being updated if empty
 
 = 7.7.4 =
 * FIX: Renamed modal class to avoid conflicts with Bootstrap
