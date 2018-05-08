@@ -163,7 +163,7 @@ function ip_collections_display_custom($atts) {
     if ($mode == 'random')
         $mode = 'RAND()';
 
-    $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = %d ORDER BY %s", $mode), ARRAY_A);
+    $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = 1 ORDER BY %s", $mode), ARRAY_A);
 
     $out = '<div class="the">';
     foreach ($result as $collection) {

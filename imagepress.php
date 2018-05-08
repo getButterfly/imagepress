@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.7.6
+Version: 7.7.7
 License: GPLv3
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com/
@@ -411,9 +411,7 @@ function imagepress_add_bulk($atts) {
                         'post_type' => get_imagepress_option('ip_slug')
                     );
                     $post_id = wp_insert_post($user_image_data);
-                    //if ($post_id == wp_insert_post($user_image_data)) {
-                        update_post_meta($post_id, '_thumbnail_id', $attach_id);
-                    //}
+                    update_post_meta($post_id, '_thumbnail_id', $attach_id);
 
                     wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'][$key], 'imagepress_image_category');
                 }
@@ -612,9 +610,6 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
             $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
             $datauploadsize = $uploadsize * 1024000;
-
-//            <label for="imagepress_image_file">' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label>
-//            <input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file" id="imagepress_image_file" required>
 
             $out .= '<hr>
             <div id="imagepress-errors"></div>
@@ -906,7 +901,7 @@ function ip_enqueue_scripts() {
 
 	$accountPageUri = get_option('cinnamon_account_page');
 
-    wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable', 'sweetalert2'), '7.7.2', true);
+    wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable', 'sweetalert2'), '7.7.7', true);
     wp_localize_script('ipjs-main', 'ipAjaxVar', array(
         'imagesperpage' => get_imagepress_option('ip_ipp'),
         'authorsperpage' => get_imagepress_option('ip_app'),

@@ -107,20 +107,19 @@ function imagepress_admin_page() {
             <h2><?php esc_html_e('Installation', 'imagepress'); ?></h2>
             <p>Check the installation steps below and make the required changes.</p>
             <?php
-            $slug = $i;
             $author_slug = get_imagepress_option('cinnamon_author_slug');
             $author_login_url = get_imagepress_option('cinnamon_account_page');
             $author_edit_url = get_imagepress_option('cinnamon_edit_page');
             $cinnamon_mod_login = get_imagepress_option('cinnamon_mod_login');
             $ip_profile_page = get_imagepress_option('ip_profile_page');
 
-            $single_template = 'single-' . $slug . '.php';
+            $single_template = 'single-' . $ipSlug . '.php';
 
             echo '<div class="gb-assistant">';
-                if ($slug == '') {
+                if ($ipSlug == '') {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your image slug is not set. Go to <b>Configurator</b> section and set it.</p>';
                 } else {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your image slug is <code>' . $slug . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
+                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your image slug is <code>' . $ipSlug . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
                 }
                 if ('' != locate_template($single_template)) {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your image template is available.</p>';
@@ -462,7 +461,6 @@ function imagepress_admin_page() {
                 }
 
                 $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
-                $ip_slug = $i;
 
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections", ARRAY_A);
 
@@ -487,7 +485,7 @@ function imagepress_admin_page() {
                             echo '<td><a href="' . admin_url('user-edit.php?user_id=' . $collectionUser->ID) . '">' . $collectionUser->user_nicename . '</a></td>';
                             echo '<td>' . ((count($postslistcount) === 1) ? count($postslistcount) . ' image' : count($postslistcount) . ' images') . '</td>';
                             echo '<td>' . (($collection['collection_status'] == 0) ? 'private' : 'public') . '</td>';
-                            echo '<td><a href="' . admin_url('edit.php?post_type=' . $ip_slug . '&page=imagepress_admin_page&tab=collections_tab&c=' . $collection['collection_ID']) . '"><span class="dashicons dashicons-trash"></span></a></td>';
+                            echo '<td><a href="' . admin_url('edit.php?post_type=' . $ipSlug . '&page=imagepress_admin_page&tab=collections_tab&c=' . $collection['collection_ID']) . '"><span class="dashicons dashicons-trash"></span></a></td>';
                         echo '</tr>';
                     }
                 echo '</table>';
@@ -1507,8 +1505,6 @@ function imagepress_admin_page() {
                     echo '<div class="updated notice is-dismissible"><p>Custom field removed successfully!</p></div>';
                 }
 
-                $ip_slug = get_imagepress_option('ip_slug');
-
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
                 echo '<div id="ip-info"><p><span class="dashicons dashicons-move"></span> ' . __('Drag custom fields to reorder them', 'imagepress') . '</p></div>
@@ -1561,7 +1557,7 @@ function imagepress_admin_page() {
 
                             echo '<td>' . $field['field_content'] . '</td>';
                             echo '<td><code>[ip-field field="' . $field['field_slug'] . '"]</code></td>';
-                            echo '<td><a href="' . admin_url('edit.php?post_type=' . $ip_slug . '&page=imagepress_admin_page&tab=fields_tab&cf=' . $field['field_id']) . '"><span class="dashicons dashicons-trash"></span></a></td>';
+                            echo '<td><a href="' . admin_url('edit.php?post_type=' . $ipSlug . '&page=imagepress_admin_page&tab=fields_tab&cf=' . $field['field_id']) . '"><span class="dashicons dashicons-trash"></span></a></td>';
                         echo '</tr>';
                     }
                 echo '</tbody></table>';
