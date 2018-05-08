@@ -53,7 +53,7 @@ function bytesToSize(bytes) {
     return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
 }
 
-jQuery(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function(event) {
     jQuery('#imagepress_image_file_bulk').change(function () {
         var filename = jQuery('#imagepress_image_file_bulk').val();
         jQuery('.file-upload').addClass('active');
@@ -680,7 +680,7 @@ function getUrlParameter(sParam) {
     }
 }
 
-jQuery(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function(event) {
     if (jQuery('#ip-sorter-primary').length) {
         var request_uri = window.location.search,
             sorterDropdown = document.getElementById('sorter'),
@@ -736,10 +736,8 @@ jQuery(document).ready(function() {
             }
         };
     }
-});
 
-// ImagePress Grid UI
-jQuery(window).load(function() {
+    // ImagePress Grid UI
     var gridUi = ipAjaxVar.grid_ui,
         currentDiv;
 
@@ -793,14 +791,10 @@ jQuery(window).load(function() {
             equalHeight('.ip-box-container-default .ip_box');
         }
     }
-});
 
-
-
-/*
- * Infinite lazy loading for Profile page
- */
-jQuery(document).ready(function () {
+    /*
+     * Infinite lazy loading for Profile page
+     */
     // Check if profile container exists
     if (jQuery('.profile-hub-container').length) {
         var sizeTotal = jQuery('#ip-boxes .ip_box').length,
@@ -825,11 +819,8 @@ jQuery(document).ready(function () {
             }
         });
     }
-});
 
-
-
-document.addEventListener && document.addEventListener('DOMContentLoaded', function () {
+    // Load SVG in body
     var a, f = {},
         b, d, g, e = !1,
         h = document.getElementsByTagName('use'),
