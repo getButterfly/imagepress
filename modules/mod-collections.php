@@ -6,40 +6,40 @@
 function addCollection() {
     global $wpdb;
 
-    $collection_author_ID = intval($_POST['collection_author_id']);
-    $collection_title = stripslashes($_POST['collection_title']);
-    $collection_title_slug = sanitize_title($_POST['collection_title']);
-    $collection_status = intval($_POST['collection_status']);
+    $collectionAuthorId = intval($_POST['collection_author_id']);
+    $collectionTitle = stripslashes($_POST['collection_title']);
+    $collectionTitleSlug = sanitize_title($_POST['collection_title']);
+    $collectionStatus = intval($_POST['collection_status']);
 
-    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_title_slug, collection_status, collection_author_ID) VALUES ('%s', '%s', %d, %d)", $collection_title, $collection_title_slug, $collection_status, $collection_author_ID));
+    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_title_slug, collection_status, collection_author_ID) VALUES ('%s', '%s', %d, %d)", $collectionTitle, $collectionTitleSlug, $collectionStatus, $collectionAuthorId));
     die();
 }
 function editCollectionTitle() {
     global $wpdb;
 
-    $collection_ID = intval($_POST['collection_id']);
-    $collection_title = stripslashes($_POST['collection_title']);
-    $collection_title_slug = sanitize_title($_POST['collection_title']);
+    $collectionId = intval($_POST['collection_id']);
+    $collectionTitle = stripslashes($_POST['collection_title']);
+    $collectionTitleSlug = sanitize_title($_POST['collection_title']);
 
-    $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "ip_collections SET collection_title = '%s', collection_title_slug = '%s' WHERE collection_ID = %d", $collection_title, $collection_title_slug, $collection_ID));
+    $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "ip_collections SET collection_title = '%s', collection_title_slug = '%s' WHERE collection_ID = %d", $collectionTitle, $collectionTitleSlug, $collectionId));
     die();
 }
 function editCollectionStatus() {
     global $wpdb;
 
-    $collection_ID = intval($_POST['collection_id']);
-    $collection_status = intval($_POST['collection_status']);
+    $collectionId = intval($_POST['collection_id']);
+    $collectionStatus = intval($_POST['collection_status']);
 
-    $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "ip_collections SET collection_status = '%s' WHERE collection_ID = %d", $collection_status, $collection_ID));
+    $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "ip_collections SET collection_status = '%s' WHERE collection_ID = %d", $collectionStatus, $collectionId));
     die();
 }
 function deleteCollection() {
     global $wpdb;
 
-    $collection_ID = intval($_POST['collection_id']);
+    $collectionId = intval($_POST['collection_id']);
 
-    $wpdb->query($wpdb->prepare("DELETE FROM " . $wpdb->prefix . "ip_collections WHERE collection_ID = %d", $collection_ID));
-    $wpdb->query($wpdb->prepare("DELETE FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d", $collection_ID));
+    $wpdb->query($wpdb->prepare("DELETE FROM " . $wpdb->prefix . "ip_collections WHERE collection_ID = %d", $collectionId));
+    $wpdb->query($wpdb->prepare("DELETE FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d", $collectionId));
     die();
 }
 function deleteCollectionImage() {
@@ -61,16 +61,16 @@ add_action('wp_ajax_ip_collection_display', 'ip_collection_display');
 add_action('wp_ajax_ip_collections_display', 'ip_collections_display');
 
 function ip_collection_display() {
-    $collection_ID = intval($_POST['collection_id']);
+    $collectionId = intval($_POST['collection_id']);
 
-    echo do_shortcode('[imagepress-collection collection="1" collection_id="' . $collection_ID . '"]');
+    echo do_shortcode('[imagepress-collection collection="1" collection_id="' . $collectionId . '"]');
     die();
 }
 
 function ip_collection_count($author) {
     global $wpdb;
 
-    $result = $wpdb->get_results("SELECT collection_ID FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . $author . "'", ARRAY_A);
+    $result = $wpdb->get_results($wpdb->prepare("SELECT collection_ID FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = %d", $author), ARRAY_A);
     $count = (int) $wpdb->num_rows;
 
     return $count;
@@ -79,20 +79,20 @@ function ip_collection_count($author) {
 function ip_collections_display() {
     global $wpdb;
 
-    $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
+    $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = %d", get_current_user_id()), ARRAY_A);
 
     echo '<div class="the">';
-    foreach($result as $collection) {
+    foreach ($result as $collection) {
         echo '<div class="ip_collections_edit ipc' . $collection['collection_ID'] . '" data-collection-edit="' . $collection['collection_ID'] . '">';
-            $postslist = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['collection_ID'] . "' AND image_collection_author_ID = '" . get_current_user_id() . "' LIMIT 4", ARRAY_A);
-            $postslistcount = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['collection_ID'] . "' AND image_collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
+            $postslist = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d AND image_collection_author_ID = %d LIMIT 4", $collection['collection_ID'], get_current_user_id()), ARRAY_A);
+            $postslistcount = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d AND image_collection_author_ID = %d", $collection['collection_ID'], get_current_user_id()), ARRAY_A);
             echo '<div class="ip_collection_box">';
-                foreach($postslist as $collectable) {
+                foreach ($postslist as $collectable) {
                     echo get_the_post_thumbnail($collectable['image_ID'], 'imagepress_ls_std');
                 }
             echo '</div>';
 
-            echo '<div class="ip_collections_overlay">' . (($collection['collection_status'] == 0) ? '<svg class="lnr lnr-lock"><use xlink:href="#lnr-lock"></use></svg>' : '') . ' ' . count($postslistcount) . '</div>';
+            echo '<div class="ip_collections_overlay">' . (((int) $collection['collection_status'] === 0) ? '<svg class="lnr lnr-lock"><use xlink:href="#lnr-lock"></use></svg>' : '') . ' ' . count($postslistcount) . '</div>';
 
             echo '<div class="collection_details">';
                 echo '<h3 class="collection-title" data-collection-id="' . $collection['collection_ID'] . '"><a href="#" class="editCollection" data-collection-id="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></h3>';
@@ -125,13 +125,13 @@ function ip_collections_display() {
 function ip_collections_display_public($author_ID) {
     global $wpdb;
 
-    $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = 1 AND collection_author_ID = '" . $author_ID . "'", ARRAY_A);
+    $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = 1 AND collection_author_ID = %d", $author_ID), ARRAY_A);
 
     $out = '<div class="the">';
-    foreach($result as $collection) {
+    foreach ($result as $collection) {
         $out .= '<div class="ip_collections_edit ipc' . $collection['collection_ID'] . '" data-collection-edit="' . $collection['collection_ID'] . '">';
-            $postslist = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['collection_ID'] . "' AND image_collection_author_ID = '" . $author_ID . "' LIMIT 4", ARRAY_A);
-            $postslistcount = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = '" . $collection['collection_ID'] . "' AND image_collection_author_ID = '" . $author_ID . "'", ARRAY_A);
+            $postslist = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d AND image_collection_author_ID = %d LIMIT 4", $collection['collection_ID'], $author_ID), ARRAY_A);
+            $postslistcount = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d AND image_collection_author_ID = %d", $collection['collection_ID'], $author_ID), ARRAY_A);
             $out .= '<div class="ip_collection_box">';
                 foreach($postslist as $collectable) {
                     $out .= get_the_post_thumbnail($collectable['image_ID'], 'imagepress_ls_std');
@@ -163,19 +163,19 @@ function ip_collections_display_custom($atts) {
     if ($mode == 'random')
         $mode = 'RAND()';
 
-    $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = %d ORDER BY $mode", 1), ARRAY_A);
+    $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = %d ORDER BY %s", $mode), ARRAY_A);
 
     $out = '<div class="the">';
-    foreach($result as $collection) {
+    foreach ($result as $collection) {
         $postslistcount = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d", $collection['collection_ID']), ARRAY_A);
 
-        if(count($postslistcount) >= 1) {
-            if($collectionCount < $count) {
+        if (count($postslistcount) >= 1) {
+            if ($collectionCount < $count) {
                 $out .= '<div class="ip_collections_edit ipc' . $collection['collection_ID'] . '" data-collection-edit="' . $collection['collection_ID'] . '">';
                     $postslist = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d LIMIT 4", $collection['collection_ID']), ARRAY_A);
 
                     $out .= '<div class="ip_collection_box">';
-                        foreach($postslist as $collectable) {
+                        foreach ($postslist as $collectable) {
                             $out .= get_the_post_thumbnail($collectable['image_ID'], 'imagepress_ls_std');
                         }
                     $out .= '</div>';

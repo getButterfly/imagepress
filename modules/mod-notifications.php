@@ -5,10 +5,9 @@ function notification_count($count = 50) {
     global $wpdb;
 
     $user_ID = get_current_user_id();
-    $n = 0;
+    $counter = 0;
 
-    $sql = "SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = 0 ORDER BY actionTime DESC LIMIT " . $count . "";
-    $res = $wpdb->get_results($sql);
+    $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = 0 ORDER BY actionTime DESC LIMIT %d", $count));
     foreach ($res as $line) {
         $postdata = get_post($line->postID, ARRAY_A);
         $authorID = $postdata['post_author'];
@@ -23,19 +22,18 @@ function notification_count($count = 50) {
             ($action == 'replied to a comment on' && $user_ID == get_comment($line->postID)->user_id) ||
             (0 == $line->postID || '-1' == $line->postID || $user_ID == $line->postID)
         ) {
-            ++$n;
+            ++$counter;
         }
     }
 
-    return $n;
+    return $counter;
 }
 
 function notification_reset() {
     global $wpdb;
     $user_ID = get_current_user_id();
 
-    $sql = "SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = 0";
-    $res = $wpdb->get_results($sql);
+    $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = %d", 0));
     foreach($res as $line) {
         $postdata = get_post($line->postID, ARRAY_A);
         $authorID = $postdata['post_author'];
@@ -76,9 +74,7 @@ function imagepress_notifications($atts) {
 	</div>';
     $display .= '<div class="notifications-inner" id="c">';
 
-    $sql = "SELECT * FROM " . $wpdb->prefix . "notifications ORDER BY actionTime DESC LIMIT " . $count . "";
-
-    $res = $wpdb->get_results($sql);
+    $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "notifications ORDER BY actionTime DESC LIMIT %d", $count));
 
     foreach($res as $line) {
         $action = $line->actionType;
@@ -146,7 +142,7 @@ function imagepress_post_add($act_post) {
 
 		if(get_query_var('post_type') == $ip_slug && is_numeric($act_post)) {
 			$act_time = current_time('mysql', true);
-			$wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, $user_ID, " . $act_post . ", 'added', '" . $act_time . "')");
+			$wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, %d, %d, 'added', %s)", $user_ID, $act_post, $act_time));
 		}
 	}
 }
@@ -155,7 +151,7 @@ function imagepress_post_add_custom($post, $author) {
     global $wpdb;
 
     $act_time = current_time('mysql', true);
-    $wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, $author, " . $post . ", 'added', '" . $act_time . "')");
+    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, %d, %d, 'added', %s)", $author, $post, $act_time));
 }
 function imagepress_comment_add($act_comment) {
     global $wpdb, $user_ID;
@@ -170,9 +166,9 @@ function imagepress_comment_add($act_comment) {
 
     if (get_post_type($comment_id->comment_post_ID) == $ip_slug) {
         if (empty($comment_parent)) {
-            $wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, $user_ID, " . $comment_post_ID . ", 'commented on', '" . $act_time . "')");
+            $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, %d, %d, 'commented on', %s)", $user_ID, $comment_post_ID, $act_time));
         } else {
-            $wpdb->query("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, $user_ID, " . $comment_parent . ", 'replied to a comment on', '" . $act_time . "')");
+            $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, actionType, actionTime) VALUES (null, %d, %d, 'replied to a comment on', %s)", $user_ID, $comment_parent, $act_time));
         }
     }
 }

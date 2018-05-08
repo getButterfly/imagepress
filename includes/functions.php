@@ -167,7 +167,7 @@ function ip_editor() {
         <?php
         $edit_id = get_the_ID();
 
-        if ('POST' == $_SERVER['REQUEST_METHOD'] && !empty($_POST['post_id']) && !empty($_POST['post_title']) && isset($_POST['update_post_nonce']) && isset($_POST['postcontent'])) {
+        if (!empty($_POST['post_id']) && !empty($_POST['post_title']) && isset($_POST['update_post_nonce']) && isset($_POST['postcontent'])) {
             $post_id = $_POST['post_id'];
             $post_type = get_post_type($post_id);
             $capability = ('page' == $post_type) ? 'edit_page' : 'edit_post';
@@ -225,9 +225,6 @@ function ip_editor() {
                     update_post_meta($post_id, $field['field_slug'], $_POST[$field['field_slug']]);
                 }
                 //
-            }
-            else {
-                wp_die("You can't do that");
             }
         }
         ?>
@@ -371,13 +368,12 @@ function ip_editor() {
 // ip_editor() related actions
 add_action('wp_ajax_ip_delete_post', 'ip_delete_post');
 function ip_delete_post() {
-    $id = (int) $_POST['id'];
+    $imageId = (int) $_POST['id'];
 
-    if (wp_delete_post($id)) {
+    if (wp_delete_post($imageId)) {
         echo 'success';
-    } else {
-        echo '';
     }
+
     die();
 }
 add_action('wp_ajax_ip_update_post_title', 'ip_update_post_title');
@@ -395,10 +391,9 @@ function ip_update_post_title() {
 add_action('wp_ajax_ip_featured_post', 'ip_featured_post');
 function ip_featured_post() {
     $permission = check_ajax_referer('ip_featured_post_nonce', 'nonce', false);
-    if($permission == false) {
+    if ($permission == false) {
         echo 'error';
-    }
-    else {
+    } else {
         update_post_meta($_REQUEST['pid'], '_thumbnail_id', $_REQUEST['id']);
         echo 'success';
     }
@@ -408,15 +403,15 @@ function ip_featured_post() {
 
 
 // main ImagePress image function
-function ip_main($i) {
+function ip_main($imageId) {
     global $wpdb, $post;
 
-    $post_thumbnail_id = get_post_thumbnail_id($i);
+    $post_thumbnail_id = get_post_thumbnail_id($imageId);
     $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
     $post_thumbnail_url = $image_attributes[0];
 
     if(get_imagepress_option('ip_comments') == 1)
-        $ip_comments = '<em> | </em><a href="' . get_permalink($i) . '"><svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($i) . '</a> ';
+        $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($imageId) . '</a> ';
     if(get_imagepress_option('ip_comments') == 0)
         $ip_comments = '';
     ?>
@@ -425,11 +420,11 @@ function ip_main($i) {
         <a href="<?php echo $post_thumbnail_url; ?>">
             <?php the_post_thumbnail('full'); ?>
         </a>
-        <?php ip_setPostViews($i); ?>
+        <?php ip_setPostViews($imageId); ?>
     </div>
 
     <div class="ip-bar">
-        <?php echo ipGetPostLikeLink($i); ?><em> | </em><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> <?php echo ip_getPostViews($i); ?><?php echo $ip_comments; ?>
+        <?php echo ipGetPostLikeLink($imageId); ?><em> | </em><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> <?php echo ip_getPostViews($imageId); ?><?php echo $ip_comments; ?>
         <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
             <em> | </em>
             <?php if (function_exists('ip_frontend_add_collection')) ip_frontend_add_collection(get_the_ID());
@@ -447,10 +442,10 @@ function ip_main($i) {
         if (has_term('featured', 'imagepress_image_category'))
             echo '<svg class="lnr lnr-star"><use xlink:href="#lnr-star"></use></svg> ';
 
-        echo get_the_title($i);
+        echo get_the_title($imageId);
 
         if (get_imagepress_option('ip_allow_tags') == 1) {
-            $terms = get_the_terms($i, 'imagepress_image_tag');
+            $terms = get_the_terms($imageId, 'imagepress_image_tag');
 
             if ($terms && !is_wp_error($terms)) :
                 $term_links = array();
@@ -479,7 +474,7 @@ function ip_main($i) {
     $result = $wpdb->get_results("SELECT field_type, field_name, field_slug FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
     foreach ($result as $field) {
-        $fs_meta = get_post_meta($i, $field['field_slug'], true);
+        $fs_meta = get_post_meta($imageId, $field['field_slug'], true);
 
         if ((int) $field['field_type'] === 20 && !empty($fs_meta)) {
             $sketchfabId = $fs_meta;
@@ -505,7 +500,7 @@ function ip_main($i) {
     //
     ?>
 
-    <?php imagepress_get_images($i); ?>
+    <?php imagepress_get_images($imageId); ?>
 
     <section>
         <?php the_content(); ?>
@@ -518,28 +513,27 @@ function ip_main($i) {
     <?php
 }
 
-function ip_get_the_term_list( $id = 0, $taxonomy, $before = '', $sep = '', $after = '', $exclude = array() ) {
-    $terms = get_the_terms( $id, $taxonomy );
+function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', $after = '', $exclude = array()) {
+    $terms = get_the_terms($imageId, $taxonomy);
 
-    if ( is_wp_error( $terms ) )
+    if (is_wp_error($terms))
         return $terms;
 
-    if ( empty( $terms ) )
+    if (empty($terms))
         return false;
 
-    foreach ( $terms as $term ) {
-
-        if(!in_array($term->term_id,$exclude)) {
-            $link = get_term_link( $term, $taxonomy );
-            if ( is_wp_error( $link ) )
+    foreach ($terms as $term) {
+        if (!in_array($term->term_id, $exclude)) {
+            $link = get_term_link($term, $taxonomy);
+            if (is_wp_error($link))
                 return $link;
             $term_links[] = '<a href="' . $link . '" rel="tag">' . $term->name . '</a>';
         }
     }
 
-    $term_links = apply_filters( "term_links-$taxonomy", $term_links );
+    $term_links = apply_filters("term_links-$taxonomy", $term_links);
 
-    return $before . join( $sep, $term_links ) . $after;
+    return $before . join($sep, $term_links) . $after;
 }
 
 function imagepress_get_images($post_id) {
@@ -786,11 +780,11 @@ function ipRenderGridElement($elementId) {
     // Get ImagePress grid options
     $ip_rel_tag = get_imagepress_option('ip_rel_tag');
     $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
-    $get_ip_title_optional = get_imagepress_option('ip_title_optional');
-    $get_ip_author_optional = get_imagepress_option('ip_author_optional');
-    $get_ip_meta_optional = get_imagepress_option('ip_meta_optional');
-    $get_ip_views_optional = get_imagepress_option('ip_views_optional');
-    $get_ip_likes_optional = get_imagepress_option('ip_likes_optional');
+    $getImagePressTitle = get_imagepress_option('ip_title_optional');
+    $getImagePressAuthor = get_imagepress_option('ip_author_optional');
+    $getImagePressMeta = get_imagepress_option('ip_meta_optional');
+    $getImagePressViews = get_imagepress_option('ip_views_optional');
+    $getImagePressLikes = get_imagepress_option('ip_likes_optional');
     $get_ip_comments = get_imagepress_option('ip_comments');
     $ip_ipw = get_imagepress_option('ip_ipw');
     $size = get_imagepress_option('ip_image_size');
@@ -806,12 +800,12 @@ function ipRenderGridElement($elementId) {
 
     // Make all "brick" elements optional and active by default
     $ip_title_optional = '';
-    if ($get_ip_title_optional == 1) {
+    if ((int) $getImagePressTitle === 1) {
         $ip_title_optional = '<span class="imagetitle">' . get_the_title($elementId) . '</span>';
     }
 
     $ip_author_optional = '';
-    if ($get_ip_author_optional == 1) {
+    if ((int) $getImagePressAuthor === 1) {
         // Get post author ID
         $post_author_id = get_post_field('post_author', $elementId);
 
@@ -819,11 +813,11 @@ function ipRenderGridElement($elementId) {
     }
 
     $ip_meta_optional = '';
-    if ($get_ip_meta_optional == 1)
+    if ((int) $getImagePressMeta === 1)
         $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '">' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '</span>';
 
     $ip_views_optional = '';
-    if ($get_ip_views_optional == 1)
+    if ((int) $getImagePressViews === 1)
         $ip_views_optional = '<span class="imageviews"><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> ' . ip_getPostViews($elementId) . '</span> ';
 
     $ip_comments = '';
@@ -831,7 +825,7 @@ function ipRenderGridElement($elementId) {
         $ip_comments = '<span class="imagecomments"><svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($elementId) . '</span> ';
 
     $ip_likes_optional = '';
-    if ($get_ip_likes_optional == 1)
+    if ((int) $getImagePressLikes === 1)
         $ip_likes_optional = '<span class="imagelikes"><svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' . imagepress_get_like_count($elementId) . '</span> ';
 
     $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, $size);

@@ -33,6 +33,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 7.7.5 =
 * FIX: Fixed issue with profile fields not being updated if empty
+* FIX: Code quality fixes
 
 = 7.7.4 =
 * FIX: Renamed modal class to avoid conflicts with Bootstrap

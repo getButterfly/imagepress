@@ -53,7 +53,7 @@ function imagepress_feed() {
 
         function loadMoreData(last_id) {
             jQuery.ajax({
-                url: '<?php echo plugins_url('loadMoreData.php', __FILE__); ?>?last_id=' + last_id,
+                url: '<?php echo esc_url(plugins_url('loadMoreData.php', __FILE__)); ?>?last_id=' + last_id,
                 type: "get",
                 beforeSend: function() {
                     jQuery('.ajax-load').show();

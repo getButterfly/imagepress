@@ -13,10 +13,10 @@ foreach ($res as $line) {
 	if ((string) $action === 'added' /*&& pwuf_is_following($user_ID, $authorID)*/) {
         // Check if post exists and is published
         if ('publish' === get_post_status($line->postID) && has_post_thumbnail($line->postID)) {
-            echo '<div class="feed-item n' . $line->ID . '" data-id="' . $line->ID . '" id="item' . $line->ID . '">
+            echo '<div class="feed-item n' . (int) $line->ID . '" data-id="' . (int) $line->ID . '" id="item' . (int) $line->ID . '">
                 <div class="feed-meta-primary">
                     <div class="feed-avatar">' . get_avatar($line->userID, 48) . '</div>
-                    <a href="' . get_author_posts_url($line->userID) . '" class="regular-link">' . $nickname . '</a> uploaded <a href="' . get_permalink($line->postID) . '" class="regular-link">' . get_the_title($line->postID) . '</a>
+                    <a href="' . esc_url(get_author_posts_url($line->userID)) . '" class="regular-link">' . $nickname . '</a> uploaded <a href="' . esc_url(get_permalink($line->postID)) . '" class="regular-link">' . get_the_title($line->postID) . '</a>
                 </div>
                 <div class="feed-meta-tertiary">
                     <small>
@@ -24,7 +24,7 @@ foreach ($res as $line) {
                     </small>
                 </div>
                 <div class="feed-meta-secondary">
-                    <a href="' . get_permalink($line->postID) . '"><img src="' . $posterUri . '" alt="' . get_the_title($line->postID) . '" width="700"></a>
+                    <a href="' . esc_url(get_permalink($line->postID)) . '"><img src="' . $posterUri . '" alt="' . get_the_title($line->postID) . '" width="700"></a>
                 </div>
             </div>';
         }

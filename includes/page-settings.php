@@ -5,10 +5,10 @@ function imagepress_admin_page() {
         <h1>ImagePress Settings</h1>
 
         <?php
-        $i = get_imagepress_option('ip_slug');
+        $ipSlug = get_imagepress_option('ip_slug');
 
         $tab = (filter_has_var(INPUT_GET, 'tab')) ? filter_input(INPUT_GET, 'tab') : 'dashboard_tab';
-        $section = 'edit.php?post_type=' . $i . '&page=imagepress_admin_page&amp;tab=';
+        $section = 'edit.php?post_type=' . $ipSlug . '&page=imagepress_admin_page&amp;tab=';
         ?>
         <h2 class="nav-tab-wrapper ip-nav-tab-wrapper">
             <a href="<?php echo $section; ?>dashboard_tab" class="nav-tab <?php echo $tab == 'dashboard_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Dashboard', 'imagepress'); ?></a>
@@ -104,7 +104,7 @@ function imagepress_admin_page() {
             <p>Use the <code>.ip_box_img</code> class to activate lightboxes (based on element class).</p>';
         } ?>
         <?php if($tab == 'install_tab') { ?>
-            <h2><?php _e('Installation', 'imagepress'); ?></h2>
+            <h2><?php esc_html_e('Installation', 'imagepress'); ?></h2>
             <p>Check the installation steps below and make the required changes.</p>
             <?php
             $slug = $i;
@@ -143,17 +143,17 @@ function imagepress_admin_page() {
                 if (empty($author_login_url) && $cinnamon_mod_login == 1) {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your author login URL is not set. Go to <b>Authors</b> section and set it.</p>';
                 } else if (!empty($author_login_url) && $cinnamon_mod_login == 1) {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author login URL is <code>' . $author_login_url . '</code>.</p>';
+                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author login URL is <code>' . esc_url($author_login_url) . '</code>.</p>';
                 }
                 if (empty($author_edit_url)) {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your author profile edit URL is not set. Go to <b>Authors</b> section and set it.</p>';
                 } else {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author profile edit URL is <code>' . $author_edit_url . '</code>.</p>';
+                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author profile edit URL is <code>' . esc_url($author_edit_url) . '</code>.</p>';
                 }
                 if (get_option('default_role') == 'author') {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> New user default role is <code>author</code>. Subscribers and contributors are not able to edit their uploaded images.</p>';
                 } else {
-                    echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> New user default role should be <code>author</code> in order to allow for front-end image editing. Subscribers and contributors are not able to edit their uploaded images. <a href="' . admin_url('options-general.php') . '">Change it</a>.</p>';
+                    echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> New user default role should be <code>author</code> in order to allow for front-end image editing. Subscribers and contributors are not able to edit their uploaded images. <a href="' . esc_url(admin_url('options-general.php')) . '">Change it</a>.</p>';
                 }
             echo '</div>';
 
@@ -183,7 +183,7 @@ function imagepress_admin_page() {
             }
             ?>
 
-            <h3><?php _e('Maintenance', 'imagepress'); ?></h3>
+            <h3><?php esc_html_e('Maintenance', 'imagepress'); ?></h3>
             <form method="post" action="">
                 <p>
                     <input type="submit" name="isResetSubmit" value="Reset all likes" class="button-primary">
@@ -223,7 +223,7 @@ function imagepress_admin_page() {
             }
             ?>
             <form method="post" action="">
-                <h2><?php _e('Grid Configurator', 'imagepress'); ?></h2>
+                <h2><?php esc_html_e('Grid Configurator', 'imagepress'); ?></h2>
                 <p>The <b>Grid configurator</b> allows you to select which information will be visible inside the image box.</p>
                 <table class="form-table">
                     <tbody>
@@ -451,17 +451,17 @@ function imagepress_admin_page() {
                     echo '<div class="updated notice is-dismissible"><p>Collection removed successfully!</p></div>';
                 }
                 if (isset($_POST['ip_new_collection_add'])) {
-                    $collection_author_ID = get_current_user_id();
-                    $collection_title = stripslashes($_POST['ip_new_collection']);
-                    $collection_title_slug = sanitize_title($_POST['ip_new_collection']);
-                    $collection_status = intval($_POST['ip_new_collection_visibility']);
+                    $collectionAuthorId = get_current_user_id();
+                    $collectionTitle = stripslashes($_POST['ip_new_collection']);
+                    $collectionTitleSlug = sanitize_title($_POST['ip_new_collection']);
+                    $collectionStatus = intval($_POST['ip_new_collection_visibility']);
 
-                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_title_slug, collection_status, collection_author_ID) VALUES ('%s', '%s', %d, %d)", $collection_title, $collection_title_slug, $collection_status, $collection_author_ID));
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_title_slug, collection_status, collection_author_ID) VALUES ('%s', '%s', %d, %d)", $collectionTitle, $collectionTitleSlug, $collectionStatus, $collectionAuthorId));
 
                     echo '<div class="updated notice is-dismissible"><p>Collection added successfully!</p></div>';
                 }
 
-                $ip_collections_page_id = get_imagepress_option('ip_collections_page');
+                $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
                 $ip_slug = $i;
 
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections", ARRAY_A);
@@ -483,7 +483,7 @@ function imagepress_admin_page() {
                             $collectionUser = get_user_by('id', $collection['collection_author_ID']);
 
                             echo '<td>' . $collection['collection_ID'] . '</td>';
-                            echo '<td><b><a href="' . get_permalink($ip_collections_page_id) . '?collection=' . (int) $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></b></td>';
+                            echo '<td><b><a href="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></b></td>';
                             echo '<td><a href="' . admin_url('user-edit.php?user_id=' . $collectionUser->ID) . '">' . $collectionUser->user_nicename . '</a></td>';
                             echo '<td>' . ((count($postslistcount) === 1) ? count($postslistcount) . ' image' : count($postslistcount) . ' images') . '</td>';
                             echo '<td>' . (($collection['collection_status'] == 0) ? 'private' : 'public') . '</td>';
@@ -1263,18 +1263,14 @@ function imagepress_admin_page() {
             if (isset($_POST['notification_add'])) {
                 global $wpdb;
 
-                $notification_type_custom = $_POST['notification_type_custom'];
-                $notification_link_custom = $_POST['notification_link_custom'];
-                $notification_user = $_POST['notification_user'];
+                $notificationType = $_POST['notification_type_custom'];
+                $notificationLink = $_POST['notification_link_custom'];
+                $notificationUser = $_POST['notification_user'];
                 $when = date('Y-m-d H:i:s');
 
-                if(!empty($notification_link_custom))
-                    $notification_type = '<a href="' . $notification_link_custom . '">' . $notification_type_custom . '</a>';
-                else
-                    $notification_type = '' . $notification_type_custom . '';
+                $notification_type = (!empty($notificationLink)) ? '<a href="' . $notificationLink . '">' . $notificationType . '</a>' : $notificationType;
 
-                $sql = "INSERT INTO " . $wpdb->prefix . "notifications (`userID`, `postID`, `actionType`, `actionTime`) VALUES (0, '$notification_user', '$notification_type', '$when')";
-                $wpdb->query($sql);
+                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (`userID`, `postID`, `actionType`, `actionTime`) VALUES (0, %d, %s, %s)", $notificationUser, $notification_type, $when));
 
                 echo '<div class="updated notice is-dismissible"><p>Notification added successfully!</p></div>';
             }
@@ -1340,13 +1336,13 @@ function imagepress_admin_page() {
                     $action = $result->actionType;
                     $nickname = get_the_author_meta('nickname', $result->userID);
                     $time = human_time_diff(strtotime($result->actionTime), current_time('timestamp')) . ' ago';
-                    $ip_collections_page_id = get_imagepress_option('ip_collections_page');
+                    $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
 
                     if($action == 'loved')
                         $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
                     else if($action == 'collected')
-                        $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ip_collections_page_id) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
+                        $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ipCollectionsPageId) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
 
                     else if($action == 'added')
                         $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
