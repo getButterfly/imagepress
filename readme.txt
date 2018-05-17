@@ -22,14 +22,17 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 == Changelog ==
 
 = 8.0.0 =
+* TODO: Gutenberg
 * TODO: Refactor notifications and merge with feed
 * TODO: Refactor collections (CPT?)
 * TODO: Refactor custom fields
-* TODO: Remove all generic CSS styles
-* TODO: Restyle/reset all form elements
 * TODO/ROADMAP: Remove jQuery dependency
-* TODO: Reduce the number of tabs on the profile editor
 * TODO: Replace URL fields with page dropdowns
+
+= 7.7.8 =
+* UPDATE: Replaced SweetAlert2 library with Roar (+speed)
+* UPDATE: Removed all generic CSS styles (+compatibility)
+* UPDATE: Restyled/reset all form elements
 
 = 7.7.7 =
 * FIX: Fixed issue with missing SQL variable

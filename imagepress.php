@@ -93,6 +93,20 @@ add_action('admin_menu', 'imagepress_menu'); // settings menu
 add_filter('transition_post_status', 'imagepress_notify_status', 10, 3); // email notifications
 add_filter('widget_text', 'do_shortcode');
 
+
+
+/**
+function pippin_filter_content_sample($content) {
+	if (is_singular() && is_main_query()) {
+		$new_content = '<p>This is added to the bottom of all post and page content, as well as custom post types.</p>';
+		$content .= $new_content;
+	}
+	return $content;
+}
+add_filter('the_content', 'pippin_filter_content_sample');
+/**/
+
+
 function imagepress_menu() {
     global $menu, $submenu;
 
@@ -614,12 +628,11 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
             $out .= '<hr>
             <div id="imagepress-errors"></div>
 
-            <div id="dropContainer" class="dropSelector">
-                <b>' . __('Drop files here', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')</b>
-                <br>' . __('or', 'imagepress') . '
-                <br>
+            <label for="imagepress_image_file" id="dropContainer" class="dropSelector">
+                <b>' . __('Drop files here<br><small>or</small>', 'imagepress') . '</b><br>
                 <input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file" id="imagepress_image_file" required>
-            </div>
+                <br><small>' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . '</small>
+            </label>
 
             <hr>';
 
@@ -883,12 +896,7 @@ function ip_enqueue_color_picker() {
 
 add_action('wp_enqueue_scripts', 'ip_enqueue_scripts');
 function ip_enqueue_scripts() {
-    // Include a polyfill for ES6 Promises for IE11 and Android browser
-    wp_enqueue_script('corejs', 'https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.3/core.min.js', array(), '2.5.3', true);
-    wp_enqueue_script('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.18.0/sweetalert2.min.js', array('corejs'), '7.18.0', true);
-
     wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
-    wp_enqueue_style('sweetalert2', 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.18.0/sweetalert2.min.css');
 
     $grid_ui = 'basic';
 
@@ -901,7 +909,7 @@ function ip_enqueue_scripts() {
 
 	$accountPageUri = get_option('cinnamon_account_page');
 
-    wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable', 'sweetalert2'), '7.7.7', true);
+    wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), '7.7.7', true);
     wp_localize_script('ipjs-main', 'ipAjaxVar', array(
         'imagesperpage' => get_imagepress_option('ip_ipp'),
         'authorsperpage' => get_imagepress_option('ip_app'),

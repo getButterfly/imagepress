@@ -42,17 +42,7 @@ function imagepress_admin_page() {
             echo '<div id="gb-ad">
                 <h3 class="gb-handle">Thank you for using ImagePress!</h3>
                 <div id="gb-ad-content">
-                    <div class="inside">';
-
-                        // Check if Noir UI theme exists
-                        $noir_ui_theme = wp_get_theme('noir-ui');
-                        if ($noir_ui_theme->exists()) {
-                            echo '<h4>You are using <strong>' . $noir_ui_theme->get('Name') . '</strong> theme version ' . $noir_ui_theme->get('Version') . '</h4>';
-                        } else {
-                            echo '<h4>Check out <a href="https://getbutterfly.com/downloads/noir-ui/" rel="external" target="_blank">Noir UI</a>, our accompanying theme for ImagePress. With customizable elements and colours, Noir UI lets your image gallery stand out from less developed alternatives.</h4>';
-                        }
-
-                        echo '<hr>
+                    <div class="inside">
                         <p>If you enjoy this plugin, do not forget to <a href="https://codecanyon.net/item/imagepress/4252736" rel="external">rate it on CodeCanyon</a>! We work hard to update it, fix bugs, add new features and make it compatible with the latest web technologies.</p>
                     </div>
                     <div class="gb-footer">
@@ -1568,24 +1558,9 @@ function imagepress_admin_page() {
             <div class="flex-grid-thirds">
                 <div class="ip-card">
                     <h3>ImagePress Elements</h3>
-                    <p>This plugin bundle requires ImagePress and contains several modules including email approval, bulk upload, category listing and a user directory.</p>
+                    <p>This plugin bundle requires ImagePress and contains several modules including email approval, bulk upload, category listing and a user directory.</p>
                     <div class="ip-card-cta">
                         <a href="https://getbutterfly.com/downloads/imagepress-elements/" class="button button-primary">Get it!</a>
-                    </div>
-                </div>
-                <div class="ip-card">
-                </div>
-                <div class="ip-card">
-                </div>
-            </div>
-
-            <h2><?php _e('Themes', 'imagepress'); ?></h2>
-            <div class="grid flex-grid-thirds">
-                <div class="ip-card">
-                    <h3>Noir UI</h3>
-                    <p>Noir UI is the official WordPress theme for ImagePress. Noir UI features custom widgets, a single image template and many tweaks and integration functions.</p>
-                    <div class="ip-card-cta">
-                        <a href="https://getbutterfly.com/downloads/noir-ui/" class="button button-primary">Get it!</a>
                     </div>
                 </div>
                 <div class="ip-card">
