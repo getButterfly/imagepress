@@ -1,11 +1,10 @@
 === ImagePress ===
 Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
-License: GPLv3
 Requires at least: 4.7
-Tested up to: 4.9.5
-Stable tag: 7.7.7
-License: GPL3
+Tested up to: 4.9.6
+Stable tag: 7.8.0
+License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
 
@@ -28,6 +27,14 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO: Refactor custom fields
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
+
+= 7.8.0 =
+* FIX: Fixed user role argument for author cards
+* UPDATE: Added custom post type filter (template override is not required anymore)
+* UPDATE: UI tweaks
+* UPDATE: Removed deprecated theme-dependent JavaScript
+* UPDATE: Refactored bulk uploader (BREAKING)
+* UPDATE: Refactored single image template (BREAKING)
 
 = 7.7.8 =
 * UPDATE: Replaced SweetAlert2 library with Roar (+speed)

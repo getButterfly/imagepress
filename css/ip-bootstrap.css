@@ -452,7 +452,15 @@ a img { border: none; }
 .ip-more img { max-width: 100%; height: auto; display: block; margin: 24px auto 0 auto; }
 
 
-.ip-editor { display: none; background-color: rgba(255, 255, 255, 0.05); padding: 16px; text-align: left; }
+.ip-editor {
+    -webkit-transition: height .25s ease;
+    -o-transition: height .25s ease;
+    transition: height .25s ease;
+    overflow: hidden;
+}
+.ip-editor:not(.active) {
+    display: none;
+}
 
 .ip-editor .ip-additional { display: inline-block; position: relative; margin: 0 4px 4px 0; border: 3px solid #000000; }
 .ip-editor .ip-additional-active { display: inline-block; position: relative; margin: 0 4px 4px 0; border: 3px solid #dd3333; }
@@ -489,11 +497,6 @@ a img { border: none; }
     padding: 8px;
     margin: 0 0 4px 0;
 }
-
-
-section[role="navigation"] a { display: inline; }
-
-
 
 .profile-hub-container hr { border-top: 1px solid rgba(255, 255, 255, 0.25); }
 

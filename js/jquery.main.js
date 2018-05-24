@@ -4,102 +4,66 @@
  * @copyright 2014-2018 Ciprian Popescu
  */
 
-/* global jQuery, ipAjaxVar, swal, Masonry */
+/* global jQuery, ipAjaxVar, Masonry */
 
 /*eslint quotes: ["error", "single"]*/
 /*eslint-env es6*/
+/*eslint-env browser*/
 
-function addMoreFiles() {
-    var newElement = jQuery('#fileuploads').clone().prop({
-        class: 'ip-more'
-    });
-    newElement.find('input, textarea, select').val('').end().insertBefore('#endOfForm');
-}
+function roar(e,r,t){"use strict";if("object"!=typeof t&&(t={}),window.roarAlert)window.roarAlert.cancel&&(window.roarAlert.cancelElement.style=""),window.roarAlert.confirm&&(window.roarAlert.confirmElement.style=""),document.body.classList.add("roar-open"),window.roarAlert.element.style.display="block",a=window.roarAlert;else{var a={element:null,cancelElement:null,confirmElement:null};a.element=document.querySelector(".roar-alert")}if(a.cancel=void 0!==t.cancel?t.cancel:!1,a.cancelText=void 0!==t.cancelText?t.cancelText:"Cancel",a.cancelCallBack=function(e){return document.body.classList.remove("roar-open"),window.roarAlert.element.style.display="none","function"==typeof t.cancelCallBack&&t.cancelCallBack(e),!0},document.querySelector(".roar-alert-mask")&&document.querySelector(".roar-alert-mask").addEventListener("click",function(e){return document.body.classList.remove("roar-open"),window.roarAlert.element.style.display="none","function"==typeof t.cancelCallBack&&t.cancelCallBack(e),!0}),a.message=r,a.title=e,a.confirm=void 0!==t.confirm?t.confirm:!0,a.confirmText=void 0!==t.confirmText?t.confirmText:"Confirm",a.confirmCallBack=function(e){return document.body.classList.remove("roar-open"),window.roarAlert.element.style.display="none","function"==typeof t.confirmCallBack&&t.confirmCallBack(e),!0},!a.element){a.html='<div class="roar-alert" id="roar-alert" role="alertdialog"><div class="roar-alert-mask"></div><div class="roar-alert-message-body" role="alert" aria-relevant="all"><div class="roar-alert-message-tbf roar-alert-message-title">'+a.title+'</div><div class="roar-alert-message-tbf roar-alert-message-content">'+a.message+'</div><div class="roar-alert-message-tbf roar-alert-message-button">',a.cancel,a.html+='<a href="javascript:;" class="roar-alert-message-tbf roar-alert-message-button-cancel">'+a.cancelText+"</a>",a.confirm,a.html+='<a href="javascript:;" class="roar-alert-message-tbf roar-alert-message-button-confirm">'+a.confirmText+"</a>",a.html+="</div></div></div>";var l=document.createElement("div");l.id="roar-alert-wrap",l.innerHTML=a.html,document.body.appendChild(l),a.element=document.querySelector(".roar-alert"),a.cancelElement=document.querySelector(".roar-alert-message-button-cancel"),a.cancel?document.querySelector(".roar-alert-message-button-cancel").style.display="block":document.querySelector(".roar-alert-message-button-cancel").style.display="none",a.confirmElement=document.querySelector(".roar-alert-message-button-confirm"),a.confirm?document.querySelector(".roar-alert-message-button-confirm").style.display="block":document.querySelector(".roar-alert-message-button-confirm").style.display="none",a.cancelElement.onclick=a.cancelCallBack,a.confirmElement.onclick=a.confirmCallBack,window.roarAlert=a}document.querySelector(".roar-alert-message-title").innerHTML="",document.querySelector(".roar-alert-message-content").innerHTML="",document.querySelector(".roar-alert-message-button-cancel").innerHTML=a.cancelText,document.querySelector(".roar-alert-message-button-confirm").innerHTML=a.confirmText,a.cancelElement=document.querySelector(".roar-alert-message-button-cancel"),a.cancel?document.querySelector(".roar-alert-message-button-cancel").style.display="block":document.querySelector(".roar-alert-message-button-cancel").style.display="none",a.confirmElement=document.querySelector(".roar-alert-message-button-confirm"),a.confirm?document.querySelector(".roar-alert-message-button-confirm").style.display="block":document.querySelector(".roar-alert-message-button-confirm").style.display="none",a.cancelElement.onclick=a.cancelCallBack,a.confirmElement.onclick=a.confirmCallBack,a.title=a.title||"",a.message=a.message||"",document.querySelector(".roar-alert-message-title").innerHTML=a.title,document.querySelector(".roar-alert-message-content").innerHTML=a.message,window.roarAlert=a}
 
 
 
-jQuery.fn.extend({
-    greedyScroll: function(sensitivity) {
-        return this.each(function() {
-            jQuery(this).bind('mousewheel DOMMouseScroll', function(evt) {
-               var delta;
-               if (evt.originalEvent) {
-                  delta = -evt.originalEvent.wheelDelta || evt.originalEvent.detail;
-               }
-               if (delta !== null) {
-                  evt.preventDefault();
-                  if (evt.type === 'DOMMouseScroll') {
-                     delta = delta * (sensitivity ? sensitivity : 20);
-                  }
-                  return jQuery(this).scrollTop(delta + jQuery(this).scrollTop());
-               }
-            });
-        });
-    }
-});
+document.addEventListener('DOMContentLoaded', function (event) {
+    /**
+     * Record Like action for custom post type
+     */
+    if (document.querySelector('.imagepress-like')) {
+        document.querySelector('.imagepress-like').addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
 
-function bytesToSize(bytes) {
-    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
-        i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+            var likeLabel,
+                request = new XMLHttpRequest(),
+                like = this,
+                pid = like.dataset.post_id;
 
-    if (bytes === 0) {
-        return 'n/a';
-    }
+            like.innerHTML = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> <svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>';
 
-    if (i === 0) {
-        return bytes + ' ' + sizes[i];
-    }
-
-    return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
-}
-
-document.addEventListener('DOMContentLoaded', function(event) {
-    jQuery('#imagepress_image_file_bulk').change(function () {
-        var filename = jQuery('#imagepress_image_file_bulk').val();
-        jQuery('.file-upload').addClass('active');
-        jQuery('#noFile').text(filename.replace('C:\\fakepath\\', ''));
-    });
-
-    jQuery('.poster-container img').click(function(){
-        jQuery(this).toggleClass('ip-more-target');
-    });
-
-    /* like action */
-    jQuery('body').on('click', '.imagepress-like', function(e){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        var like = jQuery(this);
-        var pid = like.data('post_id');
-        like.html('<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> <svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>');
-        jQuery.ajax({
-            type: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: 'action=imagepress-like&nonce=' + ipAjaxVar.nonce + '&imagepress_like=&post_id=' + pid,
-            success: function(count){
-                if(count.indexOf('already') !== -1) {
-                    var lecount = count.replace('already', '');
-                    if(lecount === '0') {
-                        lecount = ipAjaxVar.likelabel;
+            request.open('POST', ipAjaxVar.ajaxurl, true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.onload = function () {
+                if (this.status >= 200 && this.status < 400) {
+                    if (this.response.indexOf('already') !== -1) {
+                        if (this.response.replace('already', '') === '0') {
+                            likeLabel = ipAjaxVar.likelabel;
+                        }
+                        like.classList.remove('liked');
+                        like.innerHTML = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' + likeLabel;
+                    } else {
+                        likeLabel = ipAjaxVar.unlikelabel;
+                        like.classList.add('liked');
+                        like.innerHTML = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' + likeLabel;
                     }
-                    like.removeClass('liked');
-                    like.html('<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' + lecount);
+                } else {
+                    // Response error
                 }
-                else {
-                    count = ipAjaxVar.unlikelabel;
-                    like.addClass('liked');
-                    like.html('<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' + count);
-                }
-            }
+            };
+            request.onerror = function() {
+                // Connection error
+            };
+            request.send('action=imagepress-like&nonce=' + ipAjaxVar.nonce + '&imagepress_like=&post_id=' + pid);
+
+            return false;
         });
-        return false;
-    });
+    }
 
 
 
     /*
      * Drag & Drop Uploader
      */
-    if (jQuery('#dropContainer').length) {
+    if (document.getElementById('dropContainer')) {
         document.getElementById('dropContainer').ondragover = document.getElementById('dropContainer').ondragenter = function(evt) {
             evt.preventDefault();
         };
@@ -115,70 +79,80 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
 
 
-    var fileInput = jQuery('#imagepress_image_file');
-    var maxSize = fileInput.data('max-size');
-    jQuery('#imagepress_image_file').change(function () {
-        if (fileInput.get(0).files.length){
-            var fileSize = fileInput.get(0).files[0].size; // in bytes
-            if (fileSize > maxSize) {
-                jQuery('#imagepress-errors').append('<p>Warning: File size is too big (' + bytesToSize(fileSize) + ')!</p>');
-                jQuery('#imagepress_submit').attr('disabled', true);
-
-                return false;
-            } else {
-                jQuery('#imagepress-errors').html('');
-                jQuery('#imagepress_submit').removeAttr('disabled');
-            }
-        } else {
-            return false;
-        }
-    });
-
-    jQuery('#imagepress_upload_image_form').submit(function() {
-        jQuery('#imagepress-errors').html('');
-        jQuery('#imagepress_submit').prop('disabled', true);
-        jQuery('#imagepress_submit').css('opacity', '0.5');
-        jQuery('#ipload').html('<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg> Uploading...');
-    });
+    if (document.getElementById('imagepress_upload_image_form')) {
+        document.getElementById('imagepress_upload_image_form').addEventListener('submit', function () {
+            document.getElementById('imagepress_submit').disabled = true;
+            document.getElementById('imagepress_submit').style.setProperty('opacity', '0.5');
+            document.getElementById('ipload').innerHTML = '<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg> Uploading...';
+        });
+    }
     /* end upload */
 
     /* ip_editor() related actions */
-    jQuery(document).on('click', '#ip-editor-open', function(e){
-        jQuery('.ip-editor').slideToggle('fast');
-        e.preventDefault();
-    });
+    if (document.querySelector('.ip-editor')) {
+        var container = document.querySelector('.ip-editor');
 
-    jQuery(document).on('click', '#ip-editor-delete-image', function (e) {
-        var id = jQuery(this).data('image-id'),
-            redirect = jQuery(this).data('redirect');
+        document.getElementById('ip-editor-open').addEventListener('click', function (event) {
+            event.preventDefault();
 
-        swal({
-            title: '',
-            text: ipAjaxVar.swal_confirm_operation,
-            showCancelButton: true,
-            confirmButtonText: ipAjaxVar.swal_confirm_button,
-            cancelButtonText: ipAjaxVar.swal_cancel_button,
-        }).then(function(response) {
-            if (response.value) {
-                jQuery.ajax({
-                    type: 'post',
-                    url: ipAjaxVar.ajaxurl,
-                    data: {
-                        action: 'ip_delete_post',
-                        id: id,
-                    },
-                    success: function(result) {
-                        if (result === 'success') {
-                            window.location = redirect;
-                        }
-                    },
+            if (!container.classList.contains('active')) {
+                container.classList.add('active');
+                container.style.height = 'auto';
+
+                var height = container.clientHeight + 'px';
+
+                container.style.height = '0px';
+
+                setTimeout(function () {
+                    container.style.height = height;
+                }, 0);
+            } else {
+                container.style.height = '0px';
+
+                container.addEventListener('transitionend', function () {
+                    container.classList.remove('active');
+                }, {
+                    once: true
                 });
             }
         });
 
-        e.preventDefault();
-        return false;
-    });
+        jQuery(document).on('click', '#ip-editor-delete-image', function (e) {
+            var id = this.dataset.imageId,
+                redirect = this.dataset.redirect,
+                options = {
+                    cancel: true,
+                    cancelText: ipAjaxVar.swal_cancel_button,
+                    cancelCallBack: function () {
+                        // Do nothing
+                    },
+                    confirm: true,
+                    confirmText: ipAjaxVar.swal_confirm_button,
+                    confirmCallBack: function () {
+                        var request = new XMLHttpRequest();
+
+                        request.open('POST', ipAjaxVar.ajaxurl, true);
+                        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                        request.onload = function () {
+                            if (this.status >= 200 && this.status < 400) {
+                                window.location = redirect;
+                            } else {
+                                // Response error
+                            }
+                        };
+                        request.onerror = function() {
+                            // Connection error
+                        };
+                        request.send('action=ip_delete_post&nonce=' + ipAjaxVar.nonce + '&id=' + id);
+                    }
+                };
+
+            roar('', ipAjaxVar.swal_confirm_operation, options);
+
+            e.preventDefault();
+            return false;
+        });
+    }
 
     jQuery(document).on('click', '.featured-post', function (e) {
         if(confirm('Set this image as main image?')) {
@@ -236,7 +210,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
         jQuery('.notifications-bell').html('<svg class="lnr lnr-alarm"><use xlink:href="#lnr-alarm"></use></svg><sup>0</sup>');
     });
 
-    jQuery('.notifications-container .notifications-inner').greedyScroll(25);
     jQuery('.notifications-container').hide();
     jQuery('.notifications-bell').click(function(e){
         jQuery('.notifications-container').toggle();
@@ -483,49 +456,45 @@ document.addEventListener('DOMContentLoaded', function(event) {
                 var image_order = jQuery(this).sortable('serialize') + '&action=imagepress_list_update_order';
 
                 jQuery.post(ipAjaxVar.ajaxurl, image_order, function() {
-                    swal({
-                        toast: true,
-                        position: 'top-end',
-                        title: '',
-                        html: '<svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg>',
-                        showConfirmButton: false,
-                        timer: 3000,
-                    });
+                    // Done. Do nothing.
                 });
             }
         }).enableSelection();
     }
 
     jQuery(document).on('click', '.editor-image-delete', function (e) {
-        var id = jQuery(this).data('image-id');
+        var id = jQuery(this).data('image-id'),
+            options = {
+                cancel: true,
+                cancelText: ipAjaxVar.swal_cancel_button,
+                cancelCallBack: function () {
+                    // Do nothing
+                },
+                confirm: true,
+                confirmText: ipAjaxVar.swal_confirm_button,
+                confirmCallBack: function () {
 
-        swal({
-            title: '',
-            text: ipAjaxVar.swal_confirm_operation,
-            showCancelButton: true,
-            confirmButtonText: ipAjaxVar.swal_confirm_button,
-            cancelButtonText: ipAjaxVar.swal_cancel_button,
-        }).then(function(response) {
-            if (response.value) {
-                jQuery(this).parent().parent().fadeOut();
+                    var request = new XMLHttpRequest();
 
-                jQuery.ajax({
-                    type: 'post',
-                    url: ipAjaxVar.ajaxurl,
-                    data: {
-                        action: 'ip_delete_post',
-                        id: id,
-                    },
-                    success: function(result) {
-                        if (result === 'success') {
+                    request.open('POST', ipAjaxVar.ajaxurl, true);
+                    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                    request.onload = function () {
+                        if (this.status >= 200 && this.status < 400) {
                             jQuery('#listItem_' + id).fadeOut(function(){
                                 jQuery('#listItem_' + id).remove();
                             });
+                        } else {
+                            // Response error
                         }
-                    },
-                });
-            }
-        });
+                    };
+                    request.onerror = function() {
+                        // Connection error
+                    };
+                    request.send('action=ip_delete_post&nonce=' + ipAjaxVar.nonce + '&id=' + id);
+                }
+            };
+
+        roar('', ipAjaxVar.swal_confirm_operation, options);
 
         e.preventDefault();
         return false;
@@ -680,7 +649,7 @@ function getUrlParameter(sParam) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', function() {
     if (jQuery('#ip-sorter-primary').length) {
         var request_uri = window.location.search,
             sorterDropdown = document.getElementById('sorter'),

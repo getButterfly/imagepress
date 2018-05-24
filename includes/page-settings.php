@@ -87,11 +87,7 @@ function imagepress_admin_page() {
                 <br>
                 <code>[cinnamon-profile]</code> <sup class="ip-optional">optional</sup> - show user profile on a custom page, such as <b>My Profile</b> or <b>View My Portfolio</b>.<br>
                 <code>[cinnamon-profile author="17"]</code> <sup class="ip-optional">optional</sup> - show a certain user profile on a page, where <b>17</b> is the user ID.<br>
-            </p>
-
-            <h3>Custom styling</h3>
-            <p>See <code>/documentation/single-image.php</code> for a sample single image template. Match it with your <code>/single.php</code> template structure and drop it in your active theme.</p>
-            <p>Use the <code>.ip_box_img</code> class to activate lightboxes (based on element class).</p>';
+            </p>';
         } ?>
         <?php if($tab == 'install_tab') { ?>
             <h2><?php esc_html_e('Installation', 'imagepress'); ?></h2>
@@ -112,9 +108,7 @@ function imagepress_admin_page() {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your image slug is <code>' . $ipSlug . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
                 }
                 if ('' != locate_template($single_template)) {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your image template is available.</p>';
-                } else {
-                    echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your image template is not available. Duplicate your <code>single.php</code> template file inside your theme folder, rename it as <code>' . $single_template . '</code> and replace the <code>the_content()</code> section with the code from the sample template file inside the /documentation/ folder.</p>';
+                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> You have a custom image template available.</p>';
                 }
             echo '</div>';
 

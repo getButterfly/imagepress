@@ -155,16 +155,16 @@ function ip_setPostViews($postID) {
 
 // frontend image editor
 function ip_editor() {
-    global $post;
+    global $wpdb, $post;
+
+    $out = '';
 
     $current_user = wp_get_current_user();
 
     // check if user is author // show author tools
-    if ($post->post_author == $current_user->ID) { ?>
-        <span class="ip-editor-display-container">
-            <a href="#" class="ip-editor-display thin-ui-button" id="ip-editor-open"><?php esc_html_e('Author tools', 'imagepress'); ?></a>
-        </span>
-        <?php
+    if ($post->post_author == $current_user->ID) {
+        $out .= ' | <a href="#" class="ip-editor-display" id="ip-editor-open">' . __('Author tools', 'imagepress') . '</a>';
+
         $edit_id = get_the_ID();
 
         if (!empty($_POST['post_id']) && !empty($_POST['post_title']) && isset($_POST['update_post_nonce']) && isset($_POST['postcontent'])) {
@@ -227,25 +227,22 @@ function ip_editor() {
                 //
             }
         }
-        ?>
-        <div id="info" class="ip-editor">
-            <form id="post" class="post-edit front-end-form imagepress-form thin-ui-form" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="post_id" value="<?php echo $edit_id; ?>">
-                <?php wp_nonce_field('update_post_' . $edit_id, 'update_post_nonce'); ?>
 
-                <p>
-                    <label for="post_title"><?php esc_html_e('Title', 'imagepress'); ?></label><br>
-                    <input type="text" id="post_title" name="post_title" value="<?php echo get_the_title($edit_id); ?>">
+        $out .= '<div id="info" class="ip-editor">
+            <form id="post" class="post-edit front-end-form imagepress-form thin-ui-form" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="post_id" value="' . $edit_id . '">';
+                $out .= wp_nonce_field('update_post_' . $edit_id, 'update_post_nonce', true, false);
+
+                $out .= '<p>
+                    <label for="post_title">' . __('Title', 'imagepress') . '</label><br>
+                    <input type="text" id="post_title" name="post_title" value="' . get_the_title($edit_id) . '">
                 </p>
                 <p>
-                    <label for="postcontent"><?php esc_html_e('Description', 'imagepress'); ?></label><br>
-                    <textarea id="postcontent" name="postcontent" rows="3"><?php echo strip_tags(get_post_field('post_content', $edit_id)); ?></textarea></p>
-                <hr>
+                    <label for="postcontent">' . __('Description', 'imagepress') . '</label><br>
+                    <textarea id="postcontent" name="postcontent" rows="3">' . strip_tags(get_post_field('post_content', $edit_id)) . '</textarea></p>
+                <hr>';
 
-                <?php
                 // custom fields
-                global $wpdb;
-
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
                 foreach ($result as $field) {
@@ -256,33 +253,33 @@ function ip_editor() {
                     $fieldName = sanitize_text_field($field['field_name']);
 
                     if ($fieldType === 1) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 2) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="url" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="url" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 3) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="email" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="email" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 4) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="number" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="number" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     } else if ($fieldType === 5) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
+                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
                     } else if ($fieldType === 6) {
                         $checked = ((int) $ps_meta === 1) ? 'checked' : '';
 
-                        echo '<p><label for="' . $fieldSlug . '"><input type="checkbox" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
+                        $out .= '<p><label for="' . $fieldSlug . '"><input type="checkbox" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
                     } else if ($fieldType === 7) {
                         $checked = ((int) $ps_meta === 1) ? 'checked' : '';
 
-                        echo '<p><label for="' . $fieldSlug . '"><input type="radio" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
+                        $out .= '<p><label for="' . $fieldSlug . '"><input type="radio" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
                     } else if ($fieldType === 8) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><select id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '">';
+                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><select id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '">';
                             $options = $wpdb->get_var($wpdb->prepare("SELECT field_content FROM  " . $wpdb->prefix . "ip_fields WHERE field_name = '%s'", $fieldName));
                             $options = explode(',', $options);
                             foreach ($options as $option) {
                                 $selected = ($ps_meta == trim($option)) ? 'selected' : '';
 
-                                echo '<option ' . $selected . '>' . trim($option) . '</option>';
+                                $out .= '<option ' . $selected . '>' . trim($option) . '</option>';
                             }
-                        echo '</select></p>';
+                        $out .= '</select></p>';
                     } else if (
                         $fieldType === 20 ||
                         $fieldType === 21 ||
@@ -290,79 +287,80 @@ function ip_editor() {
                         $fieldType === 23 ||
                         $fieldType === 24
                     ) {
-                        echo '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
+                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
                     }
                 }
                 //
-                ?>
-                <hr>
 
-                <?php
+                $out .= '<hr>';
+
                 $ip_category = wp_get_object_terms($edit_id, 'imagepress_image_category');
                 if ((int) get_imagepress_option('ip_allow_tags') === 1) {
                     $ip_tag = wp_get_post_terms($edit_id, 'imagepress_image_tag');
                 }
 
-                echo imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
+                $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
                 if ((int) get_imagepress_option('ip_allow_tags') === 1) {
-                    echo '<p>' . imagepress_get_image_tags_dropdown('imagepress_image_tag', $ip_tag[0]->term_id) . '</p>';
+                    $out .= '<p>' . imagepress_get_image_tags_dropdown('imagepress_image_tag', $ip_tag[0]->term_id) . '</p>';
                 }
 
                 $ip_upload_size = get_imagepress_option('ip_upload_size');
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
-                ?>
-                <p><label for="imagepress_image_file">Replace main image (<?php echo $uploadsize . 'MB ' . __('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_file" id="imagepress_image_file"></p>
 
-                <?php if ((int) get_imagepress_option('ip_upload_secondary') === 1) { ?>
-                    <hr>
-                    <p>
-                        <?php esc_html_e('Select main image or delete additional images', 'imagepress'); ?>
-                        <br><small><?php esc_html_e('Main image will appear first in single image listing and as a thumbnail in gallery view', 'imagepress'); ?></small>
+                $out .= '<p><label for="imagepress_image_file">Replace main image (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file" id="imagepress_image_file"></p>';
+
+                if ((int) get_imagepress_option('ip_upload_secondary') === 1) {
+                    $out .= '<hr>
+                    <p>' .
+                        __('Select main image or delete additional images', 'imagepress') .
+                        '<br><small>' . __('Main image will appear first in single image listing and as a thumbnail in gallery view', 'imagepress') . '</small>
                     </p>
-                    <div class="ip-hide ip-notice"><p><?php esc_html_e('Featured image selected succesfully!', 'imagepress'); ?></p></div>
-                    <?php
+                    <div class="ip-hide ip-notice"><p>' . __('Featured image selected succesfully!', 'imagepress') . '</p></div>';
+
                     $thumbnail_ID = get_post_thumbnail_id();
                     $images = get_children(array('post_parent' => $edit_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
                     $count = $images ? count($images) : 0;
 
                     if ($count > 1) {
-                        echo '<div>';
+                        $out .= '<div>';
                             foreach ($images as $attachment_id => $image) {
                                 $small_array = image_downsize($image->ID, 'thumbnail');
 
                                 if ($image->ID == $thumbnail_ID)
-                                    echo '<div class="ip-additional-active">';
+                                    $out .= '<div class="ip-additional-active">';
                                 if ($image->ID != $thumbnail_ID)
-                                    echo '<div class="ip-additional">';
-                                    echo '<div class="ip-toolbar">';
-                                        echo '<a href="#" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_delete_post_nonce') . '" class="delete-post ip-action-icon ip-floatright"><svg class="lnr lnr-trash"><use xlink:href="#lnr-trash"></use></svg></a>';
-                                        echo '<a href="#" data-pid="' . $edit_id . '" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_featured_post_nonce') . '" class="featured-post ip-action-icon ip-floatleft"><svg class="lnr lnr-star"><use xlink:href="#lnr-star"></use></svg></a>';
-                                    echo '</div>';
-                                echo '<img src="' . $small_array[0] . '" alt=""></div>';
+                                    $out .= '<div class="ip-additional">';
+                                    $out .= '<div class="ip-toolbar">';
+                                        $out .= '<a href="#" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_delete_post_nonce') . '" class="delete-post ip-action-icon ip-floatright"><svg class="lnr lnr-trash"><use xlink:href="#lnr-trash"></use></svg></a>';
+                                        $out .= '<a href="#" data-pid="' . $edit_id . '" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_featured_post_nonce') . '" class="featured-post ip-action-icon ip-floatleft"><svg class="lnr lnr-star"><use xlink:href="#lnr-star"></use></svg></a>';
+                                    $out .= '</div>';
+                                $out .= '<img src="' . $small_array[0] . '" alt=""></div>';
                             }
-                        echo '</div>';
+                        $out .= '</div>';
                     }
-                    ?>
 
-                    <p><label for="imagepress_image_additional"><?php esc_html_e('Add more images', 'imagepress'); ?> (<?php echo $uploadsize; ?>MB <?php esc_html_e('maximum', 'imagepress'); ?>)...</label><br><input type="file" accept="image/*" data-max-size="<?php echo $datauploadsize; ?>" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple></p>
-                <?php } ?>
+                    $out .= '<p><label for="imagepress_image_additional">' . __('Add more images', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple></p>';
+                }
 
-                <hr>
-                <?php
+                $out .= '<hr>';
+
                 $ipDeleteRedirection = get_imagepress_option('ip_delete_redirection');
                 if (empty($ipDeleteRedirection)) {
                     $ipDeleteRedirection = home_url();
                 }
-                ?>
-                <p>
-                    <input type="submit" id="submit" value="<?php esc_html_e('Update image', 'imagepress'); ?>">
-                    <a href="#" data-redirect="<?php echo $ipDeleteRedirection; ?>" data-image-id="<?php echo get_the_ID(); ?>" class="button" id="ip-editor-delete-image"><?php esc_html_e('Delete', 'imagepress'); ?></a>
+
+                $out .= '<p>
+                    <input type="submit" id="submit" value="' . __('Update', 'imagepress') . '">
+                    <a href="#" data-redirect="' . $ipDeleteRedirection . '" data-image-id="' . get_the_ID() . '" class="button" id="ip-editor-delete-image">' . __('Delete', 'imagepress') . '</a>
                 </p>
             </form>
-        </div>
-        <?php wp_reset_query(); ?>
-    <?php }
+        </div>';
+
+        wp_reset_query();
+
+        return $out;
+    }
 }
 
 // ip_editor() related actions
@@ -427,13 +425,15 @@ function ip_main($imageId) {
         <?php echo ipGetPostLikeLink($imageId); ?><em> | </em><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> <?php echo ip_getPostViews($imageId); ?><?php echo $ip_comments; ?>
         <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
             <em> | </em>
-            <?php if (function_exists('ip_frontend_add_collection')) ip_frontend_add_collection(get_the_ID());
+            <?php if (function_exists('ip_frontend_add_collection')) {
+                echo ip_frontend_add_collection(get_the_ID());
+            }
         }
 
         /*
          * Image editor
          */
-        ip_editor();
+        echo ip_editor();
         ?>
     </div>
 
@@ -513,6 +513,115 @@ function ip_main($imageId) {
     <?php
 }
 
+
+
+// main ImagePress image function
+function ip_main_return($imageId) {
+    global $wpdb, $post;
+
+    $out = '';
+    ip_setPostViews($imageId);
+
+    $post_thumbnail_id = get_post_thumbnail_id($imageId);
+    $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
+    $post_thumbnail_url = $image_attributes[0];
+
+    $ip_comments = '';
+
+    if ((int) get_imagepress_option('ip_comments') === 1) {
+        $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($imageId) . '</a> ';
+    }
+
+    $out .= '<div class="imagepress-container">
+        <a href="' . $post_thumbnail_url . '">' . get_the_post_thumbnail($imageId, 'full') . '</a>
+    </div>
+
+    <div class="ip-bar">' .
+        ipGetPostLikeLink($imageId) . '<em> | </em><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> ' . ip_getPostViews($imageId) . $ip_comments;
+
+        if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+            $out .= '<em> | </em>';
+            if (function_exists('ip_frontend_add_collection')) {
+                $out .= ip_frontend_add_collection(get_the_ID());
+            }
+        }
+
+        $out .= ip_editor();
+    $out .= '</div>
+
+    <h1 class="ip-title">';
+        if (has_term('featured', 'imagepress_image_category')) {
+            $out .= '<svg class="lnr lnr-star"><use xlink:href="#lnr-star"></use></svg> ';
+        }
+
+        if ((int) get_imagepress_option('ip_allow_tags') === 1) {
+            $terms = get_the_terms($imageId, 'imagepress_image_tag');
+
+            if ($terms && !is_wp_error($terms)) :
+                $term_links = array();
+                foreach ($terms as $term) {
+                    $term_links[] = $term->name;
+                }
+                $tags = join(', ', $term_links);
+                $out .= '<br><small>' . $tags . '</small>';
+            endif;
+        }
+    $out .= '</h1>
+
+    <p>
+        <div style="float: left; margin: 0 8px 0 0;">' . get_avatar($post->post_author, 40) . '</div>' .
+        __('by', 'imagepress') . ' <b>' . getImagePressProfileUri($post->post_author) . '</b>
+        <br><small>' . __('Uploaded', 'imagepress') . ' <time>' . human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago' . '</time> ' . __('in', 'imagepress') . ' ' . get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', '') . '</small>
+    </p>
+
+    <div class="ip-clear"></div>';
+
+    // custom preset fields
+    $result = $wpdb->get_results("SELECT field_type, field_name, field_slug FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
+
+    foreach ($result as $field) {
+        $fs_meta = get_post_meta($imageId, $field['field_slug'], true);
+
+        if ((int) $field['field_type'] === 20 && !empty($fs_meta)) {
+            $sketchfabId = $fs_meta;
+            $out .= '<iframe width="100%" height="480" src="https://sketchfab.com/models/' . $sketchfabId . '/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe><br>via <a href="https://sketchfab.com/models/' . $sketchfabId . '?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank">Sketchfab</a>';
+        }
+        if ((int) $field['field_type'] === 21 && !empty($fs_meta)) {
+            $vimeoId = $fs_meta;
+            $out .= '<iframe src="https://player.vimeo.com/video/' . $vimeoId . '" width="100%" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+        }
+        if ((int) $field['field_type'] === 22 && !empty($fs_meta)) {
+            $youtubeId = $fs_meta;
+            $out .= '<iframe width="100%" height="480" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" frameborder="0" allowfullscreen></iframe>';
+        }
+        if ((int) $field['field_type'] === 23 && !empty($fs_meta)) {
+            $googleMapsLocation = $fs_meta;
+            $out .= '<p><img class="single-image-map" src="https://maps.googleapis.com/maps/api/staticmap?center=' . $googleMapsLocation . '&scale=2&zoom=13&size=600x300&maptype=terrain" alt="' . $googleMapsLocation . '" width="600"></p>';
+        }
+        if ((int) $field['field_type'] === 24 && !empty($fs_meta)) {
+            $roundMeTourId = $fs_meta;
+            $out .= '<p><iframe width="100%" height="480" src="https://round.me/embed/' . $roundMeTourId . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>';
+        }
+    }
+    //
+
+    //imagepress_get_images($imageId);
+
+    $out .= '<section>' .
+        get_the_content() .
+    '</section>';
+    /**/
+
+    $out .= '<hr><section role="navigation"><p>' .
+        get_previous_post_link('%link', esc_html__('Previous', 'imagepress')) . ' | ' .
+        get_next_post_link('%link', esc_html__('Next', 'imagepress')) .
+    '</p></section>';
+
+    return $out;
+}
+
+
+
 function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', $after = '', $exclude = array()) {
     $terms = get_the_terms($imageId, $taxonomy);
 
@@ -576,11 +685,11 @@ function kformat($number) {
 
 function ip_related() {
     global $post;
-    ?>
-    <h3><?php echo __('More by the same author', 'imagepress'); ?></h3>
-    <?php echo cinnamon_get_related_author_posts($post->post_author); ?>
 
-    <?php
+    $out = '<h3>' . __('More by the same author', 'imagepress') . '</h3>' .
+    cinnamon_get_related_author_posts($post->post_author);
+
+    return $out;
 }
 
 function ip_author() {

@@ -226,53 +226,56 @@ function ip_frontend_add_collection($ip_id) {
         $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, postKeyID, actionType, actionIcon, actionTime) VALUES (null, %d, %d, %d, 'collected', '', %s)", $ipCollectionAuthorId, $ip_id, $ipc, $collection_time));
     }
     if (is_user_logged_in()) {
-        $current_user = wp_get_current_user();
-        ?>
-        <a href="#" class="toggleFrontEndModal toggleFrontEndModalButton thin-ui-button"><?php echo esc_html__('Add to collection', 'imagepress'); ?></a> <?php if (isset($_POST['collectme'])) { echo ' <svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg>'; } ?>
+        global $wpdb;
 
-        <div class="frontEndModal ui">
-            <h2><?php echo esc_html__('Add to collection', 'imagepress'); ?></h2>
-            <a href="#" class="close toggleFrontEndModal"><?php echo esc_html__('Close', 'imagepress'); ?></a>
+        $current_user = wp_get_current_user();
+
+        $out = '<a href="#" class="toggleFrontEndModal toggleFrontEndModalButton">' . __('Add to collection', 'imagepress') . '</a>';
+
+        if (isset($_POST['collectme'])) {
+            $out .= ' <svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg>';
+        }
+
+        $out .= '<div class="frontEndModal ui">
+            <h2>' . __('Add to collection', 'imagepress') . '</h2>
+            <a href="#" class="close toggleFrontEndModal">' . __('Close', 'imagepress') . '</a>
 
             <form method="post" class="thin-ui-form">
-                <input type="hidden" id="collection_author_id" name="collection_author_id" value="<?php echo $current_user->ID; ?>">
+                <input type="hidden" id="collection_author_id" name="collection_author_id" value="' . $current_user->ID . '">
 
-                <p>
-                    <?php
-                    global $wpdb;
-
+                <p>';
                     $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = %d", get_current_user_id()), ARRAY_A);
 
-                    echo '<select name="ip_collections">
+                    $out .= '<select name="ip_collections">
                         <option value="">' . esc_html__('Choose a collection...', 'imagepress') . '</option>';
-                        foreach($result as $collection) {
+                        foreach ($result as $collection) {
                             $disabled = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_ID = %d AND image_collection_ID = %d", get_the_ID(), $collection['collection_ID']), ARRAY_A);
 
-                            echo '<option value="' . $collection['collection_ID'] . '"';
+                            $out .= '<option value="' . $collection['collection_ID'] . '"';
                             if ($disabled && count($disabled) > 0)
                                 echo ' disabled';
-                            echo '>' . $collection['collection_title'];
-                            echo '</option>';
+                            $out .= '>' . $collection['collection_title'];
+                            $out .= '</option>';
                         }
-                    echo '</select>';
-                    ?>
+                    $out .= '</select>
                 </p>
-                <p><?php echo esc_html__('or', 'imagepress'); ?></p>
+                <p>' . __('or', 'imagepress') . '</p>
                 <p>
-                    <input type="text" name="ip_collections_new" placeholder="<?php echo esc_html__('Create new collection...', 'imagepress'); ?>">
+                    <input type="text" name="ip_collections_new" placeholder="' . __('Create new collection...', 'imagepress') . '">
                     <select name="collection_status" id="collection_status">
-                        <option value="1"><?php echo esc_html__('Public', 'imagepress'); ?></option>
-                        <option value="0"><?php echo esc_html__('Private', 'imagepress'); ?></option>
+                        <option value="1">' . __('Public', 'imagepress') . '</option>
+                        <option value="0">' . __('Private', 'imagepress') . '</option>
                     </select>
                 </p>
                 <p>
-                    <input type="submit" name="collectme" value="<?php echo esc_html__('Add', 'imagepress'); ?>">
+                    <input type="submit" name="collectme" value="' . __('Add', 'imagepress') . '">
                     <label class="collection-progress"><svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg></label>
-                    <label class="showme"><?php echo esc_html__('Collection created!', 'imagepress'); ?></label>
+                    <label class="showme">' . __('Collection created!', 'imagepress') . '</label>
                 </p>
             </form>
-        </div>
-        <?php
+        </div>';
+
+        return $out;
     }
 }
 

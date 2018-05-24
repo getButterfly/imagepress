@@ -82,7 +82,7 @@ function cinnamon_card($atts) {
 
     // Filter users by role
     $role = sanitize_text_field($role);
-    $role = ((string) $role === '') ? '' : '$role=' . $role;
+    $role = ((string) $role === '') ? '' : '&role=' . $role;
 
     $number = $count;
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;

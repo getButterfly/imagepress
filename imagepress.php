@@ -95,16 +95,23 @@ add_filter('widget_text', 'do_shortcode');
 
 
 
-/**
-function pippin_filter_content_sample($content) {
-	if (is_singular() && is_main_query()) {
-		$new_content = '<p>This is added to the bottom of all post and page content, as well as custom post types.</p>';
-		$content .= $new_content;
-	}
-	return $content;
+/*
+ * Add ImagePress CPT to singular template
+ */
+function imagepress_content_filter($content) {
+    $ipSlug = get_imagepress_option('ip_slug');
+
+    if (is_singular() && is_main_query() && get_post_type() == $ipSlug) {
+        $new_content = ip_main_return(get_the_ID());
+        $new_content .= ip_related();
+
+        $content = $new_content;
+    }
+
+    return $content;
 }
-add_filter('the_content', 'pippin_filter_content_sample');
-/**/
+add_filter('the_content', 'imagepress_content_filter');
+
 
 
 function imagepress_menu() {
@@ -381,15 +388,17 @@ function imagepress_add_bulk($atts) {
     ), $atts));
 
     global $wpdb, $current_user;
+
     $out = '';
 
-    if(isset($_POST['imagepress_upload_image_form_submitted_bulk']) && wp_verify_nonce($_POST['imagepress_upload_image_form_submitted_bulk'], 'imagepress_upload_image_form_bulk')) {
-        if(get_imagepress_option('ip_moderate') == 0)
+    if (isset($_POST['imagepress_upload_image_form_submitted_bulk']) && wp_verify_nonce($_POST['imagepress_upload_image_form_submitted_bulk'], 'imagepress_upload_image_form_bulk')) {
+        $ip_status = 'publish';
+        if ((int) get_imagepress_option('ip_moderate') === 0) {
             $ip_status = 'pending';
-        if(get_imagepress_option('ip_moderate') == 1)
-            $ip_status = 'publish';
+        }
 
         $ip_image_author = $current_user->ID;
+        $ipSlug = get_imagepress_option('ip_slug');
 
         // send notification email to administrator
         $notificationEmail = get_imagepress_option('ip_notification_email');
@@ -398,13 +407,13 @@ function imagepress_add_bulk($atts) {
 
         // alpha
         $files = $_FILES['imagepress_image_file_bulk'];
-        if(!empty($files)) {
+        if (!empty($files)) {
             require_once ABSPATH . 'wp-admin/includes/image.php';
             require_once ABSPATH . 'wp-admin/includes/file.php';
             require_once ABSPATH . 'wp-admin/includes/media.php';
 
-            foreach($files['name'] as $key => $value) {
-                if($files['name'][$key]) {
+            foreach ($files['name'] as $key => $value) {
+                if ($files['name'][$key]) {
                     $file = array(
                         'name' => $files['name'][$key],
                         'type' => $files['type'][$key],
@@ -414,15 +423,13 @@ function imagepress_add_bulk($atts) {
                     );
                 }
                 $_FILES = array("attachment" => $file);
-                foreach($_FILES as $file => $array) {
+                foreach ($_FILES as $file => $array) {
                     $attach_id = media_handle_upload($file, 0);
 
                     $user_image_data = array(
-                        'post_title' => $_POST['imagepress_image_caption'][$key],
-                        'post_content' => $_POST['imagepress_image_description'][$key],
                         'post_status' => $ip_status,
                         'post_author' => $ip_image_author,
-                        'post_type' => get_imagepress_option('ip_slug')
+                        'post_type' => $ipSlug
                     );
                     $post_id = wp_insert_post($user_image_data);
                     update_post_meta($post_id, '_thumbnail_id', $attach_id);
@@ -456,14 +463,15 @@ function imagepress_add_bulk($atts) {
         $out .= '<p class="message"><a href="' . get_permalink($post_id) . '">' . get_imagepress_option('ip_upload_success') . '</a></p>';
     }
 
-    if(get_imagepress_option('ip_registration') == 0 && !is_user_logged_in()) {
+    if (get_imagepress_option('ip_registration') == 0 && !is_user_logged_in()) {
         $out .= '<p>' . __('You need to be logged in to upload an image.', 'imagepress') . '</p>';
     }
-    if((get_imagepress_option('ip_registration') == 0 && is_user_logged_in()) || get_imagepress_option('ip_registration') == 1) {
-        if(isset($_POST['imagepress_image_caption']) && isset($_POST['imagepress_image_category']))
+    if ((get_imagepress_option('ip_registration') == 0 && is_user_logged_in()) || get_imagepress_option('ip_registration') == 1) {
+        if (isset($_POST['imagepress_image_caption']) && isset($_POST['imagepress_image_category'])) {
             $out .= imagepress_get_upload_image_form_bulk($imagepress_image_category = $_POST['imagepress_image_category'], $category);
-        else
+        } else {
             $out .= imagepress_get_upload_image_form_bulk($imagepress_image_category = '', $category);
+        }
     }
 
     return $out;
@@ -626,7 +634,6 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
             $datauploadsize = $uploadsize * 1024000;
 
             $out .= '<hr>
-            <div id="imagepress-errors"></div>
 
             <label for="imagepress_image_file" id="dropContainer" class="dropSelector">
                 <b>' . __('Drop files here<br><small>or</small>', 'imagepress') . '</b><br>
@@ -684,10 +691,6 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $imagepress_hardcoded_category) {
     // upload form // customize
 
-    // labels
-    $ip_caption_label = get_imagepress_option('ip_caption_label');
-    $ip_description_label = get_imagepress_option('ip_description_label');
-
     $ip_upload_size = get_imagepress_option('ip_upload_size');
 
     $out = '<div class="ip-uploader">';
@@ -695,13 +698,6 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
             $out .= wp_nonce_field('imagepress_upload_image_form_bulk', 'imagepress_upload_image_form_submitted_bulk');
 
             $out .= '<div id="fileuploads">';
-                if (!empty($ip_caption_label))
-                    $out .= '<p><input type="text" id="imagepress_image_caption" name="imagepress_image_caption[]" placeholder="' . $ip_caption_label . '" required></p>';
-
-                if (!empty($ip_description_label)) {
-                    $out .= '<p><textarea id="imagepress_image_description" name="imagepress_image_description[]" placeholder="' . get_imagepress_option('ip_description_label') . '" rows="6"></textarea></p>';
-                }
-
                 $out .= '<p>';
                     if ('' != $imagepress_hardcoded_category) {
                         $iphcc = get_term_by('slug', $imagepress_hardcoded_category, 'imagepress_image_category'); // ImagePress hard-coded category
@@ -733,18 +729,12 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
                     <hr>';
                 }
 
-                $out .= '<hr>';
-                $out .= '<div id="imagepress-errors"></div>';
-
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
 
-                $out .= '<p><label for="imagepress_image_file">' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file_bulk[]" id="imagepress_image_file_bulk"></p>
+                $out .= '<p><label for="imagepress_image_file">' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file_bulk[]" id="imagepress_image_file_bulk" multiple></p>
                 <hr>
-            </div>
-            <div id="endOfForm"></div>';
-
-            $out .= '<div class="ip-addmore"><a href="#" onclick="addMoreFiles(); return false;" class="button noir-secondary">' . __('Add more', 'imagepress') . '</a></div>';
+            </div>';
 
             $out .= '<p>';
                 $out .= '<input type="submit" id="imagepress_submit_bulk" name="imagepress_submit_bulk" value="' . get_imagepress_option('ip_upload_label') . '" class="button noir-secondary">';
