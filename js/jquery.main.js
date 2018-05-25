@@ -1,19 +1,183 @@
+/* global window, document, console jQuery, ipAjaxVar, Masonry */
+/* eslint quotes: ["error", "single"] */
+/* eslint-env browser */
+/* jslint-env browser */
+
+/**
+ * roar - v1.0.5 - 2018-05-25
+ * https://getbutterfly.com/roarjs-vanilla-javascript-alert-confirm-replacement/
+ * Copyright (c) 2018 Ciprian Popescu
+ * Licensed GPLv3
+ */
+function roar(title, message, options) {
+    'use strict';
+
+    if (typeof options !== 'object') {
+        options = {};
+    }
+
+    if (!window.roarAlert) {
+        var RoarObject = {
+            element: null,
+            cancelElement: null,
+            confirmElement: null
+        };
+        RoarObject.element = document.querySelector('.roar-alert');
+    } else {
+        // Clear style
+        if (window.roarAlert.cancel) {
+            window.roarAlert.cancelElement.style = '';
+        }
+        if (window.roarAlert.confirm) {
+            window.roarAlert.confirmElement.style = '';
+        }
+        // Show alert
+        document.body.classList.add('roar-open');
+        window.roarAlert.element.style.display = 'block';
+
+        RoarObject = window.roarAlert;
+    }
+
+    // Define default options
+    RoarObject.cancel = options.cancel !== undefined ? options.cancel : false;
+    RoarObject.cancelText = options.cancelText !== undefined ? options.cancelText : 'Cancel';
+    RoarObject.cancelCallBack = function (event) {
+        document.body.classList.remove('roar-open');
+        window.roarAlert.element.style.display = 'none';
+        // Cancel callback
+        if (typeof options.cancelCallBack === 'function') {
+            options.cancelCallBack(event);
+        }
+
+        // Cancelled
+        return true;
+    };
+
+    // Close alert on click outside
+    if (document.querySelector('.roar-alert-mask')) {
+        document.querySelector('.roar-alert-mask').addEventListener('click', function (event) {
+            document.body.classList.remove('roar-open');
+            window.roarAlert.element.style.display = 'none';
+            // Cancel callback
+            if (typeof options.cancelCallBack === 'function') {
+                options.cancelCallBack(event);
+            }
+
+            // Clicked outside
+            return true;
+        });
+    }
+
+    RoarObject.message = message;
+    RoarObject.title = title;
+    RoarObject.confirm = options.confirm !== undefined ? options.confirm : true;
+    RoarObject.confirmText = options.confirmText !== undefined ? options.confirmText : 'Confirm';
+    RoarObject.confirmCallBack = function (event) {
+        document.body.classList.remove('roar-open');
+        window.roarAlert.element.style.display = 'none';
+        // Confirm callback
+        if (typeof options.confirmCallBack === 'function') {
+            options.confirmCallBack(event);
+        }
+
+        // Confirmed
+        return true;
+    };
+
+    if (!RoarObject.element) {
+        RoarObject.html =
+            '<div class="roar-alert" id="roar-alert" role="alertdialog">' +
+            '<div class="roar-alert-mask"></div>' +
+            '<div class="roar-alert-message-body" role="alert" aria-relevant="all">' +
+            '<div class="roar-alert-message-tbf roar-alert-message-title">' +
+            RoarObject.title +
+            '</div>' +
+            '<div class="roar-alert-message-tbf roar-alert-message-content">' +
+            RoarObject.message +
+            '</div>' +
+            '<div class="roar-alert-message-tbf roar-alert-message-button">';
+
+        if (RoarObject.cancel || true) {
+            RoarObject.html += '<a href="javascript:;" class="roar-alert-message-tbf roar-alert-message-button-cancel">' + RoarObject.cancelText + '</a>';
+        }
+
+        if (RoarObject.confirm || true) {
+            RoarObject.html += '<a href="javascript:;" class="roar-alert-message-tbf roar-alert-message-button-confirm">' + RoarObject.confirmText + '</a>';
+        }
+
+        RoarObject.html += '</div></div></div>';
+
+        var element = document.createElement('div');
+        element.id = 'roar-alert-wrap';
+        element.innerHTML = RoarObject.html;
+        document.body.appendChild(element);
+
+        RoarObject.element = document.querySelector('.roar-alert');
+        RoarObject.cancelElement = document.querySelector('.roar-alert-message-button-cancel');
+
+        // Enabled cancel button callback
+        if (RoarObject.cancel) {
+            document.querySelector('.roar-alert-message-button-cancel').style.display = 'block';
+        } else {
+            document.querySelector('.roar-alert-message-button-cancel').style.display = 'none';
+        }
+
+        // Enabled cancel button callback
+        RoarObject.confirmElement = document.querySelector('.roar-alert-message-button-confirm');
+        if (RoarObject.confirm) {
+            document.querySelector('.roar-alert-message-button-confirm').style.display = 'block';
+        } else {
+            document.querySelector('.roar-alert-message-button-confirm').style.display = 'none';
+        }
+
+        RoarObject.cancelElement.onclick = RoarObject.cancelCallBack;
+        RoarObject.confirmElement.onclick = RoarObject.confirmCallBack;
+
+        window.roarAlert = RoarObject;
+    }
+
+    document.querySelector('.roar-alert-message-title').innerHTML = '';
+    document.querySelector('.roar-alert-message-content').innerHTML = '';
+    document.querySelector('.roar-alert-message-button-cancel').innerHTML = RoarObject.cancelText;
+    document.querySelector('.roar-alert-message-button-confirm').innerHTML = RoarObject.confirmText;
+
+    RoarObject.cancelElement = document.querySelector('.roar-alert-message-button-cancel');
+
+    // Enabled cancel button callback
+    if (RoarObject.cancel) {
+        document.querySelector('.roar-alert-message-button-cancel').style.display = 'block';
+    } else {
+        document.querySelector('.roar-alert-message-button-cancel').style.display = 'none';
+    }
+
+    // Enabled cancel button callback
+    RoarObject.confirmElement = document.querySelector('.roar-alert-message-button-confirm');
+    if (RoarObject.confirm) {
+        document.querySelector('.roar-alert-message-button-confirm').style.display = 'block';
+    } else {
+        document.querySelector('.roar-alert-message-button-confirm').style.display = 'none';
+    }
+    RoarObject.cancelElement.onclick = RoarObject.cancelCallBack;
+    RoarObject.confirmElement.onclick = RoarObject.confirmCallBack;
+
+    // Set title and message
+    RoarObject.title = RoarObject.title || '';
+    RoarObject.message = RoarObject.message || '';
+
+    document.querySelector('.roar-alert-message-title').innerHTML = RoarObject.title;
+    document.querySelector('.roar-alert-message-content').innerHTML = RoarObject.message;
+
+    window.roarAlert = RoarObject;
+}
+
+
+
 /**
  * ImagePress Javascript functions
- *
- * @copyright 2014-2018 Ciprian Popescu
+ * https://getbutterfly.com/roarjs-vanilla-javascript-alert-confirm-replacement/
+ * Copyright (c) 2014-2018 Ciprian Popescu
+ * Licensed GPLv3
  */
-
-/* global jQuery, ipAjaxVar, Masonry */
-
-/*eslint quotes: ["error", "single"]*/
-/*eslint-env es6*/
-/*eslint-env browser*/
-
-function roar(e,r,t){"use strict";if("object"!=typeof t&&(t={}),window.roarAlert)window.roarAlert.cancel&&(window.roarAlert.cancelElement.style=""),window.roarAlert.confirm&&(window.roarAlert.confirmElement.style=""),document.body.classList.add("roar-open"),window.roarAlert.element.style.display="block",a=window.roarAlert;else{var a={element:null,cancelElement:null,confirmElement:null};a.element=document.querySelector(".roar-alert")}if(a.cancel=void 0!==t.cancel?t.cancel:!1,a.cancelText=void 0!==t.cancelText?t.cancelText:"Cancel",a.cancelCallBack=function(e){return document.body.classList.remove("roar-open"),window.roarAlert.element.style.display="none","function"==typeof t.cancelCallBack&&t.cancelCallBack(e),!0},document.querySelector(".roar-alert-mask")&&document.querySelector(".roar-alert-mask").addEventListener("click",function(e){return document.body.classList.remove("roar-open"),window.roarAlert.element.style.display="none","function"==typeof t.cancelCallBack&&t.cancelCallBack(e),!0}),a.message=r,a.title=e,a.confirm=void 0!==t.confirm?t.confirm:!0,a.confirmText=void 0!==t.confirmText?t.confirmText:"Confirm",a.confirmCallBack=function(e){return document.body.classList.remove("roar-open"),window.roarAlert.element.style.display="none","function"==typeof t.confirmCallBack&&t.confirmCallBack(e),!0},!a.element){a.html='<div class="roar-alert" id="roar-alert" role="alertdialog"><div class="roar-alert-mask"></div><div class="roar-alert-message-body" role="alert" aria-relevant="all"><div class="roar-alert-message-tbf roar-alert-message-title">'+a.title+'</div><div class="roar-alert-message-tbf roar-alert-message-content">'+a.message+'</div><div class="roar-alert-message-tbf roar-alert-message-button">',a.cancel,a.html+='<a href="javascript:;" class="roar-alert-message-tbf roar-alert-message-button-cancel">'+a.cancelText+"</a>",a.confirm,a.html+='<a href="javascript:;" class="roar-alert-message-tbf roar-alert-message-button-confirm">'+a.confirmText+"</a>",a.html+="</div></div></div>";var l=document.createElement("div");l.id="roar-alert-wrap",l.innerHTML=a.html,document.body.appendChild(l),a.element=document.querySelector(".roar-alert"),a.cancelElement=document.querySelector(".roar-alert-message-button-cancel"),a.cancel?document.querySelector(".roar-alert-message-button-cancel").style.display="block":document.querySelector(".roar-alert-message-button-cancel").style.display="none",a.confirmElement=document.querySelector(".roar-alert-message-button-confirm"),a.confirm?document.querySelector(".roar-alert-message-button-confirm").style.display="block":document.querySelector(".roar-alert-message-button-confirm").style.display="none",a.cancelElement.onclick=a.cancelCallBack,a.confirmElement.onclick=a.confirmCallBack,window.roarAlert=a}document.querySelector(".roar-alert-message-title").innerHTML="",document.querySelector(".roar-alert-message-content").innerHTML="",document.querySelector(".roar-alert-message-button-cancel").innerHTML=a.cancelText,document.querySelector(".roar-alert-message-button-confirm").innerHTML=a.confirmText,a.cancelElement=document.querySelector(".roar-alert-message-button-cancel"),a.cancel?document.querySelector(".roar-alert-message-button-cancel").style.display="block":document.querySelector(".roar-alert-message-button-cancel").style.display="none",a.confirmElement=document.querySelector(".roar-alert-message-button-confirm"),a.confirm?document.querySelector(".roar-alert-message-button-confirm").style.display="block":document.querySelector(".roar-alert-message-button-confirm").style.display="none",a.cancelElement.onclick=a.cancelCallBack,a.confirmElement.onclick=a.confirmCallBack,a.title=a.title||"",a.message=a.message||"",document.querySelector(".roar-alert-message-title").innerHTML=a.title,document.querySelector(".roar-alert-message-content").innerHTML=a.message,window.roarAlert=a}
-
-
-
 document.addEventListener('DOMContentLoaded', function (event) {
     /**
      * Record Like action for custom post type

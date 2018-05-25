@@ -32,9 +32,11 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Fixed user role argument for author cards
 * UPDATE: Added custom post type filter (template override is not required anymore)
 * UPDATE: UI tweaks
+* UPDATE: Added title to image anchor links to help with lightbox titles
 * UPDATE: Removed deprecated theme-dependent JavaScript
 * UPDATE: Refactored bulk uploader (BREAKING)
 * UPDATE: Refactored single image template (BREAKING)
+* UPDATE: Updated RoarJS library to latest version (1.0.5)
 
 = 7.7.8 =
 * UPDATE: Replaced SweetAlert2 library with Roar (+speed)
