@@ -434,7 +434,7 @@ function imagepress_add_bulk($atts) {
                     $post_id = wp_insert_post($user_image_data);
                     update_post_meta($post_id, '_thumbnail_id', $attach_id);
 
-                    wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'][$key], 'imagepress_image_category');
+                    wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
                 }
             }
 
