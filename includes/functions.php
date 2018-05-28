@@ -173,15 +173,16 @@ function ip_editor() {
             $capability = ('page' == $post_type) ? 'edit_page' : 'edit_post';
             if (current_user_can($capability, $post_id) && wp_verify_nonce($_POST['update_post_nonce'], 'update_post_'. $post_id)) {
                 $post = array(
-                    'ID'             => esc_sql($post_id),
-                    'post_content'   => (stripslashes($_POST['postcontent'])),
-                    'post_title'     => esc_sql($_POST['post_title'])
+                    'ID' => esc_sql($post_id),
+                    'post_content' => (stripslashes($_POST['postcontent'])),
+                    'post_title' => esc_sql($_POST['post_title']),
+                    'post_name' => sanitize_text_field($_POST['post_title'])
                 );
                 wp_update_post($post);
 
                 imagepress_process_image('imagepress_image_file', $post_id, 1);
 
-                // multiple images
+                // Multiple images
                 if (1 == get_imagepress_option('ip_upload_secondary')) {
                     $files = $_FILES['imagepress_image_additional'];
                     if ($files) {
@@ -202,7 +203,7 @@ function ip_editor() {
                         }
                     }
                 }
-                // end multiple images
+                // End multiple images
 
                 $images = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
                 $count = $images ? count($images) : 0;
@@ -216,15 +217,12 @@ function ip_editor() {
                 if (get_imagepress_option('ip_allow_tags') == 1)
                     wp_set_object_terms($post_id, (int) $_POST['imagepress_image_tag'], 'imagepress_image_tag');
 
-                // custom fields
-                global $wpdb;
-
+                // Custom fields
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
 
                 foreach ($result as $field) {
                     update_post_meta($post_id, $field['field_slug'], $_POST[$field['field_slug']]);
                 }
-                //
             }
         }
 

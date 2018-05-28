@@ -30,6 +30,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 7.8.1 =
 * FIX: Fixed category assignment for bulk uploads
+* FIX: Fixed post slug when using Author Tools
 
 = 7.8.0 =
 * FIX: Fixed user role argument for author cards
