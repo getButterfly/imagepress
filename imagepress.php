@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.8.0
+Version: 7.8.1
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com/
 License: GPLv3
@@ -703,7 +703,7 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
                         $iphcc = get_term_by('slug', $imagepress_hardcoded_category, 'imagepress_image_category'); // ImagePress hard-coded category
                         $out .= '<input type="hidden" id="imagepress_image_category" name="imagepress_image_category[]" value="' . $iphcc->term_id . '">';
                     } else {
-                        $out .= imagepress_get_image_categories_dropdown_bulk('imagepress_image_category', '') . '';
+                        $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', '') . '';
                     }
                 $out .= '</p>';
 
@@ -762,18 +762,6 @@ function imagepress_get_image_categories_dropdown($taxonomy, $selected) {
         'orderby' => 'name',
         'show_option_all' => get_imagepress_option('ip_category_label'),
         'required' => true
-    ));
-}
-function imagepress_get_image_categories_dropdown_bulk($taxonomy, $selected) {
-    return wp_dropdown_categories(array(
-        'taxonomy' => $taxonomy,
-        'name' => 'imagepress_image_category[]',
-        'selected' => $selected,
-        'exclude' => get_imagepress_option('ip_cat_exclude'),
-        'hide_empty' => 0,
-        'echo' => 0,
-        'orderby' => 'name',
-        'show_option_all' => get_imagepress_option('ip_category_label')
     ));
 }
 function imagepress_get_image_tags_dropdown($taxonomy, $selected) {

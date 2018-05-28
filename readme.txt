@@ -3,7 +3,7 @@ Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 Requires at least: 4.7
 Tested up to: 4.9.6
-Stable tag: 7.8.0
+Stable tag: 7.8.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -27,6 +27,9 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO: Refactor custom fields
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
+
+= 7.8.1 =
+* FIX: Fixed category assignment for bulk uploads
 
 = 7.8.0 =
 * FIX: Fixed user role argument for author cards
