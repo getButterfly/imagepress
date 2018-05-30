@@ -86,12 +86,10 @@ class Cinnamon_Frontend_User_Manager {
 
         $errors = register_new_user($user_login, $user_email);
 
-        if (!is_wp_error($errors)) {
-            echo json_encode(array(
-                'registered' => true,
-                'message' => __('Registration was successful!', 'imagepress'),
-            ));
-        } else {
+        $registered = true;
+        $message = __('Registration was successful!', 'imagepress');
+
+        if (is_wp_error($errors)) {
             $registrationErrors = $errors->errors;
             $display_errors = '<ul>';
                 foreach ($registrationErrors as $error) {
@@ -99,39 +97,45 @@ class Cinnamon_Frontend_User_Manager {
                 }
             $display_errors .= '</ul>';
 
-            echo json_encode(array(
-                'registered' => false,
-                'message' => sprintf(__('Something was wrong:</br> %s', 'imagepress'), $display_errors),
-            ));
+            $registered = false;
+            $message = sprintf(__('Something was wrong:</br> %s', 'imagepress'), $display_errors);
         }
 
-        die();
+        echo json_encode(array(
+            'registered' => $registered,
+            'message' => $message,
+        ));
+
+        wp_die();
     }
 
 	public function cinnamon_process_psw_recovery() {
 		check_ajax_referer('ajax-form-nonce', 'security');
 
-		if(is_email($_REQUEST['username']))
-			$username = sanitize_email($_REQUEST['username']);
-		else
-			$username = sanitize_user($_REQUEST['username']);
+        $username = filter_input(INPUT_POST, 'username');
+
+		if (is_email($username)) {
+			$username = sanitize_email($username);
+        } else {
+			$username = sanitize_user($username);
+        }
 
 		$user_forgotten = $this->cinnamon_retrieve_password($username);
 
-		if(is_wp_error($user_forgotten)) {
-			echo json_encode(array(
-				'reset' => false,
-				'message' => $user_forgotten->get_error_message(),
-			));
-		}
-        else {
-			echo json_encode(array(
-				'reset' => true,
-				'message' => __('Password reset. Please check your email.', 'imagepress'),
-			));
+        $reset = true;
+        $message = __('Password reset. Please check your email.', 'imagepress');
+
+        if (is_wp_error($user_forgotten)) {
+            $reset = false;
+            $message = $user_forgotten->get_error_message();
 		}
 
-		die();
+        echo json_encode(array(
+            'reset' => $reset,
+            'message' => $message,
+        ));
+
+		wp_die();
 	}
 
 	public function cinnamon_retrieve_password($user_data) {
@@ -152,11 +156,6 @@ class Cinnamon_Frontend_User_Manager {
 		if ($errors->get_error_code()) {
 			return $errors;
 		}
-		if (!$user_data) {
-			$errors->add('invalidcombo', __('Invalid username or email address.', 'imagepress'));
-
-			return $errors;
-		}
 
 		$user_login = $user_data->user_login;
 		$user_email = $user_data->user_email;
@@ -175,12 +174,12 @@ class Cinnamon_Frontend_User_Manager {
 
 		$message = __('Someone requested that your password be reset for the following account: ', 'imagepress')  . $key . "\r\n\r\n";
 		$message .= network_home_url('/') . "\r\n\r\n";
-		$message .= sprintf( __('Username: %s'), $user_login ) . "\r\n\r\n";
+		$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
 		$message .= __('Your new password is ', 'imagepress') . $password . "\r\n\r\n";
 
 		$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
-		$title = sprintf(__('[%s] Password reset' ), $blogname);
+		$title = sprintf(__('[%s] Password reset'), $blogname);
 		$title = apply_filters('retrieve_password_title', $title);
 		$message = apply_filters('retrieve_password_message', $message, $key);
 
