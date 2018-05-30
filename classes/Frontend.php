@@ -15,47 +15,43 @@ class Cinnamon_Frontend_User_Manager {
 		add_shortcode('cinnamon-login', array($this,'cinnamon_user_frontend_shortcode'));
 	}
 
-	public function cinnamon_login_form() { ?>
-        <div class="ip-tab">
-            <ul class="ip-tabs active">
-                <li class="current"><a href="#"><?php esc_html_e('Log in', 'imagepress'); ?></a></li>
-                <?php if (get_option('users_can_register')) { ?>
-                    <li class=""><a href="#"><?php esc_html_e('Sign up', 'imagepress'); ?></a></li>
-                <?php } ?>
-                <li class=""><a href="#"><?php esc_html_e('Lost password', 'imagepress'); ?></a></li>
-            </ul>
-            <div class="tab_content">
-                <div class="ip-tabs-item" style="display: block;">
-                    <?php if(!is_user_logged_in()) : ?>
+	public function cinnamon_login_form() {
+        if (!is_user_logged_in()) { ?>
+            <div class="ip-tab">
+                <ul class="ip-tabs active">
+                    <li class="current"><a href="#"><?php esc_html_e('Log in', 'imagepress'); ?></a></li>
+                    <?php if (get_option('users_can_register')) { ?>
+                        <li class=""><a href="#"><?php esc_html_e('Sign up', 'imagepress'); ?></a></li>
+                    <?php } ?>
+                    <li class=""><a href="#"><?php esc_html_e('Lost password', 'imagepress'); ?></a></li>
+                </ul>
+                <div class="tab_content">
+                    <div class="ip-tabs-item" style="display: block;">
                         <?php
                         $accountPageUri = get_option('cinnamon_account_page');
 
                         $login_arguments = array(
-                            'echo'           => true,
-                            'remember'       => true,
-                            'redirect'       => $accountPageUri,
-                            'form_id'        => 'form',
-                            'id_username'    => 'user_login',
-                            'id_password'    => 'user_pass',
-                            'id_remember'    => 'rememberme',
-                            'id_submit'      => 'wp-submit',
+                            'echo' => true,
+                            'remember' => true,
+                            'redirect' => $accountPageUri,
+                            'form_id' => 'form',
+                            'id_username' => 'user_login',
+                            'id_password' => 'user_pass',
+                            'id_remember' => 'rememberme',
+                            'id_submit' => 'wp-submit',
                             'label_username' => __('Username', 'imagepress'),
                             'label_password' => __('Password', 'imagepress'),
                             'label_remember' => __('Remember me', 'imagepress'),
-                            'label_log_in'   => __('Log in', 'imagepress'),
+                            'label_log_in' => __('Log in', 'imagepress'),
                             'value_username' => '',
                             'value_remember' => true
                         );
                         wp_login_form($login_arguments);
                         ?>
-                    <?php else : ?>
-                        <p><?php esc_html_e('You are already logged in.', 'imagepress'); ?></p>
-                    <?php endif; ?>
-                </div>
+                    </div>
 
-                <?php if (get_option('users_can_register')) { ?>
-                    <div class="ip-tabs-item">
-                        <?php if (!is_user_logged_in()) { ?>
+                    <?php if (get_option('users_can_register')) { ?>
+                        <div class="ip-tabs-item">
                             <form action="register" method="post" id="regform" name="registrationform">
                                 <h2><?php esc_html_e('Sign up', 'imagepress'); ?></h2>
                                 <p><input type="text" name="user_login" id="reg_user" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php esc_html_e('Username', 'imagepress'); ?>"></p>
@@ -65,56 +61,52 @@ class Cinnamon_Frontend_User_Manager {
                                 <input type="hidden" name="register" value="true">
                                 <?php wp_nonce_field('ajax-form-nonce', 'security'); ?>
                             </form>
-                        <?php } else { ?>
-                            <p><?php esc_html_e('You are already logged in.', 'imagepress'); ?></p>
-                        <?php } ?>
-                    </div>
-                <?php } ?>
+                        </div>
+                    <?php } ?>
 
-                <div class="ip-tabs-item">
-                    <form action="resetpsw" method="post" id="pswform" name="passwordform">
-                        <h2><?php esc_html_e('Lost your password?', 'imagepress'); ?></h2>
-                        <p><input type="text" name="forgot_login" id="forgot_login" class="input" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php esc_html_e('Username or email address', 'imagepress'); ?>"></p>
-                        <p><input type="submit" name="fum-psw-sumbit" id="fum-psw-submit" value="<?php esc_html_e('Reset password', 'imagepress'); ?>"></p>
-                        <input type="hidden" name="forgotten" value="true">
-                        <?php wp_nonce_field('ajax-form-nonce', 'security'); ?>
-                    </form>
+                    <div class="ip-tabs-item">
+                        <form action="resetpsw" method="post" id="pswform" name="passwordform">
+                            <h2><?php esc_html_e('Lost your password?', 'imagepress'); ?></h2>
+                            <p><input type="text" name="forgot_login" id="forgot_login" class="input" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php esc_html_e('Username or email address', 'imagepress'); ?>"></p>
+                            <p><input type="submit" name="fum-psw-sumbit" id="fum-psw-submit" value="<?php esc_html_e('Reset password', 'imagepress'); ?>"></p>
+                            <input type="hidden" name="forgotten" value="true">
+                            <?php wp_nonce_field('ajax-form-nonce', 'security'); ?>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    <?php
-	}
+        <?php }
+    }
 
 	public function cinnamon_process_registration() {
-		check_ajax_referer('ajax-form-nonce', 'security');
+        check_ajax_referer('ajax-form-nonce', 'security');
 
-		// filter_input(INPUT_POST, 'user_login')
-		$user_login = $_REQUEST['user_login'];
-		$user_email = $_REQUEST['user_email'];
+        $user_login = filter_input(INPUT_POST, 'user_login');
+        $user_email = filter_input(INPUT_POST, 'user_email', FILTER_SANITIZE_EMAIL);
 
-		$errors = register_new_user($user_login, $user_email);
+        $errors = register_new_user($user_login, $user_email);
 
-        if(!is_wp_error($errors)) {
-			echo json_encode(array(
-				'registered' => true,
-				'message' => __('Registration was successful!', 'imagepress'),
-			));
+        if (!is_wp_error($errors)) {
+            echo json_encode(array(
+                'registered' => true,
+                'message' => __('Registration was successful!', 'imagepress'),
+            ));
         } else {
-			$registrationErrors = $errors->errors;
-			$display_errors = '<ul>';
-                foreach($registrationErrors as $error) {
+            $registrationErrors = $errors->errors;
+            $display_errors = '<ul>';
+                foreach ($registrationErrors as $error) {
                     $display_errors .= '<li>' . $error[0] . '</li>';
                 }
-			$display_errors .= '</ul>';
+            $display_errors .= '</ul>';
 
-			echo json_encode(array(
-				'registered' => false,
-				'message' => sprintf(__('Something was wrong:</br> %s', 'imagepress'), $display_errors),
-			));
+            echo json_encode(array(
+                'registered' => false,
+                'message' => sprintf(__('Something was wrong:</br> %s', 'imagepress'), $display_errors),
+            ));
         }
 
-		die();
-	}
+        die();
+    }
 
 	public function cinnamon_process_psw_recovery() {
 		check_ajax_referer('ajax-form-nonce', 'security');
