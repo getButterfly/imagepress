@@ -94,19 +94,6 @@ a img { border: none; }
 /* Tiny icons */
 .ip_icon_hover { position: absolute; padding: 8px; display: block; bottom: 8px; left: 8px; }
 
-#cinnamon-cards .list {
-    -webkit-flex-flow: row wrap;
-    -moz-flex-flow: row wrap;
-    flex-flow: row wrap;
-
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: flex;
-
-    -webkit-align-content: space-between; /* Safari */
-    align-content:         space-between;
-}
-
 
 
 /*
@@ -134,8 +121,7 @@ a img { border: none; }
     text-decoration: none;
 }
 
-/* make stuff !important to override theme styles */
-.ip_box img { display: block; width: 100%; height: auto; border: 0 !important; padding: 0 !important; opacity: 1; margin: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+.ip_box img { display: block; width: 100%; height: auto; border: 0; padding: 0; opacity: 1; margin: 0; border-radius: 0; box-shadow: none; }
 
 .ip_box img { margin: 0; }
 .ip_box img:hover { opacity: 0.75; }
@@ -156,7 +142,7 @@ a img { border: none; }
  * Image grid: Overlay theme
  */
 .ip-box-container-overlay .ip_box {
-    margin: 0 !important;
+    margin: 0;
     float: left;
     position: relative;
 }
@@ -212,7 +198,7 @@ a img { border: none; }
 .notifications-container .read i { font-weight: inherit; color: inherit; }
 .notifications-container .read { border-left: 0; }
 
-.notifications-container .unread i { font-weight: 1000 !important; }
+.notifications-container .unread i { font-weight: 1000; }
 
 .notifications-container {
     display: none;
@@ -245,7 +231,7 @@ a img { border: none; }
     font-size: 18px;
 }
 .notifications-bell:hover {
-    color: #ffffff!important;
+    color: #ffffff;
 }
 .notifications-bell sup {
     display: inline-block;
@@ -583,7 +569,7 @@ a img { border: none; }
 .profile-hub-container .cinnamon-followers .avatar {
     width: 40px;
     height: 40px;
-    margin: 0 0 4px 0 !important;
+    margin: 0 0 4px 0;
     display: inline-block;
     border: none;
 }
@@ -625,7 +611,7 @@ a img { border: none; }
 }
 
 .cinnamon .cinnamon-share {
-    width: auto !important;
+    width: auto;
 }
 
 .cinnamon .description {
@@ -651,7 +637,7 @@ a img { border: none; }
     margin: 16px 0;
 }
 
-.cinnamon-grid ul { margin: 0 !important; padding: 0; }
+.cinnamon-grid ul { margin: 0; padding: 0; }
 .cinnamon-grid ul li { list-style: none; margin: 0 1px 1px 0; padding: 0; display: inline-block; }
 .cinnamon-grid ul li img { width: 100px; height: 100px; opacity: 1; }
 .cinnamon-grid ul li img:hover { opacity: 0.85; }
@@ -675,22 +661,6 @@ a img { border: none; }
 .cinnamon-card .mosaicflow div:hover { background-color: #ffffff; }
 .cinnamon-card .mosaicflow div:hover img { opacity: 0.8; }
 
-#cinnamon-cards .list {
-    padding: 0;
-    margin: 0;
-
-    /**
-    display: -ms-flexbox;
-    -ms-flex-wrap: wrap;
-    -ms-flex-direction: column;
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
-    display: -webkit-box;
-    display: flex;
-    /**/
-}
-
-#author-cards .list { padding: 0; margin: 0; }
 .cinnamon-sortable { padding: 16px 0; margin: 0 0 16px 0; }
 .cinnamon-sortable input { width: 320px; }
 
@@ -711,8 +681,8 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .ip-tabs {
     display: table;
     position: relative;
-    margin: 0 !important;
-    padding: 12px 0 !important;
+    margin: 0;
+    padding: 12px 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 3px;
@@ -722,8 +692,8 @@ ul, li {padding: 0; margin: 0; list-style: none}
     overflow: hidden;
     padding: 0;
     position: relative;
-    margin: 0 !important;
-    list-style: none !important;
+    margin: 0;
+    list-style: none;
 }
 .ip-tabs .current a, .ip-tabs a:hover { background: none; }
 .ip-tabs .current a { font-weight: 600; }
@@ -810,7 +780,7 @@ ul, li {padding: 0; margin: 0; list-style: none}
 
 .ip_collections_edit { display: block; float: left; width: 24%; height: 385px; background-color: rgba(0, 0, 0, 0.05); margin: 0 1% 1% 0; padding: 10px; position: relative; border: 1px solid rgba(0, 0, 0, 0); }
 .ip_collections_edit:hover { background-color: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.75); }
-.ip_collections_edit h3 { margin: 0 0 4px 0 !important; font-weight: 400; text-transform: none; font-size: 1.17em; }
+.ip_collections_edit h3 { margin: 0 0 4px 0; font-weight: 400; text-transform: none; font-size: 1.17em; }
 .ip_collections_edit h3 input { text-align: center; }
 .ip_collections_edit .collection_details {
     text-align: center;
@@ -989,8 +959,8 @@ ul, li {padding: 0; margin: 0; list-style: none}
 
 
 @media only screen and (max-width : 480px) {
-    .ip-tabs li.cinnamon-stats-column { float: none; display: block; text-align: center; padding: 16px 0 0 0 !important; }
-    .cinnamon-avatar { width: 88% !important; }
+    .ip-tabs li.cinnamon-stats-column { float: none; display: block; text-align: center; padding: 16px 0 0 0; }
+    .cinnamon-avatar { width: 88%; }
     .cinnamon-meta { float: none; display: inline-block; }
     .cinnamon-meta:last-child { border-right: 0 none; }
     .profile-hub-container .ph-nametag { font-size: 26px; }
@@ -1005,55 +975,16 @@ ul, li {padding: 0; margin: 0; list-style: none}
 
 
 
-.list {
-    padding: 0;
-}
-.list:after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-}
-.list .ip_box,
-.list .gap {
-    display: inline-block;
-    width: 50%;
-}
-.list .ip_box {
-    text-align: left;
-    margin-bottom: 2%;
-}
-
-/**
-.list .ip_box:before{
-    content: '';
-    display: inline-block;
-    padding-top: 60%;
-}
-/**/
-
-@media all and (min-width: 480px){
-    .list .ip_box,
-    .list .gap {
-        width: 35%;
-    }
-}
-@media all and (min-width: 640px){
-    .list .ip_box,
-    .list .gap {
-        width: 25%;
-    }
-}
-
 @media all and (max-width: 720px) {
     .ip_box,
     .ip_collections_edit {
-        width: 50% !important;
+        width: 50%;
     }
 }
 @media all and (max-width: 480px) {
     .ip_box,
     .ip_collections_edit {
-        width: 100% !important;
+        width: 100%;
     }
 
     .ip-sorter-primary input,
@@ -1155,13 +1086,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
 }
 
 
-@media only screen and (max-width : 480px) {
-}
-
-div.list[data-mode="teaser"] .ip_box .ip_box_top,
-div.list[data-mode="teaser"] .ip_box .ip_box_bottom {
-    display: none;
-}
 
 /*
  * Infinite loading on profile page

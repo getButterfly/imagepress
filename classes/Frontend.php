@@ -116,8 +116,6 @@ class Cinnamon_Frontend_User_Manager {
 
 		if (is_email($username)) {
 			$username = sanitize_email($username);
-        } else {
-			$username = sanitize_user($username);
         }
 
 		$user_forgotten = $this->cinnamon_retrieve_password($username);
