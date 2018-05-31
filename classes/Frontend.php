@@ -18,7 +18,7 @@ class Cinnamon_Frontend_User_Manager {
 	public function cinnamon_login_form() { ?>
         <div class="ip-tab">
             <ul class="ip-tabs active">
-                <li class="current"><a href="#"><?php esc_html_e('Log in', 'imagepress'); ?></a></li>
+                <li class="current"><a href="#"><?php echo is_user_logged_in() ? __('My account', 'imagepress') : __('Log in', 'imagepress'); ?></a></li>
                 <?php if (get_option('users_can_register') && !is_user_logged_in()) { ?>
                     <li class=""><a href="#"><?php esc_html_e('Sign up', 'imagepress'); ?></a></li>
                 <?php } ?>
@@ -56,7 +56,7 @@ class Cinnamon_Frontend_User_Manager {
                     <?php } ?>
                 </div>
 
-                <?php if (get_option('users_can_register')) { ?>
+                <?php if (get_option('users_can_register') && !is_user_logged_in()) { ?>
                     <div class="ip-tabs-item">
                         <form action="register" method="post" id="regform" name="registrationform">
                             <h2><?php esc_html_e('Sign up', 'imagepress'); ?></h2>
