@@ -22,7 +22,9 @@ class Cinnamon_Frontend_User_Manager {
                 <?php if (get_option('users_can_register') && !is_user_logged_in()) { ?>
                     <li class=""><a href="#"><?php esc_html_e('Sign up', 'imagepress'); ?></a></li>
                 <?php } ?>
-                <li class=""><a href="#"><?php esc_html_e('Lost password', 'imagepress'); ?></a></li>
+                <?php if (!is_user_logged_in()) { ?>
+                    <li class=""><a href="#"><?php esc_html_e('Lost password', 'imagepress'); ?></a></li>
+                <?php } ?>
             </ul>
             <div class="tab_content">
                 <div class="ip-tabs-item" style="display: block;">
@@ -70,15 +72,17 @@ class Cinnamon_Frontend_User_Manager {
                     </div>
                 <?php } ?>
 
-                <div class="ip-tabs-item">
-                    <form action="resetpsw" method="post" id="pswform" name="passwordform">
-                        <h2><?php esc_html_e('Lost your password?', 'imagepress'); ?></h2>
-                        <p><input type="text" name="forgot_login" id="forgot_login" class="input" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php esc_html_e('Username or email address', 'imagepress'); ?>"></p>
-                        <p><input type="submit" name="fum-psw-sumbit" id="fum-psw-submit" value="<?php esc_html_e('Reset password', 'imagepress'); ?>"></p>
-                        <input type="hidden" name="forgotten" value="true">
-                        <?php wp_nonce_field('ajax-form-nonce', 'security'); ?>
-                    </form>
-                </div>
+                <?php if (!is_user_logged_in()) { ?>
+                    <div class="ip-tabs-item">
+                        <form action="resetpsw" method="post" id="pswform" name="passwordform">
+                            <h2><?php esc_html_e('Lost your password?', 'imagepress'); ?></h2>
+                            <p><input type="text" name="forgot_login" id="forgot_login" class="input" value="<?php if (isset($user_login)) echo esc_attr(stripslashes($user_login)); ?>" size="32" placeholder="<?php esc_html_e('Username or email address', 'imagepress'); ?>"></p>
+                            <p><input type="submit" name="fum-psw-sumbit" id="fum-psw-submit" value="<?php esc_html_e('Reset password', 'imagepress'); ?>"></p>
+                            <input type="hidden" name="forgotten" value="true">
+                            <?php wp_nonce_field('ajax-form-nonce', 'security'); ?>
+                        </form>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     <?php }
