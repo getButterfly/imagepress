@@ -35,6 +35,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * GDPR: Removed employer meta
 * GDPR: Removed location meta
 * GDPR: Removed status meta
+* UPDATE: Added profile editor link and logout link to [cinnamon-login]
 
 = 7.8.0 =
 * FIX: Fixed user role argument for author cards
