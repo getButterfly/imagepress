@@ -114,7 +114,6 @@ function cinnamon_card($atts) {
                 $display .= '<div class="avatar-holder"><a href="' . getImagePressProfileUri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
 
                 $hub_user_info = get_userdata($author);
-                $hub_location = get_the_author_meta('hub_location', $author);
 
                 $display .= '<h3>
                     <a href="' . getImagePressProfileUri($author, false) . '" class="name">';
@@ -124,12 +123,8 @@ function cinnamon_card($atts) {
                             $display .= $hub_user_info->display_name;
                         }
                     $display .= '</a>
-                </h3>';
-
-                if (!empty($hub_location))
-                    $display .= '<div class="location-holder"><small><span class="location">' . get_the_author_meta('hub_location', $author) . '</span></small></div>';
-
-                $display .= '<div class="cinnamon-stats">
+                </h3>
+                <div class="cinnamon-stats">
                     <div class="cinnamon-meta"><span class="views">' . kformat(cinnamon_PostViews($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
                     <div class="cinnamon-meta"><span class="followers">' . kformat(pwuf_get_follower_count($author)) . '</span><br><small>' . __('followers', 'imagepress') . '</small></div>
                     <div class="cinnamon-meta"><span class="uploads">' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</span><br><small>' . __('uploads', 'imagepress') . '</small></div>
@@ -222,7 +217,6 @@ function cinnamon_profile($atts) {
     $logged_in_user = wp_get_current_user();
 
     $display .= '<div class="profile-hub-container">';
-        $hub_location = get_the_author_meta('hub_location', $author);
 
         if (get_imagepress_option('cinnamon_fancy_header') === 'yes') {
             $display .= '<div class="cinnamon-cover" style="background: url(' . $hca . ') no-repeat center center; background-size: cover;"><div class="cinnamon-opaque"></div>';
@@ -252,13 +246,8 @@ function cinnamon_profile($atts) {
                                 $display .= ' <small><a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
                             }
                         $display .= '</div>
-                        <div class="ph-locationtag">';
-                            if(!empty($hub_location))
-                                $display .= '<b>' . __('Location', 'imagepress') . '</b> ' . $hub_location;
-                            $display .= '<br><b>' . __('Connect', 'imagepress') . '</b> ' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
-
-                            if ((int) get_the_author_meta('hub_status', $author) === 1)
-                                $display .= ' <a href="mailto:' . get_the_author_meta('email', $author) . '"><svg class="lnr lnr-envelope"><use xlink:href="#lnr-envelope"></use></svg></a>';
+                        <div class="ph-locationtag">
+                            <b>' . __('Connect', 'imagepress') . '</b> ' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
                         $display .= '</div>
                     </div>';
                 $display .= '</div>';
@@ -282,8 +271,6 @@ function cinnamon_profile($atts) {
 
                 $display .= '<h2>' . $hub_name . '</h2>
                 <p>';
-                    if (!empty($hub_location))
-                        $display .= $hub_location . ' | ';
                     $display .= $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
                     if (is_user_logged_in() && $username == $logged_in_user->user_login)
@@ -601,22 +588,6 @@ function cinnamon_profile_edit($atts) {
                                     <th><label for="googleplus">' . __('Google+ profile URL', 'imagepress') . '</label></th>
                                     <td><input name="googleplus" type="url" id="googleplus" value="' . get_the_author_meta('googleplus', $userid) . '"></td>
                                 </tr>
-                                <tr>
-                                    <th><label for="hub_location">' . __('Location', 'imagepress') . '</label></th>
-                                    <td>
-                                        <input type="text" name="hub_location" id="hub_location" value="' .  esc_attr(get_the_author_meta('hub_location', $userid)) . '" class="regular-text">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><label for="hub_status">' . __('Status', 'imagepress') . '</label></th>
-                                    <td>
-                                        <select name="hub_status" id="hub_status">
-                                            <option value="1" ' . ((get_the_author_meta('hub_status', $userid) == 1) ? 'selected' : '') . '>' . __('Available for hire', 'imagepress') . '</option>
-                                            <option value="0" ' . ((get_the_author_meta('hub_status', $userid) == 0) ? 'selected' : '') . '>' . __('Not available for hire', 'imagepress') . '</option>
-                                        </select>
-                                        <br><small>' . __('Being available for hire will show an additional email icon on your profile, emails will be sent to the email address you have registered with the site.', 'imagepress') . '</small>
-                                    </td>
-                                </tr>
                                 <tr><td colspan="2"><hr></td></tr>
                             </table>
                         </div>
@@ -761,9 +732,6 @@ function cinnamon_profile_edit($atts) {
 function save_cinnamon_profile_fields($user_id) {
     if (!current_user_can('edit_user', $user_id))
         return false;
-
-    update_user_meta($user_id, 'hub_location', $_POST['hub_location']);
-    update_user_meta($user_id, 'hub_status', $_POST['hub_status']);
 
     // awards
     if (current_user_can('manage_options', $user_id)) {

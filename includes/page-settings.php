@@ -164,8 +164,11 @@ function imagepress_admin_page() {
                     // unset from options array: remove cinnamon_pt_author
 
                     delete_metadata('user', 0, 'user_title', '', true);
-                    delete_metadata('user', 0, 'hub_field', '', true);
+
                     delete_metadata('user', 0, 'hub_employer', '', true);
+                    delete_metadata('user', 0, 'hub_location', '', true);
+                    delete_metadata('user', 0, 'hub_status', '', true);
+                    delete_metadata('user', 0, 'hub_field', '', true);
                 }
             }
             ?>
