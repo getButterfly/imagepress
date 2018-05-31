@@ -47,7 +47,6 @@ $optionArray = array(
     'cinnamon_edit_label' => 'Edit profile',
     'cinnamon_pt_account' => 'Account details',
     'cinnamon_pt_social' => 'Social details',
-    'cinnamon_pt_author' => 'Author details',
     'cinnamon_pt_profile' => 'Profile details',
     'cinnamon_pt_collections' => 'Collections',
     'cinnamon_pt_images' => 'Image editor',

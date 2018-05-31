@@ -489,7 +489,6 @@ function cinnamon_profile_edit($atts) {
                         <li class="current"><a href="#">' . __('Summary', 'imagepress') . '</a></li>
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_account') . '</a></li>
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_social') . '</a></li>
-                        <li><a href="#">' . get_imagepress_option('cinnamon_pt_author') . '</a></li>
                         <li><a href="#">' . get_imagepress_option('cinnamon_pt_profile') . '</a></li>';
                         if (get_imagepress_option('ip_mod_collections') == 1) {
                             $out .= '<li><a href="#" class="imagepress-collections">' . get_imagepress_option('cinnamon_pt_collections') . '</a></li>';
@@ -602,10 +601,6 @@ function cinnamon_profile_edit($atts) {
                                     <th><label for="googleplus">' . __('Google+ profile URL', 'imagepress') . '</label></th>
                                     <td><input name="googleplus" type="url" id="googleplus" value="' . get_the_author_meta('googleplus', $userid) . '"></td>
                                 </tr>
-                            </table>
-                        </div>
-                        <div class="ip-tabs-item" style="display: none;">
-                            <table class="form-table">
                                 <tr>
                                     <th><label for="hub_location">' . __('Location', 'imagepress') . '</label></th>
                                     <td>

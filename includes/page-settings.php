@@ -161,6 +161,7 @@ function imagepress_admin_page() {
                     // unset from options array: remove cms_verified_profile
                     // unset from options array: remove ip_ezdz
                     // unset from options array: remove ip_ezdz_label
+                    // unset from options array: remove cinnamon_pt_author
 
                     delete_metadata('user', 0, 'user_title', '', true);
                     delete_metadata('user', 0, 'hub_field', '', true);
@@ -937,7 +938,6 @@ function imagepress_admin_page() {
                     'cinnamon_edit_label' => $_POST['cinnamon_edit_label'],
                     'cinnamon_pt_account' => $_POST['cinnamon_pt_account'],
                     'cinnamon_pt_social' => $_POST['cinnamon_pt_social'],
-                    'cinnamon_pt_author' => $_POST['cinnamon_pt_author'],
                     'cinnamon_pt_profile' => $_POST['cinnamon_pt_profile'],
                     'cinnamon_pt_collections' => $_POST['cinnamon_pt_collections'],
                     'cinnamon_pt_images' => $_POST['cinnamon_pt_images'],
@@ -1051,7 +1051,6 @@ function imagepress_admin_page() {
                                     <!-- pt = profile tab -->
                                     <input type="text" name="cinnamon_pt_account" value="<?php echo get_imagepress_option('cinnamon_pt_account'); ?>" class="regular-text" placeholder="Account details"><br>
                                     <input type="text" name="cinnamon_pt_social" value="<?php echo get_imagepress_option('cinnamon_pt_social'); ?>" class="regular-text" placeholder="Social details"><br>
-                                    <input type="text" name="cinnamon_pt_author" value="<?php echo get_imagepress_option('cinnamon_pt_author'); ?>" class="regular-text" placeholder="Author details"><br>
                                     <input type="text" name="cinnamon_pt_profile" value="<?php echo get_imagepress_option('cinnamon_pt_profile'); ?>" class="regular-text" placeholder="Profile details"><br>
                                     <input type="text" name="cinnamon_pt_collections" value="<?php echo get_imagepress_option('cinnamon_pt_collections'); ?>" class="regular-text" placeholder="Collections"><br>
                                     <input type="text" name="cinnamon_pt_images" value="<?php echo get_imagepress_option('cinnamon_pt_images'); ?>" class="regular-text" placeholder="Image editor">
