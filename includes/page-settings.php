@@ -149,7 +149,7 @@ function imagepress_admin_page() {
             if (isset($_POST['isCleanupSubmit'])) {
                 // Check ImagePress version for cleanup
                 $ipdata = get_plugin_data(IP_PLUGIN_FILE_PATH);
-                if (version_compare($ipdata['Version'], '7.7.0', '<')) {
+                if (version_compare($ipdata['Version'], '7.8.0', '<')) {
                     delete_post_meta_by_key('imagepress_author');
                     delete_post_meta_by_key('imagepress_email');
                     delete_post_meta_by_key('imagepress_video');
@@ -161,7 +161,10 @@ function imagepress_admin_page() {
                     // unset from options array: remove cms_verified_profile
                     // unset from options array: remove ip_ezdz
                     // unset from options array: remove ip_ezdz_label
-                    // unset user meta: user_title
+
+                    delete_metadata('user', 0, 'user_title', '', true);
+                    delete_metadata('user', 0, 'hub_field', '', true);
+                    delete_metadata('user', 0, 'hub_employer', '', true);
                 }
             }
             ?>

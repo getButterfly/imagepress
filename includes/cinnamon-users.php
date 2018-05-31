@@ -222,8 +222,6 @@ function cinnamon_profile($atts) {
     $logged_in_user = wp_get_current_user();
 
     $display .= '<div class="profile-hub-container">';
-        $hub_field = get_the_author_meta('hub_field', $author);
-        $hub_employer = get_the_author_meta('hub_employer', $author);
         $hub_location = get_the_author_meta('hub_location', $author);
 
         if (get_imagepress_option('cinnamon_fancy_header') === 'yes') {
@@ -257,8 +255,6 @@ function cinnamon_profile($atts) {
                         <div class="ph-locationtag">';
                             if(!empty($hub_location))
                                 $display .= '<b>' . __('Location', 'imagepress') . '</b> ' . $hub_location;
-                            if(!empty($hub_field))
-                                $display .= '<br><b>' . __('Field', 'imagepress') . '</b> ' . $hub_field;
                             $display .= '<br><b>' . __('Connect', 'imagepress') . '</b> ' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
                             if ((int) get_the_author_meta('hub_status', $author) === 1)
@@ -286,8 +282,6 @@ function cinnamon_profile($atts) {
 
                 $display .= '<h2>' . $hub_name . '</h2>
                 <p>';
-                    if (!empty($hub_field))
-                        $display .= $hub_field . ' | ';
                     if (!empty($hub_location))
                         $display .= $hub_location . ' | ';
                     $display .= $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
@@ -339,13 +333,11 @@ function cinnamon_profile($atts) {
                     <div class="thin-ui-button ip-clear" id="ipProfileShowMore">' . get_imagepress_option('ip_load_more_label') . '</div>';
                 }
 
-                if(get_imagepress_option('cinnamon_show_about') == 1) {
+                if (get_imagepress_option('cinnamon_show_about') == 1) {
                     $display .= '<div class="ip-tabs-item" style="display: none;">';
-                        if(!empty($hub_user_info->description))
+                        if (!empty($hub_user_info->description))
                             $display .= wpautop($hub_user_info->description);
                         $display .= '<br>';
-                        if(!empty($hub_employer))
-                            $display .= '<p><b>' . __('Employer', 'imagepress') . ':</b><br>' . $hub_employer . '</p>';
                     $display .= '</div>';
                 }
 
@@ -621,18 +613,6 @@ function cinnamon_profile_edit($atts) {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><label for="hub_employer">' . __('Employer', 'imagepress') . '</label></th>
-                                    <td>
-                                        <input type="text" name="hub_employer" id="hub_employer" value="' .  esc_attr(get_the_author_meta('hub_employer', $userid)) . '" class="regular-text">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><label for="hub_field">' . __('Occupational field', 'imagepress') . '</label></th>
-                                    <td>
-                                        <input type="text" name="hub_field" id="hub_field" value="' . esc_attr(get_the_author_meta('hub_field', $userid)) . '" class="regular-text">
-                                    </td>
-                                </tr>
-                                <tr>
                                     <th><label for="hub_status">' . __('Status', 'imagepress') . '</label></th>
                                     <td>
                                         <select name="hub_status" id="hub_status">
@@ -788,8 +768,6 @@ function save_cinnamon_profile_fields($user_id) {
         return false;
 
     update_user_meta($user_id, 'hub_location', $_POST['hub_location']);
-    update_user_meta($user_id, 'hub_employer', $_POST['hub_employer']);
-    update_user_meta($user_id, 'hub_field', $_POST['hub_field']);
     update_user_meta($user_id, 'hub_status', $_POST['hub_status']);
 
     // awards
