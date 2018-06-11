@@ -246,9 +246,7 @@ function cinnamon_profile($atts) {
                                 $display .= ' <small><a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
                             }
                         $display .= '</div>
-                        <div class="ph-locationtag">
-                            <b>' . __('Connect', 'imagepress') . '</b> ' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
-                        $display .= '</div>
+                        <div class="ph-locationtag">' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url . '</div>
                     </div>';
                 $display .= '</div>';
             $display .= '</div>';

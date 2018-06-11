@@ -174,9 +174,6 @@ function roar(title, message, options) {
 
 /**
  * ImagePress Javascript functions
- * https://getbutterfly.com/roarjs-vanilla-javascript-alert-confirm-replacement/
- * Copyright (c) 2014-2018 Ciprian Popescu
- * Licensed GPLv3
  */
 document.addEventListener('DOMContentLoaded', function (event) {
     /**

@@ -543,6 +543,7 @@ a img { border: none; }
 }
 .profile-hub-container .ph-nametag {
     font-size: 28px;
+    line-height: 1.25;
     padding: 0;
     margin: 2px 0 0 0;
 }
@@ -695,6 +696,14 @@ ul, li {padding: 0; margin: 0; list-style: none}
     margin: 0;
     list-style: none;
 }
+
+@media all and (max-width: 480px) {
+    .ip-tabs li {
+        float: none;
+        padding: 8px 0;
+    }
+}
+
 .ip-tabs .current a, .ip-tabs a:hover { background: none; }
 .ip-tabs .current a { font-weight: 600; }
 
@@ -778,7 +787,7 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .imagepress-float-right { float: right; }
 
 
-.ip_collections_edit { display: block; float: left; width: 24%; height: 385px; background-color: rgba(0, 0, 0, 0.05); margin: 0 1% 1% 0; padding: 10px; position: relative; border: 1px solid rgba(0, 0, 0, 0); }
+.ip_collections_edit { display: block; float: left; width: 24%; height: 424px; background-color: rgba(0, 0, 0, 0.05); margin: 0 1% 1% 0; padding: 10px; position: relative; border: 1px solid rgba(0, 0, 0, 0); }
 .ip_collections_edit:hover { background-color: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.75); }
 .ip_collections_edit h3 { margin: 0 0 4px 0; font-weight: 400; text-transform: none; font-size: 1.17em; }
 .ip_collections_edit h3 input { text-align: center; }
@@ -1030,6 +1039,7 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .imagepress-upload-form textarea {
     width: 100%;
 }
+.cinnamon input[type="submit"],
 .ip-tab input[type="submit"],
 .ip-tab input[type="file"],
 .ip-tab button,
