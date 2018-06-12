@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 like = this,
                 pid = like.dataset.post_id;
 
-            like.innerHTML = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> <svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>';
+            like.innerHTML = '<i class="fas fa-heart"></i> <i class="fas fa-cog fa-spin"></i>';
 
             request.open('POST', ipAjaxVar.ajaxurl, true);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -200,11 +200,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
                             likeLabel = ipAjaxVar.likelabel;
                         }
                         like.classList.remove('liked');
-                        like.innerHTML = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' + likeLabel;
+                        like.innerHTML = '<i class="far fa-heart"></i> ' + likeLabel;
                     } else {
                         likeLabel = ipAjaxVar.unlikelabel;
                         like.classList.add('liked');
-                        like.innerHTML = '<svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' + likeLabel;
+                        like.innerHTML = '<i class="fas fa-heart"></i> ' + likeLabel;
                     }
                 } else {
                     // Response error
@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
         document.getElementById('imagepress_upload_image_form').addEventListener('submit', function () {
             document.getElementById('imagepress_submit').disabled = true;
             document.getElementById('imagepress_submit').style.setProperty('opacity', '0.5');
-            document.getElementById('ipload').innerHTML = '<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg> Uploading...';
+            document.getElementById('ipload').innerHTML = '<i class="fas fa-cog fa-spin"></i> Uploading...';
         });
     }
     /* end upload */
@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             }
         });
 
-        jQuery('.notifications-bell').html('<svg class="lnr lnr-alarm"><use xlink:href="#lnr-alarm"></use></svg><sup>0</sup>');
+        jQuery('.notifications-bell').html('<i class="fas fa-bell"></i><sup>0</sup>');
     });
 
     jQuery('.notifications-container').hide();
@@ -675,7 +675,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             var id = jQuery(this).data('image-id');
             var title = jQuery(this).val();
 
-            jQuery('.editableImageStatus_' + id).show().html('<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>');
+            jQuery('.editableImageStatus_' + id).show().html('<i class="fas fa-cog fa-spin"></i>');
 
             jQuery.ajax({
                 type: 'post',
@@ -688,7 +688,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 success: function (result) {
                     if (result === 'success') {
                         jQuery('#listImage_' + id).removeClass('editableImageActive');
-                        jQuery('.editableImageStatus_' + id).show().html('<svg class="lnr lnr-checkmark-circle"><use xlink:href="#lnr-checkmark-circle"></use></svg>');
+                        jQuery('.editableImageStatus_' + id).show().html('<i class="fas fa-check"></i>');
                     }
                 }
             });
@@ -840,15 +840,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Check if dropdown has changed on page load
         sorterDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin"></i>';
             window.location.href = sorterDropdown.value;
         };
         rangerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin"></i>';
             window.location.href = rangerDropdown.value;
         };
         taxxxerDropdown.onchange = function () {
-            document.getElementById('ip-sorter-loader').innerHTML = '<svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg>';
+            document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin"></i>';
             window.location.href = taxxxerDropdown.value;
         };
 
@@ -949,19 +949,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Load SVG in body
-    var a, f = {},
-        b, d, g, e = !1,
-        h = document.getElementsByTagName('use'),
-        c;
-    XMLHttpRequest && (e = new XMLHttpRequest, e = 'withCredentials' in e ? XMLHttpRequest : XDomainRequest ? XDomainRequest : !1);
-    if (e)
-        for (g = function() {
-                var a = document.body,
-                    b = document.createElement('x');
-                b.innerHTML = c.responseText;
-                a.insertBefore(b.firstChild, a.firstChild)
-            }, d = 0; d < h.length; d += 1) b = h[d].getAttribute('xlink:href').split('#'), a = b[0], b = b[1], a.length || !b || document.getElementById(b) ||
-            (a = ipAjaxVar.ip_url + '/img/svgdefs.svg'), a.length && (f[a] = f[a] || new e, c = f[a], c.onload || (c.onload = g, c.open('GET', a), c.send()))
 }, !1);

@@ -1143,23 +1143,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
 
 
 
-
-
-.lnr {
-    display: inline-block;
-    fill: currentColor;
-    width: 1em;
-    height: 1em;
-    vertical-align: -0.05em;
-}
-
-.lnr-eye {
-    color: inherit;
-    font-size: inherit;
-}
-
-
-
 /*
  * roar - v1.0.3 - 2018-05-09
  * https://getbutterfly.com/roar/

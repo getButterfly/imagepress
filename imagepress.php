@@ -1017,7 +1017,7 @@ function imagepress_widget($atts) {
         } else if ((string) $type === 'top') {
             foreach ($getImages as $image) {
                 if ((int) get_imagepress_option('ip_comments') === 1) {
-                    $ip_comments = '<svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($image->ID);
+                    $ip_comments = '<i class="fas fa-comments"></i> ' . get_comments_number($image->ID);
                 }
 
                 $post_thumbnail_id = get_post_thumbnail_id($image);
@@ -1031,7 +1031,7 @@ function imagepress_widget($atts) {
                 $display .= '<div id="ip_container_2">
                     <div class="ip_icon_hover">
                         <div><strong>' . get_the_title($image->ID) . '</strong></div>
-                        <div><small><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' . imagepress_get_like_count($image->ID) . '</small></div>
+                        <div><small><i class="far fa-eye"></i> ' . ip_getPostViews($image->ID) . ' ' . $ip_comments . ' <i class="fas fa-heart"></i> ' . imagepress_get_like_count($image->ID) . '</small></div>
                     </div><a href="' . $ip_image_link . '" class="ip-link">' . wp_get_attachment_image($post_thumbnail_id, 'full') . '</a>
                 </div>';
             }

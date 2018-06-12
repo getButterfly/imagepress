@@ -330,8 +330,8 @@ function ip_editor() {
                                 if ($image->ID != $thumbnail_ID)
                                     $out .= '<div class="ip-additional">';
                                     $out .= '<div class="ip-toolbar">';
-                                        $out .= '<a href="#" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_delete_post_nonce') . '" class="delete-post ip-action-icon ip-floatright"><svg class="lnr lnr-trash"><use xlink:href="#lnr-trash"></use></svg></a>';
-                                        $out .= '<a href="#" data-pid="' . $edit_id . '" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_featured_post_nonce') . '" class="featured-post ip-action-icon ip-floatleft"><svg class="lnr lnr-star"><use xlink:href="#lnr-star"></use></svg></a>';
+                                        $out .= '<a href="#" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_delete_post_nonce') . '" class="delete-post ip-action-icon ip-floatright"><i class="fas fa-trash-alt"></i></a>';
+                                        $out .= '<a href="#" data-pid="' . $edit_id . '" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_featured_post_nonce') . '" class="featured-post ip-action-icon ip-floatleft"><i class="fas fa-star"></i></a>';
                                     $out .= '</div>';
                                 $out .= '<img src="' . $small_array[0] . '" alt=""></div>';
                             }
@@ -407,7 +407,7 @@ function ip_main($imageId) {
     $post_thumbnail_url = $image_attributes[0];
 
     if(get_imagepress_option('ip_comments') == 1)
-        $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($imageId) . '</a> ';
+        $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><i class="fas fa-comments"></i> ' . get_comments_number($imageId) . '</a> ';
     if(get_imagepress_option('ip_comments') == 0)
         $ip_comments = '';
     ?>
@@ -420,7 +420,7 @@ function ip_main($imageId) {
     </div>
 
     <div class="ip-bar">
-        <?php echo ipGetPostLikeLink($imageId); ?><em> | </em><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> <?php echo ip_getPostViews($imageId); ?><?php echo $ip_comments; ?>
+        <?php echo ipGetPostLikeLink($imageId); ?><em> | </em><i class="far fa-eye"></i> <?php echo ip_getPostViews($imageId); ?><?php echo $ip_comments; ?>
         <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
             <em> | </em>
             <?php if (function_exists('ip_frontend_add_collection')) {
@@ -438,7 +438,7 @@ function ip_main($imageId) {
     <h1 class="ip-title">
         <?php
         if (has_term('featured', 'imagepress_image_category'))
-            echo '<svg class="lnr lnr-star"><use xlink:href="#lnr-star"></use></svg> ';
+            echo '<i class="fas fa-star"></i> ';
 
         echo get_the_title($imageId);
 
@@ -527,7 +527,7 @@ function ip_main_return($imageId) {
     $ip_comments = '';
 
     if ((int) get_imagepress_option('ip_comments') === 1) {
-        $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($imageId) . '</a> ';
+        $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><i class="fas fa-comments"></i> ' . get_comments_number($imageId) . '</a> ';
     }
 
     $out .= '<div class="imagepress-container">
@@ -535,7 +535,7 @@ function ip_main_return($imageId) {
     </div>
 
     <div class="ip-bar">' .
-        ipGetPostLikeLink($imageId) . '<em> | </em><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> ' . ip_getPostViews($imageId) . $ip_comments;
+        ipGetPostLikeLink($imageId) . '<em> | </em><i class="far fa-eye"></i> ' . ip_getPostViews($imageId) . $ip_comments;
 
         if ((int) get_imagepress_option('ip_mod_collections') === 1) {
             $out .= '<em> | </em>';
@@ -549,7 +549,7 @@ function ip_main_return($imageId) {
 
     <h1 class="ip-title">';
         if (has_term('featured', 'imagepress_image_category')) {
-            $out .= '<svg class="lnr lnr-star"><use xlink:href="#lnr-star"></use></svg> ';
+            $out .= '<i class="fas fa-star"></i> ';
         }
 
         if ((int) get_imagepress_option('ip_allow_tags') === 1) {
@@ -925,15 +925,15 @@ function ipRenderGridElement($elementId) {
 
     $ip_views_optional = '';
     if ((int) $getImagePressViews === 1)
-        $ip_views_optional = '<span class="imageviews"><svg class="lnr lnr-eye"><use xlink:href="#lnr-eye"></use></svg> ' . ip_getPostViews($elementId) . '</span> ';
+        $ip_views_optional = '<span class="imageviews"><i class="far fa-eye"></i> ' . ip_getPostViews($elementId) . '</span> ';
 
     $ip_comments = '';
     if ($get_ip_comments == 1)
-        $ip_comments = '<span class="imagecomments"><svg class="lnr lnr-bubble"><use xlink:href="#lnr-bubble"></use></svg> ' . get_comments_number($elementId) . '</span> ';
+        $ip_comments = '<span class="imagecomments"><i class="fas fa-comments"></i> ' . get_comments_number($elementId) . '</span> ';
 
     $ip_likes_optional = '';
     if ((int) $getImagePressLikes === 1)
-        $ip_likes_optional = '<span class="imagelikes"><svg class="lnr lnr-heart"><use xlink:href="#lnr-heart"></use></svg> ' . imagepress_get_like_count($elementId) . '</span> ';
+        $ip_likes_optional = '<span class="imagelikes"><i class="fas fa-heart"></i> ' . imagepress_get_like_count($elementId) . '</span> ';
 
     $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, $size);
 

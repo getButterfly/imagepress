@@ -235,7 +235,7 @@ function cinnamon_profile($atts) {
                         $hub_name = $hubuser;
 
                     if ($hub_user_info->user_url != '')
-                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><svg class="lnr lnr-link"><use xlink:href="#lnr-link"></use></svg></a>';
+                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
 
                     $hub_anchor = getImagePressProfileUri($author, false);
                     $display .= '<div>
@@ -265,7 +265,7 @@ function cinnamon_profile($atts) {
                     $hub_name = $hubuser;
 
                 if ($hub_user_info->user_url != '')
-                    $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><svg class="lnr lnr-link"><use xlink:href="#lnr-link"></use></svg></a>';
+                    $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
 
                 $display .= '<h2>' . $hub_name . '</h2>
                 <p>';
@@ -372,7 +372,7 @@ function cinnamon_profile($atts) {
                                     $t_ID = $term->term_id;
                                     $term_data = get_option("taxonomy_$t_ID");
 
-                                    $display .= '<span class="cinnamon-award-list-item" title="' . $term->description . '"><svg class="lnr lnr-paw"><use xlink:href="#lnr-paw"></use></svg> ' . $term->name . '</span>';
+                                    $display .= '<span class="cinnamon-award-list-item" title="' . $term->description . '"><i class="fas fa-trophy"></i> ' . $term->name . '</span>';
                                 }
                             }
                         }
@@ -627,7 +627,7 @@ function cinnamon_profile_edit($atts) {
                                     <a href="#" class="toggleModal button noir-secondary">' . __('Create new collection', 'imagepress') . '</a>
                                     <span class="ip-loadingCollections">' . __('Loading collections...', 'imagepress') . '</span>
                                     <span class="ip-loadingCollectionImages">' . __('Loading collection images...', 'imagepress') . '</span>
-                                    <a href="#" class="imagepress-collections imagepress-float-right button"><svg class="lnr lnr-sync"><use xlink:href="#lnr-sync"></use></svg></a>
+                                    <a href="#" class="imagepress-collections imagepress-float-right button"><i class="fas fa-cog fa-spin"></i></a>
                                 </p>
                                 <div class="ip-modal">
                                     <h2>' . __('Create new collection', 'imagepress') . '</h2>
@@ -680,7 +680,7 @@ function cinnamon_profile_edit($atts) {
                                             $ip_image_link = get_permalink($i);
 
                                         $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '">
-                                            <div class="editor-image-handle"><svg class="lnr lnr-move"><use xlink:href="#lnr-move"></use></svg></div>
+                                            <div class="editor-image-handle"><i class="fas fa-arrows-alt"></i></div>
                                             <div class="editor-image-thumbnail">
                                                 <a href="' . $ip_image_link . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a>
                                             </div>
