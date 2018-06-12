@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.8.1
+Version: 7.8.2
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com/
 License: GPLv3
@@ -861,7 +861,6 @@ register_deactivation_hook(__FILE__, 'imagepress_deactivate');
 
 
 // enqueue admin scripts and styles
-// colour picker
 add_action('admin_enqueue_scripts', 'ip_enqueue_color_picker');
 function ip_enqueue_color_picker() {
     wp_enqueue_style('wp-color-picker');
@@ -886,6 +885,8 @@ function ip_enqueue_scripts() {
     }
 
 	$accountPageUri = get_option('cinnamon_account_page');
+
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.13/js/all.js', array(), '5.0.13', true);
 
     wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), '7.7.7', true);
     wp_localize_script('ipjs-main', 'ipAjaxVar', array(

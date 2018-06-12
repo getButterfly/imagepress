@@ -253,7 +253,7 @@ function ip_frontend_add_collection($ip_id) {
 
                             $out .= '<option value="' . $collection['collection_ID'] . '"';
                             if ($disabled && count($disabled) > 0)
-                                echo ' disabled';
+                                $out .= ' disabled';
                             $out .= '>' . $collection['collection_title'];
                             $out .= '</option>';
                         }
