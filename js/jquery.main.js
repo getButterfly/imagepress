@@ -200,11 +200,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
                             likeLabel = ipAjaxVar.likelabel;
                         }
                         like.classList.remove('liked');
-                        like.innerHTML = '<i class="far fa-heart"></i> ' + likeLabel;
+                        like.innerHTML = '<i class="fas fa-heart"></i> ' + likeLabel;
                     } else {
                         likeLabel = ipAjaxVar.unlikelabel;
                         like.classList.add('liked');
-                        like.innerHTML = '<i class="fas fa-heart"></i> ' + likeLabel;
+                        like.innerHTML = '<i class="far fa-heart"></i> ' + likeLabel;
                     }
                 } else {
                     // Response error

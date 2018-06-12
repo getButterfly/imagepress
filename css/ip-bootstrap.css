@@ -1008,6 +1008,11 @@ ul, li {padding: 0; margin: 0; list-style: none}
 
 
 
+.ip-bar input[type="text"],
+.ip-bar input[type="url"],
+.ip-bar input[type="email"],
+.ip-bar input[type="password"],
+.ip-bar textarea,
 .ip-tab input[type="text"],
 .ip-tab input[type="url"],
 .ip-tab input[type="email"],
@@ -1040,6 +1045,9 @@ ul, li {padding: 0; margin: 0; list-style: none}
     width: 100%;
 }
 .cinnamon input[type="submit"],
+.ip-bar input[type="submit"],
+.ip-bar input[type="file"],
+.ip-bar button,
 .ip-tab input[type="submit"],
 .ip-tab input[type="file"],
 .ip-tab button,
@@ -1054,6 +1062,7 @@ ul, li {padding: 0; margin: 0; list-style: none}
     padding: 4px;
     margin: 2px;
 }
+.ip-bar select,
 .ip-tab select,
 .ip-editor select,
 .ip-sorter-primary select,

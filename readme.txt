@@ -22,7 +22,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 8.0.0 =
 * TODO: Gutenberg
-* TODO: Refactor notifications and merge with feed
+* TODO: Refactor notifications and merge with feed (this will break Noir UI)
 * TODO: Refactor collections (CPT?)
 * TODO: Refactor custom fields
 * TODO/ROADMAP: Remove jQuery dependency
@@ -30,7 +30,9 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 7.8.2 =
 * FIX: Fixed displayed text instead of returned
+* FIX: Fixed several missing styles for collections
 * UPDATE: FontAwesome is back, with a vengeance (5.0.13)
+* UPDATE: Removed all deprecated SVG files and related CSS
 
 = 7.8.1 =
 * FIX: Fixed category assignment for bulk uploads
