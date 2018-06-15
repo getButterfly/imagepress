@@ -136,17 +136,6 @@ small .codor {
     }
 }
 
-/*
- * Customize navigation tabs for more tabs per row
- */
-.ip-nav-tab-wrapper .nav-tab {
-    margin-left: 0.25em;
-    padding: 2px 10px;
-    font-size: 13px;
-    font-weight: 500;
-    border-radius: 2px 2px 0 0;
-}
-
 
 
 .ip-card {

@@ -437,9 +437,6 @@ function ip_main($imageId) {
 
     <h1 class="ip-title">
         <?php
-        if (has_term('featured', 'imagepress_image_category'))
-            echo '<i class="fas fa-star"></i> ';
-
         echo get_the_title($imageId);
 
         if (get_imagepress_option('ip_allow_tags') == 1) {
@@ -548,10 +545,6 @@ function ip_main_return($imageId) {
     $out .= '</div>
 
     <h1 class="ip-title">';
-        if (has_term('featured', 'imagepress_image_category')) {
-            $out .= '<i class="fas fa-star"></i> ';
-        }
-
         if ((int) get_imagepress_option('ip_allow_tags') === 1) {
             $terms = get_the_terms($imageId, 'imagepress_image_tag');
 

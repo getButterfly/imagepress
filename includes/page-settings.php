@@ -1325,19 +1325,19 @@ function imagepress_admin_page() {
                     $time = human_time_diff(strtotime($result->actionTime), current_time('timestamp')) . ' ago';
                     $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
 
-                    if($action == 'loved')
+                    if ((string) $action === 'loved')
                         $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
-                    else if($action == 'collected')
+                    else if ((string) $action === 'collected')
                         $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> into a <a href="' . get_permalink($ipCollectionsPageId) . '?collection=' .  $result->postKeyID . '">collection</a> <time>' . $time . '</time>';
 
-                    else if($action == 'added')
+                    else if ((string) $action === 'added')
                         $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
 
-                    else if($action == 'followed')
+                    else if ((string) $action === 'followed')
                         $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> ' . $result->actionType . ' you <time>' . $time . '</time>';
 
-                    else if ((string) $action == 'commented on') {
+                    else if ((string) $action === 'commented on') {
                         $who = '<a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a>';
                         if ((int) $result->userID === 0) {
                             $who = 'Someone';
@@ -1345,18 +1345,15 @@ function imagepress_admin_page() {
                         $display .= get_avatar($result->userID, 16) . ' ' . $who . ' ' . $action . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> <time>' . $time . '</time>';
                     }
 
-                    else if($action == 'replied to a comment on') {
+                    else if ((string) $action == 'replied to a comment on') {
                         $comment_id = get_comment($result->postID);
                         $comment_post_ID = $comment_id->comment_post_ID;
 
                         $display .= get_avatar($result->userID, 16) . ' <a href="' . getImagePressProfileUri($result->userID, false) . '">' . $nickname . '</a> replied to a comment on <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a> <time>' . $time . '</time>';
                     }
 
-                    else if($action == 'featured')
-                        $display .= get_the_post_thumbnail($result->postID, array(16,16)) . ' <a href="' . get_permalink($result->postID) . '">' . get_the_title($result->postID) . '</a> poster was ' . $action . ' <time>' . $time . '</time>';
-
                     // custom
-                    else if(0 == $result->postID || '-1' == $result->postID) {
+                    else if (0 == $result->postID || '-1' == $result->postID) {
                         $display .= $result->actionType . ' <time>' . $time . '</time>';
                     }
 

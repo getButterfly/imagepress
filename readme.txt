@@ -33,6 +33,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Fixed several missing styles for collections
 * UPDATE: FontAwesome is back, with a vengeance (5.0.13)
 * UPDATE: Removed all deprecated SVG files and related CSS
+* UPDATE: Removed "featured" images functionality
 
 = 7.8.1 =
 * FIX: Fixed category assignment for bulk uploads
