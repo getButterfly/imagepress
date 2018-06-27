@@ -876,7 +876,6 @@ function ipRenderGridElement($elementId) {
     $post_thumbnail_id = get_post_thumbnail_id($elementId);
 
     // Get ImagePress grid options
-    $ip_rel_tag = get_imagepress_option('ip_rel_tag');
     $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
     $getImagePressTitle = get_imagepress_option('ip_title_optional');
     $getImagePressAuthor = get_imagepress_option('ip_author_optional');
@@ -930,7 +929,7 @@ function ipRenderGridElement($elementId) {
 
     $out = '<style>.ip_box { width: ' . (100/$ip_ipw) . '%; } @media all and (max-width: 720px) { .ip_box { width: 50%; } } @media all and (max-width: 480px) { .ip_box { width: 100%; } }</style>';
     $out .= '<div class="ip_box ip_box_' . $elementId . '">
-        <a href="' . $ip_image_link . '" rel="' . $ip_rel_tag . '" data-taxonomy="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '" data-src="' . $image_attributes[0] . '" title="' . get_the_title($elementId) . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($elementId) . '"></a>
+        <a href="' . $ip_image_link . '" data-taxonomy="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '" data-src="' . $image_attributes[0] . '" title="' . get_the_title($elementId) . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($elementId) . '"></a>
         <div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div>
         <div class="ip_box_bottom">' . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div>
     </div>';

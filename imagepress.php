@@ -69,7 +69,6 @@ include IP_PLUGIN_PATH . '/modules/mod-awards.php';
 include IP_PLUGIN_PATH . '/modules/mod-user-following.php';
 include IP_PLUGIN_PATH . '/modules/mod-likes.php';
 include IP_PLUGIN_PATH . '/modules/mod-notifications.php';
-include IP_PLUGIN_PATH . '/modules/mod-feed.php';
 
 if (get_imagepress_option('ip_mod_collections') == 1) {
     include IP_PLUGIN_PATH . '/modules/mod-collections.php';

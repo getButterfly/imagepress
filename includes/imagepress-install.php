@@ -16,7 +16,6 @@ $optionArray = array(
     'ip_comments' => 1,
     'ip_likes_optional' => 1,
     'ip_author_optional' => 0,
-    'ip_rel_tag' => 'lightbox',
 
     // Collections tab
     'ip_collections_page' => '',

@@ -11,26 +11,26 @@ function imagepress_admin_page() {
         $section = 'edit.php?post_type=' . $ipSlug . '&page=imagepress_admin_page&amp;tab=';
         ?>
         <h2 class="nav-tab-wrapper ip-nav-tab-wrapper">
-            <a href="<?php echo $section; ?>dashboard_tab" class="nav-tab <?php echo $tab == 'dashboard_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Dashboard', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>install_tab" class="nav-tab <?php echo $tab == 'install_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Installation', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>settings_tab" class="nav-tab <?php echo $tab == 'settings_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>configurator_tab" class="nav-tab <?php echo $tab == 'configurator_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Configurator', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>dashboard_tab" class="nav-tab <?php echo $tab === 'dashboard_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Dashboard', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>install_tab" class="nav-tab <?php echo $tab === 'install_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Installation', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>settings_tab" class="nav-tab <?php echo $tab === 'settings_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>configurator_tab" class="nav-tab <?php echo $tab === 'configurator_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Configurator', 'imagepress'); ?></a>
 
             <?php if ((int) get_imagepress_option('ip_mod_collections') === 1) { ?>
-                <a href="<?php echo $section; ?>collections_tab" class="nav-tab <?php echo $tab == 'collections_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Collections', 'imagepress'); ?></a>
+                <a href="<?php echo $section; ?>collections_tab" class="nav-tab <?php echo $tab === 'collections_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Collections', 'imagepress'); ?></a>
             <?php } ?>
 
-            <a href="<?php echo $section; ?>label_tab" class="nav-tab <?php echo $tab == 'label_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Labels', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>upload_tab" class="nav-tab <?php echo $tab == 'upload_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Upload', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>authors_tab" class="nav-tab <?php echo $tab == 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>label_tab" class="nav-tab <?php echo $tab === 'label_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Labels', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>upload_tab" class="nav-tab <?php echo $tab === 'upload_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Upload', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>authors_tab" class="nav-tab <?php echo $tab === 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors', 'imagepress'); ?></a>
 
             <?php if ((int) get_imagepress_option('ip_mod_login') === 1) { ?>
-                <a href="<?php echo $section; ?>login_tab" class="nav-tab <?php echo $tab == 'login_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Login', 'imagepress'); ?></a>
+                <a href="<?php echo $section; ?>login_tab" class="nav-tab <?php echo $tab === 'login_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Login', 'imagepress'); ?></a>
             <?php } ?>
 
-            <a href="<?php echo $section; ?>fields_tab" class="nav-tab <?php echo $tab == 'fields_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Fields', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>notifications_tab" class="nav-tab <?php echo $tab == 'notifications_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Notifications', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>extensions" class="nav-tab <?php echo $tab == 'extensions' ? 'nav-tab-active' : ''; ?> highlighted"><?php _e('Extensions', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>fields_tab" class="nav-tab <?php echo $tab === 'fields_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Fields', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>notifications_tab" class="nav-tab <?php echo $tab === 'notifications_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Notifications', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>extensions" class="nav-tab <?php echo $tab === 'extensions' ? 'nav-tab-active' : ''; ?> highlighted"><?php _e('Extensions', 'imagepress'); ?></a>
         </h2>
 
         <?php if ($tab === 'dashboard_tab') {
@@ -46,21 +46,17 @@ function imagepress_admin_page() {
                         <p>If you enjoy this plugin, do not forget to <a href="https://codecanyon.net/item/imagepress/4252736" rel="external">rate it on CodeCanyon</a>! We work hard to update it, fix bugs, add new features and make it compatible with the latest web technologies.</p>
                     </div>
                     <div class="gb-footer">
-                        <p>For support, feature requests and bug reporting, please visit the <a href="https://getbutterfly.com/" rel="external">official website</a>.<br>&copy;' . date('Y') . ' <a href="https://getbutterfly.com/" rel="external"><strong>getButterfly</strong>.com</a> &middot; <a href="https://getbutterfly.com/support/documentation/imagepress/">Documentation</a> &middot; <small>Code wrangling since 2005</small></p>
+                        <p>For support, feature requests and bug reporting, please visit the <a href="https://getbutterfly.com/" rel="external">official website</a>.<br>Built by <a href="https://getbutterfly.com/" rel="external"><strong>getButterfly</strong>.com</a> &middot; <a href="https://getbutterfly.com/support/documentation/imagepress/">Documentation</a> &middot; <small>Code wrangling since 2005</small></p>
                     </div>
                 </div>
             </div>
 
             <p>
-                <small>You are using ImagePress plugin version <strong>' . $ipdata['Version'] . '</strong>.</small><br>
-                <small>You are using PHP version ' . PHP_VERSION . ' and MySQL server version ' . $wpdb->db_version() . '.</small>
+                <small>You are using ImagePress plugin version <strong>' . (string) trim($ipdata['Version']) . '</strong>.</small><br>
+                <small>You are using PHP version ' . (string) trim(PHP_VERSION) . ' and MySQL server version ' . $wpdb->db_version() . '.</small>
             </p>
 
             <h3>Shortcodes</h3>
-            <p>
-                <b>Note #1:</b> All parameters are optional. They are shown for reference only and to illustrate various scenarios.<br>
-                <b>Note #2:</b> Deprecated shortcodes will be removed in future versions of ImagePress. All deprecated shortcodes have a better equivalent, so check the list below and pick the one that applies to your requirements.
-            </p>
             <p>
                 <code>[imagepress-add]</code> - show the submission form.<br>
                 <code>[imagepress-add category="landscapes"]</code> - show the submission form with a fixed (hidden) category. Use the category <b>slug</b>.<br>
@@ -72,7 +68,7 @@ function imagepress_admin_page() {
                 <code>[imagepress-loop user="7"]</code> - filter images by user ID.<br>
                 <code>[imagepress-loop count="4"]</code> - display a specific number of images.<br>
                 <code>[imagepress-loop filters="yes"]</code> - display all images with filters/sorters.<br>
-                <code>[imagepress-loop sort="likes" count="10"]</code> <sup class="ip-new">new</sup> - display images sorted by likes.<br>
+                <code>[imagepress-loop sort="likes" count="10"]</code> - display images sorted by likes.<br>
                 <code>[imagepress-loop category="landscapes"]</code> - display all images in a specific category. Use the category <b>slug</b>.<br>
                 <code>[imagepress-loop fieldname="album" fieldvalue="red"]</code> - display all images with a specific custom field value.<br>
                 <br>
@@ -85,8 +81,8 @@ function imagepress_admin_page() {
                 <br>
                 <code>[imagepress-collections count="X"]</code> - display X collections.<br>
                 <br>
-                <code>[cinnamon-profile]</code> <sup class="ip-optional">optional</sup> - show user profile on a custom page, such as <b>My Profile</b> or <b>View My Portfolio</b>.<br>
-                <code>[cinnamon-profile author="17"]</code> <sup class="ip-optional">optional</sup> - show a certain user profile on a page, where <b>17</b> is the user ID.<br>
+                <code>[cinnamon-profile]</code> - show user profile on a custom page, such as <b>My Profile</b> or <b>View My Portfolio</b>.<br>
+                <code>[cinnamon-profile author="17"]</code> - show a certain user profile on a page, where <b>17</b> is the user ID.<br>
             </p>';
         } else if ($tab === 'install_tab') { ?>
             <h2><?php esc_html_e('Installation', 'imagepress'); ?></h2>
@@ -104,7 +100,7 @@ function imagepress_admin_page() {
                 if ($ipSlug == '') {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your image slug is not set. Go to <b>Configurator</b> section and set it.</p>';
                 } else {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your image slug is <code>' . $ipSlug . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
+                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your image slug is <code>' . sanitize_title($ipSlug) . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
                 }
                 if ('' != locate_template($single_template)) {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> You have a custom image template available.</p>';
@@ -115,7 +111,7 @@ function imagepress_admin_page() {
                 if ($author_slug == '') {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your author slug is not set. Go to <b>Authors</b> section and set it.</p>';
                 } else {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author slug is <code>' . $author_slug . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
+                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author slug is <code>' . sanitize_text_field($author_slug) . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
                 }
                 if ($ip_profile_page == 0) {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your profile page is not set. Go to <b>Authors</b> section and set it.</p>';
@@ -161,6 +157,7 @@ function imagepress_admin_page() {
                     // unset from options array: remove ip_ezdz
                     // unset from options array: remove ip_ezdz_label
                     // unset from options array: remove cinnamon_pt_author
+                    // unset from options array: remove ip_rel_tag
 
                     delete_metadata('user', 0, 'user_title', '', true);
 
@@ -179,7 +176,7 @@ function imagepress_admin_page() {
                     <br><small>This option resets all image likes to 0. This action is irreversible.</small>
                 </p>
                 <p>
-                    <input type="submit" name="isCleanupSubmit" value="Pre-7.7 Cleanup" class="button-secondary">
+                    <input type="submit" name="isCleanupSubmit" value="Pre-7.8 Cleanup" class="button-secondary">
                     <br><small>This option removes all orphaned/unused options from ImagePress pre-<code>7.7</code>. This action is irreversible.</small>
                 </p>
             </form>
@@ -193,7 +190,7 @@ function imagepress_admin_page() {
                     'ip_app' => $_POST['ip_app'],
                     'ip_order' => $_POST['ip_order'],
                     'ip_orderby' => $_POST['ip_orderby'],
-                    'ip_slug' => $_POST['ip_slug'],
+                    'ip_slug' => sanitize_title($_POST['ip_slug']),
                     'ip_image_size' => $_POST['ip_image_size'],
                     'ip_title_optional' => $_POST['ip_title_optional'],
                     'ip_meta_optional' => $_POST['ip_meta_optional'],
@@ -201,7 +198,6 @@ function imagepress_admin_page() {
                     'ip_comments' => $_POST['ip_comments'],
                     'ip_likes_optional' => $_POST['ip_likes_optional'],
                     'ip_author_optional' => $_POST['ip_author_optional'],
-                    'ip_rel_tag' => $_POST['ip_rel_tag'],
                 );
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
@@ -238,20 +234,20 @@ function imagepress_admin_page() {
                             <th scope="row"><label>Image box details</label></th>
                             <td>
                             <p>
-                                <input name="ip_slug" id="slug" type="text" class="regular-text" placeholder="Image slug" value="<?php echo get_imagepress_option('ip_slug'); ?>" required> <label for="ip_slug"><b>Image</b> slug</label>
+                                <input name="ip_slug" id="slug" type="text" class="regular-text" placeholder="Image slug" value="<?php echo (string) get_imagepress_option('ip_slug'); ?>" required> <label for="ip_slug"><b>Image</b> slug</label>
                                 <br><small>Use an appropriate slug for your image (e.g. <b>image</b> in <code>domain.com/<b>image</b>/myimage</code>).</small>
                                 <br><small>Tip: use a singular term, one word only, lowercase, letters only (examples: image, poster, illustration).</small>
                             </p>
                             <p>
                                 <select name="ip_image_size" id="ip_image_size">
                                     <optgroup label="WordPress (default)">
-                                        <option value="thumbnail"<?php if (get_imagepress_option('ip_image_size') == 'thumbnail') echo ' selected'; ?>>Thumbnail</option>
-                                        <option value="medium"<?php if (get_imagepress_option('ip_image_size') == 'medium') echo ' selected'; ?>>Medium</option>
+                                        <option value="thumbnail"<?php if ((string) get_imagepress_option('ip_image_size') === 'thumbnail') echo ' selected'; ?>>Thumbnail</option>
+                                        <option value="medium"<?php if ((string) get_imagepress_option('ip_image_size') === 'medium') echo ' selected'; ?>>Medium</option>
                                     </optgroup>
                                     <optgroup label="ImagePress (default)">
-                                        <option value="imagepress_sq_std"<?php if (get_imagepress_option('ip_image_size') == 'imagepress_sq_std') echo ' selected'; ?>>Standard (Square)</option>
-                                        <option value="imagepress_pt_std"<?php if (get_imagepress_option('ip_image_size') == 'imagepress_pt_std') echo ' selected'; ?>>Standard (Portrait)</option>
-                                        <option value="imagepress_ls_std"<?php if (get_imagepress_option('ip_image_size') == 'imagepress_ls_std') echo ' selected'; ?>>Standard (Landscape)</option>
+                                        <option value="imagepress_sq_std"<?php if ((string) get_imagepress_option('ip_image_size') === 'imagepress_sq_std') echo ' selected'; ?>>Standard (Square)</option>
+                                        <option value="imagepress_pt_std"<?php if ((string) get_imagepress_option('ip_image_size') === 'imagepress_pt_std') echo ' selected'; ?>>Standard (Portrait)</option>
+                                        <option value="imagepress_ls_std"<?php if ((string) get_imagepress_option('ip_image_size') === 'imagepress_ls_std') echo ' selected'; ?>>Standard (Landscape)</option>
                                     </optgroup>
                                     <optgroup label="Other registered sizes (use with care)">
                                         <?php
@@ -261,7 +257,7 @@ function imagepress_admin_page() {
                                         foreach ($image_sizes as $size => $atts) {
                                             if ((int) $atts[0] !== 0 && (int) $atts[1] !== 0) {
                                                 ?>
-                                                <option value="<?php echo $size ;?>" <?php selected($thumbsize, $size); ?>><?php echo $size . ' - ' . implode('x', $atts); ?></option>
+                                                <option value="<?php echo (string) $size ;?>" <?php selected($thumbsize, $size); ?>><?php echo (string) $size . ' - ' . implode('x', $atts); ?></option>
                                                 <?php
                                             }
                                         }
@@ -314,16 +310,6 @@ function imagepress_admin_page() {
                             </p>
                             </td>
                         </tr>
-                        <tr>
-                            <th scope="row"><label>Lightbox integration</label></th>
-                            <td>
-                                <p>
-                                    <code>rel="</code><input name="ip_rel_tag" id="ip_rel_tag" type="text" class="regular-text" placeholder="lightbox" value="<?php echo get_imagepress_option('ip_rel_tag'); ?>"><code>"</code> <label for="ip_rel_tag"><b>Image</b> <code>rel</code> tag</label>
-                                    <br><small>Use a <code>rel</code> tag based on your lightbox requirements</small>
-                                    <br><small>Use <code>prettyPhoto[imagepress]</code> for PrettyPhoto or Avada theme</small>
-                                </p>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
 
@@ -335,29 +321,29 @@ function imagepress_admin_page() {
                         <tr>
                             <th scope="row"><label>Image grid details</label></th>
                             <td>
-                                <input name="ip_ipw" id="ip_ipw" type="number" value="<?php echo get_imagepress_option('ip_ipw'); ?>" min="1" max="1024">
+                                <input name="ip_ipw" id="ip_ipw" type="number" value="<?php echo (int) get_imagepress_option('ip_ipw'); ?>" min="1" max="1024">
                                 <label for="ip_ipw">Images per row (0-32)</label>
                                 <br><small>Number of images per grid row.</small>
                                 <br>
 
-                                <input name="ip_ipp" id="ip_ipp" type="number" value="<?php echo get_imagepress_option('ip_ipp'); ?>" min="1" max="65536">
+                                <input name="ip_ipp" id="ip_ipp" type="number" value="<?php echo (int) get_imagepress_option('ip_ipp'); ?>" min="1" max="65536">
                                 <label for="ip_ipp">Images per page (0-256)</label>
                                 <br><small>How many images per page you want to display using the <code>[imagepress-loop]</code> shortcode.</small>
 
                                 <p>
                                     <label for="ip_order">Sort images</label>
                                     <select name="ip_order" id="ip_order">
-                                        <option value="ASC"<?php if(get_imagepress_option('ip_order') == 'ASC') echo ' selected'; ?>>ASC</option>
-                                        <option value="DESC"<?php if(get_imagepress_option('ip_order') == 'DESC') echo ' selected'; ?>>DESC</option>
+                                        <option value="ASC"<?php if (get_imagepress_option('ip_order') == 'ASC') echo ' selected'; ?>>ASC</option>
+                                        <option value="DESC"<?php if (get_imagepress_option('ip_order') == 'DESC') echo ' selected'; ?>>DESC</option>
                                     </select> <label for="ip_orderby">by</label> <select name="ip_orderby" id="ip_orderby">
-                                        <option value="none"<?php if(get_imagepress_option('ip_orderby') == 'none') echo ' selected'; ?>>none</option>
-                                        <option value="ID"<?php if(get_imagepress_option('ip_orderby') == 'ID') echo ' selected'; ?>>ID</option>
-                                        <option value="author"<?php if(get_imagepress_option('ip_orderby') == 'author') echo ' selected'; ?>>author</option>
-                                        <option value="title"<?php if(get_imagepress_option('ip_orderby') == 'title') echo ' selected'; ?>>title</option>
-                                        <option value="name"<?php if(get_imagepress_option('ip_orderby') == 'name') echo ' selected'; ?>>name</option>
-                                        <option value="date"<?php if(get_imagepress_option('ip_orderby') == 'date') echo ' selected'; ?>>date</option>
-                                        <option value="rand"<?php if(get_imagepress_option('ip_orderby') == 'rand') echo ' selected'; ?>>rand</option>
-                                        <option value="comment_count"<?php if(get_imagepress_option('ip_orderby') == 'comment_count') echo ' selected'; ?>>comment_count</option>
+                                        <option value="none"<?php if (get_imagepress_option('ip_orderby') == 'none') echo ' selected'; ?>>none</option>
+                                        <option value="ID"<?php if (get_imagepress_option('ip_orderby') == 'ID') echo ' selected'; ?>>ID</option>
+                                        <option value="author"<?php if (get_imagepress_option('ip_orderby') == 'author') echo ' selected'; ?>>author</option>
+                                        <option value="title"<?php if (get_imagepress_option('ip_orderby') == 'title') echo ' selected'; ?>>title</option>
+                                        <option value="name"<?php if (get_imagepress_option('ip_orderby') == 'name') echo ' selected'; ?>>name</option>
+                                        <option value="date"<?php if (get_imagepress_option('ip_orderby') == 'date') echo ' selected'; ?>>date</option>
+                                        <option value="rand"<?php if (get_imagepress_option('ip_orderby') == 'rand') echo ' selected'; ?>>rand</option>
+                                        <option value="comment_count"<?php if (get_imagepress_option('ip_orderby') == 'comment_count') echo ' selected'; ?>>comment_count</option>
                                     </select>
                                 </p>
                             </td>
@@ -366,7 +352,7 @@ function imagepress_admin_page() {
                             <th scope="row"><label>Author grid details</label></th>
                             <td>
                                 <p>
-                                    <input type="number" name="ip_app" id="ip_app" min="1" max="9999" value="<?php echo get_imagepress_option('ip_app'); ?>">
+                                    <input type="number" name="ip_app" id="ip_app" min="1" max="9999" value="<?php echo (int) get_imagepress_option('ip_app'); ?>">
                                     <label for="ip_app">Authors per page</label>
                                     <br><small>How many authors per page you want to display using the <code>[cinnamon-card]</code> shortcode.</small>
                                 </p>
@@ -413,9 +399,9 @@ function imagepress_admin_page() {
                                     array(
                                         'name' => 'ip_collections_page',
                                         'echo' => 1,
-                                        'show_option_none' => __('Select collections page...', 'imagepress'),
+                                        'show_option_none' => __('Select collection viewer page...', 'imagepress'),
                                         'option_none_value' => '0',
-                                        'selected' => get_imagepress_option('ip_collections_page'),
+                                        'selected' => (int) get_imagepress_option('ip_collections_page'),
                                     )
                                 );
                                 ?>
@@ -1505,44 +1491,44 @@ function imagepress_admin_page() {
                         </tr>
                     </thead>
                     <tbody>';
-                    foreach($result as $field) {
-                        echo '<tr id="listItem_' . $field['field_id'] . '">';
-                        echo '<td><span class="handle"><span class="dashicons dashicons-move"></span></span></td>';
-                            echo '<td><b>' . $field['field_name'] . '</b></td>';
-                            echo '<td>' . $field['field_slug'] . '</td>';
+                    foreach ($result as $field) {
+                        echo '<tr id="listItem_' . $field['field_id'] . '">
+                            <td><span class="handle"><span class="dashicons dashicons-move"></span></span></td>
+                            <td><b>' . $field['field_name'] . '</b></td>
+                            <td>' . $field['field_slug'] . '</td>';
 
-                            if((int) $field['field_type'] === 1)
+                            if ((int) $field['field_type'] === 1) {
                                 echo '<td>Input (text)</td>';
-                            if((int) $field['field_type'] === 2)
+                            } else if ((int) $field['field_type'] === 2) {
                                 echo '<td>Input (URL)</td>';
-                            if((int) $field['field_type'] === 3)
+                            } else if ((int) $field['field_type'] === 3) {
                                 echo '<td>Input (email)</td>';
-                            if((int) $field['field_type'] === 4)
+                            } else if ((int) $field['field_type'] === 4) {
                                 echo '<td>Input (number)</td>';
-                            if((int) $field['field_type'] === 5)
+                            } else if ((int) $field['field_type'] === 5) {
                                 echo '<td>Textarea</td>';
-                            if((int) $field['field_type'] === 6)
+                            } else if ((int) $field['field_type'] === 6) {
                                 echo '<td>Checkbox</td>';
-                            if((int) $field['field_type'] === 7)
+                            } else if ((int) $field['field_type'] === 7) {
                                 echo '<td>Radiobox</td>';
-                            if((int) $field['field_type'] === 8)
+                            } else if ((int) $field['field_type'] === 8) {
                                 echo '<td>Dropdown</td>';
-
-                            if((int) $field['field_type'] === 20)
+                            } else if ((int) $field['field_type'] === 20) {
                                 echo '<td>Sketchfab ID (text)</td>';
-                            if((int) $field['field_type'] === 21)
+                            } else if ((int) $field['field_type'] === 21) {
                                 echo '<td>Vimeo ID (text)</td>';
-                            if((int) $field['field_type'] === 22)
+                            } else if ((int) $field['field_type'] === 22) {
                                 echo '<td>Youtube ID (text)</td>';
-                            if((int) $field['field_type'] === 23)
+                            } else if ((int) $field['field_type'] === 23) {
                                 echo '<td>Google Maps location (text)</td>';
-                            if((int) $field['field_type'] === 24)
+                            } else if ((int) $field['field_type'] === 24) {
                                 echo '<td>Round.me Tour ID (text)</td>';
+                            }
 
-                            echo '<td>' . $field['field_content'] . '</td>';
-                            echo '<td><code>[ip-field field="' . $field['field_slug'] . '"]</code></td>';
-                            echo '<td><a href="' . admin_url('edit.php?post_type=' . $ipSlug . '&page=imagepress_admin_page&tab=fields_tab&cf=' . $field['field_id']) . '"><span class="dashicons dashicons-trash"></span></a></td>';
-                        echo '</tr>';
+                            echo '<td>' . $field['field_content'] . '</td>
+                            <td><code>[ip-field field="' . $field['field_slug'] . '"]</code></td>
+                            <td><a href="' . admin_url('edit.php?post_type=' . $ipSlug . '&page=imagepress_admin_page&tab=fields_tab&cf=' . $field['field_id']) . '"><span class="dashicons dashicons-trash"></span></a></td>
+                        </tr>';
                     }
                 echo '</tbody></table>';
                 ?>

@@ -4,46 +4,6 @@
     border-bottom: 1px solid #cccccc;
     background-color: #ffffff;
 }
-.ip-new {
-    display: inline-block;
-    background-color: #E74C3C;
-    color: #ffffff;
-    padding: 0 4px;
-    font-size: 10px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-}
-.ip-deprecated {
-    display: inline-block;
-    background-color: #16A085;
-    color: #ffffff;
-    padding: 0 4px;
-    font-size: 10px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-}
-.ip-optional {
-    display: inline-block;
-    background-color: #F39C12;
-    color: #ffffff;
-    padding: 0 4px;
-    font-size: 10px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-}
-.ip-beta {
-    display: inline-block;
-    background-color: #3498DB;
-    color: #ffffff;
-    padding: 0 4px;
-    font-size: 10px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-}
 
 #ip-info {
     padding: 2px 12px;
@@ -162,17 +122,15 @@ small .codor {
 }
 
 .flex-grid {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
 }
-
 .flex-grid .col {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
 }
-
 .flex-grid-thirds {
     max-width: 980px;
     display: -webkit-box;
@@ -182,19 +140,18 @@ small .codor {
     -ms-flex-pack: justify;
     justify-content: space-between;
 }
-
 .flex-grid-thirds .ip-card {
-  width: 32%;
+    width: 32%;
 }
 
 @media (max-width: 400px) {
-  .flex-grid,
-  .flex-grid-thirds {
-    display: block;
-  }
-  .flex-grid .ip-card,
-  .flex-grid-thirds .ip-card {
-    width: 100%;
-    margin: 0 0 10px 0;
-  }
+    .flex-grid,
+    .flex-grid-thirds {
+        display: block;
+    }
+    .flex-grid .ip-card,
+    .flex-grid-thirds .ip-card {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
 }

@@ -33,7 +33,10 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Fixed hardcoded non-translated English assumptions (it's a mouthful)
 * UPDATE: Updated translations with missing strings
 * UPDATE: Replaced social icons with FontAwesome
+* UPDATE: Removed image rel tag
 * UPDATE: Code compliance updates
+* UPDATE: Admin content/body updates
+* UPDATE: Moved feed module to ImagePress Elements
 
 = 7.8.2 =
 * FIX: Fixed displayed text instead of returned
