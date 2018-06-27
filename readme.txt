@@ -31,6 +31,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 = X.X.X =
 * FIX: Fixed responsive styles
 * UPDATE: Updated translations with missing strings
+* UPDATE: Replaced social icons with FontAwesome
 
 = 7.8.2 =
 * FIX: Fixed displayed text instead of returned
