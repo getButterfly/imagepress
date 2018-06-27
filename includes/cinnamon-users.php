@@ -205,13 +205,13 @@ function cinnamon_profile($atts) {
 
     $hub_googleplus = ''; $hub_facebook = ''; $hub_twitter = ''; $hub_user_url = '';
     if ((string) $hub_user_info->googleplus !== '') {
-        $hub_googleplus = ' <a href="' . $hub_user_info->googleplus . '" target="_blank"><i class="fab fa-google-plus-g"></i></a>';
+        $hub_googleplus = ' <a href="' . $hub_user_info->googleplus . '" target="_blank"><i class="fab fa-fw fa-google-plus-g"></i></a>';
     }
     if ((string) $hub_user_info->facebook !== '') {
-        $hub_facebook = ' <a href="' . $hub_user_info->facebook . '" target="_blank"><i class="fab fa-facebook-f"></i></a>';
+        $hub_facebook = ' <a href="' . $hub_user_info->facebook . '" target="_blank"><i class="fab fa-fw fa-facebook-f"></i></a>';
     }
     if ((string) $hub_user_info->twitter !== '') {
-        $hub_twitter = ' <a href="https://twitter.com/' . $hub_user_info->twitter . '" target="_blank"><i class="fab fa-twitter"></i></a>';
+        $hub_twitter = ' <a href="https://twitter.com/' . $hub_user_info->twitter . '" target="_blank"><i class="fab fa-fw fa-twitter"></i></a>';
     }
 
     $hca = get_the_author_meta('hub_custom_cover', $author);
@@ -237,17 +237,19 @@ function cinnamon_profile($atts) {
                     $hubuser = get_user_by('id', $author);
                     $hubuser = sanitize_title($hubuser->user_login);
                     $hub_name = $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
-                    if (empty($hub_user_info->first_name) && empty($hub_user_info->last_name))
+                    if (empty($hub_user_info->first_name) && empty($hub_user_info->last_name)) {
                         $hub_name = $hubuser;
+                    }
 
-                    if ($hub_user_info->user_url != '')
-                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
+                    if ((string) $hub_user_info->user_url !== '') {
+                        $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-fw fa-link"></i></a>';
+                    }
 
                     $hub_anchor = getImagePressProfileUri($author, false);
                     $display .= '<div>
                         <div class="ph-nametag">
                             ' . $hub_name;
-                            if(is_user_logged_in() && $username == $logged_in_user->user_login) {
+                            if ((string) is_user_logged_in() && $username === (string) $logged_in_user->user_login) {
                                 $display .= ' <a href="' . $hub_anchor . '">#</a>';
                                 $display .= ' <small><a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
                             }
@@ -257,18 +259,20 @@ function cinnamon_profile($atts) {
                 $display .= '</div>';
             $display .= '</div>';
         } else {
-            $display .= '<div class="cinnamon-cover-blank">';
-                $display .= '<p>' . get_avatar($author, 60) . '</p>';
-                if (is_user_logged_in() && $username != $logged_in_user->user_login)
+            $display .= '<div class="cinnamon-cover-blank">
+                <p>' . get_avatar($author, 60) . '</p>';
+                if (is_user_logged_in() && (string) $username !== (string) $logged_in_user->user_login) {
                     $display .= '<div class="imagepress-follow">' . do_shortcode('[follow_links follow_id="' . $author . '"]') . '</div>';
+                }
 
                 // get custom URL
                 $hubdomain = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']);
                 $hubuser = get_user_by('id', $author);
                 $hubuser = sanitize_title($hubuser->user_login);
                 $hub_name = $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
-                if (empty($hub_user_info->first_name) && empty($hub_user_info->last_name))
+                if (empty($hub_user_info->first_name) && empty($hub_user_info->last_name)) {
                     $hub_name = $hubuser;
+                }
 
                 if ($hub_user_info->user_url != '')
                     $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-link"></i></a>';
@@ -277,28 +281,35 @@ function cinnamon_profile($atts) {
                 <p>';
                     $display .= $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
-                    if (is_user_logged_in() && $username == $logged_in_user->user_login)
+                    if (is_user_logged_in() && $username == $logged_in_user->user_login) {
                         $display .= ' | <a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a>';
-                $display .= '</p>';
-            $display .= '</div>';
+                    }
+                $display .= '</p>
+            </div>';
         }
 
         $display .= '<div class="ip-tab">
             <ul class="ip-tabs active">';
-                if ((int) get_imagepress_option('cinnamon_show_uploads') === 1)
+                if ((int) get_imagepress_option('cinnamon_show_uploads') === 1) {
                     $display .= '<li><a href="#">' . __('Uploads', 'imagepress') . '</a></li>';
+                }
 
-                if(get_imagepress_option('cinnamon_show_about') == 1)
+                if ((int) get_imagepress_option('cinnamon_show_about') === 1) {
                     $display .= '<li><a href="#">' . __('About', 'imagepress') . '</a></li>';
+                }
 
-                if(get_imagepress_option('cinnamon_show_followers') == 1)
+                if ((int) get_imagepress_option('cinnamon_show_followers') === 1) {
                     $display .= '<li><a href="#">' . __('Followers', 'imagepress') . '</a></li>';
-                if(get_imagepress_option('cinnamon_show_following') == 1)
+                }
+                if ((int) get_imagepress_option('cinnamon_show_following') === 1) {
                     $display .= '<li><a href="#">' . __('Following', 'imagepress') . '</a></li>';
-                if(get_imagepress_option('cinnamon_show_likes') == 1)
-                    $display .= '<li><a href="#">' . __('Loved', 'imagepress') . ' ' . get_imagepress_option('ip_slug') . 's</a></li>';
-                if(get_imagepress_option('cinnamon_show_awards') == 1)
+                }
+                if ((int) get_imagepress_option('cinnamon_show_likes') === 1) {
+                    $display .= '<li><a href="#">' . __('Likes', 'imagepress') . '</a></li>';
+                }
+                if ((int) get_imagepress_option('cinnamon_show_awards') === 1) {
                     $display .= '<li><a href="#">' . __('Awards', 'imagepress') . '</a></li>';
+                }
 
                 if ((int) get_imagepress_option('ip_mod_collections') === 1) {
                     if ((int) get_imagepress_option('cinnamon_show_collections') === 1) {
@@ -306,15 +317,15 @@ function cinnamon_profile($atts) {
                     }
                 }
 
-                $display .= '<li class="cinnamon-stats-column">';
-                    // Cinnamon Stats
-                    $display .= '<div class="cinnamon-stats">';
-                        $display .= '<div class="cinnamon-meta"><b>' . kformat(cinnamon_PostViews($author)) . '</b> ' . __('profile views', 'imagepress') . '</div>';
-                        $display .= '<div class="cinnamon-meta"><b>' . kformat(pwuf_get_follower_count($author)) . '</b> ' . __('followers', 'imagepress') . '</div>';
-                        $display .= '<div class="cinnamon-meta"><b>' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>';
-                    $display .= '</div>';
-                $display .= '</li>';
-            $display .= '</ul>
+                // Cinnamon Stats
+                $display .= '<li class="cinnamon-stats-column">
+                    <div class="cinnamon-stats">
+                        <div class="cinnamon-meta"><b>' . kformat(cinnamon_PostViews($author)) . '</b> ' . __('profile views', 'imagepress') . '</div>
+                        <div class="cinnamon-meta"><b>' . kformat(pwuf_get_follower_count($author)) . '</b> ' . __('followers', 'imagepress') . '</div>
+                        <div class="cinnamon-meta"><b>' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>
+                    </div>
+                </li>
+            </ul>
             <div class="tab_content">';
                 if ((int) get_imagepress_option('cinnamon_show_uploads') === 1) {
                     $display .= '<div class="ip-tabs-item ip-profile" data-ipw="' . get_imagepress_option('ip_ipw') . '" style="display: block;">' .
@@ -324,7 +335,7 @@ function cinnamon_profile($atts) {
                     <div class="thin-ui-button ip-clear" id="ipProfileShowMore">' . get_imagepress_option('ip_load_more_label') . '</div>';
                 }
 
-                if (get_imagepress_option('cinnamon_show_about') == 1) {
+                if ((int) get_imagepress_option('cinnamon_show_about') === 1) {
                     $display .= '<div class="ip-tabs-item" style="display: none;">';
                         if (!empty($hub_user_info->description))
                             $display .= wpautop($hub_user_info->description);
@@ -332,12 +343,12 @@ function cinnamon_profile($atts) {
                     $display .= '</div>';
                 }
 
-                if(get_imagepress_option('cinnamon_show_followers') == 1) {
+                if ((int) get_imagepress_option('cinnamon_show_followers') === 1) {
                     $display .= '<div class="ip-tabs-item" style="display: none;">';
                         $arr = pwuf_get_followers($author);
-                        if($arr) {
+                        if ($arr) {
                             $display .= '<div class="cinnamon-followers">';
-                                foreach($arr as $value) {
+                                foreach ($arr as $value) {
                                     $user = get_user_by('id', $value);
                                     $display .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
                                 }
@@ -347,12 +358,12 @@ function cinnamon_profile($atts) {
                     $display .= '</div>';
                 }
 
-                if(get_imagepress_option('cinnamon_show_following') == 1) {
+                if ((int) get_imagepress_option('cinnamon_show_following') === 1) {
                     $display .= '<div class="ip-tabs-item" style="display: none;">';
                         $arr = pwuf_get_following($author);
-                        if($arr) {
+                        if ($arr) {
                             $display .= '<div class="cinnamon-followers">';
-                                foreach($arr as $value) {
+                                foreach ($arr as $value) {
                                     $user = get_user_by('id', $value);
                                     $display .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
                                 }
@@ -362,18 +373,18 @@ function cinnamon_profile($atts) {
                     $display .= '</div>';
                 }
 
-                if(get_imagepress_option('cinnamon_show_likes') == 1) {
+                if ((int) get_imagepress_option('cinnamon_show_likes') === 1) {
                     $display .= '<div class="ip-tabs-item" style="display: none;">';
                         $display .= ipFrontEndUserLikes($author);
                     $display .= '</div>';
                 }
 
-                if(get_imagepress_option('cinnamon_show_awards') == 1) {
+                if ((int) get_imagepress_option('cinnamon_show_awards') === 1) {
                     $display .= '<div class="ip-tabs-item" style="display: none;">';
                         $award_terms = wp_get_object_terms($author, 'award');
-                        if(!empty($award_terms)) {
-                            if(!is_wp_error($award_terms)) {
-                                foreach($award_terms as $term) {
+                        if (!empty($award_terms)) {
+                            if (!is_wp_error($award_terms)) {
+                                foreach ($award_terms as $term) {
                                     // get custom FontAwesome
                                     $t_ID = $term->term_id;
                                     $term_data = get_option("taxonomy_$t_ID");

@@ -30,8 +30,10 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = X.X.X =
 * FIX: Fixed responsive styles
+* FIX: Fixed hardcoded non-translated English assumptions (it's a mouthful)
 * UPDATE: Updated translations with missing strings
 * UPDATE: Replaced social icons with FontAwesome
+* UPDATE: Code compliance updates
 
 = 7.8.2 =
 * FIX: Fixed displayed text instead of returned
