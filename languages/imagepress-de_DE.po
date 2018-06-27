@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ImagePress\n"
-"POT-Creation-Date: 2018-06-27 10:43+0100\n"
+"POT-Creation-Date: 2018-06-27 10:44+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ciprian Popescu <getbutterfly@gmail.com>\n"
-"Language-Team: Ciprian Popescu <getbutterfly@gmail.com>\n"
-"Language: fr\n"
+"Language-Team: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.8\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _;__;_e;esc_html__;esc_html_e\n"
 "X-Poedit-Basepath: ..\n"
@@ -22,27 +22,27 @@ msgstr ""
 
 #: classes/Frontend.php:21 classes/Frontend.php:47
 msgid "Log in"
-msgstr "S'identifier"
+msgstr "Einloggen"
 
 #: classes/Frontend.php:23 classes/Frontend.php:64 classes/Frontend.php:68
 msgid "Sign up"
-msgstr "S'inscrire"
+msgstr "Anmelden"
 
 #: classes/Frontend.php:26
 msgid "Lost password"
-msgstr "Mot de passe perdu"
+msgstr "Passwort vergessen"
 
 #: classes/Frontend.php:44 classes/Frontend.php:65
 msgid "Username"
-msgstr "Nom d'utilisateur"
+msgstr "Benutzername"
 
 #: classes/Frontend.php:45
 msgid "Password"
-msgstr "Mot de passe"
+msgstr "Passwort"
 
 #: classes/Frontend.php:46
 msgid "Remember me"
-msgstr "Souviens-toi de moi"
+msgstr "Daten speichern"
 
 #: classes/Frontend.php:54 includes/cinnamon-users.php:710
 msgid "View profile"
@@ -58,19 +58,19 @@ msgstr ""
 
 #: classes/Frontend.php:66
 msgid "Email address"
-msgstr "Adresse email"
+msgstr "E-Mail Adresse"
 
 #: classes/Frontend.php:67
 msgid "A password will be emailed to you."
-msgstr "Un mot de passe vous sera envoyé par email."
+msgstr "Ein Passwort wird per E-Mail gesendet."
 
 #: classes/Frontend.php:78
 msgid "Lost your password?"
-msgstr "Mot de passe perdu?"
+msgstr "Passwort vergessen?"
 
 #: classes/Frontend.php:79
 msgid "Username or email address"
-msgstr "Nom d'utilisateur ou adresse e-mail"
+msgstr "Benutzername oder E-Mail Adresse"
 
 #: classes/Frontend.php:80
 msgid "Reset password"
@@ -78,47 +78,47 @@ msgstr ""
 
 #: classes/Frontend.php:99
 msgid "Registration was successful!"
-msgstr "Inscription réussi!"
+msgstr "Die Registration war erfolgreich!"
 
 #: classes/Frontend.php:110
 #, php-format
 msgid "Something was wrong:</br> %s"
-msgstr "Quelque chose n'allait pas:</br> %s"
+msgstr "Etwas ging schief:</br> %s"
 
 #: classes/Frontend.php:133
 msgid "Password reset. Please check your email."
-msgstr "Mot de passe réinitialiser. Merci de consulter vos emails."
+msgstr "Passwort wurde ersetzt."
 
 #: classes/Frontend.php:152
 msgid "Please enter a username or email address."
-msgstr "S'il vous plaît entrer une adresse de nom d'utilisateur ou e-mail."
+msgstr "Bitte gib deinen Nutzernamen oder E-Mail Adresse ein."
 
 #: classes/Frontend.php:156
 msgid "There is no user registered with that email address."
-msgstr "Il n'y a pas utilisateur enregistré avec cette adresse e-mail."
+msgstr "Es gibt kein Benutzerkonto mit dieser E-Mail Adresse."
 
 #: classes/Frontend.php:173
 msgid "Password reset is not allowed for this user"
-msgstr "Le reset du Mot de passe n'est pas autorisée pour cet utilisateur"
+msgstr "Passwort zurücksetzen ist nicht möglich"
 
 #: classes/Frontend.php:182
 msgid ""
 "Someone requested that your password be reset for the following account: "
-msgstr "Il y a eu une demande pour que votre mot de passe soit réinitialisé: "
+msgstr "Jemand hat einen Passwort Zurücksetzung für dieses Konto angefordert: "
 
 #: classes/Frontend.php:184
 #, php-format
 msgid "Username: %s"
-msgstr "Nom d'utilisateur: %s"
+msgstr "Benutzername: %s"
 
 #: classes/Frontend.php:185
 msgid "Your new password is "
-msgstr "Votre nouveau mot de passe est "
+msgstr "Ihr neues Passwort ist "
 
 #: classes/Frontend.php:189
 #, php-format
 msgid "[%s] Password reset"
-msgstr "[%s] Réinitialiser le mot de passe"
+msgstr "[%s] Passwort zurückgesetzt"
 
 #: classes/Frontend.php:197
 msgid "The email could not be sent."
@@ -134,11 +134,11 @@ msgstr ""
 
 #: imagepress.php:282 imagepress.php:283 imagepress.php:405 imagepress.php:406
 msgid "New image uploaded!"
-msgstr "Nouvelle image uploadée!"
+msgstr "Neues Bild hochgeladen!"
 
 #: imagepress.php:373 imagepress.php:467
 msgid "You need to be logged in to upload an image."
-msgstr "Vous devez être connecté pour envoyer une image."
+msgstr "Du musst angemeldet sein um ein Bild hochzuladen."
 
 #: imagepress.php:582 imagepress.php:719 modules/mod-collections.php:250
 msgid "Choose a collection..."
@@ -146,7 +146,7 @@ msgstr ""
 
 #: imagepress.php:586 imagepress.php:723 modules/mod-collections.php:262
 msgid "or"
-msgstr "ou"
+msgstr ""
 
 #: imagepress.php:586 imagepress.php:723 modules/mod-collections.php:264
 msgid "Create new collection..."
@@ -156,13 +156,13 @@ msgstr ""
 #: includes/page-settings.php:495 modules/mod-collections.php:108
 #: modules/mod-collections.php:266
 msgid "Public"
-msgstr "Public"
+msgstr ""
 
 #: imagepress.php:589 imagepress.php:726 includes/cinnamon-users.php:640
 #: includes/page-settings.php:496 modules/mod-collections.php:109
 #: modules/mod-collections.php:267
 msgid "Private"
-msgstr "Privé"
+msgstr ""
 
 #: imagepress.php:639
 msgid "Drop files here<br><small>or</small>"
@@ -171,7 +171,7 @@ msgstr ""
 #: imagepress.php:641 imagepress.php:662 imagepress.php:735
 #: includes/functions.php:309 includes/functions.php:341
 msgid "maximum"
-msgstr "maximum"
+msgstr "Maximum"
 
 #: imagepress.php:735
 msgid "Select a file"
@@ -179,19 +179,19 @@ msgstr ""
 
 #: imagepress.php:897
 msgid "There was a problem processing your request."
-msgstr "Il y a eu un problème lors du traitement de votre demande."
+msgstr "Es gab ein Problem bei der Verarbeitung Ihrer Anfrage."
 
 #: imagepress.php:898
 msgid "Oops, you must be logged-in to follow users."
-msgstr "Oups, vous devez être connecté pour pouvoir suivre les utilisateurs."
+msgstr "Oops, Sie müssen angemeldet sein um Benutzern zu folgen."
 
 #: imagepress.php:906
 msgid "Checking credentials..."
-msgstr "Vérification des informations d'identification ..."
+msgstr "Voraussetzungen überprüfen..."
 
 #: imagepress.php:907
 msgid "Processing registration..."
-msgstr "Traitement de votre inscription..."
+msgstr "Registration wird bearbeitet..."
 
 #: imagepress.php:910
 msgid "Are you sure? You won't be able to revert this!"
@@ -207,11 +207,11 @@ msgstr ""
 
 #: imagepress.php:924
 msgid "Search images..."
-msgstr "Recherche d'images..."
+msgstr "Bilder suchen...."
 
 #: imagepress.php:925
 msgid "Search"
-msgstr "Recherche"
+msgstr "Suche"
 
 #: includes/alpha-functions.php:59
 msgid "Newest"
@@ -255,17 +255,17 @@ msgstr ""
 
 #: includes/cinnamon-users.php:130 modules/mod-collections.php:347
 msgid "views"
-msgstr "vues"
+msgstr "Views"
 
 #: includes/cinnamon-users.php:131 includes/cinnamon-users.php:309
 #: includes/cinnamon-users.php:519
 msgid "followers"
-msgstr "followers"
+msgstr "Follower"
 
 #: includes/cinnamon-users.php:132 includes/cinnamon-users.php:310
 #: includes/cinnamon-users.php:527
 msgid "uploads"
-msgstr "uploads"
+msgstr "Uploads"
 
 #: includes/cinnamon-users.php:140
 msgid "Pages:"
@@ -277,11 +277,11 @@ msgstr "Uploads"
 
 #: includes/cinnamon-users.php:288 includes/cinnamon-users.php:572
 msgid "About"
-msgstr "A-propos"
+msgstr "Über"
 
 #: includes/cinnamon-users.php:291
 msgid "Followers"
-msgstr "Followers"
+msgstr "Follower"
 
 #: includes/cinnamon-users.php:293
 msgid "Following"
@@ -289,123 +289,123 @@ msgstr "Following"
 
 #: includes/cinnamon-users.php:295
 msgid "Loved"
-msgstr "Aimé"
+msgstr "Like"
 
 #: includes/cinnamon-users.php:297 modules/mod-awards.php:6
 msgid "Awards"
-msgstr "Awards"
+msgstr "Preise"
 
 #: includes/cinnamon-users.php:301 includes/page-settings.php:20
 #: includes/page-settings.php:402
 msgid "Collections"
-msgstr "Albums"
+msgstr "Alben"
 
 #: includes/cinnamon-users.php:308
 msgid "profile views"
-msgstr "nombre de vues"
+msgstr "Profielaufrufe"
 
 #: includes/cinnamon-users.php:418
 msgid "The passwords you entered do not match. Your password was not updated."
 msgstr ""
-"Les mots de passe que vous avez entrés ne correspondent pas. Votre mot de "
-"passe n'a pas été mis à jour."
+"Die Passwörter die Sie gewählt haben stimmen nicht überein. Ihr Passwort "
+"wurde nicht aktualisiert."
 
 #: includes/cinnamon-users.php:425
 msgid "The email you entered is not valid. Please try again."
-msgstr "L'e-mail que vous avez entré est incorrect. Veuillez réessayer."
+msgstr "Die E-Mail Adresse ist nicht gültig. Bitte versuchen Sie es erneut."
 
 #: includes/cinnamon-users.php:427
 msgid "This email is already used by another user. Try a different one."
 msgstr ""
-"Cet e-mail est déjà utilisé par un autre utilisateur. Essayez-en un autre."
+"Die E-Mail Adresse wird bereits benutzt. Versuchen Sie es mit einer anderen."
 
 #: includes/cinnamon-users.php:463
 msgid "Profile updated successfully!"
-msgstr "Mise à jour du profil réussie!"
+msgstr "Profil erfolgreich aktualisiert!"
 
 #: includes/cinnamon-users.php:476
 msgid "Summary"
-msgstr "Résumé"
+msgstr "Zusammenfassung"
 
 #: includes/cinnamon-users.php:487
 msgid "Statistics"
-msgstr "Statistiques"
+msgstr "Statistik"
 
 #: includes/cinnamon-users.php:515
 msgid "total profile views"
-msgstr "vues totales"
+msgstr "Gesamte Profil Besucher"
 
 #: includes/cinnamon-users.php:523
 msgid "following"
-msgstr "following"
+msgstr "Folgen"
 
 #: includes/cinnamon-users.php:533
 msgid "collections"
-msgstr "albums"
+msgstr "Alben"
 
 #: includes/cinnamon-users.php:544
 msgid "First name"
-msgstr "Prénom"
+msgstr "Vorname"
 
 #: includes/cinnamon-users.php:548
 msgid "Last name"
-msgstr "Nom"
+msgstr "Nachname"
 
 #: includes/cinnamon-users.php:552
 msgid "Nickname"
-msgstr "Pseudo"
+msgstr "Benutzername"
 
 #: includes/cinnamon-users.php:556
 msgid "E-mail *"
-msgstr "E-mail *"
+msgstr "E-Mail *"
 
 #: includes/cinnamon-users.php:560
 msgid "Website"
-msgstr "Site Web"
+msgstr "Website"
 
 #: includes/cinnamon-users.php:564
 msgid "Password *"
-msgstr "Mot de passe *"
+msgstr "Passwort *"
 
 #: includes/cinnamon-users.php:568
 msgid "Repeat password *"
-msgstr "Répéter le mot de passe *"
+msgstr "Passwort Wiederholen *"
 
 #: includes/cinnamon-users.php:580
 msgid "Facebook profile URL"
-msgstr "URL de votre profil Facebook"
+msgstr "Facebook Profil URL"
 
 #: includes/cinnamon-users.php:584
 msgid "Twitter username"
-msgstr "Nom d'utilisateur Twitter"
+msgstr "Twitter Benutzername"
 
 #: includes/cinnamon-users.php:588
 msgid "Google+ profile URL"
-msgstr "URL de votre profil Google+"
+msgstr "Google+ Profil URL"
 
 #: includes/cinnamon-users.php:598
 msgid "Cover/avatar preview"
-msgstr "Couverture/avatar preview"
+msgstr "Avatar Vorschau"
 
 #: includes/cinnamon-users.php:610
 msgid "Profile cover image"
-msgstr "Image de couverture"
+msgstr "Hintergrund Bild"
 
 #: includes/cinnamon-users.php:616
 msgid "Profile avatar image"
-msgstr "Image de votre avatar"
+msgstr "Profilbild"
 
 #: includes/cinnamon-users.php:619
 msgid "Recommended cover size is 1080x300."
-msgstr "La taille de la couverture recommandée est de 1080x300."
+msgstr "Bevorzugte Hintergrundbild Größe 1080x300."
 
 #: includes/cinnamon-users.php:620
 msgid ""
 "Recommended avatar size is 240x240. If there is no custom avatar, your "
 "Gravatar will be used."
 msgstr ""
-"La taille de l'avatar recommandée est 240x240. S'il n'y a pas avatar "
-"personnalisé, votre Gravatar sera utilisé."
+"Bevorzugte Avatarbild Größe 240x240. Wenn es keinenAvatar gibt wird Ihr "
+"Gravatar benutzt."
 
 #: includes/cinnamon-users.php:629 includes/cinnamon-users.php:635
 msgid "Create new collection"
@@ -413,16 +413,16 @@ msgstr ""
 
 #: includes/cinnamon-users.php:630
 msgid "Loading collections..."
-msgstr "Chargement des albums..."
+msgstr "Lade Alben...."
 
 #: includes/cinnamon-users.php:631
 msgid "Loading collection images..."
-msgstr "Chargement des images de l'album..."
+msgstr "Lade Bilder..."
 
 #: includes/cinnamon-users.php:636 modules/mod-collections.php:116
 #: modules/mod-collections.php:241
 msgid "Close"
-msgstr "Fermer"
+msgstr ""
 
 #: includes/cinnamon-users.php:639
 msgid "Collection title"
@@ -471,7 +471,7 @@ msgstr "Update"
 
 #: includes/cinnamon-users.php:719
 msgid "You must be logged in to edit your profile."
-msgstr "Vous devez être connecté pour modifier votre profil."
+msgstr "Du musst angemeldet sein um dein Profil zu bearbeiten."
 
 #: includes/functions.php:12
 msgid "ImagePress"
@@ -479,237 +479,237 @@ msgstr "ImagePress"
 
 #: includes/functions.php:13 includes/functions.php:38
 msgid "Image"
-msgstr "Image"
+msgstr "Bild"
 
 #: includes/functions.php:14
 msgid "Image archives"
-msgstr "Archives"
+msgstr "Bild Archiv"
 
 #: includes/functions.php:15
 msgid "Parent image:"
-msgstr "Image Parent:"
+msgstr "Hauptbild:"
 
 #: includes/functions.php:16
 msgid "All images"
-msgstr "Toutes les images"
+msgstr "Alle Bilder"
 
 #: includes/functions.php:17
 msgid "Add new image"
-msgstr "Ajouter une image"
+msgstr "Neues Bild hinzufügen"
 
 #: includes/functions.php:18
 msgid "Add new"
-msgstr "Ajouter"
+msgstr "Hinzufügen"
 
 #: includes/functions.php:19
 msgid "New image"
-msgstr "Nouvelle image"
+msgstr "Neues Bild"
 
 #: includes/functions.php:20
 msgid "Edit image"
-msgstr "Editer l'image"
+msgstr "Bild bearbeiten"
 
 #: includes/functions.php:21
 msgid "Update image"
-msgstr "Update de l'image"
+msgstr "Bild verändern"
 
 #: includes/functions.php:22
 msgid "View image"
-msgstr "Voir l'image"
+msgstr "Bild veröffentlichen"
 
 #: includes/functions.php:23
 msgid "Search image"
-msgstr "Rechercher une image"
+msgstr "Bild suchen"
 
 #: includes/functions.php:24 includes/functions.php:79
 #: includes/functions.php:117 modules/mod-awards.php:20
 msgid "Not found"
-msgstr "Aucun résultat"
+msgstr "Nicht gefunden"
 
 #: includes/functions.php:25
 msgid "Not found in trash"
-msgstr "Aucun résultat"
+msgstr "Nicht im Papierkorb gefunden"
 
 #: includes/functions.php:26
 msgid "Featured image"
-msgstr "L'image sélectionnée"
+msgstr "Hervorgehobenes Bild"
 
 #: includes/functions.php:27
 msgid "Set featured image"
-msgstr "Réglez l'image sélectionnée"
+msgstr "Bild hervorheben"
 
 #: includes/functions.php:28
 msgid "Remove featured image"
-msgstr "Supprimer l'image sélectionnée"
+msgstr "Hervorhebung entfernen"
 
 #: includes/functions.php:29
 msgid "Use as featured image"
-msgstr "Utilisation en tant qu'image sélectionnée"
+msgstr "Als hervorgehobenes Bild benutzen"
 
 #: includes/functions.php:30
 msgid "Insert into image"
-msgstr "Insérer dans l'image"
+msgstr "Ins Bild einfügen"
 
 #: includes/functions.php:31
 msgid "Uploaded to this image"
-msgstr "Téléchargé dans cette image"
+msgstr "Zum Bild hochladen"
 
 #: includes/functions.php:32
 msgid "Images list"
-msgstr "Liste des images"
+msgstr "Bilderliste"
 
 #: includes/functions.php:33
 msgid "Images list navigation"
-msgstr "Navigation dans la liste d'images"
+msgstr "Bilderliste Navigation"
 
 #: includes/functions.php:34
 msgid "Filter images list"
-msgstr "Filtrer la liste d'images"
+msgstr "Filter"
 
 #: includes/functions.php:39
 msgid "Image post type"
-msgstr "Image post type"
+msgstr "Bild Typ"
 
 #: includes/functions.php:65
 msgid "Image Categories"
-msgstr "Catégories d'image"
+msgstr "Bild Kategorien"
 
 #: includes/functions.php:66
 msgid "All image categories"
-msgstr "Toutes les catégories d'image"
+msgstr "Bild Kategorien"
 
 #: includes/functions.php:67
 msgid "Parent image category"
-msgstr "Catégorie d'image parente"
+msgstr "Hauptbild Kategorien"
 
 #: includes/functions.php:68
 msgid "Parent image category:"
-msgstr "Catégorie d'image parente:"
+msgstr "Hauptbild Kategorie:"
 
 #: includes/functions.php:69
 msgid "New image category"
-msgstr "Nouvelle catégorie d'image"
+msgstr "Neue Bild Kategorie"
 
 #: includes/functions.php:70
 msgid "Add new image category"
-msgstr "Ajouter une catégorie d'image"
+msgstr "Neue Kategorie hinzufügen"
 
 #: includes/functions.php:71
 msgid "Edit image category"
-msgstr "Editer une catégorie d'image"
+msgstr "Bearbeitedie Bild Kategorie"
 
 #: includes/functions.php:72
 msgid "Update image category"
-msgstr "Update d'une catégorie d'image"
+msgstr "Bild Kathegorie aktualisieren"
 
 #: includes/functions.php:73
 msgid "View image category"
-msgstr "Voir une catégorie d'image"
+msgstr "Zeigen der Bild Kategorie"
 
 #: includes/functions.php:74
 msgid "Separate image categories with commas"
-msgstr "Catégories d'images séparées par des virgules"
+msgstr "Separieren der Bild Kategorie mit Kommas"
 
 #: includes/functions.php:75
 msgid "Add or remove image categories"
-msgstr "Ajouter ou supprimer des catégories d'images"
+msgstr "Hinzufügen oder entfernen der Bild Kategorie"
 
 #: includes/functions.php:76 includes/functions.php:114
 #: modules/mod-awards.php:17
 msgid "Choose from the most used"
-msgstr "Choisissez parmi les plus utilisés"
+msgstr "Wähle aus den meist benutzten"
 
 #: includes/functions.php:77
 msgid "Popular image categories"
-msgstr "Catégories d'images populaires"
+msgstr "Beliebte Bild Kategorien"
 
 #: includes/functions.php:78
 msgid "Search image categories"
-msgstr "Recherche d'image par catégories"
+msgstr "Suche Bild Kategorien"
 
 #: includes/functions.php:80
 msgid "No image categories"
-msgstr "Aucune catégories d'image"
+msgstr "Keine Bild Kategorien"
 
 #: includes/functions.php:81
 msgid "Image categories list"
-msgstr "Liste des catégories d'image"
+msgstr "Kategorien Liste"
 
 #: includes/functions.php:82
 msgid "Image categories list navigation"
-msgstr "Navigation par liste des catégories d'image"
+msgstr "Navigation der Kategorien Liste"
 
 #: includes/functions.php:103
 msgid "Image Tags"
-msgstr "Tags image"
+msgstr "Bildtitel"
 
 #: includes/functions.php:104
 msgid "All image tags"
-msgstr "Tous les tags d'image"
+msgstr "Alle Bildtitel"
 
 #: includes/functions.php:105
 msgid "Parent image tag"
-msgstr "Tag image parent"
+msgstr "Hauptbild Titel"
 
 #: includes/functions.php:106
 msgid "Parent image tag:"
-msgstr "Tag image parent:"
+msgstr "Hauptbild Titel:"
 
 #: includes/functions.php:107
 msgid "New image tag"
-msgstr "Nouveau tag d'image"
+msgstr "Neuer Bildtitel"
 
 #: includes/functions.php:108
 msgid "Add new image tag"
-msgstr "Ajouter un tag d'image"
+msgstr "Füge neuen Bildtitel hinzu"
 
 #: includes/functions.php:109
 msgid "Edit image tag"
-msgstr "Editer un tag d'image"
+msgstr "bearbeite den Bildtitel"
 
 #: includes/functions.php:110
 msgid "Update image tag"
-msgstr "Update d'un tag d'image"
+msgstr "Aktualisiere den Bildtitel"
 
 #: includes/functions.php:111
 msgid "View image tag"
-msgstr "Voir un tag d'image"
+msgstr "Zeige den Bildtitel"
 
 #: includes/functions.php:112
 msgid "Separate image tags with commas"
-msgstr "Tags d'images séparées par des virgules"
+msgstr "Separiere die Bildtitel mit Kommas"
 
 #: includes/functions.php:113
 msgid "Add or remove image tags"
-msgstr "Ajouter ou supprimer des tags d'images"
+msgstr "Hinzufügen oder entfernen der Bildtitel"
 
 #: includes/functions.php:115
 msgid "Popular image tags"
-msgstr "Les tags d'image les plus populaire"
+msgstr "Berühmte Bildtitel"
 
 #: includes/functions.php:116
 msgid "Search image tags"
-msgstr "Recherche d'image par tags"
+msgstr "Suche Bildtitel"
 
 #: includes/functions.php:118
 msgid "No image tags"
-msgstr "Aucun tags d'image"
+msgstr "Keine Bildtitel"
 
 #: includes/functions.php:119
 msgid "Image tags list"
-msgstr "Liste des tags d'image"
+msgstr "Bildtitel Liste"
 
 #: includes/functions.php:120
 msgid "Image tags list navigation"
-msgstr "Navigation par liste de tags d'image"
+msgstr "Bildtitel Liste Navigation"
 
 #: includes/functions.php:166
 msgid "Author tools"
-msgstr "Outils d'édition"
+msgstr "Author Werkzeuge"
 
 #: includes/functions.php:235 modules/mod-collections.php:105
 msgid "Title"
-msgstr "Titre"
+msgstr ""
 
 #: includes/functions.php:239
 msgid "Description"
@@ -724,8 +724,8 @@ msgid ""
 "Main image will appear first in single image listing and as a thumbnail in "
 "gallery view"
 msgstr ""
-"L'image principale apparaît seule dans le listing et comme une miniature "
-"dans la galerie"
+"Das Hauptbild wird in der Einzelbild Liste als erstes erscheinen und als "
+"Titelbild in der Galerie angezeigt"
 
 #: includes/functions.php:317
 msgid "Featured image selected succesfully!"
@@ -733,12 +733,12 @@ msgstr ""
 
 #: includes/functions.php:341
 msgid "Add more images"
-msgstr "Ajouter des images"
+msgstr "Füge mehr Bilder hinzu"
 
 #: includes/functions.php:461 includes/functions.php:564
 #: modules/mod-collections.php:297
 msgid "by"
-msgstr "par"
+msgstr "von"
 
 #: includes/functions.php:462 includes/functions.php:565
 msgid "Uploaded"
@@ -754,19 +754,19 @@ msgstr ""
 
 #: includes/functions.php:680
 msgid "More by the same author"
-msgstr "Par le même auteur"
+msgstr ""
 
 #: includes/functions.php:698
 msgid "Powered by ImagePress"
-msgstr "Powered by ImagePress"
+msgstr ""
 
 #: includes/functions.php:701
 msgid "Incorrect login details."
-msgstr "Informations de connexion incorrectes."
+msgstr ""
 
 #: includes/functions.php:761
 msgid "Register for ImagePress"
-msgstr "Inscrivez-vous pour ImagePress"
+msgstr ""
 
 #: includes/page-settings.php:14
 msgid "Dashboard"
@@ -774,23 +774,23 @@ msgstr ""
 
 #: includes/page-settings.php:15 includes/page-settings.php:92
 msgid "Installation"
-msgstr "Installation"
+msgstr ""
 
 #: includes/page-settings.php:16
 msgid "Settings"
-msgstr "Paramètres"
+msgstr "Einstellungen"
 
 #: includes/page-settings.php:17
 msgid "Configurator"
-msgstr "Configurateur"
+msgstr "Konfigurator"
 
 #: includes/page-settings.php:23
 msgid "Labels"
-msgstr "Labels"
+msgstr "Bezeichnung"
 
 #: includes/page-settings.php:24
 msgid "Upload"
-msgstr "Upload"
+msgstr ""
 
 #: includes/page-settings.php:25
 msgid "Authors"
@@ -798,7 +798,7 @@ msgstr ""
 
 #: includes/page-settings.php:28
 msgid "Login"
-msgstr "Login"
+msgstr ""
 
 #: includes/page-settings.php:31
 msgid "Fields"
@@ -814,11 +814,11 @@ msgstr ""
 
 #: includes/page-settings.php:175 includes/page-settings.php:502
 msgid "Maintenance"
-msgstr "Maintenance"
+msgstr "Wartung"
 
 #: includes/page-settings.php:214
 msgid "Grid Configurator"
-msgstr "Configurateur Grid"
+msgstr ""
 
 #: includes/page-settings.php:403
 msgid ""
@@ -901,7 +901,7 @@ msgstr ""
 
 #: includes/page-settings.php:955
 msgid "Label Settings"
-msgstr "Paramètres d'étiquette"
+msgstr "Label Einstellungen"
 
 #: includes/page-settings.php:956
 msgid ""
@@ -915,7 +915,7 @@ msgstr ""
 
 #: includes/page-settings.php:1038 modules/mod-awards.php:69
 msgid "Users"
-msgstr "Utilisateurs"
+msgstr ""
 
 #: includes/page-settings.php:1071
 msgid "Like/Unlike"
@@ -1019,7 +1019,7 @@ msgstr ""
 
 #: modules/mod-collections.php:100
 msgid "Edit"
-msgstr "Editer"
+msgstr ""
 
 #: modules/mod-collections.php:104
 msgid "Edit collection"
@@ -1027,7 +1027,7 @@ msgstr ""
 
 #: modules/mod-collections.php:106
 msgid "Visibility"
-msgstr "Visibilité"
+msgstr ""
 
 #: modules/mod-collections.php:113
 msgid "Share your collection"
@@ -1035,7 +1035,7 @@ msgstr ""
 
 #: modules/mod-collections.php:146 modules/mod-collections.php:188
 msgid "By"
-msgstr "Par"
+msgstr ""
 
 #: modules/mod-collections.php:233 modules/mod-collections.php:240
 msgid "Add to collection"
@@ -1043,200 +1043,208 @@ msgstr ""
 
 #: modules/mod-collections.php:271
 msgid "Add"
-msgstr "Ajouter"
+msgstr ""
 
 #: modules/mod-collections.php:347
 msgid "images"
-msgstr "images"
+msgstr "Bilder"
 
 #: modules/mod-collections.php:357
 msgid "This collection is empty."
-msgstr "Cet album est vide."
+msgstr "Dieses Album ist leer."
 
 #: modules/mod-collections.php:405
 msgid "No images found!"
-msgstr "Aucune image trouvée!"
+msgstr "Kein Bild gefunden!"
 
 #: modules/mod-user-following.php:328 modules/mod-user-following.php:332
 msgid "Unfollow"
-msgstr "Unfollow"
+msgstr ""
 
 #: modules/mod-user-following.php:329 modules/mod-user-following.php:331
 msgid "Follow"
-msgstr "Follow"
+msgstr ""
+
+#~ msgid "Images"
+#~ msgstr "Bilder"
 
 #~ msgid "You are already logged in."
-#~ msgstr "Vous êtes déjà connecté."
+#~ msgstr "Du bist bereits eingeloggt"
 
 #~ msgid "Invalid username or email address."
-#~ msgstr "Nom d'utilisateur ou adresse e-mail invalide."
+#~ msgstr "Ungültiger Benutzername oder E-Mail Adresse "
 
 #~ msgid ""
 #~ "The e-mail could not be sent. Possible reason: your host may have "
 #~ "disabled the mail() function."
 #~ msgstr ""
-#~ "L'e-mail n'a pas été envoyé. Cause possible: votre hébergeur peut avoir "
-#~ "désactivé la fonction mail ()."
-
-#~ msgid "Images"
-#~ msgstr "Images"
+#~ "Die E-Mail konnte nicht gesendet werden. Vielleicht haben Sie die E-Mail "
+#~ "Funktion ausgeschaltet."
 
 #~ msgid "ImagePress Image #"
-#~ msgstr "ImagePress Image #"
+#~ msgstr "ImagePress Bild #"
 
 #~ msgid "Sort by date"
-#~ msgstr "Trier par date"
+#~ msgstr "Nach Datum sortiert "
 
 #~ msgid "Sort by views"
-#~ msgstr "Trier par vues"
+#~ msgstr "Nach Views sortiert "
 
 #~ msgid "Sort by comments"
-#~ msgstr "Trier par commentaires"
+#~ msgstr "Nach Kommentaren sortiert "
 
 #~ msgid "Sort by "
-#~ msgstr "Trier par "
+#~ msgstr "Sortiert nach"
+
+#~ msgid "Anonymous"
+#~ msgstr "Unbekannter Benutzer"
 
 #~ msgid "Sort by name"
-#~ msgstr "Trier par nom"
+#~ msgstr "Nach Name sortiert "
 
 #~ msgid "Sort by uploads"
-#~ msgstr "Trier par uploads"
+#~ msgstr "Nach Uploads sortiert "
 
 #~ msgid "Sort by followers"
-#~ msgstr "Trier par followers"
+#~ msgstr "Nach Followern sortiert "
 
 #~ msgid "Portfolio provided by"
-#~ msgstr "Portfolio fourni par"
+#~ msgstr "Portfolio erstellt von"
 
 #~ msgid "Activity"
-#~ msgstr "Activité"
+#~ msgstr "Aktivität "
 
 #~ msgid "Preferred Software"
-#~ msgstr "Logiciel préféré"
+#~ msgstr "Bevorzugte Software"
 
 #~ msgid "Employer"
-#~ msgstr "Employeur"
+#~ msgstr "Angestellter"
 
 #~ msgid "Last seen on"
-#~ msgstr "Vue la dernière fois le"
+#~ msgstr "Zuletzt gesehen auf"
 
 #~ msgid "Joined on"
-#~ msgstr "Inscrit le"
+#~ msgstr "Beigetreten am"
+
+#~ msgid "Biographical information"
+#~ msgstr "Biografie "
+
+#~ msgid "Behance username"
+#~ msgstr "Behance Benutzername "
 
 #~ msgid "Location"
-#~ msgstr "Lieu"
+#~ msgstr "Ort"
 
 #~ msgid "Occupational field"
-#~ msgstr "Domaine de compétence"
+#~ msgstr "Beruf"
 
 #~ msgid "Status"
-#~ msgstr "Statut"
+#~ msgstr "Status "
 
 #~ msgid "Available for hire"
-#~ msgstr "Disponible pour du travail"
+#~ msgstr "Professionelle Beauftragung möglich "
 
 #~ msgid "Not available for hire"
-#~ msgstr "Non disponible pour du travail"
+#~ msgstr "Professionelle Beauftragung nicht möglich "
 
 #~ msgid ""
 #~ "Being available for hire will show an additional email icon on your "
 #~ "profile, emails will be sent to the email address you have registered "
 #~ "with the site."
 #~ msgstr ""
-#~ "Être disponible pour du travail montrera un icône email supplémentaire "
-#~ "sur votre profil, les e-mails seront envoyés à l'adresse e-mail que vous "
-#~ "avez enregistré avec le site."
+#~ "Wenn Sie professionelle Aufträgen annehmen wollen wird ein E-Mail Icon "
+#~ "auf dem Profil platziert, sodass Käufer Kontakt aufnehmen können."
 
 #~ msgid "Preferred software"
-#~ msgstr "Logiciel utilisé"
+#~ msgstr "Bevorzugte Software "
 
 #~ msgid ""
 #~ "Preferred Software (e.g. Adobe Photoshop, Adobe Illustrator, Sketch, "
 #~ "Autodesk 3ds Max, etc.)"
 #~ msgstr ""
-#~ "Logiciel utilisé (ex. Adobe Photoshop, Adobe Illustrator, Sketch, "
+#~ "Bevorzugte Software ( bsp. Adope Photoshop, Adope Illustrator, Sketch, "
 #~ "Autodesk 3ds Max, etc.)"
 
 #~ msgid "Default theme"
-#~ msgstr "Theme par defaut"
+#~ msgstr "Standard Theme"
 
 #~ msgid "Sidebar (left)"
-#~ msgstr "Sidebar (gauche)"
+#~ msgstr "Seitenleiste (links)"
 
 #~ msgid "Portfolio theme"
-#~ msgstr "Thématique de votre portfolio"
+#~ msgstr "Portfolio Theme"
 
 #~ msgid "Background colour"
-#~ msgstr "Couleur de fond"
+#~ msgstr "Hintergrund Farbe "
 
 #~ msgid "Text colour"
-#~ msgstr "Couleur du texte"
+#~ msgstr "Text Farbe "
 
 #~ msgid "Accent colour"
-#~ msgstr "Accent colour "
+#~ msgstr "Akzent Farbe "
 
 #~ msgid "View and share your profile"
-#~ msgstr "Voir et partager votre profil"
+#~ msgstr "Teilen Sie Ihr Profil "
 
 #~ msgid "Image Keywords"
-#~ msgstr "Mots-clés de l'image"
+#~ msgstr "Bild Stichwort "
 
 #~ msgid "All image keywords"
-#~ msgstr "Toutes les mots-clés des images"
+#~ msgstr "Alle Bild Stichwort "
+
+#~ msgid "Parent image keyword"
+#~ msgstr "Hauptbild Stichwort "
+
+#~ msgid "Parent image keyword:"
+#~ msgstr "Hauptbild Stichwort:"
+
+#~ msgid "New image keyword"
+#~ msgstr "Neues Bild Stichwort "
+
+#~ msgid "Add new image keyword"
+#~ msgstr "Füge ein neues Bild Stichwort  hinzu"
+
+#~ msgid "Edit image keyword"
+#~ msgstr "Bearbeite das Bild Stichwort  "
+
+#~ msgid "Update image keyword"
+#~ msgstr "Aktualisiere das Bild Stichwort "
+
+#~ msgid "View image keyword"
+#~ msgstr "Zeige das Bild Stichwort "
+
+#~ msgid "Separate image keywords with commas"
+#~ msgstr "Separiere das Bild Stichwort  mit Kommas "
+
+#~ msgid "Add or remove image keywords"
+#~ msgstr "Hinzufügen oder entfernen des Bild Stichwort "
+
+#~ msgid "Popular image keywords"
+#~ msgstr "Beliebte Bild Stichwort  "
+
+#~ msgid "Search image keywords"
+#~ msgstr "Suche Bild Stichwort "
+
+#~ msgid "No image keywords"
+#~ msgstr "Kein Bild Stichwort gefunden "
+
+#~ msgid "Image keywords list"
+#~ msgstr "Bild Stichwort Liste "
+
+#~ msgid "Image keywords list navigation"
+#~ msgstr "Navigation der Bild Stichwort Liste "
 
 #~ msgid "Select"
-#~ msgstr "Sélectionner"
+#~ msgstr "Auswählen"
 
 #~ msgid "main image or"
-#~ msgstr "image principale ou"
+#~ msgstr "Hauptbild oder"
 
 #~ msgid "delete additional images"
-#~ msgstr "supprimer des images supplémentaires"
+#~ msgstr "Entferne unerwünschte Bilder"
 
 #~ msgid "Image Details"
-#~ msgstr "Description de l'image"
-
-#~ msgid "comments"
-#~ msgstr "commentaires"
-
-#~ msgid "likes"
-#~ msgstr "likes"
-
-#~ msgid "Related"
-#~ msgstr "En relation"
-
-#~ msgid "view all"
-#~ msgstr "voir tout"
-
-#~ msgid "Users (HUB)"
-#~ msgstr "Utilisateurs (HUB)"
-
-#~ msgid "Hooks"
-#~ msgstr "Hooks"
-
-#~ msgid "Anonymous"
-#~ msgstr "Anonyme"
-
-#~ msgid "Biographical information"
-#~ msgstr "Biographie"
-
-#~ msgid "Behance username"
-#~ msgstr "Nom d'utilisateur Behance"
+#~ msgstr "Bild Details "
 
 #~ msgid "Available for print"
-#~ msgstr "Disponible pour l'impression"
-
-#~ msgid "External Links"
-#~ msgstr "Liens Externe"
-
-#~ msgid "View Behance Project"
-#~ msgstr "Voir le Projet sur Behance"
-
-#~ msgid "Purchase Print"
-#~ msgstr "Acheter une impression"
-
-#~ msgid "<p class=\"bg-danger\">%s</p>"
-#~ msgstr "<p class=\"bg-danger\">%s</p>"
-
-#~ msgid "<p class = \"bg-success\">%d files added successfully!</p>"
-#~ msgstr "<p class = \"bg-success\">%d fichiers ajouté avec succès!</p>"
+#~ msgstr "Kopieren "

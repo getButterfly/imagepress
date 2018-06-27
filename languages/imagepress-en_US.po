@@ -1,1061 +1,943 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ImagePress\n"
-"POT-Creation-Date: 2016-07-12 00:12+0100\n"
-"PO-Revision-Date: 2016-07-12 00:12+0100\n"
+"POT-Creation-Date: 2018-06-27 10:41+0100\n"
+"PO-Revision-Date: 2018-06-27 10:41+0100\n"
 "Last-Translator: Ciprian Popescu <getbutterfly@gmail.com>\n"
 "Language-Team: Ciprian Popescu <getbutterfly@gmail.com>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
-"X-Poedit-KeywordsList: _;__;_e\n"
+"X-Generator: Poedit 2.0.8\n"
+"X-Poedit-KeywordsList: _;__;_e;esc_html__;esc_html_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../classes/Frontend.php:23
-msgid "Checking credentials..."
+#: ../classes/Frontend.php:21
+msgid "My account"
 msgstr ""
 
-#: ../classes/Frontend.php:24
-msgid "Processing registration..."
-msgstr ""
-
-#: ../classes/Frontend.php:31 ../classes/Frontend.php:53
+#: ../classes/Frontend.php:21 ../classes/Frontend.php:47
 msgid "Log in"
 msgstr ""
 
-#: ../classes/Frontend.php:32 ../classes/Frontend.php:66
+#: ../classes/Frontend.php:23 ../classes/Frontend.php:64
+#: ../classes/Frontend.php:68
 msgid "Sign up"
 msgstr ""
 
-#: ../classes/Frontend.php:33
+#: ../classes/Frontend.php:26
 msgid "Lost password"
 msgstr ""
 
-#: ../classes/Frontend.php:50 ../classes/Frontend.php:67
+#: ../classes/Frontend.php:44 ../classes/Frontend.php:65
 msgid "Username"
 msgstr ""
 
-#: ../classes/Frontend.php:51
+#: ../classes/Frontend.php:45
 msgid "Password"
 msgstr ""
 
-#: ../classes/Frontend.php:52
+#: ../classes/Frontend.php:46
 msgid "Remember me"
 msgstr ""
 
-#: ../classes/Frontend.php:60 ../classes/Frontend.php:75
-msgid "You are already logged in."
+#: ../classes/Frontend.php:54 ../includes/cinnamon-users.php:710
+msgid "View profile"
 msgstr ""
 
-#: ../classes/Frontend.php:68
+#: ../classes/Frontend.php:55
+msgid "Edit profile"
+msgstr ""
+
+#: ../classes/Frontend.php:57
+msgid "Log out"
+msgstr ""
+
+#: ../classes/Frontend.php:66
 msgid "Email address"
 msgstr ""
 
-#: ../classes/Frontend.php:69
+#: ../classes/Frontend.php:67
 msgid "A password will be emailed to you."
 msgstr ""
 
-#: ../classes/Frontend.php:80
+#: ../classes/Frontend.php:78
 msgid "Lost your password?"
 msgstr ""
 
-#: ../classes/Frontend.php:81
+#: ../classes/Frontend.php:79
 msgid "Username or email address"
 msgstr ""
 
-#: ../classes/Frontend.php:103
+#: ../classes/Frontend.php:80
+msgid "Reset password"
+msgstr ""
+
+#: ../classes/Frontend.php:99
 msgid "Registration was successful!"
 msgstr ""
 
-#: ../classes/Frontend.php:117
+#: ../classes/Frontend.php:110
 #, php-format
 msgid "Something was wrong:</br> %s"
 msgstr ""
 
-#: ../classes/Frontend.php:143
+#: ../classes/Frontend.php:133
 msgid "Password reset. Please check your email."
 msgstr ""
 
-#: ../classes/Frontend.php:155
+#: ../classes/Frontend.php:152
 msgid "Please enter a username or email address."
 msgstr ""
 
-#: ../classes/Frontend.php:160
+#: ../classes/Frontend.php:156
 msgid "There is no user registered with that email address."
 msgstr ""
 
-#: ../classes/Frontend.php:170
-msgid "Invalid username or email address."
-msgstr ""
-
-#: ../classes/Frontend.php:180
+#: ../classes/Frontend.php:173
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: ../classes/Frontend.php:189
+#: ../classes/Frontend.php:182
 msgid ""
 "Someone requested that your password be reset for the following account: "
 msgstr ""
 
-#: ../classes/Frontend.php:191
+#: ../classes/Frontend.php:184
 #, php-format
 msgid "Username: %s"
 msgstr ""
 
-#: ../classes/Frontend.php:192
+#: ../classes/Frontend.php:185
 msgid "Your new password is "
 msgstr ""
 
-#: ../classes/Frontend.php:199
+#: ../classes/Frontend.php:189
 #, php-format
 msgid "[%s] Password reset"
 msgstr ""
 
-#: ../classes/Frontend.php:204
-msgid ""
-"The e-mail could not be sent. Possible reason: your host may have disabled "
-"the mail() function."
+#: ../classes/Frontend.php:197
+msgid "The email could not be sent."
 msgstr ""
 
-#: ../imagepress.php:228
-msgid "Images"
+#: ../imagepress.php:223
+msgid "No quota"
 msgstr ""
 
-#: ../imagepress.php:254
-msgid "ImagePress Image #"
+#: ../imagepress.php:246
+msgid "Images/Quota"
 msgstr ""
 
-#: ../imagepress.php:266 ../imagepress.php:267 ../imagepress.php:395
-#: ../imagepress.php:396
+#: ../imagepress.php:282 ../imagepress.php:283 ../imagepress.php:405
+#: ../imagepress.php:406
 msgid "New image uploaded!"
 msgstr ""
 
-#: ../imagepress.php:365 ../imagepress.php:490
+#: ../imagepress.php:373 ../imagepress.php:467
 msgid "You need to be logged in to upload an image."
 msgstr ""
 
-#: ../imagepress.php:720 ../imagepress.php:839
-msgid "Select a file"
+#: ../imagepress.php:582 ../imagepress.php:719
+#: ../modules/mod-collections.php:250
+msgid "Choose a collection..."
 msgstr ""
 
-#: ../imagepress.php:720 ../imagepress.php:739 ../imagepress.php:839
-#: ../includes/functions.php:393 ../includes/functions.php:427
+#: ../imagepress.php:586 ../imagepress.php:723
+#: ../modules/mod-collections.php:262
+msgid "or"
+msgstr ""
+
+#: ../imagepress.php:586 ../imagepress.php:723
+#: ../modules/mod-collections.php:264
+msgid "Create new collection..."
+msgstr ""
+
+#: ../imagepress.php:588 ../imagepress.php:725
+#: ../includes/cinnamon-users.php:640 ../includes/page-settings.php:495
+#: ../modules/mod-collections.php:108 ../modules/mod-collections.php:266
+msgid "Public"
+msgstr ""
+
+#: ../imagepress.php:589 ../imagepress.php:726
+#: ../includes/cinnamon-users.php:640 ../includes/page-settings.php:496
+#: ../modules/mod-collections.php:109 ../modules/mod-collections.php:267
+msgid "Private"
+msgstr ""
+
+#: ../imagepress.php:639
+msgid "Drop files here<br><small>or</small>"
+msgstr ""
+
+#: ../imagepress.php:641 ../imagepress.php:662 ../imagepress.php:735
+#: ../includes/functions.php:309 ../includes/functions.php:341
 msgid "maximum"
 msgstr ""
 
-#: ../imagepress.php:844
-msgid "Add more"
+#: ../imagepress.php:735
+msgid "Select a file"
 msgstr ""
 
-#: ../imagepress.php:1166
+#: ../imagepress.php:897
 msgid "There was a problem processing your request."
 msgstr ""
 
-#: ../imagepress.php:1167
+#: ../imagepress.php:898
 msgid "Oops, you must be logged-in to follow users."
 msgstr ""
 
-#: ../imagepress.php:1183
+#: ../imagepress.php:906
+msgid "Checking credentials..."
+msgstr ""
+
+#: ../imagepress.php:907
+msgid "Processing registration..."
+msgstr ""
+
+#: ../imagepress.php:910
+msgid "Are you sure? You won't be able to revert this!"
+msgstr ""
+
+#: ../imagepress.php:911
+msgid "Yes"
+msgstr ""
+
+#: ../imagepress.php:912
+msgid "No"
+msgstr ""
+
+#: ../imagepress.php:924
 msgid "Search images..."
 msgstr ""
 
-#: ../imagepress.php:1184
+#: ../imagepress.php:925
 msgid "Search"
 msgstr ""
 
-#: ../imagepress.php:1259 ../includes/cinnamon-users.php:196
-#: ../includes/functions.php:683
+#: ../includes/alpha-functions.php:59
+msgid "Newest"
+msgstr ""
+
+#: ../includes/alpha-functions.php:60
+msgid "Oldest"
+msgstr ""
+
+#: ../includes/alpha-functions.php:61
+msgid "Most comments"
+msgstr ""
+
+#: ../includes/alpha-functions.php:62
+msgid "Most views"
+msgstr ""
+
+#: ../includes/alpha-functions.php:63
+msgid "Most liked"
+msgstr ""
+
+#: ../includes/alpha-functions.php:67
+msgid "All time"
+msgstr ""
+
+#: ../includes/alpha-functions.php:68
+msgid "This month"
+msgstr ""
+
+#: ../includes/alpha-functions.php:69
+msgid "This week"
+msgstr ""
+
+#: ../includes/alpha-functions.php:70
+msgid "Today"
+msgstr ""
+
+#: ../includes/alpha-functions.php:85
+msgid "Search..."
+msgstr ""
+
+#: ../includes/cinnamon-users.php:130 ../modules/mod-collections.php:347
 msgid "views"
 msgstr ""
 
-#: ../imagepress.php:1259
-msgid "images"
-msgstr ""
-
-#: ../imagepress.php:1268
-msgid "This collection is empty."
-msgstr ""
-
-#: ../imagepress.php:1306
-msgid "Sort by date"
-msgstr ""
-
-#: ../imagepress.php:1307
-msgid "Sort by views"
-msgstr ""
-
-#: ../imagepress.php:1308
-msgid "Sort by comments"
-msgstr ""
-
-#: ../imagepress.php:1309
-msgid "Sort by "
-msgstr ""
-
-#: ../imagepress.php:1315
-msgid "All"
-msgstr ""
-
-#: ../imagepress.php:1432
-msgid "No images found!"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:152
-msgid "Sort by name"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:153
-msgid "Sort by uploads"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:154
-msgid "Sort by followers"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:197 ../includes/cinnamon-users.php:437
-#: ../includes/cinnamon-users.php:719
+#: ../includes/cinnamon-users.php:131 ../includes/cinnamon-users.php:309
+#: ../includes/cinnamon-users.php:519
 msgid "followers"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:198 ../includes/cinnamon-users.php:438
-#: ../includes/cinnamon-users.php:727
+#: ../includes/cinnamon-users.php:132 ../includes/cinnamon-users.php:310
+#: ../includes/cinnamon-users.php:527
 msgid "uploads"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:287
-msgid "Portfolio provided by"
+#: ../includes/cinnamon-users.php:140
+msgid "Pages:"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:411
+#: ../includes/cinnamon-users.php:285
 msgid "Uploads"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:414 ../includes/cinnamon-users.php:772
+#: ../includes/cinnamon-users.php:288 ../includes/cinnamon-users.php:572
 msgid "About"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:417
+#: ../includes/cinnamon-users.php:291
 msgid "Followers"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:419
+#: ../includes/cinnamon-users.php:293
 msgid "Following"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:421
+#: ../includes/cinnamon-users.php:295
 msgid "Loved"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:423 ../modules/mod-awards.php:6
+#: ../includes/cinnamon-users.php:297 ../modules/mod-awards.php:6
 msgid "Awards"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:426
-msgid "Activity"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:430 ../includes/page-settings.php:20
-#: ../includes/page-settings.php:470
+#: ../includes/cinnamon-users.php:301 ../includes/page-settings.php:20
+#: ../includes/page-settings.php:402
 msgid "Collections"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:436
+#: ../includes/cinnamon-users.php:308
 msgid "profile views"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:458
-msgid "Preferred Software"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:460 ../includes/cinnamon-users.php:802
-msgid "Employer"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:555
-msgid "Last seen on"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:555
-msgid "Joined on"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:596
+#: ../includes/cinnamon-users.php:418
 msgid "The passwords you entered do not match. Your password was not updated."
 msgstr ""
 
-#: ../includes/cinnamon-users.php:603
+#: ../includes/cinnamon-users.php:425
 msgid "The email you entered is not valid. Please try again."
 msgstr ""
 
-#: ../includes/cinnamon-users.php:605
+#: ../includes/cinnamon-users.php:427
 msgid "This email is already used by another user. Try a different one."
 msgstr ""
 
-#: ../includes/cinnamon-users.php:650
+#: ../includes/cinnamon-users.php:463
 msgid "Profile updated successfully!"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:663
+#: ../includes/cinnamon-users.php:476
 msgid "Summary"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:678
+#: ../includes/cinnamon-users.php:487
 msgid "Statistics"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:715
+#: ../includes/cinnamon-users.php:515
 msgid "total profile views"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:723
+#: ../includes/cinnamon-users.php:523
 msgid "following"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:733
+#: ../includes/cinnamon-users.php:533
 msgid "collections"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:744
+#: ../includes/cinnamon-users.php:544
 msgid "First name"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:748
+#: ../includes/cinnamon-users.php:548
 msgid "Last name"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:752
+#: ../includes/cinnamon-users.php:552
 msgid "Nickname"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:756
+#: ../includes/cinnamon-users.php:556
 msgid "E-mail *"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:760
+#: ../includes/cinnamon-users.php:560
 msgid "Website"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:764
+#: ../includes/cinnamon-users.php:564
 msgid "Password *"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:768
+#: ../includes/cinnamon-users.php:568
 msgid "Repeat password *"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:780
+#: ../includes/cinnamon-users.php:580
 msgid "Facebook profile URL"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:784
+#: ../includes/cinnamon-users.php:584
 msgid "Twitter username"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:788
+#: ../includes/cinnamon-users.php:588
 msgid "Google+ profile URL"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:796
-msgid "Location"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:808
-msgid "Occupational field"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:814 ../includes/functions.php:566
-#: ../modules/mod-awards.php:95
-msgid "Status"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:817
-msgid "Available for hire"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:818
-msgid "Not available for hire"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:820
-msgid ""
-"Being available for hire will show an additional email icon on your profile, "
-"emails will be sent to the email address you have registered with the site."
-msgstr ""
-
-#: ../includes/cinnamon-users.php:824
-msgid "Preferred software"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:827
-msgid ""
-"Preferred Software (e.g. Adobe Photoshop, Adobe Illustrator, Sketch, "
-"Autodesk 3ds Max, etc.)"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:837
+#: ../includes/cinnamon-users.php:598
 msgid "Cover/avatar preview"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:849
+#: ../includes/cinnamon-users.php:610
 msgid "Profile cover image"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:855
+#: ../includes/cinnamon-users.php:616
 msgid "Profile avatar image"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:858
+#: ../includes/cinnamon-users.php:619
 msgid "Recommended cover size is 1080x300."
 msgstr ""
 
-#: ../includes/cinnamon-users.php:859
+#: ../includes/cinnamon-users.php:620
 msgid ""
 "Recommended avatar size is 240x240. If there is no custom avatar, your "
 "Gravatar will be used."
 msgstr ""
 
-#: ../includes/cinnamon-users.php:883
-msgid "Default theme"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:884
-msgid "Sidebar (left)"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:885
-msgid "Portfolio theme"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:888
-msgid "Background colour"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:891
-msgid "Text colour"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:894
-msgid "Accent colour"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:901 ../includes/cinnamon-users.php:907
+#: ../includes/cinnamon-users.php:629 ../includes/cinnamon-users.php:635
 msgid "Create new collection"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:902
+#: ../includes/cinnamon-users.php:630
 msgid "Loading collections..."
 msgstr ""
 
-#: ../includes/cinnamon-users.php:903
+#: ../includes/cinnamon-users.php:631
 msgid "Loading collection images..."
 msgstr ""
 
-#: ../includes/cinnamon-users.php:908 ../modules/mod-collections.php:235
+#: ../includes/cinnamon-users.php:636 ../modules/mod-collections.php:116
+#: ../modules/mod-collections.php:241
 msgid "Close"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:911
+#: ../includes/cinnamon-users.php:639
 msgid "Collection title"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:912 ../modules/mod-collections.php:108
-#: ../modules/mod-collections.php:262
-msgid "Public"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:912 ../modules/mod-collections.php:109
-#: ../modules/mod-collections.php:262
-msgid "Private"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:914
+#: ../includes/cinnamon-users.php:642
 msgid "Create"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:916 ../modules/mod-collections.php:266
+#: ../includes/cinnamon-users.php:643
+msgid "Creating collection..."
+msgstr ""
+
+#: ../includes/cinnamon-users.php:644 ../modules/mod-collections.php:273
 msgid "Collection created!"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:927
+#: ../includes/cinnamon-users.php:655
 msgid "Drag images to reorder them"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:962
-msgid "Delete"
+#: ../includes/cinnamon-users.php:655
+msgid "Click titles to rename images"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:965
+#: ../includes/cinnamon-users.php:691 ../includes/functions.php:462
+#: ../includes/functions.php:565
 msgid "in"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:965
+#: ../includes/cinnamon-users.php:691
 msgid "on"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:966
+#: ../includes/cinnamon-users.php:692
 msgid "View/Edit"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:981
+#: ../includes/cinnamon-users.php:692 ../includes/functions.php:353
+msgid "Delete"
+msgstr ""
+
+#: ../includes/cinnamon-users.php:707 ../includes/functions.php:352
 msgid "Update"
 msgstr ""
 
-#: ../includes/cinnamon-users.php:984
-msgid "View and share your profile"
-msgstr ""
-
-#: ../includes/cinnamon-users.php:993
+#: ../includes/cinnamon-users.php:719
 msgid "You must be logged in to edit your profile."
 msgstr ""
 
-#: ../includes/functions.php:8
+#: ../includes/functions.php:12
 msgid "ImagePress"
 msgstr ""
 
-#: ../includes/functions.php:9 ../includes/functions.php:34
+#: ../includes/functions.php:13 ../includes/functions.php:38
 msgid "Image"
 msgstr ""
 
-#: ../includes/functions.php:10
+#: ../includes/functions.php:14
 msgid "Image archives"
 msgstr ""
 
-#: ../includes/functions.php:11
+#: ../includes/functions.php:15
 msgid "Parent image:"
 msgstr ""
 
-#: ../includes/functions.php:12
+#: ../includes/functions.php:16
 msgid "All images"
 msgstr ""
 
-#: ../includes/functions.php:13
+#: ../includes/functions.php:17
 msgid "Add new image"
 msgstr ""
 
-#: ../includes/functions.php:14
+#: ../includes/functions.php:18
 msgid "Add new"
 msgstr ""
 
-#: ../includes/functions.php:15
+#: ../includes/functions.php:19
 msgid "New image"
 msgstr ""
 
-#: ../includes/functions.php:16
+#: ../includes/functions.php:20
 msgid "Edit image"
 msgstr ""
 
-#: ../includes/functions.php:17 ../includes/functions.php:432
+#: ../includes/functions.php:21
 msgid "Update image"
 msgstr ""
 
-#: ../includes/functions.php:18
+#: ../includes/functions.php:22
 msgid "View image"
 msgstr ""
 
-#: ../includes/functions.php:19
+#: ../includes/functions.php:23
 msgid "Search image"
 msgstr ""
 
-#: ../includes/functions.php:20 ../includes/functions.php:72
-#: ../includes/functions.php:108 ../includes/functions.php:143
-#: ../modules/mod-awards.php:20
+#: ../includes/functions.php:24 ../includes/functions.php:79
+#: ../includes/functions.php:117 ../modules/mod-awards.php:20
 msgid "Not found"
 msgstr ""
 
-#: ../includes/functions.php:21
+#: ../includes/functions.php:25
 msgid "Not found in trash"
 msgstr ""
 
-#: ../includes/functions.php:22
+#: ../includes/functions.php:26
 msgid "Featured image"
 msgstr ""
 
-#: ../includes/functions.php:23
+#: ../includes/functions.php:27
 msgid "Set featured image"
 msgstr ""
 
-#: ../includes/functions.php:24
+#: ../includes/functions.php:28
 msgid "Remove featured image"
 msgstr ""
 
-#: ../includes/functions.php:25
+#: ../includes/functions.php:29
 msgid "Use as featured image"
 msgstr ""
 
-#: ../includes/functions.php:26
+#: ../includes/functions.php:30
 msgid "Insert into image"
 msgstr ""
 
-#: ../includes/functions.php:27
+#: ../includes/functions.php:31
 msgid "Uploaded to this image"
 msgstr ""
 
-#: ../includes/functions.php:28
+#: ../includes/functions.php:32
 msgid "Images list"
 msgstr ""
 
-#: ../includes/functions.php:29
+#: ../includes/functions.php:33
 msgid "Images list navigation"
 msgstr ""
 
-#: ../includes/functions.php:30
+#: ../includes/functions.php:34
 msgid "Filter images list"
 msgstr ""
 
-#: ../includes/functions.php:35
+#: ../includes/functions.php:39
 msgid "Image post type"
 msgstr ""
 
-#: ../includes/functions.php:58
+#: ../includes/functions.php:65
 msgid "Image Categories"
 msgstr ""
 
-#: ../includes/functions.php:59
+#: ../includes/functions.php:66
 msgid "All image categories"
 msgstr ""
 
-#: ../includes/functions.php:60
+#: ../includes/functions.php:67
 msgid "Parent image category"
 msgstr ""
 
-#: ../includes/functions.php:61
+#: ../includes/functions.php:68
 msgid "Parent image category:"
 msgstr ""
 
-#: ../includes/functions.php:62
+#: ../includes/functions.php:69
 msgid "New image category"
 msgstr ""
 
-#: ../includes/functions.php:63
+#: ../includes/functions.php:70
 msgid "Add new image category"
 msgstr ""
 
-#: ../includes/functions.php:64
+#: ../includes/functions.php:71
 msgid "Edit image category"
 msgstr ""
 
-#: ../includes/functions.php:65
+#: ../includes/functions.php:72
 msgid "Update image category"
 msgstr ""
 
-#: ../includes/functions.php:66
+#: ../includes/functions.php:73
 msgid "View image category"
 msgstr ""
 
-#: ../includes/functions.php:67
+#: ../includes/functions.php:74
 msgid "Separate image categories with commas"
 msgstr ""
 
-#: ../includes/functions.php:68
+#: ../includes/functions.php:75
 msgid "Add or remove image categories"
 msgstr ""
 
-#: ../includes/functions.php:69 ../includes/functions.php:105
-#: ../includes/functions.php:140 ../modules/mod-awards.php:17
+#: ../includes/functions.php:76 ../includes/functions.php:114
+#: ../modules/mod-awards.php:17
 msgid "Choose from the most used"
 msgstr ""
 
-#: ../includes/functions.php:70
+#: ../includes/functions.php:77
 msgid "Popular image categories"
 msgstr ""
 
-#: ../includes/functions.php:71
+#: ../includes/functions.php:78
 msgid "Search image categories"
 msgstr ""
 
-#: ../includes/functions.php:73
+#: ../includes/functions.php:80
 msgid "No image categories"
 msgstr ""
 
-#: ../includes/functions.php:74
+#: ../includes/functions.php:81
 msgid "Image categories list"
 msgstr ""
 
-#: ../includes/functions.php:75
+#: ../includes/functions.php:82
 msgid "Image categories list navigation"
 msgstr ""
 
-#: ../includes/functions.php:94
+#: ../includes/functions.php:103
 msgid "Image Tags"
 msgstr ""
 
-#: ../includes/functions.php:95
+#: ../includes/functions.php:104
 msgid "All image tags"
 msgstr ""
 
-#: ../includes/functions.php:96
+#: ../includes/functions.php:105
 msgid "Parent image tag"
 msgstr ""
 
-#: ../includes/functions.php:97
+#: ../includes/functions.php:106
 msgid "Parent image tag:"
 msgstr ""
 
-#: ../includes/functions.php:98
+#: ../includes/functions.php:107
 msgid "New image tag"
 msgstr ""
 
-#: ../includes/functions.php:99
+#: ../includes/functions.php:108
 msgid "Add new image tag"
 msgstr ""
 
-#: ../includes/functions.php:100
+#: ../includes/functions.php:109
 msgid "Edit image tag"
 msgstr ""
 
-#: ../includes/functions.php:101
+#: ../includes/functions.php:110
 msgid "Update image tag"
 msgstr ""
 
-#: ../includes/functions.php:102
+#: ../includes/functions.php:111
 msgid "View image tag"
 msgstr ""
 
-#: ../includes/functions.php:103
+#: ../includes/functions.php:112
 msgid "Separate image tags with commas"
 msgstr ""
 
-#: ../includes/functions.php:104
+#: ../includes/functions.php:113
 msgid "Add or remove image tags"
 msgstr ""
 
-#: ../includes/functions.php:106
+#: ../includes/functions.php:115
 msgid "Popular image tags"
 msgstr ""
 
-#: ../includes/functions.php:107
+#: ../includes/functions.php:116
 msgid "Search image tags"
 msgstr ""
 
-#: ../includes/functions.php:109
+#: ../includes/functions.php:118
 msgid "No image tags"
 msgstr ""
 
-#: ../includes/functions.php:110
+#: ../includes/functions.php:119
 msgid "Image tags list"
 msgstr ""
 
-#: ../includes/functions.php:111
+#: ../includes/functions.php:120
 msgid "Image tags list navigation"
 msgstr ""
 
-#: ../includes/functions.php:129
-msgid "Image Keywords"
-msgstr ""
-
-#: ../includes/functions.php:130
-msgid "All image keywords"
-msgstr ""
-
-#: ../includes/functions.php:131
-msgid "Parent image keyword"
-msgstr ""
-
-#: ../includes/functions.php:132
-msgid "Parent image keyword:"
-msgstr ""
-
-#: ../includes/functions.php:133
-msgid "New image keyword"
-msgstr ""
-
-#: ../includes/functions.php:134
-msgid "Add new image keyword"
-msgstr ""
-
-#: ../includes/functions.php:135
-msgid "Edit image keyword"
-msgstr ""
-
-#: ../includes/functions.php:136
-msgid "Update image keyword"
-msgstr ""
-
-#: ../includes/functions.php:137
-msgid "View image keyword"
-msgstr ""
-
-#: ../includes/functions.php:138
-msgid "Separate image keywords with commas"
-msgstr ""
-
-#: ../includes/functions.php:139
-msgid "Add or remove image keywords"
-msgstr ""
-
-#: ../includes/functions.php:141
-msgid "Popular image keywords"
-msgstr ""
-
-#: ../includes/functions.php:142
-msgid "Search image keywords"
-msgstr ""
-
-#: ../includes/functions.php:144
-msgid "No image keywords"
-msgstr ""
-
-#: ../includes/functions.php:145
-msgid "Image keywords list"
-msgstr ""
-
-#: ../includes/functions.php:146
-msgid "Image keywords list navigation"
-msgstr ""
-
-#: ../includes/functions.php:215
+#: ../includes/functions.php:166
 msgid "Author tools"
 msgstr ""
 
-#: ../includes/functions.php:305 ../modules/mod-collections.php:105
+#: ../includes/functions.php:235 ../modules/mod-collections.php:105
 msgid "Title"
 msgstr ""
 
-#: ../includes/functions.php:306
+#: ../includes/functions.php:239
 msgid "Description"
 msgstr ""
 
-#: ../includes/functions.php:398
-msgid "Select"
+#: ../includes/functions.php:314
+msgid "Select main image or delete additional images"
 msgstr ""
 
-#: ../includes/functions.php:398
-msgid "main image or"
-msgstr ""
-
-#: ../includes/functions.php:398
-msgid "delete additional images"
-msgstr ""
-
-#: ../includes/functions.php:399
+#: ../includes/functions.php:315
 msgid ""
 "Main image will appear first in single image listing and as a thumbnail in "
 "gallery view"
 msgstr ""
 
-#: ../includes/functions.php:401
+#: ../includes/functions.php:317
 msgid "Featured image selected succesfully!"
 msgstr ""
 
-#: ../includes/functions.php:427
+#: ../includes/functions.php:341
 msgid "Add more images"
 msgstr ""
 
-#: ../includes/functions.php:596 ../modules/mod-collections.php:289
+#: ../includes/functions.php:461 ../includes/functions.php:564
+#: ../modules/mod-collections.php:297
 msgid "by"
 msgstr ""
 
-#: ../includes/functions.php:678
-msgid "Image Details"
+#: ../includes/functions.php:462 ../includes/functions.php:565
+msgid "Uploaded"
 msgstr ""
 
-#: ../includes/functions.php:683
-msgid "comments"
+#: ../includes/functions.php:505 ../includes/functions.php:607
+#, fuzzy
+msgid "Previous"
+msgstr "Föregående inlägg"
+
+#: ../includes/functions.php:506 ../includes/functions.php:608
+msgid "Next"
 msgstr ""
 
-#: ../includes/functions.php:683
-msgid "likes"
-msgstr ""
-
-#: ../includes/functions.php:690
-msgid "Related"
-msgstr ""
-
-#: ../includes/functions.php:692
+#: ../includes/functions.php:680
 msgid "More by the same author"
 msgstr ""
 
-#: ../includes/functions.php:692
-msgid "view all"
-msgstr ""
-
-#: ../includes/functions.php:729
+#: ../includes/functions.php:698
 msgid "Powered by ImagePress"
 msgstr ""
 
-#: ../includes/functions.php:732
+#: ../includes/functions.php:701
 msgid "Incorrect login details."
 msgstr ""
 
-#: ../includes/functions.php:792
+#: ../includes/functions.php:761
 msgid "Register for ImagePress"
 msgstr ""
 
-#: ../includes/page-settings.php:17
-msgid "Settings"
+#: ../includes/page-settings.php:14
+msgid "Dashboard"
 msgstr ""
 
-#: ../includes/page-settings.php:18
-msgid "Configurator"
-msgstr ""
-
-#: ../includes/page-settings.php:22
-msgid "Labels"
-msgstr ""
-
-#: ../includes/page-settings.php:23
-msgid "Upload"
-msgstr ""
-
-#: ../includes/page-settings.php:25 ../includes/page-settings.php:1305
-#: ../modules/mod-awards.php:69
-msgid "Users"
-msgstr ""
-
-#: ../includes/page-settings.php:27
-msgid "Users (HUB)"
-msgstr ""
-
-#: ../includes/page-settings.php:30
-msgid "Login"
-msgstr ""
-
-#: ../includes/page-settings.php:32 ../includes/page-settings.php:1730
-msgid "Hooks"
-msgstr ""
-
-#: ../includes/page-settings.php:33
-msgid "Fields"
-msgstr ""
-
-#: ../includes/page-settings.php:132
+#: ../includes/page-settings.php:15 ../includes/page-settings.php:92
 msgid "Installation"
 msgstr ""
 
-#: ../includes/page-settings.php:277
+#: ../includes/page-settings.php:16
+msgid "Settings"
+msgstr ""
+
+#: ../includes/page-settings.php:17
+msgid "Configurator"
+msgstr ""
+
+#: ../includes/page-settings.php:23
+msgid "Labels"
+msgstr ""
+
+#: ../includes/page-settings.php:24
+msgid "Upload"
+msgstr ""
+
+#: ../includes/page-settings.php:25
+msgid "Authors"
+msgstr ""
+
+#: ../includes/page-settings.php:28
+msgid "Login"
+msgstr ""
+
+#: ../includes/page-settings.php:31
+msgid "Fields"
+msgstr ""
+
+#: ../includes/page-settings.php:32 ../includes/page-settings.php:999
+msgid "Notifications"
+msgstr ""
+
+#: ../includes/page-settings.php:33 ../includes/page-settings.php:1551
+msgid "Extensions"
+msgstr ""
+
+#: ../includes/page-settings.php:175 ../includes/page-settings.php:502
 msgid "Maintenance"
 msgstr ""
 
-#: ../includes/page-settings.php:312
+#: ../includes/page-settings.php:214
 msgid "Grid Configurator"
 msgstr ""
 
-#: ../includes/page-settings.php:471
+#: ../includes/page-settings.php:403
 msgid ""
 "Use the shortcode tag <code>[imagepress-collections count=\"X\"]</code> in "
 "any post or page to display X collections. Note that in order for a "
-"collection to be visible, it needs to contain 4 or more images."
+"collection to be visible, it needs to contain at least one image."
 msgstr ""
 
-#: ../includes/page-settings.php:472
-msgid ""
-"<b>Example:</b> Using <code>[imagepress-collections count=\"3\"]</code> will "
-"display 3 collections."
-msgstr ""
-
-#: ../includes/page-settings.php:473
+#: ../includes/page-settings.php:404
 msgid ""
 "<b>Note:</b> In order to view collection images, you need to create a viewer "
-"page, which should contain the collections shortcode: <code>[imagepress-show "
-"collection=\"1\"]</code>."
+"page, which should contain the collections shortcode: <code>[imagepress-"
+"collection collection=\"1\"]</code>."
 msgstr ""
 
-#: ../includes/page-settings.php:478
+#: ../includes/page-settings.php:409
 msgid "Collection viewer page"
 msgstr ""
 
-#: ../includes/page-settings.php:485
+#: ../includes/page-settings.php:416
 msgid "Select collections page..."
 msgstr ""
 
-#: ../includes/page-settings.php:496
+#: ../includes/page-settings.php:422
+msgid "Save Changes"
+msgstr ""
+
+#: ../includes/page-settings.php:429
+msgid "Manage Collections"
+msgstr ""
+
+#: ../includes/page-settings.php:430
+msgid ""
+"Manage existing collections, see how many images they contain, see "
+"visibility status and delete selected ones."
+msgstr ""
+
+#: ../includes/page-settings.php:485
+msgid "Add New Collection"
+msgstr ""
+
+#: ../includes/page-settings.php:486
+msgid "Add new collections here. Use short and concise names."
+msgstr ""
+
+#: ../includes/page-settings.php:490
+msgid "New collection"
+msgstr ""
+
+#: ../includes/page-settings.php:491
+msgid "New collection name"
+msgstr ""
+
+#: ../includes/page-settings.php:498
+msgid "Add new collection"
+msgstr ""
+
+#: ../includes/page-settings.php:503
 msgid ""
 "Whenever users permanently delete an image, the collection reference is not "
 "updated. Use the button below to remove all references to missing images "
 "from the collections table."
 msgstr ""
 
-#: ../includes/page-settings.php:500
-msgid "Save Changes"
-msgstr ""
-
-#: ../includes/page-settings.php:505
-msgid "Manage Collections"
-msgstr ""
-
-#: ../includes/page-settings.php:506
-msgid ""
-"Manage existing collections, see how many images they contain, see "
-"visibility status and delete selected ones."
-msgstr ""
-
-#: ../includes/page-settings.php:568
+#: ../includes/page-settings.php:528
 msgid "Login/Registration"
 msgstr ""
 
-#: ../includes/page-settings.php:797
-msgid "Compatibility"
+#: ../includes/page-settings.php:767
+msgid "Profile page and author slug"
 msgstr ""
 
-#: ../includes/page-settings.php:1147
+#: ../includes/page-settings.php:768
+msgid "required for single user profiles"
+msgstr ""
+
+#: ../includes/page-settings.php:777
+msgid "Select profile page..."
+msgstr ""
+
+#: ../includes/page-settings.php:955
 msgid "Label Settings"
 msgstr ""
 
-#: ../includes/page-settings.php:1148
+#: ../includes/page-settings.php:956
 msgid ""
 "Configure, set or translate any of ImagePress labels. Leave a label blank to "
 "disable/hide it."
 msgstr ""
 
-#: ../includes/page-settings.php:1221
-msgid "Author/Image Cards"
-msgstr ""
-
-#: ../includes/page-settings.php:1252
-msgid "Notifications"
-msgstr ""
-
-#: ../includes/page-settings.php:1271
-msgid "Tooltips"
-msgstr ""
-
-#: ../includes/page-settings.php:1285
+#: ../includes/page-settings.php:1018
 msgid "Image Upload"
 msgstr ""
 
-#: ../includes/page-settings.php:1333
+#: ../includes/page-settings.php:1038 ../modules/mod-awards.php:69
+msgid "Users"
+msgstr ""
+
+#: ../includes/page-settings.php:1071
 msgid "Like/Unlike"
 msgstr ""
 
-#: ../includes/page-settings.php:1419
+#: ../includes/page-settings.php:1137
 msgid "Upload Settings"
 msgstr ""
 
-#: ../includes/page-settings.php:1602
-msgid "Notifications Settings"
-msgstr ""
-
-#: ../includes/page-settings.php:1782
+#: ../includes/page-settings.php:1378
 msgid "Custom Fields"
 msgstr ""
 
-#: ../includes/page-settings.php:1786
+#: ../includes/page-settings.php:1382
 msgid "Add New Field"
 msgstr ""
 
-#: ../includes/page-settings.php:1858
+#: ../includes/page-settings.php:1455
 msgid "Manage Custom Fields"
 msgstr ""
 
-#: ../includes/page-settings.php:1899
+#: ../includes/page-settings.php:1494
 msgid "Drag custom fields to reorder them"
-msgstr ""
-
-#: ../includes/page-settings.php:1965
-msgid "Custom CSS"
-msgstr ""
-
-#: ../includes/sortable-fields.php:10
-msgid "Fields order changed successfully!"
-msgstr ""
-
-#: ../includes/sortable-images.php:10
-msgid "Image order changed successfully!"
 msgstr ""
 
 #: ../modules/mod-awards.php:7
@@ -1122,32 +1004,16 @@ msgstr ""
 msgid "ImagePress Details"
 msgstr ""
 
-#: ../modules/mod-awards.php:102
-msgid "Select user verification status"
-msgstr ""
-
-#: ../modules/mod-awards.php:106
+#: ../modules/mod-awards.php:95
 msgid "User upload limit"
 msgstr ""
 
-#: ../modules/mod-awards.php:109
+#: ../modules/mod-awards.php:98
 msgid "Set user upload limit"
 msgstr ""
 
-#: ../modules/mod-awards.php:113
+#: ../modules/mod-awards.php:102
 msgid "Select award(s)"
-msgstr ""
-
-#: ../modules/mod-awards.php:121
-msgid "There are no awards available."
-msgstr ""
-
-#: ../modules/mod-awards.php:139 ../modules/mod-awards.php:153
-msgid "Award Icon"
-msgstr ""
-
-#: ../modules/mod-awards.php:142 ../modules/mod-awards.php:155
-msgid "Enter the FontAwesome icon name (e.g. fa-trophy)"
 msgstr ""
 
 #: ../modules/mod-collections.php:100
@@ -1170,38 +1036,30 @@ msgstr ""
 msgid "By"
 msgstr ""
 
-#: ../modules/mod-collections.php:231 ../modules/mod-collections.php:234
+#: ../modules/mod-collections.php:233 ../modules/mod-collections.php:240
 msgid "Add to collection"
 msgstr ""
 
-#: ../modules/mod-collections.php:247
-msgid "Choose a collection..."
-msgstr ""
-
-#: ../modules/mod-collections.php:260
-msgid "or"
-msgstr ""
-
-#: ../modules/mod-collections.php:261
-msgid "Create new collection..."
-msgstr ""
-
-#: ../modules/mod-collections.php:262
-msgid "Make this collection"
-msgstr ""
-
-#: ../modules/mod-collections.php:264
+#: ../modules/mod-collections.php:271
 msgid "Add"
 msgstr ""
 
-#: ../modules/mod-user-following.php:330 ../modules/mod-user-following.php:334
+#: ../modules/mod-collections.php:347
+msgid "images"
+msgstr ""
+
+#: ../modules/mod-collections.php:357
+msgid "This collection is empty."
+msgstr ""
+
+#: ../modules/mod-collections.php:405
+msgid "No images found!"
+msgstr ""
+
+#: ../modules/mod-user-following.php:328 ../modules/mod-user-following.php:332
 msgid "Unfollow"
 msgstr ""
 
-#: ../modules/mod-user-following.php:331 ../modules/mod-user-following.php:333
+#: ../modules/mod-user-following.php:329 ../modules/mod-user-following.php:331
 msgid "Follow"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Previous"
-#~ msgstr "Föregående inlägg"
