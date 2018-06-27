@@ -15,7 +15,7 @@ function cinnamon_PostViews($id, $count = true) {
     if ($axCount == '')
         $axCount = 0;
 
-    if ($count == true) {
+    if ($count === true) {
         $axCount++;
         update_user_meta($id, 'ax_post_views', $axCount);
     }
@@ -40,13 +40,15 @@ function cinnamon_get_related_author_posts($author) {
     ));
 
     $output = '';
-    if($authors_posts) {
-        $output .= '
-        <div class="cinnamon-grid"><ul>';
-            foreach($authors_posts as $authors_post) {
-                $output .= '<li><a href="' . get_permalink($authors_post->ID) . '">' . get_the_post_thumbnail($authors_post->ID, 'thumbnail') . '</a></li>';
-            }
-        $output .= '</ul></div>';
+
+    if ($authors_posts) {
+        $output .= '<div class="cinnamon-grid">
+            <ul>';
+                foreach ($authors_posts as $authors_post) {
+                    $output .= '<li><a href="' . get_permalink($authors_post->ID) . '">' . get_the_post_thumbnail($authors_post->ID, 'thumbnail') . '</a></li>';
+                }
+            $output .= '</ul>
+        </div>';
     }
 
     return $output;

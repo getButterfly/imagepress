@@ -85,10 +85,10 @@ include IP_PLUGIN_PATH . '/includes/shortcodes.php';
 
 add_action('init', 'imagepress_registration');
 
+add_action('admin_menu', 'imagepress_menu'); // settings menu
+
 add_action('wp_ajax_nopriv_post-like', 'post_like');
 add_action('wp_ajax_post-like', 'post_like');
-
-add_action('admin_menu', 'imagepress_menu'); // settings menu
 
 add_filter('transition_post_status', 'imagepress_notify_status', 10, 3); // email notifications
 add_filter('widget_text', 'do_shortcode');

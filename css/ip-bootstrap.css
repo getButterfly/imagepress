@@ -122,8 +122,6 @@ a img { border: none; }
 }
 
 .ip_box img { display: block; width: 100%; height: auto; border: 0; padding: 0; opacity: 1; margin: 0; border-radius: 0; box-shadow: none; }
-
-.ip_box img { margin: 0; }
 .ip_box img:hover { opacity: 0.75; }
 
 .imagecategory { height: 18px; overflow: hidden; display: block; margin: 0; font-size: 12px; }
@@ -985,13 +983,11 @@ ul, li {padding: 0; margin: 0; list-style: none}
 
 
 @media all and (max-width: 720px) {
-    .ip_box,
     .ip_collections_edit {
         width: 50%;
     }
 }
 @media all and (max-width: 480px) {
-    .ip_box,
     .ip_collections_edit {
         width: 100%;
     }

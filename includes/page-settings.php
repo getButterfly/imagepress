@@ -16,7 +16,7 @@ function imagepress_admin_page() {
             <a href="<?php echo $section; ?>settings_tab" class="nav-tab <?php echo $tab == 'settings_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', 'imagepress'); ?></a>
             <a href="<?php echo $section; ?>configurator_tab" class="nav-tab <?php echo $tab == 'configurator_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Configurator', 'imagepress'); ?></a>
 
-            <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
+            <?php if ((int) get_imagepress_option('ip_mod_collections') === 1) { ?>
                 <a href="<?php echo $section; ?>collections_tab" class="nav-tab <?php echo $tab == 'collections_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Collections', 'imagepress'); ?></a>
             <?php } ?>
 
@@ -24,7 +24,7 @@ function imagepress_admin_page() {
             <a href="<?php echo $section; ?>upload_tab" class="nav-tab <?php echo $tab == 'upload_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Upload', 'imagepress'); ?></a>
             <a href="<?php echo $section; ?>authors_tab" class="nav-tab <?php echo $tab == 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors', 'imagepress'); ?></a>
 
-            <?php if (get_imagepress_option('ip_mod_login') == 1) { ?>
+            <?php if ((int) get_imagepress_option('ip_mod_login') === 1) { ?>
                 <a href="<?php echo $section; ?>login_tab" class="nav-tab <?php echo $tab == 'login_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Login', 'imagepress'); ?></a>
             <?php } ?>
 
@@ -88,8 +88,7 @@ function imagepress_admin_page() {
                 <code>[cinnamon-profile]</code> <sup class="ip-optional">optional</sup> - show user profile on a custom page, such as <b>My Profile</b> or <b>View My Portfolio</b>.<br>
                 <code>[cinnamon-profile author="17"]</code> <sup class="ip-optional">optional</sup> - show a certain user profile on a page, where <b>17</b> is the user ID.<br>
             </p>';
-        } ?>
-        <?php if($tab == 'install_tab') { ?>
+        } else if ($tab === 'install_tab') { ?>
             <h2><?php esc_html_e('Installation', 'imagepress'); ?></h2>
             <p>Check the installation steps below and make the required changes.</p>
             <?php
@@ -184,8 +183,7 @@ function imagepress_admin_page() {
                     <br><small>This option removes all orphaned/unused options from ImagePress pre-<code>7.7</code>. This action is irreversible.</small>
                 </p>
             </form>
-        <?php }
-        if ($tab == 'configurator_tab') {
+        <?php } else if ($tab === 'configurator_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
                     'ip_box_ui' => $_POST['ip_box_ui'],
@@ -380,7 +378,7 @@ function imagepress_admin_page() {
                 <hr>
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
-        <?php } else if ($tab == 'collections_tab') {
+        <?php } else if ($tab === 'collections_tab') {
             global $wpdb;
 
             $orphan_count = $wpdb->get_var("SELECT COUNT(*) FROM `" . $wpdb->prefix . "ip_collectionmeta` WHERE `image_ID` NOT IN (SELECT `ID` FROM `" . $wpdb->posts . "`)");
@@ -507,7 +505,7 @@ function imagepress_admin_page() {
                     <input type="submit" name="isCollectionCU" value="Remove <?php echo $orphan_count; ?> missing image references" class="button button-secondary">
                 </p>
             </form>
-        <?php } else if ($tab == 'login_tab') {
+        <?php } else if ($tab === 'login_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
                     'ip_login_image' => $_POST['ip_login_image'],
@@ -585,7 +583,7 @@ function imagepress_admin_page() {
                 <hr>
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
-        <?php } else if ($tab == 'settings_tab') {
+        <?php } else if ($tab === 'settings_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
                     'ip_moderate' => $_POST['ip_moderate'],
@@ -664,7 +662,7 @@ function imagepress_admin_page() {
                             <td>
                                 <select name="ip_click_behaviour" id="ip_click_behaviour">
                                     <option value="media"<?php if(get_imagepress_option('ip_click_behaviour') == 'media') echo ' selected'; ?>>Open media (image)</option>
-                                    <option value="custom"<?php if(get_imagepress_option('ip_click_behaviour') == 'custom') echo ' selected'; ?>>Open image page (requires custom post template)</option>
+                                    <option value="custom"<?php if(get_imagepress_option('ip_click_behaviour') == 'custom') echo ' selected'; ?>>Open image page (recommended)</option>
                                 </select>
                                 <br><small>What to open when clicking on an image (single image or custom post template).</small>
                             </td>
@@ -729,7 +727,7 @@ function imagepress_admin_page() {
                 <hr>
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
-        <?php } else if ($tab == 'authors_tab') {
+        <?php } else if ($tab === 'authors_tab') {
             if (isset($_POST['cinnamon_submit'])) {
                 $ipUpdatedOptions = array(
                     'ip_profile_page' => (int) sanitize_text_field($_POST['ip_profile_page']),
@@ -923,7 +921,7 @@ function imagepress_admin_page() {
                 <hr>
                 <p><input name="cinnamon_submit" type="submit" class="button-primary" value="Save Changes"></p>
             </form>
-        <?php } else if ($tab == 'label_tab') {
+        <?php } else if ($tab === 'label_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
                     'ip_caption_label' => $_POST['ip_caption_label'],
@@ -1093,7 +1091,7 @@ function imagepress_admin_page() {
                 <hr>
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
-        <?php } else if ($tab == 'upload_tab') {
+        <?php } else if ($tab === 'upload_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
                     'ip_upload_secondary' => $_POST['ip_upload_secondary'],
@@ -1246,7 +1244,7 @@ function imagepress_admin_page() {
 
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
-        <?php } else if ($tab == 'notifications_tab') {
+        <?php } else if ($tab === 'notifications_tab') {
             if (isset($_POST['notification_add'])) {
                 global $wpdb;
 
@@ -1361,7 +1359,7 @@ function imagepress_admin_page() {
                     ?>
                 </div>
             <?php } ?>
-        <?php } else if ($tab == 'fields_tab') {
+        <?php } else if ($tab === 'fields_tab') {
             global $wpdb;
 
             if (isset($_POST['isCFSubmit'])) {
