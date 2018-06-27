@@ -28,6 +28,10 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
 
+= X.X.X =
+* FIX: Fixed responsive styles
+* UPDATE: Updated translations with missing strings
+
 = 7.8.2 =
 * FIX: Fixed displayed text instead of returned
 * FIX: Fixed several missing styles for collections
