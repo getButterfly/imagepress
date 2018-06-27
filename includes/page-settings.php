@@ -1230,66 +1230,25 @@ function imagepress_admin_page() {
 
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
-        <?php } else if ($tab === 'notifications_tab') {
-            if (isset($_POST['notification_add'])) {
-                global $wpdb;
-
-                $notificationType = $_POST['notification_type_custom'];
-                $notificationLink = $_POST['notification_link_custom'];
-                $notificationUser = $_POST['notification_user'];
-                $when = date('Y-m-d H:i:s');
-
-                $notification_type = (!empty($notificationLink)) ? '<a href="' . $notificationLink . '">' . $notificationType . '</a>' : $notificationType;
-
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (`userID`, `postID`, `actionType`, `actionTime`) VALUES (0, %d, %s, %s)", $notificationUser, $notification_type, $when));
-
-                echo '<div class="updated notice is-dismissible"><p>Notification added successfully!</p></div>';
-            }
-            ?>
+        <?php } else if ($tab === 'notifications_tab') { ?>
             <script>
-            jQuery(document).ready(function($) {
-                $('.ajax_trash').click(function(e){
+            jQuery(document).ready(function () {
+                jQuery('.ajax_trash').click(function (e) {
                     var data = {
                         action: 'ajax_trash_action',
-                        odvm_post: $(this).attr('data-post'),
+                        odvm_post: jQuery(this).attr('data-post'),
                     };
 
-                    $.post(ajaxurl, data, function(response) {
-                        alert('' + response);
+                    jQuery.post(ajaxurl, data, function (response) {
+                        // Success (response)
                     });
-                    fade_vote = $(this).attr('data-post');
-                    $('#notification-' + fade_vote).fadeOut('slow', function(){});
+                    fade_vote = jQuery(this).attr('data-post');
+                    jQuery('#notification-' + fade_vote).fadeOut('slow');
                     e.preventDefault();
                 });
             });
             </script>
 
-            <form method="post">
-                <h3>Add new notification</h3>
-                <p>
-                    <input type="text" name="notification_type_custom" id="notification_type_custom" class="regular-text">
-                    <label for="notification_type_custom">Notification type (custom)</label>
-                    <br><small>This is the notification body text (e.g. <em>Check out this great new feature!</em>).</small>
-                </p>
-                <p>
-                    <input type="url" name="notification_link_custom" id="notification_link_custom" class="regular-text" placeholder="https://">
-                    <label for="notification_link_custom">Notification link (custom)</label>
-                    <br><small>This is the URL link the text above will point to.</small>
-                </p>
-                <p>
-                    <?php
-                    $args = array(
-                        'name' => 'notification_user',
-                        'show_option_none' => 'Show to this user only (optional, leave blank to show to all users)...'
-                    );
-                    wp_dropdown_users($args); ?>
-                </p>
-                <p>
-                    <input type="submit" name="notification_add" value="Add custom notification" class="button button-secondary">
-                </p>
-            </form>
-
-            <hr>
             <h3>All notifications</h3>
             <?php
             global $wpdb;

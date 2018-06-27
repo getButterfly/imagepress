@@ -37,6 +37,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Code compliance updates
 * UPDATE: Admin content/body updates
 * UPDATE: Moved feed module to ImagePress Elements
+* UPDATE: Removed custom notifications functionality
 
 = 7.8.2 =
 * FIX: Fixed displayed text instead of returned
