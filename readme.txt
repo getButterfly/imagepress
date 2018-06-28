@@ -3,7 +3,7 @@ Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 Requires at least: 4.7
 Tested up to: 4.9.6
-Stable tag: 7.8.2
+Stable tag: 7.9.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -21,14 +21,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 == Changelog ==
 
 = 8.0.0 =
-* TODO: Gutenberg
 * TODO: Refactor notifications and merge with feed (this will break Noir UI)
 * TODO: Refactor collections (CPT?)
 * TODO: Refactor custom fields
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
 
-= X.X.X =
+= 7.9.0 =
 * FIX: Fixed responsive styles
 * FIX: Fixed hardcoded non-translated English assumptions (it's a mouthful)
 * UPDATE: Updated translations with missing strings
@@ -38,6 +37,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Admin content/body updates
 * UPDATE: Moved feed module to ImagePress Elements
 * UPDATE: Removed custom notifications functionality
+* UPDATE: Updated Gutenberg compatibility
 
 = 7.8.2 =
 * FIX: Fixed displayed text instead of returned
