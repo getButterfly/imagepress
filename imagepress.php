@@ -885,7 +885,7 @@ function ip_enqueue_scripts() {
 
 	$accountPageUri = get_option('cinnamon_account_page');
 
-    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.0.13/js/all.js', array(), '5.0.13', true);
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.1.0/js/all.js', array(), '5.1.0', true);
 
     wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-sortable'), '7.7.7', true);
     wp_localize_script('ipjs-main', 'ipAjaxVar', array(

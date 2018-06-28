@@ -32,6 +32,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Fixed hardcoded non-translated English assumptions (it's a mouthful)
 * UPDATE: Updated translations with missing strings
 * UPDATE: Replaced social icons with FontAwesome
+* UPDATE: Updated FontAwesome (5.0.13 -> 5.1.0)
 * UPDATE: Removed image rel tag
 * UPDATE: Code compliance updates
 * UPDATE: Admin content/body updates
