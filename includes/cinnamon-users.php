@@ -696,7 +696,7 @@ function cinnamon_profile_edit($atts) {
                                         if ($ip_click_behaviour == 'custom')
                                             $ip_image_link = get_permalink($i);
 
-                                        $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '">
+                                        $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '" data-id="' . $i . '">
                                             <div class="editor-image-handle"><i class="fas fa-arrows-alt"></i></div>
                                             <div class="editor-image-thumbnail">
                                                 <a href="' . $ip_image_link . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a>

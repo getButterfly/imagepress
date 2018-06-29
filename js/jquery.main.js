@@ -599,29 +599,36 @@ document.addEventListener('DOMContentLoaded', function (event) {
     /* end collections */
 
     // Sortable images inside profile editor
-    var fixHelperModified = function(e, tr) {
-        var $originals = tr.children();
-        var $helper = tr.clone();
-        $helper.children().each(function(index) {
-            jQuery(this).width($originals.eq(index).width());
-        });
-        return $helper;
-    };
+    var list = jQuery('.editor-image-manager')[0];
+    var sortable = Sortable.create(list, {
+        sort: true,
+        onUpdate: function (evt) {
+            //console.log(evt);
+            // toArray():
+            var order = sortable.toArray();
+            console.log(order);
+            //console.log(sortable.options.group.name, order.join('|'));
 
-    if (jQuery('.editor-image-manager').length) {
-        jQuery('.editor-image-manager').sortable({
-            helper: fixHelperModified,
-            handle: '.editor-image-handle',
-            opacity: 0.75,
-            update: function() {
-                var image_order = jQuery(this).sortable('serialize') + '&action=imagepress_list_update_order';
+            var request = new XMLHttpRequest();
 
-                jQuery.post(ipAjaxVar.ajaxurl, image_order, function() {
-                    // Done. Do nothing.
-                });
-            }
-        }).enableSelection();
-    }
+            request.open('POST', ipAjaxVar.ajaxurl, true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.onload = function () {
+                if (this.status >= 200 && this.status < 400) {
+                    console.log('bfsajhd');
+                    //jQuery('#listItem_' + id).fadeOut(function(){
+                    //    jQuery('#listItem_' + id).remove();
+                    //});
+                } else {
+                    // Response error
+                }
+            };
+            request.onerror = function() {
+                // Connection error
+            };
+            request.send('action=imagepress_list_update_order&nonce=' + ipAjaxVar.nonce + '&order=' + order);
+        },
+    });
 
     jQuery(document).on('click', '.editor-image-delete', function (e) {
         var id = jQuery(this).data('image-id'),

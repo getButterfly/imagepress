@@ -648,7 +648,7 @@ function imagepress_admin_page() {
                             <td>
                                 <select name="ip_click_behaviour" id="ip_click_behaviour">
                                     <option value="media"<?php if(get_imagepress_option('ip_click_behaviour') == 'media') echo ' selected'; ?>>Open media (image)</option>
-                                    <option value="custom"<?php if(get_imagepress_option('ip_click_behaviour') == 'custom') echo ' selected'; ?>>Open image page (recommended)</option>
+                                    <option value="custom"<?php if(get_imagepress_option('ip_click_behaviour') == 'custom') echo ' selected'; ?>>Open image page</option>
                                 </select>
                                 <br><small>What to open when clicking on an image (single image or custom post template).</small>
                             </td>

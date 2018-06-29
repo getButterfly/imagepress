@@ -3,7 +3,7 @@ Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 Requires at least: 4.7
 Tested up to: 4.9.6
-Stable tag: 7.9.0
+Stable tag: 7.9.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -26,6 +26,12 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO: Refactor custom fields
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
+
+= 7.9.1 =
+* UPDATE: Added image anchor class
+* UPDATE: Admin content/body updates
+* UPDATE: Removed jQuery UI (plus sortable, widget and mouse dependencies)
+* UPDATE: Refactored image reordering using Sortable.js
 
 = 7.9.0 =
 * FIX: Fixed responsive styles

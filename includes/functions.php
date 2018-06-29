@@ -831,8 +831,10 @@ function ip_get_field($atts) {
 function imagepress_order_list() {
     global $wpdb;
 
-    foreach ($_POST['listItem'] as $position => $item) {
-        $wpdb->query($wpdb->prepare("UPDATE `" . $wpdb->prefix . "posts` SET `menu_order` = %d WHERE `ID` = %d", $position, $item));
+    $order = explode(',', $_POST['order']);
+
+    foreach ($order as $key => $value) {
+        $wpdb->query($wpdb->prepare("UPDATE `" . $wpdb->prefix . "posts` SET `menu_order` = %d WHERE `ID` = %d", $key, $value));
     }
 }
 add_action('wp_ajax_imagepress_list_update_order','imagepress_order_list');
@@ -929,7 +931,7 @@ function ipRenderGridElement($elementId) {
 
     $out = '<style>.ip_box { width: ' . (100/$ip_ipw) . '%; } @media all and (max-width: 720px) { .ip_box { width: 50%; } } @media all and (max-width: 480px) { .ip_box { width: 100%; } }</style>';
     $out .= '<div class="ip_box ip_box_' . $elementId . '">
-        <a href="' . $ip_image_link . '" data-taxonomy="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '" data-src="' . $image_attributes[0] . '" title="' . get_the_title($elementId) . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($elementId) . '"></a>
+        <a href="' . $ip_image_link . '" data-taxonomy="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '" data-src="' . $image_attributes[0] . '" title="' . get_the_title($elementId) . '" class="ip-anchor"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($elementId) . '"></a>
         <div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div>
         <div class="ip_box_bottom">' . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div>
     </div>';
