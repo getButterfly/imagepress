@@ -603,11 +603,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     var sortable = Sortable.create(list, {
         sort: true,
         onUpdate: function (evt) {
-            //console.log(evt);
-            // toArray():
             var order = sortable.toArray();
-            console.log(order);
-            //console.log(sortable.options.group.name, order.join('|'));
 
             var request = new XMLHttpRequest();
 
@@ -615,10 +611,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             request.onload = function () {
                 if (this.status >= 200 && this.status < 400) {
-                    console.log('bfsajhd');
-                    //jQuery('#listItem_' + id).fadeOut(function(){
-                    //    jQuery('#listItem_' + id).remove();
-                    //});
+                    // Response success
                 } else {
                     // Response error
                 }
