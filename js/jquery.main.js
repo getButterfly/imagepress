@@ -1,4 +1,4 @@
-/* global window, document, console jQuery, ipAjaxVar, Masonry */
+/* global window, document, console, jQuery, ipAjaxVar, Masonry, Sortable */
 /* eslint quotes: ["error", "single"] */
 /* eslint-env browser */
 /* jslint-env browser */
@@ -175,7 +175,7 @@ function roar(title, message, options) {
 /**
  * ImagePress Javascript functions
  */
-document.addEventListener('DOMContentLoaded', function (event) {
+document.addEventListener('DOMContentLoaded', function () {
     /**
      * Record Like action for custom post type
      */
@@ -599,29 +599,31 @@ document.addEventListener('DOMContentLoaded', function (event) {
     /* end collections */
 
     // Sortable images inside profile editor
-    var list = jQuery('.editor-image-manager')[0];
-    var sortable = Sortable.create(list, {
-        sort: true,
-        onUpdate: function (evt) {
-            var order = sortable.toArray();
+    if (document.querySelector('.editor-image-manager')) {
+        var list = document.querySelector('.editor-image-manager');
+        var sortable = Sortable.create(list, {
+            sort: true,
+            onUpdate: function () {
+                var order = sortable.toArray();
 
-            var request = new XMLHttpRequest();
+                var request = new XMLHttpRequest();
 
-            request.open('POST', ipAjaxVar.ajaxurl, true);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-            request.onload = function () {
-                if (this.status >= 200 && this.status < 400) {
-                    // Response success
-                } else {
-                    // Response error
-                }
-            };
-            request.onerror = function() {
-                // Connection error
-            };
-            request.send('action=imagepress_list_update_order&nonce=' + ipAjaxVar.nonce + '&order=' + order);
-        },
-    });
+                request.open('POST', ipAjaxVar.ajaxurl, true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                request.onload = function () {
+                    if (this.status >= 200 && this.status < 400) {
+                        // Response success
+                    } else {
+                        // Response error
+                    }
+                };
+                request.onerror = function() {
+                    // Connection error
+                };
+                request.send('action=imagepress_list_update_order&nonce=' + ipAjaxVar.nonce + '&order=' + order);
+            },
+        });
+    }
 
     jQuery(document).on('click', '.editor-image-delete', function (e) {
         var id = jQuery(this).data('image-id'),
