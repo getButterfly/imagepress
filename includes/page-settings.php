@@ -126,7 +126,7 @@ function imagepress_admin_page() {
                 if (empty($author_edit_url)) {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your author profile edit URL is not set. Go to <b>Authors</b> section and set it.</p>';
                 } else {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author profile edit URL is <code>' . esc_url($author_edit_url) . '</code>.</p>';
+                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author profile edit URL is <code>' . esc_url(get_permalink($author_edit_url)) . '</code>.</p>';
                 }
                 if (get_option('default_role') == 'author') {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> New user default role is <code>author</code>. Subscribers and contributors are not able to edit their uploaded images.</p>';
@@ -727,7 +727,7 @@ function imagepress_admin_page() {
                     'cinnamon_show_following' => $_POST['cinnamon_show_following'],
                     'cinnamon_hide_admin' => $_POST['cinnamon_hide_admin'],
                     'cinnamon_account_page' => $_POST['cinnamon_account_page'],
-                    'cinnamon_edit_page' => $_POST['cinnamon_edit_page'],
+                    'cinnamon_edit_page' => (int) sanitize_text_field($_POST['cinnamon_edit_page']),
                     'cinnamon_show_likes' => $_POST['cinnamon_show_likes'],
                     'cinnamon_show_collections' => $_POST['cinnamon_show_collections'],
                     'cinnamon_fancy_header' => $_POST['cinnamon_fancy_header'],
@@ -789,7 +789,15 @@ function imagepress_admin_page() {
                         <tr>
                             <th scope="row"><label for="cinnamon_edit_page">Author profile edit page URL</label></th>
                             <td>
-                                <input type="url" name="cinnamon_edit_page" id="cinnamon_edit_page" value="<?php echo get_imagepress_option('cinnamon_edit_page'); ?>" class="regular-text" placeholder="https://">
+                                <?php
+                                wp_dropdown_pages(array(
+                                    'name' => 'cinnamon_edit_page',
+                                    'echo' => 1,
+                                    'show_option_none' => __('Select profile editor page...', 'imagepress'),
+                                    'option_none_value' => 0,
+                                    'selected' => get_imagepress_option('cinnamon_edit_page'),
+                                ));
+                                ?>
                                 <br><small>Create a new page and add the <code>[cinnamon-profile-edit]</code> shortcode.</small>
                                 <br><small>This shortcode will display all user fields in a tabbed section.</small>
                             </td>

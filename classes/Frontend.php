@@ -52,7 +52,7 @@ class Cinnamon_Frontend_User_Manager {
                     } else { ?>
                         <p>
                             <a href="<?php echo getImagePressProfileUri(get_current_user_id(), false); ?>"><?php echo __('View profile', 'imagepress'); ?></a> |
-                            <a href="<?php echo get_imagepress_option('cinnamon_edit_page'); ?>"><?php echo __('Edit profile', 'noir-ui'); ?></a>
+                            <a href="<?php echo get_permalink(get_imagepress_option('cinnamon_edit_page')); ?>"><?php echo __('Edit profile', 'noir-ui'); ?></a>
                         </p>
                         <p><a href="<?php echo wp_logout_url(home_url()); ?>"><?php echo __('Log out', 'imagepress'); ?></a></p>
                     <?php } ?>

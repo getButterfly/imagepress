@@ -251,7 +251,7 @@ function cinnamon_profile($atts) {
                             ' . $hub_name;
                             if ((string) is_user_logged_in() && $username === (string) $logged_in_user->user_login) {
                                 $display .= ' <a href="' . $hub_anchor . '">#</a>';
-                                $display .= ' <small><a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
+                                $display .= ' <small><a href="' . get_permalink(get_imagepress_option('cinnamon_edit_page')) . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
                             }
                         $display .= '</div>
                         <div class="ph-locationtag">' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url . '</div>
@@ -282,7 +282,7 @@ function cinnamon_profile($atts) {
                     $display .= $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
 
                     if (is_user_logged_in() && $username == $logged_in_user->user_login) {
-                        $display .= ' | <a href="' . get_imagepress_option('cinnamon_edit_page') . '">' . get_imagepress_option('cinnamon_edit_label') . '</a>';
+                        $display .= ' | <a href="' . get_permalink(get_imagepress_option('cinnamon_edit_page')) . '">' . get_imagepress_option('cinnamon_edit_label') . '</a>';
                     }
                 $display .= '</p>
             </div>';
