@@ -32,6 +32,8 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Admin content/body updates
 * UPDATE: Removed jQuery UI (plus sortable, widget and mouse dependencies)
 * UPDATE: Refactored image reordering using Sortable.js
+* UPDATE: Changed profile editor page to use an ID instead of an absolute URL
+* UPDATE: Removed unused styles
 
 = 7.9.0 =
 * FIX: Fixed responsive styles

@@ -735,11 +735,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
     font-size: smaller;
 }
 
-/* module: activity feed */
-#activity, #activity-archive { list-style : none; background-color: rgba(0, 0, 0, 0.05); padding: 8px; }
-#activity-archive li { clear: both; margin: 0 0 8px 0; }
-#activity-archive .avatar { float: left; margin: 0 8px 0 0; }
-.act-old { color: #999999; }
 
 
 .ip-hide { display: none; }
