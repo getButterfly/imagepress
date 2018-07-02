@@ -62,7 +62,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * GDPR: Removed employer meta
 * GDPR: Removed location meta
 * GDPR: Removed status meta
-* UPDATE: Added profile editor link and logout link to [cinnamon-login]
+* UPDATE: Added profile editor link and logout link to cinnamon-login
 
 = 7.8.0 =
 * FIX: Fixed user role argument for author cards
@@ -269,7 +269,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 7.1.2 =
 * FIX: Fixed custom image order for user profiles
-* FIX: Fixed [cinnamon-card] shortcode to allow single authors
+* FIX: Fixed cinnamon-card shortcode to allow single authors
 * TWEAK: Added a class to allow for a collection behaviour workaround
 * FEATURE: Added extensions section
 
@@ -344,7 +344,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed configurable padding improving grid performance (it can be reconfigured using custom CSS)
 * UPDATE: Updated grid library to latest version
 * FEATURE: Added link to documentation
-* FEATURE: Added custom field parameter for [imagepress-show]
+* FEATURE: Added custom field parameter for imagepress-show
 * FEATURE: Added Thin UI CSS framework
 * PERFORMANCE: Merged 3 admin_menu actions
 * PERFORMANCE: Moved several database calls outside the main ImagePress loop
@@ -488,7 +488,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Fixed FontAwesome URL
 * UPDATE: Updated grid library and fixed several conflicts and performance issues
 * UPDATE: Removed number of images per row and made all images responsive and adaptive to screen width
-* UPDATE: Replaced radiobox sorter with a <select> element for better theme compatibility and better styling
+* UPDATE: Replaced radiobox sorter with a dropdown element for better theme compatibility and better styling
 * UPDATE: Removed a deprecated function to get current user details
 * UPDATE: Updated the lazy loading library
 * UPDATE: Removed unused code from JS functions
@@ -581,7 +581,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 5.7.1 =
 * FIX: Fixed indexAsync issue (to be replaced by https://github.com/javve/list.js/issues/230)
-* FIX: Removed redundant parameter from [imagepress-show] shortcode
+* FIX: Removed redundant parameter from imagepress-show shortcode
 * UPDATE: Updated GitHub issue tracker URL
 * SECURITY: Added external use/access check
 * FEATURE: Moved asynchronous loading into its own file and made it optional (off by default)
