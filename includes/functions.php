@@ -480,18 +480,19 @@ function ip_main($imageId) {
             echo '<p><iframe width="100%" height="480" src="https://round.me/embed/' . $roundMeTourId . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>';
         }
     }
-    //
-    ?>
 
-    <?php imagepress_get_images($imageId); ?>
+    imagepress_get_images($imageId, 1);
+    ?>
 
     <section>
         <?php the_content(); ?>
     </section>
 
     <section role="navigation">
-        <?php previous_post_link('%link', esc_html__('Previous', 'imagepress')); ?>
-        <?php next_post_link('%link', esc_html__('Next', 'imagepress')); ?>
+        <?php
+        previous_post_link('%link', esc_html__('Previous', 'imagepress'));
+        next_post_link('%link', esc_html__('Next', 'imagepress'));
+        ?>
     </section>
     <?php
 }
@@ -590,7 +591,7 @@ function ip_main_return($imageId) {
     }
     //
 
-    //imagepress_get_images($imageId);
+    imagepress_get_images($imageId, 0);
 
     $out .= '<section>' .
         get_the_content() .
@@ -630,35 +631,41 @@ function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', 
     return $before . join($sep, $term_links) . $after;
 }
 
-function imagepress_get_images($post_id) {
+function imagepress_get_images($postId, $show) {
     $thumbnail_ID = get_post_thumbnail_id();
-    $images = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
+    $images = get_children(array('post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
 
     if ($images && count($images) > 1) {
-        echo '<div class="ip-more">';
+        $out = '<div class="ip-more">';
             foreach ($images as $attachment_id => $image) {
                 if ($image->ID != $thumbnail_ID) {
                     $big_array = image_downsize($image->ID, 'full');
 
-                    echo '<img src="' . $big_array[0] . '" alt="">';
+                    $out .= '<img src="' . $big_array[0] . '" alt="">';
                 }
             }
-        echo '</div>';
+        $out .= '</div>';
     }
 
-    $videos = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
+    $videos = get_children(array('post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
 
     if ($videos && count($videos) > 1) {
-        echo '<div class="ip-more">';
+        $out .= '<div class="ip-more">';
             foreach ($videos as $attachment_id => $video) {
                 if (strpos(get_post_mime_type($video->ID), 'video') !== false) {
-                    echo '<video width="100%" class="ip-video-secondary" controls>
+                    $out .= '<video width="100%" class="ip-video-secondary" controls>
                         <source src="' . wp_get_attachment_url($video->ID) . '" type="' . get_post_mime_type($video->ID) . '">
                         Your browser does not support HTML5 video.
                     </video>';
                 }
             }
-        echo '</div>';
+        $out .= '</div>';
+    }
+
+    if ((int) $show === 1) {
+        echo $out;
+    } else {
+        return $out;
     }
 }
 

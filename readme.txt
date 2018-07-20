@@ -28,6 +28,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO: Replace URL fields with page dropdowns
 
 = 7.9.2 =
+* FIX: Fixed secondary images not being displayed
 * UPDATE: Added option to disable image views
 * UPDATE: Added option to delete image likes
 * UPDATE: Added option to delete image views
