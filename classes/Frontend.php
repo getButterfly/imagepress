@@ -197,7 +197,6 @@ class Cinnamon_Frontend_User_Manager {
 			$errors->add('noemail', __('The email could not be sent.', 'imagepress'));
 
 			return $errors;
-			wp_die();
 		}
 
 		return true;

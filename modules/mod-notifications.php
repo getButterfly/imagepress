@@ -1,13 +1,13 @@
 <?php
 add_shortcode('notifications', 'imagepress_notifications');
 
-function notification_count($count = 50) {
+function notification_count() {
     global $wpdb;
 
     $user_ID = get_current_user_id();
     $counter = 0;
 
-    $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = 0 ORDER BY actionTime DESC LIMIT %d", $count));
+    $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = %d", 0));
     foreach ($res as $line) {
         $postdata = get_post($line->postID, ARRAY_A);
         $authorID = $postdata['post_author'];
@@ -31,15 +31,16 @@ function notification_count($count = 50) {
 
 function notification_reset() {
     global $wpdb;
+
     $user_ID = get_current_user_id();
 
     $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = %d", 0));
-    foreach($res as $line) {
+    foreach ($res as $line) {
         $postdata = get_post($line->postID, ARRAY_A);
         $authorID = $postdata['post_author'];
         $action = $line->actionType;
 
-        if(
+        if (
             ($action == 'loved' && $user_ID == $authorID) ||
             ($action == 'collected' && $user_ID == $authorID) ||
             ($action == 'added' && pwuf_is_following($user_ID, $authorID)) ||
@@ -53,7 +54,7 @@ function notification_reset() {
     }
 
 	echo 'success';
-	die();
+	wp_die();
 }
 
 function imagepress_notifications($atts) {
@@ -203,8 +204,8 @@ add_action('wp_ajax_ajax_trash_action', 'ajax_trash_action_callback');
  *
  * Use these functions inside themes to display various notification-related information
  */
-function ip_notifications_menu_item($count = 50) {
-	$item = '<a href="#" class="notifications-bell"><i class="fas fa-bell"></i><sup class="ui-accent-background">' . notification_count($count) . '</sup></a><div class="notifications-container ui">' . do_shortcode('[notifications]') . '</div>';
+function ip_notifications_menu_item() {
+	$item = '<a href="#" class="notifications-bell"><i class="fas fa-bell"></i><sup class="ui-accent-background">' . notification_count() . '</sup></a><div class="notifications-container ui">' . do_shortcode('[notifications]') . '</div>';
 
 	return $item;
 }

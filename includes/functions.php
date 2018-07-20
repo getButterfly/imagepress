@@ -576,7 +576,7 @@ function ip_main_return($imageId) {
     <p>
         <div style="float: left; margin: 0 8px 0 0;">' . get_avatar($post->post_author, 40) . '</div>' .
         __('by', 'imagepress') . ' <b>' . getImagePressProfileUri($post->post_author) . '</b>
-        <br><small>' . __('Uploaded', 'imagepress') . ' <time>' . human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago' . '</time> ' . __('in', 'imagepress') . ' ' . get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', '') . '</small>
+        <br><small><time title="' . date_i18n(get_option('time_format'), get_the_time('U')) . '">' . date_i18n(get_option('date_format'), get_the_time('U')) . '</time> ' . __('in', 'imagepress') . ' ' . get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', '') . '</small>
     </p>
 
     <div class="ip-clear"></div>';
