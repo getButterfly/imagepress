@@ -97,8 +97,8 @@ $optionArray = array(
     'ip_dropbox_enable' => 0,
     'ip_dropbox_key' => '',
 
-    // Tracking
-    'ip_tracking' => 0,
+    'ip_enable_views' => 1,
+    'ip_role_quota' => '',
 );
 
 add_option('imagepress', $optionArray);

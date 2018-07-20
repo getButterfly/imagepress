@@ -756,13 +756,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    if (jQuery('.ip-uploader').length) {
-        var userUploads = jQuery('.ip-uploader').data('user-uploads'),
-            uploadLimit = jQuery('.ip-uploader').data('upload-limit'),
+    if (document.querySelector('.ip-uploader')) {
+        var userUploads = parseInt(document.querySelector('.ip-uploader').dataset.userUploads, 10),
+            uploadLimit = parseInt(document.querySelector('.ip-uploader').dataset.uploadLimit, 10),
+            roleLimit = parseInt(document.querySelector('.ip-uploader').dataset.roleLimit, 10),
             globalUploadLimitMessage = ipAjaxVar.ip_global_upload_limit_message;
+
+        /**
+        console.log('Your limit based on global limit is ' + userUploads + '/' + uploadLimit);
+        console.log('Your limit based on your role is ' + userUploads + '/' + roleLimit);
+        /**/
 
         if (!isNaN(uploadLimit) && userUploads >= uploadLimit) {
             jQuery('<div>' + globalUploadLimitMessage + ' (' + userUploads + '/' + uploadLimit + ')</div>').insertBefore('.ip-uploader');
+            jQuery('.ip-uploader').remove();
+        } else if (!isNaN(roleLimit) && userUploads >= roleLimit) {
+            jQuery('<div>' + globalUploadLimitMessage + ' (' + userUploads + '/' + roleLimit + ')</div>').insertBefore('.ip-uploader');
             jQuery('.ip-uploader').remove();
         }
     }

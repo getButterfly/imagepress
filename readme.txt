@@ -2,8 +2,8 @@
 Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 Requires at least: 4.7
-Tested up to: 4.9.6
-Stable tag: 7.9.1
+Tested up to: 4.9.7
+Stable tag: 7.9.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -26,6 +26,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO: Refactor custom fields
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
+
+= 7.9.2 =
+* UPDATE: Added option to disable image views
+* UPDATE: Added option to delete image likes
+* UPDATE: Added option to delete image views
+* UPDATE: Added feature to limit uploads by user role
+* UPDATE: Refactored more jQuery to JavaScript code
 
 = 7.9.1 =
 * UPDATE: Added image anchor class

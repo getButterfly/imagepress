@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 7.9.1
+Version: 7.9.2
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com/
 License: GPLv3
@@ -500,7 +500,7 @@ function imagepress_process_image($file, $post_id, $feature = 1) {
 }
 
 function imagepress_get_upload_image_form($imagepress_image_caption = '', $imagepress_image_category = 0, $imagepress_image_description = '', $imagepress_hardcoded_category) {
-    global $wpdb;
+    global $wpdb, $wp_roles;
 
     $current_user = wp_get_current_user();
 
@@ -525,7 +525,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
     // get global upload limit
     $ip_global_upload_limit = get_imagepress_option('ip_global_upload_limit');
-    if(empty($ip_global_upload_limit)) {
+    if (empty($ip_global_upload_limit)) {
         $ip_global_upload_limit = 999999;
     }
 
@@ -541,7 +541,22 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
         $ip_upload_limit = 999999;
     }
 
-    $out = '<div class="ip-uploader" id="fileuploads" data-user-uploads="' . $user_uploads . '" data-upload-limit="' . $ip_upload_limit . '">
+    // get upload limit per user role
+    $userRoleQuota = get_imagepress_option('ip_role_quota');
+
+    $user_meta = get_userdata($current_user->ID);
+    $user_roles = $user_meta->roles; //array of roles the user is part of.
+    $userRole = $user_roles[0];
+
+    $all_roles = $wp_roles->roles;
+    $editable_roles = apply_filters('editable_roles', $all_roles);
+    foreach ($editable_roles as $role => $details) {
+        if ((string) $userRole === (string) str_replace('-', '_', sanitize_title($details['name']))) {
+            $ip_role_limit = $userRoleQuota[$details['name']];
+        }
+    }
+
+    $out = '<div class="ip-uploader" id="fileuploads" data-user-uploads="' . $user_uploads . '" data-upload-limit="' . $ip_upload_limit . '" data-role-limit="' . $ip_role_limit . '">
         <form id="imagepress_upload_image_form" method="post" action="" enctype="multipart/form-data" class="imagepress-form imagepress-upload-form">';
             $out .= wp_nonce_field('imagepress_upload_image_form', 'imagepress_upload_image_form_submitted');
 

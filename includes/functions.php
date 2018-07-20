@@ -406,22 +406,30 @@ function ip_main($imageId) {
     $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
     $post_thumbnail_url = $image_attributes[0];
 
-    if(get_imagepress_option('ip_comments') == 1)
+    $ip_comments = '';
+    if ((int) get_imagepress_option('ip_comments') === 1) {
         $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><i class="fas fa-comments"></i> ' . get_comments_number($imageId) . '</a> ';
-    if(get_imagepress_option('ip_comments') == 0)
-        $ip_comments = '';
+    }
     ?>
 
     <div class="imagepress-container">
         <a href="<?php echo $post_thumbnail_url; ?>">
             <?php the_post_thumbnail('full'); ?>
         </a>
-        <?php ip_setPostViews($imageId); ?>
+        <?php
+        if ((int) get_imagepress_option('ip_enable_views') === 1) {
+            ip_setPostViews($imageId);
+        }
+        ?>
     </div>
 
     <div class="ip-bar">
-        <?php echo ipGetPostLikeLink($imageId); ?><em> | </em><i class="far fa-eye"></i> <?php echo ip_getPostViews($imageId); ?><?php echo $ip_comments; ?>
-        <?php if (get_imagepress_option('ip_mod_collections') == 1) { ?>
+        <?php echo ipGetPostLikeLink($imageId); ?><em> | </em>
+        <?php if ((int) get_imagepress_option('ip_enable_views') === 1) { ?>
+            <i class="far fa-eye"></i> <?php echo ip_getPostViews($imageId); ?>
+        <?php } ?>
+        <?php echo $ip_comments; ?>
+        <?php if ((int) get_imagepress_option('ip_mod_collections') === 1) { ?>
             <em> | </em>
             <?php if (function_exists('ip_frontend_add_collection')) {
                 echo ip_frontend_add_collection(get_the_ID());
@@ -515,7 +523,9 @@ function ip_main_return($imageId) {
     global $wpdb, $post;
 
     $out = '';
-    ip_setPostViews($imageId);
+    if ((int) get_imagepress_option('ip_enable_views') === 1) {
+        ip_setPostViews($imageId);
+    }
 
     $post_thumbnail_id = get_post_thumbnail_id($imageId);
     $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
@@ -532,7 +542,11 @@ function ip_main_return($imageId) {
     </div>
 
     <div class="ip-bar">' .
-        ipGetPostLikeLink($imageId) . '<em> | </em><i class="far fa-eye"></i> ' . ip_getPostViews($imageId) . $ip_comments;
+        ipGetPostLikeLink($imageId) . '<em> | </em>';
+        if ((int) get_imagepress_option('ip_enable_views') === 1) {
+            $out .= '<i class="far fa-eye"></i> ' . ip_getPostViews($imageId);
+        }
+        $out .= $ip_comments;
 
         if ((int) get_imagepress_option('ip_mod_collections') === 1) {
             $out .= '<em> | </em>';
@@ -916,8 +930,9 @@ function ipRenderGridElement($elementId) {
         $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '">' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '</span>';
 
     $ip_views_optional = '';
-    if ((int) $getImagePressViews === 1)
+    if ((int) $getImagePressViews === 1 && (int) get_imagepress_option('ip_enable_views') === 1) {
         $ip_views_optional = '<span class="imageviews"><i class="far fa-eye"></i> ' . ip_getPostViews($elementId) . '</span> ';
+    }
 
     $ip_comments = '';
     if ($get_ip_comments == 1)

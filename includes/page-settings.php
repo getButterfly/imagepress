@@ -30,7 +30,7 @@ function imagepress_admin_page() {
 
             <a href="<?php echo $section; ?>fields_tab" class="nav-tab <?php echo $tab === 'fields_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Fields', 'imagepress'); ?></a>
             <a href="<?php echo $section; ?>notifications_tab" class="nav-tab <?php echo $tab === 'notifications_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Notifications', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>extensions" class="nav-tab <?php echo $tab === 'extensions' ? 'nav-tab-active' : ''; ?> highlighted"><?php _e('Extensions', 'imagepress'); ?></a>
+            <a href="<?php echo $section; ?>addons" class="nav-tab <?php echo $tab === 'addons' ? 'nav-tab-active' : ''; ?> highlighted"><?php _e('Add-ons', 'imagepress'); ?></a>
         </h2>
 
         <?php if ($tab === 'dashboard_tab') {
@@ -135,10 +135,22 @@ function imagepress_admin_page() {
                 }
             echo '</div>';
 
-            if (isset($_POST['isResetSubmit'])) {
+            if (isset($_POST['isResetLikesSubmit'])) {
                 global $wpdb;
 
                 $wpdb->query("UPDATE " . $wpdb->prefix . "postmeta SET meta_value = '0' WHERE meta_key = '_like_count'");
+                echo '<div class="updated notice is-dismissible"><p>Action completed successfully!</p></div>';
+            }
+            if (isset($_POST['isDeleteLikesSubmit'])) {
+                global $wpdb;
+
+                $wpdb->query("DELETE FROM " . $wpdb->prefix . "postmeta WHERE meta_key = '_like_count'");
+                echo '<div class="updated notice is-dismissible"><p>Action completed successfully!</p></div>';
+            }
+            if (isset($_POST['isResetViewsSubmit'])) {
+                global $wpdb;
+
+                $wpdb->query("DELETE FROM " . $wpdb->prefix . "postmeta WHERE meta_key = 'post_views_count'");
                 echo '<div class="updated notice is-dismissible"><p>Action completed successfully!</p></div>';
             }
             if (isset($_POST['isCleanupSubmit'])) {
@@ -158,6 +170,7 @@ function imagepress_admin_page() {
                     // unset from options array: remove ip_ezdz_label
                     // unset from options array: remove cinnamon_pt_author
                     // unset from options array: remove ip_rel_tag
+                    // unset from options array: remove ip_tracking
 
                     delete_metadata('user', 0, 'user_title', '', true);
 
@@ -172,8 +185,16 @@ function imagepress_admin_page() {
             <h3><?php esc_html_e('Maintenance', 'imagepress'); ?></h3>
             <form method="post" action="">
                 <p>
-                    <input type="submit" name="isResetSubmit" value="Reset all likes" class="button-primary">
+                    <input type="submit" name="isResetLikesSubmit" value="Reset all likes" class="button-primary">
                     <br><small>This option resets all image likes to 0. This action is irreversible.</small>
+                </p>
+                <p>
+                    <input type="submit" name="isDeleteLikesSubmit" value="Delete all likes" class="button-primary">
+                    <br><small>This option deletes all image likes. This action is irreversible.</small>
+                </p>
+                <p>
+                    <input type="submit" name="isResetViewsSubmit" value="Delete all views" class="button-primary">
+                    <br><small>This option deletes all image views. This action is irreversible.</small>
                 </p>
                 <p>
                     <input type="submit" name="isCleanupSubmit" value="Pre-7.8 Cleanup" class="button-secondary">
@@ -582,6 +603,7 @@ function imagepress_admin_page() {
                     'ip_upload_redirection' => $_POST['ip_upload_redirection'],
                     'ip_delete_redirection' => $_POST['ip_delete_redirection'],
                     'ip_notification_email' => $_POST['ip_notification_email'],
+                    'ip_enable_views' => $_POST['ip_enable_views'],
                 );
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
@@ -599,8 +621,8 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_mod_login">Native login/registration</label></th>
                             <td>
                                 <select name="ip_mod_login" id="ip_mod_login">
-                                    <option value="1"<?php if(get_imagepress_option('ip_mod_login') == 1) echo ' selected'; ?>>Enable native login/registration module</option>
-                                    <option value="0"<?php if(get_imagepress_option('ip_mod_login') == 0) echo ' selected'; ?>>Disable native login/registration module</option>
+                                    <option value="1"<?php if ((int) get_imagepress_option('ip_mod_login') === 1) echo ' selected'; ?>>Enable native login/registration module</option>
+                                    <option value="0"<?php if ((int) get_imagepress_option('ip_mod_login') === 0) echo ' selected'; ?>>Disable native login/registration module</option>
                                 </select>
                                 <br><small>This module allows users to log in or register using the native WordPress login page (<code>/wp-login.php</code>).</small>
                                 <br><small>The login page can be styled and users redirected to their ImagePress profiles.</small>
@@ -610,8 +632,8 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="cinnamon_mod_login">Frontend login/registration</label></th>
                             <td>
                                 <select name="cinnamon_mod_login" id="cinnamon_mod_login">
-                                    <option value="1"<?php if(get_imagepress_option('cinnamon_mod_login') == 1) echo ' selected'; ?>>Enable frontend login/registration module</option>
-                                    <option value="0"<?php if(get_imagepress_option('cinnamon_mod_login') == 0) echo ' selected'; ?>>Disable frontend login/registration module</option>
+                                    <option value="1"<?php if ((int) get_imagepress_option('cinnamon_mod_login') === 1) echo ' selected'; ?>>Enable frontend login/registration module</option>
+                                    <option value="0"<?php if ((int) get_imagepress_option('cinnamon_mod_login') === 0) echo ' selected'; ?>>Disable frontend login/registration module</option>
                                 </select>
                                 <br><small>Use the <code>[cinnamon-login]</code> shortcode to place a tabbed login/registration box anywhere on the site.</small>
                             </td>
@@ -620,8 +642,8 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_mod_collections">Collections</label></th>
                             <td>
                                 <select name="ip_mod_collections" id="ip_mod_collections">
-                                    <option value="1"<?php if(get_imagepress_option('ip_mod_collections') == 1) echo ' selected'; ?>>Enable collections module</option>
-                                    <option value="0"<?php if(get_imagepress_option('ip_mod_collections') == 0) echo ' selected'; ?>>Disable collections module</option>
+                                    <option value="1"<?php if ((int) get_imagepress_option('ip_mod_collections') === 1) echo ' selected'; ?>>Enable collections module</option>
+                                    <option value="0"<?php if ((int) get_imagepress_option('ip_mod_collections') === 0) echo ' selected'; ?>>Disable collections module</option>
                                 </select>
                             </td>
                         </tr>
@@ -634,11 +656,21 @@ function imagepress_admin_page() {
                 <table class="form-table">
                     <tbody>
                         <tr>
+                            <th scope="row"><label for="ip_enable_views">Image views</label></th>
+                            <td>
+                                <select name="ip_enable_views" id="ip_enable_views">
+                                    <option value="0"<?php if ((int) get_imagepress_option('ip_enable_views') === 0) echo ' selected'; ?>>Disable image views</option>
+                                    <option value="1"<?php if ((int) get_imagepress_option('ip_enable_views') === 1) echo ' selected'; ?>>Enable image views</option>
+                                </select>
+                                <br><small>Note that disabling image views will render some sorting functions and/or widgets unusable.</small>
+                            </td>
+                        </tr>
+                        <tr>
                             <th scope="row"><label for="ip_registration">User registration</label></th>
                             <td>
                                 <select name="ip_registration" id="ip_registration">
-                                    <option value="0"<?php if(get_imagepress_option('ip_registration') == '0') echo ' selected'; ?>>Require user registration (recommended)</option>
-                                    <option value="1"<?php if(get_imagepress_option('ip_registration') == '1') echo ' selected'; ?>>Do not require user registration</option>
+                                    <option value="0"<?php if ((int) get_imagepress_option('ip_registration') === 0) echo ' selected'; ?>>Require user registration (recommended)</option>
+                                    <option value="1"<?php if ((int) get_imagepress_option('ip_registration') === 1) echo ' selected'; ?>>Do not require user registration</option>
                                 </select>
                                 <br><small>Require users to be registered and logged in to upload images (recommended).</small>
                             </td>
@@ -647,8 +679,8 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_click_behaviour">Image behaviour</label></th>
                             <td>
                                 <select name="ip_click_behaviour" id="ip_click_behaviour">
-                                    <option value="media"<?php if(get_imagepress_option('ip_click_behaviour') == 'media') echo ' selected'; ?>>Open media (image)</option>
-                                    <option value="custom"<?php if(get_imagepress_option('ip_click_behaviour') == 'custom') echo ' selected'; ?>>Open image page</option>
+                                    <option value="media"<?php if ((string) get_imagepress_option('ip_click_behaviour') === 'media') echo ' selected'; ?>>Open media (image)</option>
+                                    <option value="custom"<?php if ((string) get_imagepress_option('ip_click_behaviour') === 'custom') echo ' selected'; ?>>Open image page</option>
                                 </select>
                                 <br><small>What to open when clicking on an image (single image or custom post template).</small>
                             </td>
@@ -657,8 +689,8 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_moderate">Image moderation</label></th>
                             <td>
                                 <select name="ip_moderate" id="ip_moderate">
-                                    <option value="0"<?php if(get_imagepress_option('ip_moderate') == '0') echo ' selected'; ?>>Moderate all images (recommended)</option>
-                                    <option value="1"<?php if(get_imagepress_option('ip_moderate') == '1') echo ' selected'; ?>>Do not moderate images</option>
+                                    <option value="0"<?php if ((int) get_imagepress_option('ip_moderate') === 0) echo ' selected'; ?>>Moderate all images (recommended)</option>
+                                    <option value="1"<?php if ((int) get_imagepress_option('ip_moderate') === 1) echo ' selected'; ?>>Do not moderate images</option>
                                 </select>
                                 <br><small>Moderate all submitted images (recommended).</small>
                             </td>
@@ -1086,7 +1118,17 @@ function imagepress_admin_page() {
                 <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
             </form>
         <?php } else if ($tab === 'upload_tab') {
+            global $wp_roles;
+
+            $all_roles = $wp_roles->roles;
+            $editable_roles = apply_filters('editable_roles', $all_roles);
+
             if (isset($_POST['isGSSubmit'])) {
+                $roleQuota = array();
+                foreach ($editable_roles as $role => $details) {
+                    $roleQuota[$details['name']] = $_POST['ip_quota_' . str_replace('-', '_', sanitize_title($details['name']))];
+                }
+
                 $ipUpdatedOptions = array(
                     'ip_upload_secondary' => $_POST['ip_upload_secondary'],
                     'ip_allow_tags' => $_POST['ip_allow_tags'],
@@ -1101,12 +1143,13 @@ function imagepress_admin_page() {
                     'ip_max_quality' => $_POST['ip_max_quality'],
                     'ip_dropbox_enable' => $_POST['ip_dropbox_enable'],
                     'ip_dropbox_key' => $_POST['ip_dropbox_key'],
+                    'ip_role_quota' => $roleQuota,
                 );
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
                 update_option('imagepress', $ipUpdate);
 
-                if ((int) trim($_POST['ip_quota_increase']) > 0) {
+                if (!empty($_POST['ip_quota_increase']) && (int) trim($_POST['ip_quota_increase']) >= 0) {
                     $ipUsers = get_users();
                     $ip_quota_increase = (int) trim($_POST['ip_quota_increase']);
 
@@ -1121,9 +1164,10 @@ function imagepress_admin_page() {
                             update_user_meta($user->ID, 'ip_upload_limit', $ip_quota_increase);
                         }
                     }
+
+                    echo '<div class="updated notice is-dismissible"><p>User quota increased successfully!</p></div>';
                 }
 
-                echo '<div class="updated notice is-dismissible"><p>Users quota increased successfully!</p></div>';
                 echo '<div class="updated notice is-dismissible"><p>Settings updated successfully!</p></div>';
             }
             ?>
@@ -1198,6 +1242,14 @@ function imagepress_admin_page() {
                             <td>
                                 <input type="number" name="ip_global_upload_limit" id="ip_global_upload_limit" min="0" max="999999" step="1" value="<?php echo get_imagepress_option('ip_global_upload_limit'); ?>"> <label for="ip_global_upload_limit">Image upload limit (global, if no other limits are specified)</label>
                                 <hr>
+
+                                <?php
+                                $savedRoleQuota = get_imagepress_option('ip_role_quota');
+
+                                foreach ($editable_roles as $role => $details) {
+                                    echo '<p><input type="number" name="ip_quota_' . str_replace('-', '_', sanitize_title($details['name'])) . '" id="ip-quota-' . sanitize_title($details['name']) . '" value="' . $savedRoleQuota[$details['name']] . '"> <label for="ip-quota-' . sanitize_title($details['name']) . '">' . $details['name'] . '</label></p>';
+                                }
+                                ?>
 
                                 <p>
                                     <select name="ip_quota_action">
@@ -1500,19 +1552,29 @@ function imagepress_admin_page() {
                 echo '</tbody></table>';
                 ?>
             </form>
-        <?php } else if ($tab === 'extensions') { ?>
-            <h2><?php _e('Extensions', 'imagepress'); ?></h2>
+        <?php } else if ($tab === 'addons') { ?>
+            <h2><?php _e('Add-ons', 'imagepress'); ?></h2>
             <div class="flex-grid-thirds">
                 <div class="ip-card">
                     <h3>ImagePress Elements</h3>
-                    <p>This plugin bundle requires ImagePress and contains several modules including email approval, bulk upload, category listing and a user directory.</p>
+                    <p>This add-on contains several modules including email approval, bulk upload, category listing, a user directory and an image feed.</p>
                     <div class="ip-card-cta">
                         <a href="https://getbutterfly.com/downloads/imagepress-elements/" class="button button-primary">Get it!</a>
                     </div>
                 </div>
                 <div class="ip-card">
+                    <h3>ImagePress Lightbox</h3>
+                    <p>This add-on allows images to automatically open into a responsive lightbox, with navigation controls. No configuration required.</p>
+                    <div class="ip-card-cta">
+                        <a href="https://getbutterfly.com/downloads/imagepress-lightbox/" class="button button-primary">Get it!</a>
+                    </div>
                 </div>
                 <div class="ip-card">
+                    <h3>ImagePress Installation</h3>
+                    <p>This service includes full ImagePress installation, along with full customisation, required pages creation and demo content.</p>
+                    <div class="ip-card-cta">
+                        <a href="https://getbutterfly.com/downloads/imagepress-installation-service/" class="button button-primary">Book it!</a>
+                    </div>
                 </div>
             </div>
         <?php } ?>

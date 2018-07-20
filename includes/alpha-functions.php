@@ -58,9 +58,13 @@ function getImagePressDiscoverFilters() {
             <select name="sorter" id="sorter">
                 <option value="' . ipUriBuilder('newest', '', '', $queryValue) . '">' . __('Newest', 'imagepress') . '</option>
                 <option value="' . ipUriBuilder('oldest', '', '', $queryValue) . '">' . __('Oldest', 'imagepress') . '</option>
-                <option value="' . ipUriBuilder('comments', '', '', $queryValue) . '">' . __('Most comments', 'imagepress') . '</option>
-                <option value="' . ipUriBuilder('views', '', '', $queryValue) . '">' . __('Most views', 'imagepress') . '</option>
-                <option value="' . ipUriBuilder('likes', '', '', $queryValue) . '">' . __('Most liked', 'imagepress') . '</option>
+                <option value="' . ipUriBuilder('comments', '', '', $queryValue) . '">' . __('Most comments', 'imagepress') . '</option>';
+
+                if ((int) get_imagepress_option('ip_enable_views') === 1) {
+                    $out .= '<option value="' . ipUriBuilder('views', '', '', $queryValue) . '">' . __('Most views', 'imagepress') . '</option>';
+                }
+
+                $out .= '<option value="' . ipUriBuilder('likes', '', '', $queryValue) . '">' . __('Most liked', 'imagepress') . '</option>
             </select>
 
             <select name="ranger" id="ranger">
