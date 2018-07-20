@@ -1,7 +1,7 @@
 <?php
 add_shortcode('notifications', 'imagepress_notifications');
 
-function notification_count() {
+function notification_count($reset = false) {
     global $wpdb;
 
     $user_ID = get_current_user_id();
@@ -23,6 +23,11 @@ function notification_count() {
             (0 == $line->postID || '-1' == $line->postID || $user_ID == $line->postID)
         ) {
             ++$counter;
+
+            // Set status to 'read' for all notifications
+            if ($reset === true) {
+                $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "notifications SET status = 1 WHERE ID = %d", $line->ID));
+            }
         }
     }
 
@@ -30,31 +35,7 @@ function notification_count() {
 }
 
 function notification_reset() {
-    global $wpdb;
-
-    $user_ID = get_current_user_id();
-
-    $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "notifications WHERE status = %d", 0));
-    foreach ($res as $line) {
-        $postdata = get_post($line->postID, ARRAY_A);
-        $authorID = $postdata['post_author'];
-        $action = $line->actionType;
-
-        if (
-            ($action == 'loved' && $user_ID == $authorID) ||
-            ($action == 'collected' && $user_ID == $authorID) ||
-            ($action == 'added' && pwuf_is_following($user_ID, $authorID)) ||
-            ($action == 'followed' && $user_ID == $line->postID) ||
-            ($action == 'commented on' && $user_ID == $authorID && $user_ID != $line->userID) ||
-            ($action == 'replied to a comment on' && $user_ID == get_comment($line->postID)->user_id) ||
-            (0 == $line->postID || '-1' == $line->postID || $user_ID == $line->postID)
-        ) {
-            $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "notifications SET status = 1 WHERE ID = %d", $line->ID));
-        }
-    }
-
-	echo 'success';
-	wp_die();
+    notification_count(true);
 }
 
 function imagepress_notifications($atts) {

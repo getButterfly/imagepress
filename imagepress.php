@@ -588,22 +588,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
             // Add to collection on upload
             if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
-
-                $out .= '<hr>
-                <p>
-                    <select name="ip_collections" id="ip-collections">
-                        <option value="">' . __('Choose a collection...', 'imagepress') . '</option>';
-                        foreach ($result as $collection) {
-                            $out .= '<option value="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</option>';
-                        }
-                    $out .= '</select> <span class="ip-collection-create-new">' . __('or', 'imagepress') . ' <input type="text" name="ip_collections_new" id="ip-collections-new" placeholder="' . __('Create new collection...', 'imagepress') . '">
-                    <select name="collection_status" id="collection_status">
-                        <option value="1">' . __('Public', 'imagepress') . '</option>
-                        <option value="0">' . __('Private', 'imagepress') . '</option>
-                    </select></span>
-                </p>
-                <hr>';
+                $out .= ip_collection_dropdown();
             }
 
             // Custom fields
@@ -707,12 +692,12 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
 
     $ip_upload_size = get_imagepress_option('ip_upload_size');
 
-    $out = '<div class="ip-uploader">';
-        $out .= '<form id="imagepress_upload_image_form_bulk" method="post" action="" enctype="multipart/form-data" class="imagepress-upload-form">';
+    $out = '<div class="ip-uploader">
+        <form id="imagepress_upload_image_form_bulk" method="post" action="" enctype="multipart/form-data" class="imagepress-upload-form">';
             $out .= wp_nonce_field('imagepress_upload_image_form_bulk', 'imagepress_upload_image_form_submitted_bulk');
 
-            $out .= '<div id="fileuploads">';
-                $out .= '<p>';
+            $out .= '<div id="fileuploads">
+                <p>';
                     if ('' != $imagepress_hardcoded_category) {
                         $iphcc = get_term_by('slug', $imagepress_hardcoded_category, 'imagepress_image_category'); // ImagePress hard-coded category
                         $out .= '<input type="hidden" id="imagepress_image_category" name="imagepress_image_category[]" value="' . $iphcc->term_id . '">';
@@ -723,24 +708,7 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
 
                 // Add to collection on upload
                 if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                    global $wpdb;
-
-                    $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
-
-                    $out .= '<hr>
-                    <p>
-                        <select name="ip_collections" id="ip-collections">
-                            <option value="">' . __('Choose a collection...', 'imagepress') . '</option>';
-                            foreach ($result as $collection) {
-                                $out .= '<option value="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</option>';
-                            }
-                        $out .= '</select> <span class="ip-collection-create-new">' . __('or', 'imagepress') . ' <input type="text" name="ip_collections_new" id="ip-collections-new" placeholder="' . __('Create new collection...', 'imagepress') . '">
-                        <select name="collection_status" id="collection_status">
-                            <option value="1">' . __('Public', 'imagepress') . '</option>
-                            <option value="0">' . __('Private', 'imagepress') . '</option>
-                        </select></span>
-                    </p>
-                    <hr>';
+                    $out .= ip_collection_dropdown();
                 }
 
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
@@ -748,14 +716,14 @@ function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $
 
                 $out .= '<p><label for="imagepress_image_file">' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file_bulk[]" id="imagepress_image_file_bulk" multiple></p>
                 <hr>
-            </div>';
+            </div>
 
-            $out .= '<p>';
-                $out .= '<input type="submit" id="imagepress_submit_bulk" name="imagepress_submit_bulk" value="' . get_imagepress_option('ip_upload_label') . '" class="button noir-secondary">';
-                $out .= ' <span id="ipload"></span>';
-            $out .= '</p>';
-        $out .= '</form>';
-    $out .= '</div>';
+            <p>
+                <input type="submit" id="imagepress_submit_bulk" name="imagepress_submit_bulk" value="' . get_imagepress_option('ip_upload_label') . '" class="button noir-secondary">
+                 <span id="ipload"></span>
+            </p>
+        </form>
+    </div>';
 
     return $out;
 }

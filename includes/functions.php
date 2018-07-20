@@ -953,3 +953,29 @@ function ipRenderGridElement($elementId) {
 
     return $out;
 }
+
+/**
+ * Display all collections based on current user ID
+ */
+function ip_collection_dropdown() {
+    global $wpdb;
+
+    $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
+
+    $out = '<hr>
+    <p>
+        <select name="ip_collections" id="ip-collections">
+            <option value="">' . __('Choose a collection...', 'imagepress') . '</option>';
+            foreach ($result as $collection) {
+                $out .= '<option value="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</option>';
+            }
+        $out .= '</select> <span class="ip-collection-create-new">' . __('or', 'imagepress') . ' <input type="text" name="ip_collections_new" id="ip-collections-new" placeholder="' . __('Create new collection...', 'imagepress') . '">
+        <select name="collection_status" id="collection_status">
+            <option value="1">' . __('Public', 'imagepress') . '</option>
+            <option value="0">' . __('Private', 'imagepress') . '</option>
+        </select></span>
+    </p>
+    <hr>';
+
+    return $out;
+}

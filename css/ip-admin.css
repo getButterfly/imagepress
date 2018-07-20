@@ -124,21 +124,25 @@ small .codor {
 .flex-grid {
     display: -webkit-box;
     display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
 }
 .flex-grid .col {
     -webkit-box-flex: 1;
     -ms-flex: 1;
-    flex: 1;
+    -webkit-flex: 1;
+            flex: 1;
 }
 .flex-grid-thirds {
     max-width: 980px;
     display: -webkit-box;
     display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
-    justify-content: space-between;
+    -webkit-justify-content: space-between;
+            justify-content: space-between;
 }
 .flex-grid-thirds .ip-card {
     width: 32%;
