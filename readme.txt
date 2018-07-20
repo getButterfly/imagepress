@@ -33,6 +33,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Added option to delete image views
 * UPDATE: Added feature to limit uploads by user role
 * UPDATE: Refactored more jQuery to JavaScript code
+* UPDATE: Refactored code to eliminate duplication
 
 = 7.9.1 =
 * UPDATE: Added image anchor class

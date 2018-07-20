@@ -285,28 +285,8 @@ function imagepress_add($atts) {
             $post_id = wp_insert_post($user_image_data);
             imagepress_process_image('imagepress_image_file', $post_id);
 
-            // multiple images
-            if (1 == get_imagepress_option('ip_upload_secondary')) {
-                $files = $_FILES['imagepress_image_additional'];
-                if ($files) {
-                    foreach ($files['name'] as $key => $value) {
-                        if ($files['name'][$key]) {
-                            $file = array(
-                                'name' => $files['name'][$key],
-                                'type' => $files['type'][$key],
-                                'tmp_name' => $files['tmp_name'][$key],
-                                'error' => $files['error'][$key],
-                                'size' => $files['size'][$key]
-                            );
-                        }
-                        $_FILES = array("attachment" => $file);
-                        foreach ($_FILES as $file => $array) {
-                            $attach_id = media_handle_upload($file, $post_id);
-                        }
-                    }
-                }
-            }
-            // end multiple images
+            // Multiple images
+            ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
 
             if (isset($_POST['imagepress_image_category']))
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');

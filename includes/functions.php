@@ -183,27 +183,7 @@ function ip_editor() {
                 imagepress_process_image('imagepress_image_file', $post_id, 1);
 
                 // Multiple images
-                if (1 == get_imagepress_option('ip_upload_secondary')) {
-                    $files = $_FILES['imagepress_image_additional'];
-                    if ($files) {
-                        foreach ($files['name'] as $key => $value) {
-                            if ($files['name'][$key]) {
-                                $file = array(
-                                    'name' => $files['name'][$key],
-                                    'type' => $files['type'][$key],
-                                    'tmp_name' => $files['tmp_name'][$key],
-                                    'error' => $files['error'][$key],
-                                    'size' => $files['size'][$key]
-                                );
-                            }
-                            $_FILES = array("imagepress_image_additional" => $file);
-                            foreach ($_FILES as $file => $array) {
-                                imagepress_process_image('imagepress_image_additional', $post_id);
-                            }
-                        }
-                    }
-                }
-                // End multiple images
+                ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
 
                 $images = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
                 $count = $images ? count($images) : 0;
@@ -978,4 +958,29 @@ function ip_collection_dropdown() {
     <hr>';
 
     return $out;
+}
+
+/**
+ * Upload secondary images
+ */
+function ip_upload_secondary($filesArray, $postId) {
+    if ((int) get_imagepress_option('ip_upload_secondary') === 1) {
+        if ($filesArray) {
+            foreach ($filesArray['name'] as $key => $value) {
+                if ($filesArray['name'][$key]) {
+                    $file = array(
+                        'name' => $filesArray['name'][$key],
+                        'type' => $filesArray['type'][$key],
+                        'tmp_name' => $filesArray['tmp_name'][$key],
+                        'error' => $filesArray['error'][$key],
+                        'size' => $filesArray['size'][$key]
+                    );
+                }
+                $_FILES = array("attachment" => $file);
+                foreach ($_FILES as $file => $array) {
+                    $attach_id = media_handle_upload($file, $postId);
+                }
+            }
+        }
+    }
 }
