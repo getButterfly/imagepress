@@ -589,14 +589,12 @@ function ip_main_return($imageId) {
             $out .= '<p><iframe width="100%" height="480" src="https://round.me/embed/' . $roundMeTourId . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>';
         }
     }
-    //
-
-    imagepress_get_images($imageId, 0);
 
     $out .= '<section>' .
         get_the_content() .
     '</section>';
-    /**/
+
+    $out .= imagepress_get_images($imageId, 0);
 
     $out .= '<hr><section role="navigation"><p>' .
         get_previous_post_link('%link', esc_html__('Previous', 'imagepress')) . ' | ' .
