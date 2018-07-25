@@ -635,9 +635,10 @@ function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', 
 function imagepress_get_images($postId, $show) {
     $thumbnail_ID = get_post_thumbnail_id();
     $images = get_children(array('post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
+    $out = '';
 
     if ($images && count($images) > 1) {
-        $out = '<div class="ip-more">';
+        $out .= '<div class="ip-more">';
             foreach ($images as $attachment_id => $image) {
                 if ($image->ID != $thumbnail_ID) {
                     $big_array = image_downsize($image->ID, 'full');
