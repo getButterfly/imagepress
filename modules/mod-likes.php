@@ -100,38 +100,39 @@ function imagepress_like() {
  * Test if user already liked post
  */
 function ipAlreadyLiked($post_id) { // test if user liked before
-	if(is_user_logged_in()) { // user is logged in
+	if (is_user_logged_in()) { // user is logged in
 		$user_id = get_current_user_id(); // current user
 		$meta_USERS = get_post_meta($post_id, '_user_liked'); // user ids from post meta
 		$liked_USERS = ''; // set up array variable
 
-		if(count($meta_USERS) != 0) { // meta exists, set up values
+		if (count($meta_USERS) != 0) { // meta exists, set up values
 			$liked_USERS = $meta_USERS[0];
 		}
 
-		if(!is_array($liked_USERS)) // make array just in case
+		if (!is_array($liked_USERS)) // make array just in case
 			$liked_USERS = array();
 
-		if(in_array($user_id, $liked_USERS)) { // true if user ID in array
+		if (in_array($user_id, $liked_USERS)) { // true if user ID in array
 			return true;
 		}
+
 		return false;
-	}
-	else { // user is anonymous, use IP address for voting
+	} else { // user is anonymous, use IP address for voting
 		$meta_IPS = get_post_meta($post_id, '_user_IP'); // get previously voted IP address
-		$ip = $_SERVER['REMOTE_ADDR']; // retrieve current user IP
+		$ipAddress = $_SERVER['REMOTE_ADDR']; // retrieve current user IP
 		$liked_IPS = ''; // set up array variable
 
-		if(count($meta_IPS) != 0) { // meta exists, set up values
+		if (count($meta_IPS) !== 0) { // meta exists, set up values
 			$liked_IPS = $meta_IPS[0];
 		}
 
-		if(!is_array($liked_IPS)) // make array just in case
+		if (!is_array($liked_IPS)) // make array just in case
 			$liked_IPS = array();
 
-		if(in_array($ip, $liked_IPS)) { // true if IP in array
+		if (in_array($ipAddress, $liked_IPS)) { // true if IP in array
 			return true;
 		}
+
 		return false;
 	}
 }
@@ -145,12 +146,13 @@ function ipGetPostLikeLink($post_id) {
 	$ip_vote_unlike = get_imagepress_option('ip_vote_unlike');
 
 	if (is_user_logged_in()) {
+		$like = '<i class="far fa-heart"></i><span class="ip-icon-label"> ' . $ip_vote_like . '</span>';
+
 		if (ipAlreadyLiked($post_id)) {
 			$class = esc_attr('liked');
 			$like = '<i class="fas fa-heart"></i><span class="ip-icon-label"> ' . $ip_vote_unlike . '</span>';
-		} else {
-			$like = '<i class="far fa-heart"></i><span class="ip-icon-label"> ' . $ip_vote_like . '</span>';
 		}
+
 		$output = '<a href="#" class="thin-ui-button imagepress-like ' . $class . '" data-post_id="' . $post_id . '">' . $like . '</a>';
 	}
 
@@ -161,31 +163,35 @@ function ipGetPostLikeLink($post_id) {
  * If the user is logged in, output a list of posts that the user likes
  */
 function ipFrontEndUserLikes($author) {
-    $like_list = '<div class="cinnamon-likes" id="cinnamon-love">';
-    $user_likes = get_user_option('_liked_posts', $author);
-    if(!empty($user_likes) && count($user_likes) > 0)
-        $the_likes = $user_likes;
-    else
-        $the_likes = '';
+	$like_list = '<div class="cinnamon-likes" id="cinnamon-love">';
+	$user_likes = get_user_option('_liked_posts', $author);
+	$the_likes = '';
 
-    if(!is_array($the_likes))
-        $the_likes = array();
-    $the_likes = array_reverse($the_likes);
-    $count = count($the_likes);
-    if($count > 0) {
-        foreach($the_likes as $the_like) {
-            $like_list .= '<a href="' . esc_url(get_permalink($the_like)) . '"><!--' . get_the_title( $the_like ) . '-->' . get_the_post_thumbnail($the_like, 'thumbnail') . '</a>';
-        }
-    }
-    $like_list .= '</div>';
+	if (!empty($user_likes) && count($user_likes) > 0) {
+		$the_likes = $user_likes;
+	}
 
-    return $like_list;
+	if (!is_array($the_likes)) {
+		$the_likes = array();
+	}
+
+	$the_likes = array_reverse($the_likes);
+	$count = count($the_likes);
+
+	if ($count > 0) {
+		foreach ($the_likes as $the_like) {
+			$like_list .= '<a href="' . esc_url(get_permalink($the_like)) . '"><!--' . get_the_title( $the_like ) . '-->' . get_the_post_thumbnail($the_like, 'thumbnail') . '</a>';
+		}
+	}
+	$like_list .= '</div>';
+
+	return $like_list;
 }
 
 
 
-function imagepress_get_like_users($id) {
-	$meta_USERS = get_post_meta($id, '_user_liked');
+function imagepress_get_like_users($postId) {
+	$meta_USERS = get_post_meta($postId, '_user_liked');
 
 	foreach ($meta_USERS as $users) {
 		foreach ($users as $user) {
@@ -194,8 +200,8 @@ function imagepress_get_like_users($id) {
 	}
 }
 
-function imagepress_get_like_count($id) {
-    $meta_USERS = get_post_meta($id, '_user_liked');
+function imagepress_get_like_count($postId) {
+    $meta_USERS = get_post_meta($postId, '_user_liked');
     $totalUsers = array_sum(array_map('count', $meta_USERS));
 
     return $totalUsers;

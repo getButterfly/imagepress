@@ -10,14 +10,15 @@ function cinnamon_count_user_posts_by_type($userid) {
     return apply_filters('get_usernumposts', $count, $userid);
 }
 
-function cinnamon_PostViews($id, $count = true) {
-    $axCount = get_user_meta($id, 'ax_post_views', true);
-    if ($axCount == '')
+function cinnamon_PostViews($userId, $count = true) {
+    $axCount = get_user_meta($userId, 'ax_post_views', true);
+    if ($axCount == '') {
         $axCount = 0;
+    }
 
     if ($count === true) {
         $axCount++;
-        update_user_meta($id, 'ax_post_views', $axCount);
+        update_user_meta($userId, 'ax_post_views', $axCount);
     }
 
     return $axCount;
@@ -499,17 +500,17 @@ function cinnamon_profile_edit($atts) {
                             $ip_slug = get_imagepress_option('ip_slug');
 
                             // get global upload limit
-                            $ip_global_upload_limit = get_imagepress_option('ip_global_upload_limit');
-                            if (empty($ip_global_upload_limit)) {
-                                $ip_global_upload_limit = 999999;
+                            $ipGlobalUploadLimit = get_imagepress_option('ip_global_upload_limit');
+                            if (empty($ipGlobalUploadLimit)) {
+                                $ipGlobalUploadLimit = 999999;
                             }
-                            $ip_global_upload_limit_message = get_imagepress_option('ip_global_upload_limit_message');
+                            $ipGlobalUploadLimitMessage = get_imagepress_option('ip_global_upload_limit_message');
 
                             // get current user uploads
                             $user_uploads = cinnamon_count_user_posts_by_type($userid, $ip_slug);
 
                             // get upload limit for current user
-                            $ip_upload_limit = $ip_global_upload_limit;
+                            $ip_upload_limit = $ipGlobalUploadLimit;
 
                             $ip_user_upload_limit = get_the_author_meta('ip_upload_limit', $userid);
                             if (!empty($ip_user_upload_limit)) {
@@ -517,7 +518,7 @@ function cinnamon_profile_edit($atts) {
                             }
 
                             if ($user_uploads >= $ip_upload_limit) {
-                                $out .= '<p>' . $ip_global_upload_limit_message . ' (' . $user_uploads . '/' . $ip_upload_limit . ')</p>';
+                                $out .= '<p>' . $ipGlobalUploadLimitMessage . ' (' . $user_uploads . '/' . $ip_upload_limit . ')</p>';
                             }
 
                             $out .= '<div class="ip-user-dashboard">

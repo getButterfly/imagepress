@@ -32,6 +32,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Removed some unneccessary condition fallbacks (+speed)
 * FIX: Used strict comparison for some conditions (+security)
 * FIX: Removed unused filter (+compatibility)
+* UPDATE: Code compliance updates
 
 = 7.9.2 =
 * FIX: Fixed secondary images not being displayed

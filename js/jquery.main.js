@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function () {
     jQuery('.imagepress-follow a').on('click', function (e) {
         e.preventDefault();
         var $this = jQuery(this);
-        if (ipAjaxVar.logged_in != 'undefined' && ipAjaxVar.logged_in != 'true') {
+        if (typeof ipAjaxVar.logged_in !== 'undefined' && ipAjaxVar.logged_in !== 'true') {
             alert(ipAjaxVar.login_required);
             return;
         }
@@ -823,7 +823,7 @@ function getUrlParameter(sParam) {
 
 document.addEventListener('DOMContentLoaded', function() {
     if (jQuery('#ip-sorter-primary').length) {
-        var request_uri = window.location.search,
+        var requestUri = window.location.search,
             sorterDropdown = document.getElementById('sorter'),
             rangerDropdown = document.getElementById('ranger'),
             taxxxerDropdown = document.getElementById('taxxxer'),
@@ -832,19 +832,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Check URI parameters, select default values, and redirect based on user selection
         if (getUrlParameter('sort') !== null) {
-            sorterDropdown.value = request_uri;
+            sorterDropdown.value = requestUri;
         } else {
             sorterDropdown.selectedIndex = 0;
         }
 
         if (getUrlParameter('range') !== null) {
-            rangerDropdown.value = request_uri;
+            rangerDropdown.value = requestUri;
         } else {
             rangerDropdown.selectedIndex = 0;
         }
 
         if (getUrlParameter('t') !== null) {
-            taxxxerDropdown.value = request_uri;
+            taxxxerDropdown.value = requestUri;
         } else {
             taxxxerDropdown.selectedIndex = 0;
         }
@@ -892,14 +892,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     } else if (gridUi === 'default') {
-        var equalHeight = function(container) {
+        var equalHeight = function (container) {
             var currentTallest = 0,
                 currentRowStart = 0,
                 rowDivs = new Array(),
                 $el,
                 topPosition = 0;
 
-            jQuery(container).each(function() {
+            jQuery(container).each(function () {
                 $el = jQuery(this);
                 jQuery($el).height('auto');
                 topPosition = $el.position().top;
@@ -917,18 +917,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
                 }
 
-                for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+                for (currentDiv = 0; currentDiv < rowDivs.length; currentDiv++) {
                     rowDivs[currentDiv].height(currentTallest);
                 }
             });
         };
 
         // Create equal height image containers // onload
-        if (jQuery('.list .ip_box').length) {
+        if (document.querySelector('.list .ip_box')) {
             equalHeight('.list .ip_box');
         }
         // Create equal height image containers // onload
-        if (jQuery('.ip-box-container-default .ip_box').length) {
+        if (document.querySelector('.ip-box-container-default .ip_box')) {
             equalHeight('.ip-box-container-default .ip_box');
         }
     }
@@ -937,7 +937,7 @@ document.addEventListener('DOMContentLoaded', function() {
      * Infinite lazy loading for Profile page
      */
     // Check if profile container exists
-    if (jQuery('.profile-hub-container').length) {
+    if (document.querySelector('.profile-hub-container')) {
         var sizeTotal = jQuery('#ip-boxes .ip_box').length,
             sizePerRow = jQuery('.ip-profile').data('ipw'),
             sizePerPage = ipAjaxVar.imagesperpage;

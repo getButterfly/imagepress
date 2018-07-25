@@ -335,8 +335,8 @@ function imagepress_add($atts) {
             $headers[] = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\r\n";
             wp_mail($notificationEmail, $notificationSubject, $notificationMessage, $headers);
 
-            $ip_upload_redirection = get_imagepress_option('ip_upload_redirection');
-            if (!empty($ip_upload_redirection)) {
+            $ipUploadRedirection = get_imagepress_option('ip_upload_redirection');
+            if (!empty($ipUploadRedirection)) {
                 wp_redirect(get_imagepress_option('ip_upload_redirection'));
                 exit;
             }
@@ -351,9 +351,9 @@ function imagepress_add($atts) {
     }
     if((get_imagepress_option('ip_registration') == 0 && is_user_logged_in()) || get_imagepress_option('ip_registration') == 1) {
         if(isset($_POST['imagepress_image_caption']) && isset($_POST['imagepress_image_category']))
-            $out .= imagepress_get_upload_image_form($imagepress_image_caption = $_POST['imagepress_image_caption'], $imagepress_image_category = $_POST['imagepress_image_category'], $imagepress_image_description = $_POST['imagepress_image_description'], $category);
+            $out .= imagepress_get_upload_image_form($ipImageCaption = $_POST['imagepress_image_caption'], $ipImageCategory = $_POST['imagepress_image_category'], $imagepress_image_description = $_POST['imagepress_image_description'], $category);
         else
-            $out .= imagepress_get_upload_image_form($imagepress_image_caption = '', $imagepress_image_category = '', $imagepress_image_description = '', $category);
+            $out .= imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory = '', $imagepress_image_description = '', $category);
     }
 
     return $out;
@@ -445,9 +445,9 @@ function imagepress_add_bulk($atts) {
     }
     if ((get_imagepress_option('ip_registration') == 0 && is_user_logged_in()) || get_imagepress_option('ip_registration') == 1) {
         if (isset($_POST['imagepress_image_caption']) && isset($_POST['imagepress_image_category'])) {
-            $out .= imagepress_get_upload_image_form_bulk($imagepress_image_category = $_POST['imagepress_image_category'], $category);
+            $out .= imagepress_get_upload_image_form_bulk($ipImageCategory = $_POST['imagepress_image_category'], $category);
         } else {
-            $out .= imagepress_get_upload_image_form_bulk($imagepress_image_category = '', $category);
+            $out .= imagepress_get_upload_image_form_bulk($ipImageCategory = '', $category);
         }
     }
 
@@ -477,7 +477,7 @@ function imagepress_process_image($file, $post_id, $feature = 1) {
     return $attachment_id;
 }
 
-function imagepress_get_upload_image_form($imagepress_image_caption = '', $imagepress_image_category = 0, $imagepress_image_description = '', $imagepress_hardcoded_category) {
+function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory = 0, $imagepress_image_description = '', $imagepress_hardcoded_category) {
     global $wpdb, $wp_roles;
 
     $current_user = wp_get_current_user();
@@ -493,7 +493,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
     $ip_upload_tos = get_imagepress_option('ip_upload_tos');
     $ip_upload_tos_url = get_imagepress_option('ip_upload_tos_url');
-    $ip_upload_tos_content = get_imagepress_option('ip_upload_tos_content');
+    $ipUploadTosContent = get_imagepress_option('ip_upload_tos_content');
 
     $ip_allow_tags = get_imagepress_option('ip_allow_tags');
     $ip_upload_size = get_imagepress_option('ip_upload_size');
@@ -502,9 +502,9 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
     $ip_upload_secondary = get_imagepress_option('ip_upload_secondary');
 
     // get global upload limit
-    $ip_global_upload_limit = get_imagepress_option('ip_global_upload_limit');
-    if (empty($ip_global_upload_limit)) {
-        $ip_global_upload_limit = 999999;
+    $ipGlobalUploadLimit = get_imagepress_option('ip_global_upload_limit');
+    if (empty($ipGlobalUploadLimit)) {
+        $ipGlobalUploadLimit = 999999;
     }
 
     // get current user uploads
@@ -620,7 +620,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
             <hr>';
 
-            if($ip_dropbox_enable === '1') {
+            if ((int) $ip_dropbox_enable === 1) {
                 $out .= '<script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="' . $ip_dropbox_key . '"></script>
                 <p id="droptarget"></p>
                 <script>
@@ -635,19 +635,19 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
                 <input type="hidden" id="imagepress_dropbox_file" name="imagepress_dropbox_file">';
             }
 
-            if(1 == $ip_upload_secondary) {
+            if ((int) $ip_upload_secondary === 1) {
                 $out .= '<p><label for="imagepress_image_additional">Select file(s) (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><input type="file" name="imagepress_image_additional[]" id="imagepress_image_additional" multiple><br><small>Additional images (variants, making of, progress shots)</small></p><hr>';
             }
 
-            if ($ip_upload_tos == 1 && !empty($ip_upload_tos_content)) {
+            if ((int) $ip_upload_tos === 1 && !empty($ipUploadTosContent)) {
                 $oninvalid = get_imagepress_option('ip_upload_tos_error');
 
                 $out .= '<p><input type="checkbox" id="imagepress_agree" name="imagepress_agree" value="1" onchange="this.setCustomValidity(validity.valueMissing ? \'' . $oninvalid . '\' : \'\');" required> ';
 
                     if (!empty($ip_upload_tos_url)) {
-                        $out .= '<a href="' . $ip_upload_tos_url . '" target="_blank">' . $ip_upload_tos_content . '</a>';
+                        $out .= '<a href="' . $ip_upload_tos_url . '" target="_blank">' . $ipUploadTosContent . '</a>';
                     } else {
-                        $out .= $ip_upload_tos_content;
+                        $out .= $ipUploadTosContent;
                     }
 
                 $out .= '</p>
@@ -665,7 +665,7 @@ function imagepress_get_upload_image_form($imagepress_image_caption = '', $image
 
 
 
-function imagepress_get_upload_image_form_bulk($imagepress_image_category = 0, $imagepress_hardcoded_category) {
+function imagepress_get_upload_image_form_bulk($ipImageCategory = 0, $imagepress_hardcoded_category) {
     // upload form // customize
 
     $ip_upload_size = get_imagepress_option('ip_upload_size');

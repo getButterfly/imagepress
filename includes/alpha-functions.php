@@ -11,27 +11,27 @@
 
 add_shortcode('imagepress-loop', 'imagepress_loop');
 
-function ipUriBuilder($sort, $range, $taxonomy, $q = '') {
+function ipUriBuilder($sort, $range, $taxonomy, $query = '') {
     if (empty($sort) && !empty($_GET['sort'])) {
         $sort = sanitize_text_field($_GET['sort']);
     }
     if (empty($range) && !empty($_GET['range'])) {
         $range = sanitize_text_field($_GET['range']);
     }
-    if ($taxonomy === 'all') {
+    if ((string) $taxonomy === 'all') {
         $taxonomy = '';
     } else if (empty($taxonomy) && !empty($_GET['t'])) {
         $taxonomy = sanitize_text_field($_GET['t']);
     }
-    if (empty($q) && !empty($_GET['q'])) {
-        $q = sanitize_text_field($_GET['q']);
+    if (empty($query) && !empty($_GET['q'])) {
+        $query = sanitize_text_field($_GET['q']);
     }
 
     $uriParameters = array(
         'sort' => $sort,
         'range' => $range,
         't' => $taxonomy,
-        'q' => $q
+        'q' => $query
     );
 
     // Get position where '/page' text starts
