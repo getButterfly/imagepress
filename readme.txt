@@ -27,6 +27,12 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
 
+= 7.9.3 =
+* FIX: Added missing translation domain for several strings
+* FIX: Removed some unneccessary condition fallbacks (+speed)
+* FIX: Used strict comparison for some conditions (+security)
+* FIX: Removed unused filter (+compatibility)
+
 = 7.9.2 =
 * FIX: Fixed secondary images not being displayed
 * UPDATE: Added option to disable image views

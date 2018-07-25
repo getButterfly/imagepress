@@ -97,30 +97,23 @@ function imagepress_admin_page() {
             $single_template = 'single-' . $ipSlug . '.php';
 
             echo '<div class="gb-assistant">';
-                if ($ipSlug == '') {
-                    echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your image slug is not set. Go to <b>Configurator</b> section and set it.</p>';
-                } else {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your image slug is <code>' . sanitize_title($ipSlug) . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
-                }
                 if ('' != locate_template($single_template)) {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> You have a custom image template available.</p>';
                 }
-            echo '</div>';
 
-            echo '<div class="gb-assistant">';
-                if ($author_slug == '') {
+                if (empty($author_slug)) {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your author slug is not set. Go to <b>Authors</b> section and set it.</p>';
                 } else {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author slug is <code>' . sanitize_text_field($author_slug) . '</code>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
                 }
-                if ($ip_profile_page == 0) {
+                if ((int) $ip_profile_page === 0) {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your profile page is not set. Go to <b>Authors</b> section and set it.</p>';
                 } else {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your profile page is <b>' . get_the_title($ip_profile_page) . '</b>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
                 }
-                if (empty($author_login_url) && $cinnamon_mod_login == 1) {
+                if (empty($author_login_url) && (int) $cinnamon_mod_login === 1) {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your author login URL is not set. Go to <b>Authors</b> section and set it.</p>';
-                } else if (!empty($author_login_url) && $cinnamon_mod_login == 1) {
+                } else if (!empty($author_login_url) && (int) $cinnamon_mod_login === 1) {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author login URL is <code>' . esc_url($author_login_url) . '</code>.</p>';
                 }
                 if (empty($author_edit_url)) {
@@ -128,7 +121,7 @@ function imagepress_admin_page() {
                 } else {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author profile edit URL is <code>' . esc_url(get_permalink($author_edit_url)) . '</code>.</p>';
                 }
-                if (get_option('default_role') == 'author') {
+                if ((string) get_option('default_role') === 'author') {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> New user default role is <code>author</code>. Subscribers and contributors are not able to edit their uploaded images.</p>';
                 } else {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> New user default role should be <code>author</code> in order to allow for front-end image editing. Subscribers and contributors are not able to edit their uploaded images. <a href="' . esc_url(admin_url('options-general.php')) . '">Change it</a>.</p>';

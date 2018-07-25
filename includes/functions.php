@@ -367,12 +367,15 @@ function ip_update_post_title() {
 add_action('wp_ajax_ip_featured_post', 'ip_featured_post');
 function ip_featured_post() {
     $permission = check_ajax_referer('ip_featured_post_nonce', 'nonce', false);
-    if ($permission == false) {
-        echo 'error';
-    } else {
+    $status = 'error';
+
+    if ($permission === true) {
         update_post_meta($_REQUEST['pid'], '_thumbnail_id', $_REQUEST['id']);
-        echo 'success';
+        $status = 'success';
     }
+
+    echo $status;
+
     die();
 }
 
@@ -735,16 +738,16 @@ function imagepress_login_head() {
 }
 function imagepress_admin_login_redirect( $redirect_to, $request, $user ) {
     global $user;
-    if(isset($user->roles) && is_array($user->roles)) {
-        if(in_array('administrator', $user->roles)) {
+
+    if (isset($user->roles) && is_array($user->roles)) {
+        if (in_array('administrator', $user->roles)) {
             return $redirect_to;
-        } else {
-            return home_url(); // customize this link
         }
+
+        return home_url(); // customize this link
     }
-    else {
-        return $redirect_to;
-    }
+
+    return $redirect_to;
 }
 function imagepress_login_checked_remember_me() {
     add_filter('login_footer', 'imagepress_rememberme_checked');
@@ -765,7 +768,7 @@ function imagepress_change_register_page_msg($message) {
 
 $ip_mod_login = get_imagepress_option('ip_mod_login');
 
-if ($ip_mod_login == 1) {
+if ((int) $ip_mod_login === 1) {
     add_action('init', 'imagepress_login_checked_remember_me');
 
     add_action('login_head', 'imagepress_login_head');
@@ -782,30 +785,16 @@ function ip_return_image_sizes() {
     global $_wp_additional_image_sizes;
 
     $image_sizes = array();
-    foreach(get_intermediate_image_sizes() as $size) {
+    foreach (get_intermediate_image_sizes() as $size) {
         $image_sizes[$size] = array(0, 0);
-        if(in_array($size, array('thumbnail', 'medium', 'large'))) {
+        if (in_array($size, array('thumbnail', 'medium', 'large'))) {
             $image_sizes[$size][0] = get_option($size . '_size_w');
             $image_sizes[$size][1] = get_option($size . '_size_h');
+        } else if (isset($_wp_additional_image_sizes) && isset($_wp_additional_image_sizes[$size])) {
+            $image_sizes[$size] = array($_wp_additional_image_sizes[$size]['width'], $_wp_additional_image_sizes[$size]['height']);
         }
-        else
-            if(isset($_wp_additional_image_sizes) && isset($_wp_additional_image_sizes[$size]))
-                $image_sizes[$size] = array($_wp_additional_image_sizes[$size]['width'], $_wp_additional_image_sizes[$size]['height']);
     }
     return $image_sizes;
-}
-
-add_filter('wp_dropdown_cats', 'ip_wp_dropdown_categories_required', 10, 2);
-function ip_wp_dropdown_categories_required($output, $args) {
-    if(isset($args['required']) && $args['required']) {
-        $output = preg_replace(
-            '^' . preg_quote( '<select ' ) . '^',
-            '<select required ',
-            $output
-        );
-    }
-
-    return $output;
 }
 
 function ip_get_user_role() {

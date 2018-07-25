@@ -181,12 +181,12 @@ class Cinnamon_Frontend_User_Manager {
 
 		$message = __('Someone requested that your password be reset for the following account: ', 'imagepress')  . $key . "\r\n\r\n";
 		$message .= network_home_url('/') . "\r\n\r\n";
-		$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
+		$message .= sprintf(__('Username: %s', 'imagepress'), $user_login) . "\r\n\r\n";
 		$message .= __('Your new password is ', 'imagepress') . $password . "\r\n\r\n";
 
 		$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
-		$title = sprintf(__('[%s] Password reset'), $blogname);
+		$title = sprintf(__('[%s] Password reset', 'imagepress'), $blogname);
 		$title = apply_filters('retrieve_password_title', $title);
 		$message = apply_filters('retrieve_password_message', $message, $key);
 

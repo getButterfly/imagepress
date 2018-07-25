@@ -284,13 +284,13 @@ function ip_frontend_view_image_collection($ip_id) {
     <div class="textwidget">
         <?php
         global $wpdb;
-        $ipCollectionsPageId = (int) get_imagepress_option('ip_collections_page');
 
+        $ipCollectionsPageId = (int) get_imagepress_option('ip_collections_page');
         $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_ID = %d", $ip_id), ARRAY_A);
 
-        foreach($result as $collection) {
+        foreach ($result as $collection) {
             $which = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = 1 AND collection_ID = %d", $collection['image_collection_ID']), ARRAY_A);
-            if(!empty($which['collection_title'])) {
+            if (!empty($which['collection_title'])) {
                 $featured = $wpdb->get_row($wpdb->prepare("SELECT image_ID FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d ORDER BY RAND()", $collection['image_collection_ID']), ARRAY_A);
                 echo '<div class="ip-featured-collection">';
                     echo get_the_post_thumbnail($featured['image_ID'], 'thumbnail');
@@ -353,7 +353,7 @@ function imagepress_collection($atts) {
 
     $hmc = count($collectionables);
 
-    if ($hmc == 0 or empty($hmc)) {
+    if ((int) $hmc === 0 || empty($hmc)) {
         $out .= '<p>' . esc_html__('This collection is empty.', 'imagepress') . '</p>';
 
         return $out;
@@ -395,7 +395,7 @@ function imagepress_collection($atts) {
             // end loop
 
         $out .= '</div><div style="clear: both;"></div>';
-        if ($count == 0) {
+        if ((int) $count === 0) {
             $out .= '<ul class="pagination"></ul>';
         }
         $out .= '<div class="ip_clear"></div>';

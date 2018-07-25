@@ -116,16 +116,12 @@ function cinnamon_card($atts) {
                 $display .= '<div class="avatar-holder"><a href="' . getImagePressProfileUri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
 
                 $hub_user_info = get_userdata($author);
+                $hubUser = $hub_user_info->display_name;
+                if (!empty($hub_user_info->first_name)) {
+                    $hubUser = $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
+                }
 
-                $display .= '<h3>
-                    <a href="' . getImagePressProfileUri($author, false) . '" class="name">';
-                        if (!empty($hub_user_info->first_name)) {
-                            $display .= $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
-                        } else {
-                            $display .= $hub_user_info->display_name;
-                        }
-                    $display .= '</a>
-                </h3>
+                $display .= '<h3><a href="' . getImagePressProfileUri($author, false) . '" class="name">' . $hubUser . '</a></h3>
                 <div class="cinnamon-stats">
                     <div class="cinnamon-meta"><span class="views">' . kformat(cinnamon_PostViews($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
                     <div class="cinnamon-meta"><span class="followers">' . kformat(pwuf_get_follower_count($author)) . '</span><br><small>' . __('followers', 'imagepress') . '</small></div>
@@ -135,7 +131,7 @@ function cinnamon_card($atts) {
         }
     $display .= '</ul>';
 
-    if ($total_users > $total_query) {
+    if ((int) $total_users > (int) $total_query) {
         $display .= '<div id="pagination" class="native-pagination">';
         $display .= '<span class="pages">' . __('Pages:', 'imagepress') . '</span>';
         $current_page = max(1, get_query_var('paged'));

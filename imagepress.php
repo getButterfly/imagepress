@@ -235,8 +235,6 @@ function ip_manage_users_custom_column($output = '', $column_name, $user_id) {
         }
 
         return $userUploads . '/<small>' . $limit . '</small>';
-    } else {
-        return;
     }
 }
 add_filter('manage_users_custom_column', 'ip_manage_users_custom_column', 10, 3);

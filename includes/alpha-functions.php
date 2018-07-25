@@ -124,11 +124,12 @@ function imagepress_loop($atts) {
 
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
+    // Get images per page
+    $ipp = (int) get_imagepress_option('ip_ipp');
     if ((int) $count > 0) {
         $ipp = (int) $count;
-    } else {
-        $ipp = (int) get_imagepress_option('ip_ipp');
     }
+
     $args1 = array(
         'post_type' => $ipSlug,
         'paged' => $paged,
@@ -205,27 +206,27 @@ function imagepress_loop($atts) {
         $sort = (string) trim($_GET['sort']);
         $range = (string) trim($_GET['range']);
 
-        if ($sort == 'likes') {
+        if ($sort === 'likes') {
             $args1['meta_query'] = array(
                 'key' => '_like_count'
             );
             $args1['meta_key'] = '_like_count';
             $args1['orderby'] = 'meta_value_num';
             $args1['order'] = 'DESC';
-        } else if ($sort == 'views') {
+        } else if ($sort === 'views') {
             $args1['meta_query'] = array(
                 'key' => 'post_views_count'
             );
             $args1['meta_key'] = 'post_views_count';
             $args1['orderby'] = 'meta_value_num';
             $args1['order'] = 'DESC';
-        } else if ($sort == 'comments') {
+        } else if ($sort === 'comments') {
             $args1['orderby'] = 'comment_count';
             $args1['orderby'] = 'DESC';
-        } else if ($sort == 'newest') {
+        } else if ($sort === 'newest') {
             $args1['orderby'] = 'date';
             $args1['order'] = 'DESC';
-        } else if ($sort == 'oldest') {
+        } else if ($sort === 'oldest') {
             $args1['orderby'] = 'date';
             $args1['order'] = 'ASC';
         } else {
@@ -234,7 +235,7 @@ function imagepress_loop($atts) {
         }
 
         // Range filtering
-        if ($range == 'lastmonth') {
+        if ($range === 'lastmonth') {
             $date_query = array(
                 'date_query' => array(
                     'column' => 'post_date',
@@ -242,7 +243,7 @@ function imagepress_loop($atts) {
                 )
             );
             $args1['date_query'] = $date_query;
-        } else if ($range == 'lastweek') {
+        } else if ($range === 'lastweek') {
             $date_query = array(
                 'date_query' => array(
                     'column' => 'post_date',
@@ -250,7 +251,7 @@ function imagepress_loop($atts) {
                 )
             );
             $args1['date_query'] = $date_query;
-        } else if ($range == 'lastday') {
+        } else if ($range === 'lastday') {
             $date_query = array(
                 'date_query' => array(
                     'column' => 'post_date',
@@ -275,7 +276,7 @@ function imagepress_loop($atts) {
             }
 
             // Pagination
-            if (function_exists('pagination') && (int) $count == 0) {
+            if (function_exists('pagination') && (int) $count === 0) {
                 $out .= pagination($ip_query->max_num_pages);
             }
         }
