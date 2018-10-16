@@ -2,8 +2,8 @@
 Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
 Requires at least: 4.7
-Tested up to: 4.9.7
-Stable tag: 7.9.2
+Tested up to: 4.9.8
+Stable tag: 7.9.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -34,6 +34,8 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Removed unused filter (+compatibility)
 * FIX: Fixed undefined variable
 * UPDATE: Code compliance updates
+* UPDATE: Refactored several JS functions
+* UPDATE: Removed jQuery Masonry and replaced it with CSS Masonry
 
 = 7.9.2 =
 * FIX: Fixed secondary images not being displayed

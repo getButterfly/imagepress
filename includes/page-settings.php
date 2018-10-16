@@ -198,8 +198,6 @@ function imagepress_admin_page() {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
                     'ip_box_ui' => $_POST['ip_box_ui'],
-                    'ip_grid_ui' => $_POST['ip_grid_ui'],
-                    'ip_ipw' => $_POST['ip_ipw'],
                     'ip_ipp' => $_POST['ip_ipp'],
                     'ip_app' => $_POST['ip_app'],
                     'ip_order' => $_POST['ip_order'],
@@ -231,16 +229,6 @@ function imagepress_admin_page() {
                                 <select name="ip_box_ui" id="ip_box_ui">
                                     <option value="default"<?php if ((string) get_imagepress_option('ip_box_ui') === 'default') echo ' selected'; ?>>Default</option>
                                     <option value="overlay"<?php if ((string) get_imagepress_option('ip_box_ui') === 'overlay') echo ' selected'; ?>>Overlay</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label>Image grid display</label></th>
-                            <td>
-                                <select name="ip_grid_ui" id="ip_grid_ui">
-                                    <option value="basic"<?php if ((string) get_imagepress_option('ip_grid_ui') === 'basic') echo ' selected'; ?>>Basic (no styling)</option>
-                                    <option value="default"<?php if ((string) get_imagepress_option('ip_grid_ui') === 'default') echo ' selected'; ?>>Default (equal height containers)</option>
-                                    <option value="masonry"<?php if ((string) get_imagepress_option('ip_grid_ui') === 'masonry') echo ' selected'; ?>>Masonry</option>
                                 </select>
                             </td>
                         </tr>
@@ -335,11 +323,6 @@ function imagepress_admin_page() {
                         <tr>
                             <th scope="row"><label>Image grid details</label></th>
                             <td>
-                                <input name="ip_ipw" id="ip_ipw" type="number" value="<?php echo (int) get_imagepress_option('ip_ipw'); ?>" min="1" max="1024">
-                                <label for="ip_ipw">Images per row (0-32)</label>
-                                <br><small>Number of images per grid row.</small>
-                                <br>
-
                                 <input name="ip_ipp" id="ip_ipp" type="number" value="<?php echo (int) get_imagepress_option('ip_ipp'); ?>" min="1" max="65536">
                                 <label for="ip_ipp">Images per page (0-256)</label>
                                 <br><small>How many images per page you want to display using the <code>[imagepress-loop]</code> shortcode.</small>

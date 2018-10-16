@@ -2,8 +2,6 @@
 $optionArray = array(
     // Configurator tab
     'ip_box_ui' => 'default',
-    'ip_grid_ui' => 'default',
-    'ip_ipw' => 5,
     'ip_ipp' => 20,
     'ip_app' => 10,
     'ip_order' => 'DESC',

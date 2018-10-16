@@ -274,13 +274,13 @@ function imagepress_loop($atts) {
 
                 $out .= ipRenderGridElement(get_the_ID());
             }
-
-            // Pagination
-            if (function_exists('pagination') && (int) $count === 0) {
-                $out .= pagination($ip_query->max_num_pages);
-            }
         }
     $out .= '</div><div class="ip-clear"></div>';
+
+    // Pagination
+    if (function_exists('pagination') && (int) $count === 0) {
+        $out .= ip_pagination($ip_query->max_num_pages);
+    }
 
     wp_reset_postdata();
 
@@ -303,7 +303,7 @@ function imagepress_loop($atts) {
 /*
  * ImagePress numbered pagination
  */
-function pagination($pages = '', $range = 2) {
+function ip_pagination($pages = '', $range = 2) {
     global $paged;
 
     $showitems = ($range * 2) + 1;
@@ -335,7 +335,7 @@ function pagination($pages = '', $range = 2) {
             if ($paged < $pages-1 && $paged + $range - 1 < $pages && $showitems < $pages) {
                 $display .= '<a href="' . get_pagenum_link($pages) . '">&raquo;</a>';
             }
-        $display .= '</div>';
+        $display .= '</div><div class="ip-clear"></div>';
     }
 
     return $display;

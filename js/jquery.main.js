@@ -1,4 +1,4 @@
-/* global window, document, console, jQuery, ipAjaxVar, Masonry, Sortable */
+/* global window, document, console, jQuery, ipAjaxVar, Sortable */
 /* eslint quotes: ["error", "single"] */
 /* eslint-env browser */
 /* jslint-env browser */
@@ -278,7 +278,45 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        jQuery(document).on('click', '#ip-editor-delete-image', function (e) {
+
+
+        function ajaxian(parameters, onSuccess, onError) {
+            var request = new XMLHttpRequest();
+
+            request.open('POST', ipAjaxVar.ajaxurl, true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.onload = function () {
+                if (this.status >= 200 && this.status < 400) {
+                    onSuccess();
+                } else {
+                    onError();
+                }
+            };
+            request.onerror = function() {
+                onError();
+            };
+            request.send(parameters);
+        }
+
+        if (document.querySelector('.ip-delete-post')) {
+            var elements = document.querySelectorAll('.ip-delete-post');
+
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    var id = this.dataset.imageId;
+
+                    ajaxian('action=ip_delete_post&id=' + id, function () {
+                        document.querySelector('.ip-additional-' + id).remove();
+                    }, function () {
+                        // Error
+                    })
+                });
+            }
+        }
+
+        document.getElementById('ip-editor-delete-image').addEventListener('click', function (e) {
             var id = this.dataset.imageId,
                 redirect = this.dataset.redirect,
                 options = {
@@ -304,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         request.onerror = function() {
                             // Connection error
                         };
-                        request.send('action=ip_delete_post&nonce=' + ipAjaxVar.nonce + '&id=' + id);
+                        request.send('action=ip_delete_post&id=' + id);
                     }
                 };
 
@@ -315,61 +353,38 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    jQuery(document).on('click', '.featured-post', function (e) {
-        if(confirm('Set this image as main image?')) {
-            jQuery(this).parent().parent().css('border', '3px solid #ffffff');
-
-            var pid = jQuery(this).data('pid');
+    // notifications
+    if (document.querySelector('.notifications-container .notification-item.unread')) {
+        document.querySelector('.notifications-container .notification-item.unread').addEventListener('click', function () {
             var id = jQuery(this).data('id');
-            var nonce = jQuery(this).data('nonce');
             jQuery.ajax({
                 type: 'post',
                 url: ipAjaxVar.ajaxurl,
                 data: {
-                    action: 'ip_featured_post',
-                    nonce: nonce,
-                    pid: pid,
+                    action: 'notification_read',
                     id: id
-                },
-                success: function (result) {
-                    if (result === 'success') {
-                        jQuery('.ip-notice').fadeIn();
-                    }
                 }
             });
-        }
-        e.preventDefault();
-        return false;
-    });
-
-    // notifications
-    jQuery('.notifications-container .notification-item.unread').click(function () {
-        var id = jQuery(this).data('id');
-        jQuery.ajax({
-            type: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'notification_read',
-                id: id
-            }
         });
-    });
+    }
 
     /* mark all as read */
-    jQuery('.ip_notification_mark').click(function(e){
-        e.preventDefault();
-        var userid = jQuery(this).data('userid');
-        jQuery.ajax({
-            type: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'notification_read_all',
-                userid: userid
-            }
-        });
+    if (document.querySelector('.ip_notification_mark')) {
+        document.querySelector('.ip_notification_mark').addEventListener('click', function (e) {
+            e.preventDefault();
+            var userid = jQuery(this).data('userid');
+            jQuery.ajax({
+                type: 'post',
+                url: ipAjaxVar.ajaxurl,
+                data: {
+                    action: 'notification_read_all',
+                    userid: userid
+                }
+            });
 
-        jQuery('.notifications-bell').html('<i class="fas fa-bell"></i><sup>0</sup>');
-    });
+            jQuery('.notifications-bell').html('<i class="fas fa-bell"></i><sup>0</sup>');
+        });
+    }
 
     jQuery('.notifications-container').hide();
     jQuery('.notifications-bell').click(function(e){
@@ -878,78 +893,23 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    // ImagePress Grid UI
-    var gridUi = ipAjaxVar.grid_ui,
-        currentDiv;
-
-    if (gridUi === 'masonry') {
-        if (jQuery('#ip-boxes').length) {
-            var container = document.querySelector('#ip-boxes');
-            var msnry = new Masonry(container, {
-                itemSelector: '.ip_box ',
-                columnWidth: '.ip_box',
-                gutter: 0,
-            });
-        }
-    } else if (gridUi === 'default') {
-        var equalHeight = function (container) {
-            var currentTallest = 0,
-                currentRowStart = 0,
-                rowDivs = new Array(),
-                $el,
-                topPosition = 0;
-
-            jQuery(container).each(function () {
-                $el = jQuery(this);
-                jQuery($el).height('auto');
-                topPosition = $el.position().top;
-
-                if (currentRowStart !== topPosition) {
-                    for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
-                        rowDivs[currentDiv].height(currentTallest);
-                    }
-                    rowDivs.length = 0; // empty the array
-                    currentRowStart = topPosition;
-                    currentTallest = $el.height();
-                    rowDivs.push($el);
-                } else {
-                    rowDivs.push($el);
-                    currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
-                }
-
-                for (currentDiv = 0; currentDiv < rowDivs.length; currentDiv++) {
-                    rowDivs[currentDiv].height(currentTallest);
-                }
-            });
-        };
-
-        // Create equal height image containers // onload
-        if (document.querySelector('.list .ip_box')) {
-            equalHeight('.list .ip_box');
-        }
-        // Create equal height image containers // onload
-        if (document.querySelector('.ip-box-container-default .ip_box')) {
-            equalHeight('.ip-box-container-default .ip_box');
-        }
-    }
-
     /*
      * Infinite lazy loading for Profile page
      */
     // Check if profile container exists
     if (document.querySelector('.profile-hub-container')) {
         var sizeTotal = jQuery('#ip-boxes .ip_box').length,
-            sizePerRow = jQuery('.ip-profile').data('ipw'),
+            sizePerRow = 3,
             sizePerPage = ipAjaxVar.imagesperpage;
 
         if (sizeTotal === 0) {
-            jQuery('#ipProfileShowMore').hide();
+            document.getElementById('ipProfileShowMore').style.display = 'none';
         }
 
         /*
          * Loop through first X visible images and lazy load them
          */
-        jQuery('#ip-boxes .ip_box:lt(' + sizePerPage + ')').show();
+        document.querySelector('#ip-boxes .ip_box:lt(' + sizePerPage + ')').style.display = 'block';
 
         jQuery(document).on('click', '#ipProfileShowMore', function() {
             sizePerRow = (sizePerRow + sizePerPage <= sizeTotal) ? sizePerRow + sizePerPage : sizeTotal;

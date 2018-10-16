@@ -180,11 +180,10 @@ function ip_editor() {
                 );
                 wp_update_post($post);
 
-                imagepress_process_image('imagepress_image_file', $post_id, 1);
-
                 // Multiple images
                 ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
 
+                /**
                 $images = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
                 $count = $images ? count($images) : 0;
                 if ($count == 1 || !has_post_thumbnail($post_id)) {
@@ -192,6 +191,7 @@ function ip_editor() {
                         set_post_thumbnail($post_id, $image->ID);
                     }
                 }
+                /**/
 
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
                 if (get_imagepress_option('ip_allow_tags') == 1)
@@ -286,32 +286,25 @@ function ip_editor() {
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
 
-                $out .= '<p><label for="imagepress_image_file">Replace main image (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file" id="imagepress_image_file"></p>';
-
                 if ((int) get_imagepress_option('ip_upload_secondary') === 1) {
                     $out .= '<hr>
                     <p>' .
-                        __('Select main image or delete additional images', 'imagepress') .
-                        '<br><small>' . __('Main image will appear first in single image listing and as a thumbnail in gallery view', 'imagepress') . '</small>
-                    </p>
-                    <div class="ip-hide ip-notice"><p>' . __('Featured image selected succesfully!', 'imagepress') . '</p></div>';
+                        __('Delete additional images', 'imagepress') .
+                    '</p>';
 
                     $thumbnail_ID = get_post_thumbnail_id();
                     $images = get_children(array('post_parent' => $edit_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
                     $count = $images ? count($images) : 0;
 
-                    if ($count > 1) {
+                    if ($count >= 1) {
                         $out .= '<div>';
                             foreach ($images as $attachment_id => $image) {
                                 $small_array = image_downsize($image->ID, 'thumbnail');
 
-                                if ($image->ID == $thumbnail_ID)
-                                    $out .= '<div class="ip-additional-active">';
                                 if ($image->ID != $thumbnail_ID)
-                                    $out .= '<div class="ip-additional">';
+                                    $out .= '<div class="ip-additional ip-additional-' . $image->ID . '">';
                                     $out .= '<div class="ip-toolbar">';
-                                        $out .= '<a href="#" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_delete_post_nonce') . '" class="delete-post ip-action-icon ip-floatright"><i class="fas fa-trash-alt"></i></a>';
-                                        $out .= '<a href="#" data-pid="' . $edit_id . '" data-id="' . $image->ID . '" data-nonce="' . wp_create_nonce('ip_featured_post_nonce') . '" class="featured-post ip-action-icon ip-floatleft"><i class="fas fa-star"></i></a>';
+                                        $out .= '<a href="#" data-image-id="' . $image->ID . '" data-redirect="' . get_permalink() . '" class="ip-delete-post ip-action-icon ip-floatright"><i class="fas fa-trash-alt"></i></a>';
                                     $out .= '</div>';
                                 $out .= '<img src="' . $small_array[0] . '" alt=""></div>';
                             }
@@ -364,20 +357,6 @@ function ip_update_post_title() {
     echo 'success';
     die();
 }
-add_action('wp_ajax_ip_featured_post', 'ip_featured_post');
-function ip_featured_post() {
-    $permission = check_ajax_referer('ip_featured_post_nonce', 'nonce', false);
-    $status = 'error';
-
-    if ($permission === true) {
-        update_post_meta($_REQUEST['pid'], '_thumbnail_id', $_REQUEST['id']);
-        $status = 'success';
-    }
-
-    echo $status;
-
-    die();
-}
 
 
 
@@ -385,8 +364,8 @@ function ip_featured_post() {
 function ip_main($imageId) {
     global $wpdb, $post;
 
-    $post_thumbnail_id = get_post_thumbnail_id($imageId);
-    $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
+    $postThumbnailId = get_post_thumbnail_id($imageId);
+    $image_attributes = wp_get_attachment_image_src($postThumbnailId, 'full');
     $post_thumbnail_url = $image_attributes[0];
 
     $ip_comments = '';
@@ -511,8 +490,8 @@ function ip_main_return($imageId) {
         ip_setPostViews($imageId);
     }
 
-    $post_thumbnail_id = get_post_thumbnail_id($imageId);
-    $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
+    $postThumbnailId = get_post_thumbnail_id($imageId);
+    $image_attributes = wp_get_attachment_image_src($postThumbnailId, 'full');
     $post_thumbnail_url = $image_attributes[0];
 
     $ip_comments = '';
@@ -637,7 +616,7 @@ function imagepress_get_images($postId, $show) {
     $images = get_children(array('post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
     $out = '';
 
-    if ($images && count($images) > 1) {
+    if ($images && count($images) > 0) {
         $out .= '<div class="ip-more">';
             foreach ($images as $attachment_id => $image) {
                 if ($image->ID != $thumbnail_ID) {
@@ -863,10 +842,8 @@ function getImagePressProfileUri($authorId, $structure = true) {
 }
 
 function ipRenderGridElement($elementId) {
-    // Set default values
-    $post_thumbnail_id = get_post_thumbnail_id($elementId);
+    $postThumbnailId = get_post_thumbnail_id($elementId);
 
-    // Get ImagePress grid options
     $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
     $getImagePressTitle = get_imagepress_option('ip_title_optional');
     $getImagePressAuthor = get_imagepress_option('ip_author_optional');
@@ -874,12 +851,11 @@ function ipRenderGridElement($elementId) {
     $getImagePressViews = get_imagepress_option('ip_views_optional');
     $getImagePressLikes = get_imagepress_option('ip_likes_optional');
     $get_ip_comments = get_imagepress_option('ip_comments');
-    $ip_ipw = get_imagepress_option('ip_ipw');
     $size = get_imagepress_option('ip_image_size');
 
     if ($ip_click_behaviour === 'media') {
         // Get attachment source
-        $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'full');
+        $image_attributes = wp_get_attachment_image_src($postThumbnailId, 'full');
 
         $ip_image_link = $image_attributes[0];
     } else if ($ip_click_behaviour === 'custom') {
@@ -917,10 +893,9 @@ function ipRenderGridElement($elementId) {
     if ((int) $getImagePressLikes === 1)
         $ip_likes_optional = '<span class="imagelikes"><i class="fas fa-heart"></i> ' . imagepress_get_like_count($elementId) . '</span> ';
 
-    $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, $size);
+    $image_attributes = wp_get_attachment_image_src($postThumbnailId, $size);
 
-    $out = '<style>.ip_box { width: ' . (100/$ip_ipw) . '%; } @media all and (max-width: 720px) { .ip_box { width: 50%; } } @media all and (max-width: 480px) { .ip_box { width: 100%; } }</style>';
-    $out .= '<div class="ip_box ip_box_' . $elementId . '">
+    $out = '<div class="ip_box ip_box_' . $elementId . '">
         <a href="' . $ip_image_link . '" data-taxonomy="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '" data-src="' . $image_attributes[0] . '" title="' . get_the_title($elementId) . '" class="ip-anchor"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($elementId) . '"></a>
         <div class="ip_box_top">' . $ip_title_optional . $ip_author_optional . $ip_meta_optional . '</div>
         <div class="ip_box_bottom">' . $ip_views_optional . $ip_comments . $ip_likes_optional . '</div>
@@ -961,6 +936,10 @@ function ip_collection_dropdown() {
 function ip_upload_secondary($filesArray, $postId) {
     if ((int) get_imagepress_option('ip_upload_secondary') === 1) {
         if ($filesArray) {
+            require_once ABSPATH . "wp-admin" . '/includes/image.php';
+            require_once ABSPATH . "wp-admin" . '/includes/file.php';
+            require_once ABSPATH . "wp-admin" . '/includes/media.php';
+
             foreach ($filesArray['name'] as $key => $value) {
                 if ($filesArray['name'][$key]) {
                     $file = array(
