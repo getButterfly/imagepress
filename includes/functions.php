@@ -316,14 +316,8 @@ function ip_editor() {
 
                 $out .= '<hr>';
 
-                $ipDeleteRedirection = get_imagepress_option('ip_delete_redirection');
-                if (empty($ipDeleteRedirection)) {
-                    $ipDeleteRedirection = home_url();
-                }
-
                 $out .= '<p>
                     <input type="submit" id="submit" value="' . __('Update', 'imagepress') . '">
-                    <a href="#" data-redirect="' . $ipDeleteRedirection . '" data-image-id="' . get_the_ID() . '" class="button" id="ip-editor-delete-image">' . __('Delete', 'imagepress') . '</a>
                 </p>
             </form>
         </div>';
@@ -391,11 +385,9 @@ function ip_main($imageId) {
             <i class="far fa-eye"></i> <?php echo ip_getPostViews($imageId); ?>
         <?php } ?>
         <?php echo $ip_comments; ?>
-        <?php if ((int) get_imagepress_option('ip_mod_collections') === 1) { ?>
-            <em> | </em>
-            <?php if (function_exists('ip_frontend_add_collection')) {
-                echo ip_frontend_add_collection(get_the_ID());
-            }
+        <em> | </em>
+        <?php if (function_exists('ip_frontend_add_collection')) {
+            echo ip_frontend_add_collection(get_the_ID());
         }
 
         /*
@@ -511,11 +503,9 @@ function ip_main_return($imageId) {
         }
         $out .= $ip_comments;
 
-        if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-            $out .= '<em> | </em>';
-            if (function_exists('ip_frontend_add_collection')) {
-                $out .= ip_frontend_add_collection(get_the_ID());
-            }
+        $out .= '<em> | </em>';
+        if (function_exists('ip_frontend_add_collection')) {
+            $out .= ip_frontend_add_collection(get_the_ID());
         }
 
         $out .= ip_editor();
@@ -672,94 +662,6 @@ function ip_author() {
 
 
 
-
-function imagepress_login_logo_url() {
-    return get_bloginfo( 'url' );
-}
-function imagepress_login_logo_url_title() {
-    return __('Powered by ImagePress', 'imagepress');
-}
-function imagepress_login_error_override() {
-    return __('Incorrect login details.', 'imagepress');
-}
-function imagepress_login_head() {
-    // https://codex.wordpress.org/Plugin_API/Action_Reference/login_enqueue_scripts
-    $ip_login_image = get_imagepress_option('ip_login_image');
-
-    echo '<style>';
-        if(!empty($ip_login_image))
-            echo 'body.login { background-image: url("' . $ip_login_image . '"); background-repeat: no-repeat; background-attachment: fixed; background-position: center; background-size: cover; }';
-        else
-            echo 'body.login { background-color: ' .  get_imagepress_option('ip_login_bg') . '; }';
-
-        echo '.login form { background-color: ' .  get_imagepress_option('ip_login_box_bg') . '; }';
-
-        if(get_imagepress_option('ip_login_flat_mode') == 1) {
-            echo '.login form { box-shadow: none; border-radius: 0; }';
-            echo '.login .button-primary { box-shadow: none; border: 0 none; border-radius: 0; } .login .button-primary:hover, .login .button-primary:active, .login .button-primary:focus { box-shadow: none; }';
-            echo '.login input[type="text"], .login input[type="password"] { box-shadow: none; }';
-        }
-
-        echo '.login .button-primary { box-shadow: none; border-color: ' . get_imagepress_option('ip_login_button_bg') . '; background-color: ' . get_imagepress_option('ip_login_button_bg') . '; color: ' . get_imagepress_option('ip_login_button_text') . '; }';
-        echo '.login .button-primary:hover { box-shadow: none; border-color: ' . get_imagepress_option('ip_login_button_bg') . '; background-color: ' . get_imagepress_option('ip_login_button_bg') . '; color: ' . get_imagepress_option('ip_login_button_text') . '; }';
-        echo '.login .button-primary:focus { box-shadow: none; border-color: ' . get_imagepress_option('ip_login_button_bg') . '; background-color: ' . get_imagepress_option('ip_login_button_bg') . '; color: ' . get_imagepress_option('ip_login_button_text') . '; }';
-        echo '.login .button-primary:active { box-shadow: none; border-color: ' . get_imagepress_option('ip_login_button_bg') . '; background-color: ' . get_imagepress_option('ip_login_button_bg') . '; color: ' . get_imagepress_option('ip_login_button_text') . '; }';
-        echo '.login input[type="text"]:focus, .login input[type="password"]:focus { border-color: ' . get_imagepress_option('ip_login_button_bg') . '; }';
-
-        echo '.login h1 a { background: none !important; color: ' . get_imagepress_option('ip_login_page_text') . ' !important; height: auto; font-size: 24px; font-weight: 300; line-height: initial; margin: 0 auto 25px; padding: 0; text-decoration: none; width: auto; text-indent: 0; overflow: visible; display: block; }';
-        echo '.login label { color: ' . get_imagepress_option('ip_login_box_text') . '; }';
-        echo 'p#backtoblog { display: none; }';
-        echo '.imagepress-login-footer { text-align: center; margin-top: 1em; color: ' . get_imagepress_option('ip_login_page_text') . '; }';
-        echo '.imagepress-login-footer a, .login a, .login a:hover, #nav a { color: ' . get_imagepress_option('ip_login_page_text') . '; }';
-        echo '.imagepress-login-footer, #nav a { color: ' . get_imagepress_option('ip_login_page_text') . ' !important; }';
-    echo '</style>';
-
-    remove_action('login_head', 'wp_shake_js', 12);
-}
-function imagepress_admin_login_redirect( $redirect_to, $request, $user ) {
-    global $user;
-
-    if (isset($user->roles) && is_array($user->roles)) {
-        if (in_array('administrator', $user->roles)) {
-            return $redirect_to;
-        }
-
-        return home_url(); // customize this link
-    }
-
-    return $redirect_to;
-}
-function imagepress_login_checked_remember_me() {
-    add_filter('login_footer', 'imagepress_rememberme_checked');
-}
-function imagepress_rememberme_checked() {
-    echo '<script>document.getElementById("rememberme").checked = true;</script>';
-}
-function imagepress_login_footer() {
-    echo '<p class="imagepress-login-footer">' . get_imagepress_option('ip_login_copyright') . '</p>';
-}
-function imagepress_change_register_page_msg($message) {
-    if (strpos($message, 'Register For This Site') == true) {
-        $message = '<p class="message">' . __('Register for ImagePress', 'imagepress') . '</p>';
-    }
-
-    return $message;
-}
-
-$ip_mod_login = get_imagepress_option('ip_mod_login');
-
-if ((int) $ip_mod_login === 1) {
-    add_action('init', 'imagepress_login_checked_remember_me');
-
-    add_action('login_head', 'imagepress_login_head');
-    add_action('login_footer','imagepress_login_footer');
-
-    add_filter('login_headerurl', 'imagepress_login_logo_url');
-    add_filter('login_headertitle', 'imagepress_login_logo_url_title');
-    add_filter('login_errors', 'imagepress_login_error_override');
-    add_filter('login_redirect', 'imagepress_admin_login_redirect', 10, 3);
-    add_filter('login_message', 'imagepress_change_register_page_msg');
-}
 
 function ip_return_image_sizes() {
     global $_wp_additional_image_sizes;
@@ -958,3 +860,129 @@ function ip_upload_secondary($filesArray, $postId) {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function ip_login() {
+    global $user_ID, $user_identity;
+
+    $out = '';
+
+	if (!$user_ID) {
+        $out .= '<ul class="tabs">
+            <li><a href="#login" class="is-active">' . __('Login', 'imagepress') . '</a></li>
+            <li><a href="#register">' . __('Register', 'imagepress') . '</a></li>
+            <li><a href="#forgot-password">' . __('Forgot your password?', 'imagepress') . '</a></li>
+        </ul>
+        <div id="login" class="tab-content">';
+            $register = $_GET['register'];
+            $reset = $_GET['reset'];
+
+            if ($register == true) {
+                $out .= '<h3>Success!</h3>
+                <p>Check your email for the password and then return to log in.</p>';
+			} else if ($reset == true) {
+                $out .= '<h3>Success!</h3>
+                <p>Check your email to reset your password.</p>';
+			} else {
+                $out .= '<h3>Have an account?</h3>
+                <p>Log in or sign up!</p>';
+			}
+
+			$out .= '<form method="post" action="' . home_url() . '/wp-login.php" class="wp-user-form">
+				<div class="username">
+					<label for="user_login">Username: </label>
+					<input type="text" name="log" value="' . esc_attr(stripslashes($user_login)) . '" size="20" id="user_login">
+				</div>
+				<div class="password">
+					<label for="user_pass">Password: </label>
+					<input type="password" name="pwd" value="" size="20" id="user_pass">
+				</div>
+				<div class="login_fields">
+					<div class="rememberme">
+						<label for="rememberme">
+							<input type="checkbox" name="rememberme" value="forever" checked="checked" id="rememberme"> Remember me
+						</label>
+					</div>';
+
+                    //do_action('login_form');
+
+                    $out .= '<input type="submit" name="user-submit" value="Login" class="user-submit">
+					<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '">
+					<input type="hidden" name="user-cookie" value="1">
+				</div>
+			</form>
+		</div>
+		<div id="register" class="tab-content">
+			<h3>Register for this site!</h3>
+			<p>Sign up now for the good stuff.</p>
+			<form method="post" action="' . site_url('wp-login.php?action=register', 'login_post') . '" class="wp-user-form">
+				<div class="username">
+					<label for="user_login">Username: </label>
+					<input type="text" name="user_login" value="' . esc_attr(stripslashes($user_login)) . '" size="20" id="user_login">
+				</div>
+				<div class="password">
+					<label for="user_email">Your Email: </label>
+					<input type="text" name="user_email" value="' . esc_attr(stripslashes($user_email)) . '" size="25" id="user_email">
+				</div>
+				<div class="login_fields">';
+					// do_action('register_form');
+					$out .= '<input type="submit" name="user-submit" value="Sign up!" class="user-submit">';
+					$register = $_GET['register'];
+                    if ($register == true) {
+                        $out .= '<p>Check your email for the password!</p>';
+                    }
+					$out .= '<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '?register=true">
+					<input type="hidden" name="user-cookie" value="1">
+				</div>
+			</form>
+		</div>
+		<div id="forgot-password" class="tab-content">
+			<h3>Lose something?</h3>
+			<p>Enter your username or email to reset your password.</p>
+			<form method="post" action="' . site_url('wp-login.php?action=lostpassword', 'login_post') . '" class="wp-user-form">
+				<div class="username">
+					<label for="user_login" class="hide">Username or Email: </label>
+					<input type="text" name="user_login" value="" size="20" id="user_login">
+				</div>
+				<div class="login_fields">';
+					// do_action('login_form', 'resetpass');
+					$out .= '<input type="submit" name="user-submit" value="Reset my password" class="user-submit">';
+					$reset = $_GET['reset'];
+                    if ($reset == true) {
+                        echo '<p>A message will be sent to your email address.</p>';
+                    }
+					$out .= '<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '?reset=true">
+					<input type="hidden" name="user-cookie" value="1">
+				</div>
+			</form>
+		</div>';
+
+	} else { // is logged in
+
+	$out .= '<div class="sidebox">
+		<h3>Welcome, ' . $user_identity . '</h3>
+		<div class="userinfo">
+		</div>
+	</div>';
+
+	}
+
+    return $out;
+}
+
+add_shortcode('cinnamon-login', 'ip_login');

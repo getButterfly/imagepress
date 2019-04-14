@@ -1,173 +1,63 @@
-/* global window, document, console, jQuery, ipAjaxVar, Sortable */
+/* global window, document, console, ipAjaxVar, Sortable */
 /* eslint quotes: ["error", "single"] */
 /* eslint-env browser */
 /* jslint-env browser */
 
-/**
- * roar - v1.0.5 - 2018-05-25
- * https://getbutterfly.com/roarjs-vanilla-javascript-alert-confirm-replacement/
- * Copyright (c) 2018 Ciprian Popescu
- * Licensed GPLv3
- */
-function roar(title, message, options) {
-    'use strict';
 
-    if (typeof options !== 'object') {
-        options = {};
-    }
 
-    if (!window.roarAlert) {
-        var RoarObject = {
-            element: null,
-            cancelElement: null,
-            confirmElement: null
-        };
-        RoarObject.element = document.querySelector('.roar-alert');
+function do_confirm(imageId) {
+    document.getElementById('aep_prompt').innerHTML = ipAjaxVar.swal_confirm_operation;
+    document.getElementById('aep_ww').style.display = '';
+
+    document.querySelector('.aep_ok').dataset.imageId = imageId;
+}
+
+function do_click(m) {
+    // Hide confirm modal
+    document.getElementById('aep_ww').style.display = 'none'; 
+
+    if (!m) {
+        // false
     } else {
-        // Clear style
-        if (window.roarAlert.cancel) {
-            window.roarAlert.cancelElement.style = '';
-        }
-        if (window.roarAlert.confirm) {
-            window.roarAlert.confirmElement.style = '';
-        }
-        // Show alert
-        document.body.classList.add('roar-open');
-        window.roarAlert.element.style.display = 'block';
+        // true
+        var id = document.querySelector('.aep_ok').dataset.imageId;
 
-        RoarObject = window.roarAlert;
-    }
-
-    // Define default options
-    RoarObject.cancel = options.cancel !== undefined ? options.cancel : false;
-    RoarObject.cancelText = options.cancelText !== undefined ? options.cancelText : 'Cancel';
-    RoarObject.cancelCallBack = function (event) {
-        document.body.classList.remove('roar-open');
-        window.roarAlert.element.style.display = 'none';
-        // Cancel callback
-        if (typeof options.cancelCallBack === 'function') {
-            options.cancelCallBack(event);
-        }
-
-        // Cancelled
-        return true;
-    };
-
-    // Close alert on click outside
-    if (document.querySelector('.roar-alert-mask')) {
-        document.querySelector('.roar-alert-mask').addEventListener('click', function (event) {
-            document.body.classList.remove('roar-open');
-            window.roarAlert.element.style.display = 'none';
-            // Cancel callback
-            if (typeof options.cancelCallBack === 'function') {
-                options.cancelCallBack(event);
-            }
-
-            // Clicked outside
-            return true;
+        xhrRequest('ip_delete_post', '&id=' + id, function (caller) {
+            document.getElementById('listItem_' + id).remove();
         });
+
+        return false;
     }
+}
 
-    RoarObject.message = message;
-    RoarObject.title = title;
-    RoarObject.confirm = options.confirm !== undefined ? options.confirm : true;
-    RoarObject.confirmText = options.confirmText !== undefined ? options.confirmText : 'Confirm';
-    RoarObject.confirmCallBack = function (event) {
-        document.body.classList.remove('roar-open');
-        window.roarAlert.element.style.display = 'none';
-        // Confirm callback
-        if (typeof options.confirmCallBack === 'function') {
-            options.confirmCallBack(event);
+if (document.querySelector('.aep_ok')) {
+    document.querySelector('.aep_ok').addEventListener('click', function () {
+        do_click(true);
+    });
+    document.querySelector('.aep_cancel').addEventListener('click', function () {
+        do_click(false);
+    });
+}
+
+
+
+function xhrRequest(action, arguments, onSuccess) {
+    var request = new XMLHttpRequest();
+
+    request.open('POST', ipAjaxVar.ajaxurl, true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.onload = function (response) {
+        if (this.status >= 200 && this.status < 400) {
+            // Response success
+            onSuccess(this);
+        } else {
+            // Response error
         }
-
-        // Confirmed
-        return true;
     };
-
-    if (!RoarObject.element) {
-        RoarObject.html =
-            '<div class="roar-alert" id="roar-alert" role="alertdialog">' +
-            '<div class="roar-alert-mask"></div>' +
-            '<div class="roar-alert-message-body" role="alert" aria-relevant="all">' +
-            '<div class="roar-alert-message-tbf roar-alert-message-title">' +
-            RoarObject.title +
-            '</div>' +
-            '<div class="roar-alert-message-tbf roar-alert-message-content">' +
-            RoarObject.message +
-            '</div>' +
-            '<div class="roar-alert-message-tbf roar-alert-message-button">';
-
-        if (RoarObject.cancel || true) {
-            RoarObject.html += '<a href="javascript:;" class="roar-alert-message-tbf roar-alert-message-button-cancel">' + RoarObject.cancelText + '</a>';
-        }
-
-        if (RoarObject.confirm || true) {
-            RoarObject.html += '<a href="javascript:;" class="roar-alert-message-tbf roar-alert-message-button-confirm">' + RoarObject.confirmText + '</a>';
-        }
-
-        RoarObject.html += '</div></div></div>';
-
-        var element = document.createElement('div');
-        element.id = 'roar-alert-wrap';
-        element.innerHTML = RoarObject.html;
-        document.body.appendChild(element);
-
-        RoarObject.element = document.querySelector('.roar-alert');
-        RoarObject.cancelElement = document.querySelector('.roar-alert-message-button-cancel');
-
-        // Enabled cancel button callback
-        if (RoarObject.cancel) {
-            document.querySelector('.roar-alert-message-button-cancel').style.display = 'block';
-        } else {
-            document.querySelector('.roar-alert-message-button-cancel').style.display = 'none';
-        }
-
-        // Enabled cancel button callback
-        RoarObject.confirmElement = document.querySelector('.roar-alert-message-button-confirm');
-        if (RoarObject.confirm) {
-            document.querySelector('.roar-alert-message-button-confirm').style.display = 'block';
-        } else {
-            document.querySelector('.roar-alert-message-button-confirm').style.display = 'none';
-        }
-
-        RoarObject.cancelElement.onclick = RoarObject.cancelCallBack;
-        RoarObject.confirmElement.onclick = RoarObject.confirmCallBack;
-
-        window.roarAlert = RoarObject;
-    }
-
-    document.querySelector('.roar-alert-message-title').innerHTML = '';
-    document.querySelector('.roar-alert-message-content').innerHTML = '';
-    document.querySelector('.roar-alert-message-button-cancel').innerHTML = RoarObject.cancelText;
-    document.querySelector('.roar-alert-message-button-confirm').innerHTML = RoarObject.confirmText;
-
-    RoarObject.cancelElement = document.querySelector('.roar-alert-message-button-cancel');
-
-    // Enabled cancel button callback
-    if (RoarObject.cancel) {
-        document.querySelector('.roar-alert-message-button-cancel').style.display = 'block';
-    } else {
-        document.querySelector('.roar-alert-message-button-cancel').style.display = 'none';
-    }
-
-    // Enabled cancel button callback
-    RoarObject.confirmElement = document.querySelector('.roar-alert-message-button-confirm');
-    if (RoarObject.confirm) {
-        document.querySelector('.roar-alert-message-button-confirm').style.display = 'block';
-    } else {
-        document.querySelector('.roar-alert-message-button-confirm').style.display = 'none';
-    }
-    RoarObject.cancelElement.onclick = RoarObject.cancelCallBack;
-    RoarObject.confirmElement.onclick = RoarObject.confirmCallBack;
-
-    // Set title and message
-    RoarObject.title = RoarObject.title || '';
-    RoarObject.message = RoarObject.message || '';
-
-    document.querySelector('.roar-alert-message-title').innerHTML = RoarObject.title;
-    document.querySelector('.roar-alert-message-content').innerHTML = RoarObject.message;
-
-    window.roarAlert = RoarObject;
+    request.onerror = function() {
+        // Connection error
+    };
+    request.send('action=' + action + '&nonce=' + ipAjaxVar.nonce + arguments);
 }
 
 
@@ -185,35 +75,24 @@ document.addEventListener('DOMContentLoaded', function () {
             e.stopImmediatePropagation();
 
             var likeLabel,
-                request = new XMLHttpRequest(),
                 like = this,
                 pid = like.dataset.post_id;
 
             like.innerHTML = '<i class="fas fa-heart"></i> <i class="fas fa-cog fa-spin"></i>';
 
-            request.open('POST', ipAjaxVar.ajaxurl, true);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-            request.onload = function () {
-                if (this.status >= 200 && this.status < 400) {
-                    if (this.response.indexOf('already') !== -1) {
-                        if (this.response.replace('already', '') === '0') {
-                            likeLabel = ipAjaxVar.likelabel;
-                        }
-                        like.classList.remove('liked');
-                        like.innerHTML = '<i class="fas fa-heart"></i> ' + likeLabel;
-                    } else {
-                        likeLabel = ipAjaxVar.unlikelabel;
-                        like.classList.add('liked');
-                        like.innerHTML = '<i class="far fa-heart"></i> ' + likeLabel;
+            xhrRequest('imagepress-like', '&imagepress_like=&post_id=' + pid, function (caller) {
+                if (caller.response.indexOf('already') !== -1) {
+                    if (caller.response.replace('already', '') === '0') {
+                        likeLabel = ipAjaxVar.likelabel;
                     }
+                    like.classList.remove('liked');
+                    like.innerHTML = '<i class="fas fa-heart"></i> ' + likeLabel;
                 } else {
-                    // Response error
+                    likeLabel = ipAjaxVar.unlikelabel;
+                    like.classList.add('liked');
+                    like.innerHTML = '<i class="far fa-heart"></i> ' + likeLabel;
                 }
-            };
-            request.onerror = function() {
-                // Connection error
-            };
-            request.send('action=imagepress-like&nonce=' + ipAjaxVar.nonce + '&imagepress_like=&post_id=' + pid);
+            });
 
             return false;
         });
@@ -278,26 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-
-
-        function ajaxian(parameters, onSuccess, onError) {
-            var request = new XMLHttpRequest();
-
-            request.open('POST', ipAjaxVar.ajaxurl, true);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-            request.onload = function () {
-                if (this.status >= 200 && this.status < 400) {
-                    onSuccess();
-                } else {
-                    onError();
-                }
-            };
-            request.onerror = function() {
-                onError();
-            };
-            request.send(parameters);
-        }
-
         if (document.querySelector('.ip-delete-post')) {
             var elements = document.querySelectorAll('.ip-delete-post');
 
@@ -307,220 +166,125 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     var id = this.dataset.imageId;
 
-                    ajaxian('action=ip_delete_post&id=' + id, function () {
+                    xhrRequest('ip_delete_post', '&id=' + id, function (caller) {
                         document.querySelector('.ip-additional-' + id).remove();
-                    }, function () {
-                        // Error
-                    })
+                    });
                 });
             }
         }
-
-        document.getElementById('ip-editor-delete-image').addEventListener('click', function (e) {
-            var id = this.dataset.imageId,
-                redirect = this.dataset.redirect,
-                options = {
-                    cancel: true,
-                    cancelText: ipAjaxVar.swal_cancel_button,
-                    cancelCallBack: function () {
-                        // Do nothing
-                    },
-                    confirm: true,
-                    confirmText: ipAjaxVar.swal_confirm_button,
-                    confirmCallBack: function () {
-                        var request = new XMLHttpRequest();
-
-                        request.open('POST', ipAjaxVar.ajaxurl, true);
-                        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-                        request.onload = function () {
-                            if (this.status >= 200 && this.status < 400) {
-                                window.location = redirect;
-                            } else {
-                                // Response error
-                            }
-                        };
-                        request.onerror = function() {
-                            // Connection error
-                        };
-                        request.send('action=ip_delete_post&id=' + id);
-                    }
-                };
-
-            roar('', ipAjaxVar.swal_confirm_operation, options);
-
-            e.preventDefault();
-            return false;
-        });
     }
 
-    // notifications
-    if (document.querySelector('.notifications-container .notification-item.unread')) {
-        document.querySelector('.notifications-container .notification-item.unread').addEventListener('click', function () {
-            var id = jQuery(this).data('id');
-            jQuery.ajax({
-                type: 'post',
-                url: ipAjaxVar.ajaxurl,
-                data: {
-                    action: 'notification_read',
-                    id: id
+
+
+    if (document.querySelector('ul.tabs')) {
+        var tabLinks = document.querySelectorAll('ul.tabs li a');
+
+        for (var i = 0; i < tabLinks.length; i++) { 
+            tabLinks[i].onclick = function () {
+                var target = this.getAttribute('href').replace('#', '');
+                var sections = document.querySelectorAll('div.tab-content');
+
+                for (var j=0; j < sections.length; j++) {
+                    sections[j].style.display = 'none';
                 }
-            });
-        });
-    }
 
-    /* mark all as read */
-    if (document.querySelector('.ip_notification_mark')) {
-        document.querySelector('.ip_notification_mark').addEventListener('click', function (e) {
-            e.preventDefault();
-            var userid = jQuery(this).data('userid');
-            jQuery.ajax({
-                type: 'post',
-                url: ipAjaxVar.ajaxurl,
-                data: {
-                    action: 'notification_read_all',
-                    userid: userid
+                document.getElementById(target).style.display = 'block';
+
+                for (var k=0; k < tabLinks.length; k++) {
+                    tabLinks[k].removeAttribute('class');
                 }
-            });
 
-            jQuery('.notifications-bell').html('<i class="fas fa-bell"></i><sup>0</sup>');
-        });
+                this.setAttribute('class', 'is-active');
+
+                return false;
+            }
+        };
     }
-
-    jQuery('.notifications-container').hide();
-    jQuery('.notifications-bell').click(function(e){
-        jQuery('.notifications-container').toggle();
-        e.preventDefault();
-    });
-    jQuery('.notifications-container').mouseleave(function(e){
-        jQuery('.notifications-container').fadeOut('fast');
-        e.preventDefault();
-    });
-
-
-
-
-
-
-
-
 
 
     /* profile specific functions */
-    jQuery('.ip-tab .ip-tabs').addClass('active').find('> li:eq(0)').addClass('current');
-    jQuery('.ip-tab .ip-tabs li a:not(.imagepress-button)').click(function(g) {
-        var tab = jQuery(this).closest('.ip-tab'),
-            index = jQuery(this).closest('li').index();
+    if (document.querySelector('.imagepress-follow a')) {
+        document.querySelector('.imagepress-follow a').addEventListener('click', function (e) {
+            e.preventDefault();
 
-        tab.find('.ip-tabs > li').removeClass('current');
-        jQuery(this).closest('li').addClass('current');
+            var $this = jQuery(this);
 
-        tab.find('.tab_content').find('.ip-tabs-item').not('.ip-tabs-item:eq(' + index + ')').hide();
-        tab.find('.tab_content').find('.ip-tabs-item:eq(' + index + ')').show();
+            if (typeof ipAjaxVar.logged_in !== 'undefined' && ipAjaxVar.logged_in !== 'true') {
+                alert(ipAjaxVar.login_required);
 
-        g.preventDefault();
-    });
-
-    jQuery('.imagepress-follow a').on('click', function (e) {
-        e.preventDefault();
-        var $this = jQuery(this);
-        if (typeof ipAjaxVar.logged_in !== 'undefined' && ipAjaxVar.logged_in !== 'true') {
-            alert(ipAjaxVar.login_required);
-            return;
-        }
-
-        var data = {
-            action: $this.hasClass('follow') ? 'follow' : 'unfollow',
-            user_id: $this.data('user-id'),
-            follow_id: $this.data('follow-id'),
-            nonce: ipAjaxVar.nonce
-        };
-
-        jQuery('img.pwuf-ajax').show();
-
-        jQuery.post(ipAjaxVar.ajaxurl, data, function (response) {
-            if (response === 'success') {
-                jQuery('.imagepress-follow a').toggle();
-            } else {
-                alert(ipAjaxVar.processing_error);
+                return;
             }
 
-            jQuery('img.pwuf-ajax').hide();
+            var action = $this.hasClass('follow') ? 'follow' : 'unfollow';
+
+            document.querySelector('img.pwuf-ajax').style.display = 'inline-block';
+
+            xhrRequest(action, '&user_id=' + $this.data('user-id') + '&follow_id=' + $this.data('follow-id'), function (caller) {
+                jQuery('.imagepress-follow a').toggle();
+                document.querySelector('img.pwuf-ajax').style.display = 'none';
+            });
         });
-    });
+    }
 
 
 
     /* collections */
-    jQuery(document).on('click', '.changeCollection', function (e) {
-        jQuery(this).parent().parent().next('.collection_details_edit').toggleClass('active');
-        e.preventDefault();
-    });
-    jQuery(document).on('click', '.closeCollectionEdit', function (e) {
-        jQuery(this).parent().toggleClass('active');
-        e.preventDefault();
-    });
-    jQuery('.toggleModal').on('click', function (e) {
-        jQuery('.ip-modal').toggleClass('active');
-        e.preventDefault();
-    });
-    jQuery('.toggleFrontEndModal').on('click', function (e) {
-        jQuery('.frontEndModal').toggleClass('active');
-        e.preventDefault();
-    });
-    jQuery('.toggleFrontEndModal .close').on('click', function (e) {
-        jQuery('.frontEndModal').toggleClass('active');
-        e.preventDefault();
+    document.querySelector('body').addEventListener('click', function(event) {
+        if (event.target.className.indexOf('changeCollection') !== -1) {
+            document.querySelector('.cde' + event.target.dataset.collectionId).classList.toggle('active');
+
+            event.preventDefault();
+        }
+        if (event.target.className.indexOf('closeCollectionEdit') !== -1) {
+            document.querySelector('.cde' + event.target.dataset.collectionId).classList.toggle('active');
+
+            event.preventDefault();
+        }
     });
 
-    jQuery('.addCollection').click(function (e) {
-        jQuery('.addCollection').val('Creating...');
-        jQuery('.collection-progress').fadeIn();
-        jQuery.ajax({
-            method: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'addCollection',
-                collection_author_id: jQuery('#collection_author_id').val(),
-                collection_title: jQuery('#collection_title').val(),
-                collection_status: jQuery('#collection_status').val()
-            }
-        }).done(function() {
-            jQuery('.addCollection').val('Create another collection');
-            jQuery('.collection-progress').hide();
-            jQuery('.showme').fadeIn();
+    if (document.querySelector('.toggleModal')) {
+        document.querySelector('.toggleModal').addEventListener('click', function(e) {
+            document.querySelector('.ip-modal').classList.toggle('active');
+
+            e.preventDefault();
         });
+    }
 
-        e.preventDefault();
-    });
+    if (document.querySelector('.toggleFrontEndModal')) {
+        document.querySelector('.toggleFrontEndModal').addEventListener('click', function(e) {
+            document.querySelector('.frontEndModal').classList.toggle('active');
+
+            e.preventDefault();
+        });
+        document.querySelector('.toggleFrontEndModal .close').addEventListener('click', function(e) {
+            document.querySelector('.frontEndModal').classList.toggle('active');
+
+            e.preventDefault();
+        });
+    }
+
+    if (document.querySelector('.addCollection')) {
+        document.querySelector('.addCollection').addEventListener('click', function(e) {
+            document.querySelector('.addCollection').value = 'Creating...';
+            jQuery('.collection-progress').fadeIn();
+
+            xhrRequest('addCollection', '&collection_author_id=' + jQuery('#collection_author_id').val() + '&collection_title=' + jQuery('#collection_title').val() + '&collection_status=' + jQuery('#collection_status').val(), function (caller) {
+                document.querySelector('.addCollection').value = 'Create another collection';
+                jQuery('.collection-progress').hide();
+                jQuery('.showme').fadeIn();
+            });
+
+            e.preventDefault();
+        });
+    }
 
     jQuery(document).on('click', '.deleteCollection', function(e){
         jQuery('body').find('deleteCollection').hide();
-        var ipc = jQuery(this).data('collection-id');
-        jQuery.ajax({
-            method: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'deleteCollection',
-                collection_id: ipc,
-            }
-        }).done(function() {
-            jQuery('.ipc' + ipc).fadeOut();
-            jQuery('.ip-loadingCollections').fadeOut();
-        });
 
-        e.preventDefault();
-    });
-    jQuery(document).on('click', '.deleteCollectionImage', function(e){
-        var ipc = jQuery(this).data('image-id');
-        jQuery.ajax({
-            method: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'deleteCollectionImage',
-                image_id: ipc,
-            }
-        }).done(function() {
-            jQuery('.ip_box_' + ipc).fadeOut();
+        var ipc = jQuery(this).data('collection-id');
+
+        xhrRequest('deleteCollection', '&collection_id=' + ipc, function (caller) {
+            jQuery('.ipc' + ipc).fadeOut();
             jQuery('.ip-loadingCollections').fadeOut();
         });
 
@@ -529,88 +293,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
     jQuery(document).on('click', '.saveCollection', function(e){
         var ipc = jQuery(this).data('collection-id');
-        jQuery.ajax({
-            method: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'editCollectionTitle',
-                collection_id: ipc,
-                collection_title: jQuery('.ct' + ipc).val(),
-            }
-        }).done(function() {
+
+        xhrRequest('editCollectionTitle', '&collection_id=' + ipc + '&collection_title=' + jQuery('.ct' + ipc).val(), function (caller) {
             jQuery('.collection_details_edit').removeClass('active');
             jQuery('.imagepress-collections').trigger('click');
         });
 
         e.preventDefault();
     });
-    jQuery(document).on('change', '.collection-status', function(e){
+    jQuery(document).on('change', '.collection-status', function (e) {
         var ipc = jQuery(this).data('collection-id');
 
         var option = this.options[this.selectedIndex];
 
-        jQuery.ajax({
-            method: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'editCollectionStatus',
-                collection_id: ipc,
-                collection_status: jQuery(option).val()
-            }
-        }).done(function() {
-            jQuery('.cde' + ipc).fadeOut('fast');
+        xhrRequest('editCollectionStatus', '&collection_id=' + ipc + '&collection_status=' + jQuery(option).val(), function (caller) {
+            document.querySelector('.cde' + ipc).style.display = 'none';
         });
 
         e.preventDefault();
     });
 
-    jQuery('.ip-modal .close').click(function(e){
-        jQuery.ajax({
-            method: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'ip_collections_display',
-            }
-        }).done(function(msg) {
-            jQuery('.collections-display').html(msg);
+    if (document.querySelector('.ip-modal .close')) {
+        document.querySelector('.ip-modal .close').addEventListener('click', function (e) {
+            xhrRequest('ip_collections_display', '', function (caller) {
+                document.querySelector('.collections-display').innerHTML = caller.response;
+            });
+
+            e.preventDefault();
         });
+    }
 
-        e.preventDefault();
-    });
-    jQuery('.imagepress-collections').click(function(e){
-        jQuery('.ip-loadingCollections').show();
-        jQuery.ajax({
-            method: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                action: 'ip_collections_display',
-            }
-        }).done(function(msg) {
-            jQuery('.collections-display').html(msg);
-            jQuery('.ip-loadingCollections').fadeOut();
+    if (document.querySelector('.imagepress-collections')) {
+        document.querySelector('.imagepress-collections').addEventListener('click', function (e) {
+            document.querySelector('.ip-loadingCollections').style.display = 'inline-block';
+
+            xhrRequest('ip_collections_display', '', function (caller) {
+                document.querySelector('.collections-display').innerHTML = caller.response;
+                document.querySelector('.ip-loadingCollections').style.display = 'none';
+            });
+
+            e.preventDefault();
         });
-
-        e.preventDefault();
-    });
-
-    jQuery(document).on('click', '.editCollection', function(e){
-        var ipc = jQuery(this).data('collection-id');
-        jQuery('.ip-loadingCollectionImages').show();
-
-        jQuery.ajax({
-            method: 'post',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                collection_id: ipc,
-                action: 'ip_collection_display',
-            }
-        }).done(function(msg) {
-            jQuery('.collections-display').html(msg);
-            jQuery('.ip-loadingCollectionImages').fadeOut();
-        });
-
-        e.preventDefault();
-    });
+    }
     /* end collections */
 
     // Sortable images inside profile editor
@@ -621,153 +345,37 @@ document.addEventListener('DOMContentLoaded', function () {
             onUpdate: function () {
                 var order = sortable.toArray();
 
-                var request = new XMLHttpRequest();
-
-                request.open('POST', ipAjaxVar.ajaxurl, true);
-                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-                request.onload = function () {
-                    if (this.status >= 200 && this.status < 400) {
-                        // Response success
-                    } else {
-                        // Response error
-                    }
-                };
-                request.onerror = function() {
-                    // Connection error
-                };
-                request.send('action=imagepress_list_update_order&nonce=' + ipAjaxVar.nonce + '&order=' + order);
+                xhrRequest('imagepress_list_update_order', '&order=' + order, function (caller) {
+                    // Sort success
+                });
             },
         });
     }
 
-    jQuery(document).on('click', '.editor-image-delete', function (e) {
-        var id = jQuery(this).data('image-id'),
-            options = {
-                cancel: true,
-                cancelText: ipAjaxVar.swal_cancel_button,
-                cancelCallBack: function () {
-                    // Do nothing
-                },
-                confirm: true,
-                confirmText: ipAjaxVar.swal_confirm_button,
-                confirmCallBack: function () {
+    if (document.querySelector('.editableImage')) {
+        var editableImageTriggers = document.querySelectorAll('.editableImage');
 
-                    var request = new XMLHttpRequest();
+        [].forEach.call(editableImageTriggers, function (el) {
+            el.addEventListener('keydown', function (e) {
+                if (e.keyCode === 10 || e.keyCode === 13) {
+                    e.preventDefault();
 
-                    request.open('POST', ipAjaxVar.ajaxurl, true);
-                    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-                    request.onload = function () {
-                        if (this.status >= 200 && this.status < 400) {
-                            jQuery('#listItem_' + id).fadeOut(function(){
-                                jQuery('#listItem_' + id).remove();
-                            });
-                        } else {
-                            // Response error
-                        }
-                    };
-                    request.onerror = function() {
-                        // Connection error
-                    };
-                    request.send('action=ip_delete_post&nonce=' + ipAjaxVar.nonce + '&id=' + id);
-                }
-            };
+                    var id = this.dataset.imageId;
+                    var title = this.value;
 
-        roar('', ipAjaxVar.swal_confirm_operation, options);
+                    document.querySelector('.editableImageStatus_' + id).innerHTML = '<i class="fas fa-cog fa-spin"></i>';
+                    document.querySelector('.editableImageStatus_' + id).style.display = 'inline-block';
 
-        e.preventDefault();
-        return false;
-    });
-
-    jQuery('.editableImage').click(function () {
-        jQuery(this).addClass('editableImageActive');
-    });
-    jQuery('.editableImage').blur(function () {
-        jQuery(this).removeClass('editableImageActive');
-    });
-
-    jQuery('.editableImage').keypress(function (e) {
-        if (e.keyCode === 10 || e.keyCode === 13) {
-            e.preventDefault();
-
-            var id = jQuery(this).data('image-id');
-            var title = jQuery(this).val();
-
-            jQuery('.editableImageStatus_' + id).show().html('<i class="fas fa-cog fa-spin"></i>');
-
-            jQuery.ajax({
-                type: 'post',
-                url: ipAjaxVar.ajaxurl,
-                data: {
-                    action: 'ip_update_post_title',
-                    title: title,
-                    id: id,
-                },
-                success: function (result) {
-                    if (result === 'success') {
-                        jQuery('#listImage_' + id).removeClass('editableImageActive');
-                        jQuery('.editableImageStatus_' + id).show().html('<i class="fas fa-check"></i>');
-                    }
+                    xhrRequest('ip_update_post_title', '&title=' + title + '&id=' + id, function (caller) {
+                        document.querySelector('.editableImageStatus_' + id).innerHTML = '<i class="fas fa-check"></i>';
+                        document.querySelector('.editableImageStatus_' + id).style.display = 'inline-block';
+                    });
                 }
             });
-        }
-    });
-
-
-
-    /*
-     * Cinnamon Login
-     *
-     * Allow AJAX processing of login, registration and password reset forms
-     */
-    jQuery('#regform').on('submit', function (e) {
-        e.preventDefault();
-
-		jQuery('#regform p.message').remove();
-        jQuery('#regform h2').after('<p class="message notice">' + ipAjaxVar.registrationloadingmessage + '</p>');
-
-        jQuery.ajax({
-            type: 'GET',
-            dataType: 'json',
-            url: ipAjaxVar.ajaxurl,
-            data: jQuery('#regform').serialize() + '&action=cinnamon_process_registration',
-            success: function (results) {
-                if (results.registered === true) {
-                    jQuery('#regform p.message').removeClass('notice').addClass('success').text(results.message).show();
-                } else {
-                    jQuery('#regform p.message').removeClass('notice').addClass('error').html(results.message).show();
-                }
-            }
         });
-    });
+    }
 
-	jQuery('#pswform').on('submit', function (e) {
-        e.preventDefault();
 
-        jQuery('#pswform p.message').remove();
-        jQuery('#pswform h2').after('<p class="message notice">' + ipAjaxVar.loadingmessage + '</p>');
-
-        jQuery.ajax({
-            type: 'GET',
-            dataType: 'json',
-            url: ipAjaxVar.ajaxurl,
-            data: {
-                'action': 'cinnamon_process_psw_recovery', // Calls our wp_ajax_nopriv_ajaxlogin
-                'username': jQuery('#pswform #forgot_login').val(),
-                'forgotten': jQuery('#pswform input[name="forgotten"]').val(),
-                'security': jQuery('#pswform #security').val()
-            },
-            success: function(results) {
-                if(results.reset === true) {
-                    jQuery('#pswform p.message').removeClass('notice').addClass('success').text(results.message).show();
-                } else {
-                    jQuery('#pswform p.message').removeClass('notice').addClass('error').html(results.message).show();
-                }
-            }
-        });
-    });
-    /*
-     * End Cinnamon Login
-     */
 
 
 
@@ -837,7 +445,7 @@ function getUrlParameter(sParam) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (jQuery('#ip-sorter-primary').length) {
+    if (document.getElementById('ip-sorter-primary')) {
         var requestUri = window.location.search,
             sorterDropdown = document.getElementById('sorter'),
             rangerDropdown = document.getElementById('ranger'),
@@ -891,33 +499,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
         };
-    }
-
-    /*
-     * Infinite lazy loading for Profile page
-     */
-    // Check if profile container exists
-    if (document.querySelector('.profile-hub-container')) {
-        var sizeTotal = jQuery('#ip-boxes .ip_box').length,
-            sizePerRow = 3,
-            sizePerPage = ipAjaxVar.imagesperpage;
-
-        if (sizeTotal === 0) {
-            document.getElementById('ipProfileShowMore').style.display = 'none';
-        }
-
-        /*
-         * Loop through first X visible images and lazy load them
-         */
-        document.querySelector('#ip-boxes .ip_box:lt(' + sizePerPage + ')').style.display = 'block';
-
-        jQuery(document).on('click', '#ipProfileShowMore', function() {
-            sizePerRow = (sizePerRow + sizePerPage <= sizeTotal) ? sizePerRow + sizePerPage : sizeTotal;
-            jQuery('#ip-boxes .ip_box:lt(' + sizePerRow + ')').show();
-
-            if (sizePerRow === sizeTotal) {
-                jQuery('#ipProfileShowMore').hide();
-            }
-        });
     }
 }, !1);

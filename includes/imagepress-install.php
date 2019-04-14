@@ -18,16 +18,6 @@ $optionArray = array(
     // Collections tab
     'ip_collections_page' => '',
 
-    // Login tab
-    'ip_login_image' => '',
-    'ip_login_bg' => '#fefefe',
-    'ip_login_box_bg' => '#ffffff',
-    'ip_login_box_text' => '#000000',
-    'ip_login_page_text' => '#000000',
-    'ip_login_button_bg' => '#00a0d2',
-    'ip_login_button_text' => '#ffffff',
-    'ip_login_copyright' => '',
-
     // Labels tab
     'ip_caption_label' => 'Image Caption',
     'ip_category_label' => 'Image Category',
@@ -41,24 +31,13 @@ $optionArray = array(
     'ip_upload_success' => 'Click here to view your image.',
     'ip_vote_like' => 'Like',
     'ip_vote_unlike' => 'Unlike',
-    'cinnamon_edit_label' => 'Edit profile',
-    'cinnamon_pt_account' => 'Account details',
-    'cinnamon_pt_social' => 'Social details',
-    'cinnamon_pt_profile' => 'Profile details',
-    'cinnamon_pt_collections' => 'Collections',
-    'cinnamon_pt_images' => 'Image editor',
-    'ip_load_more_label' => 'Load more',
 
     // Settings tab
     'ip_moderate' => 1,
     'ip_registration' => 1,
     'ip_click_behaviour' => 'media',
     'ip_cat_moderation_include' => '',
-    'cinnamon_mod_login' => 0,
-    'ip_mod_login' => 0,
-    'ip_mod_collections' => 1,
     'ip_upload_redirection' => '',
-    'ip_delete_redirection' => '',
     'ip_notification_email' => '',
 
     // Authors tab
@@ -66,16 +45,9 @@ $optionArray = array(
     'cinnamon_author_slug' => 'profile',
     'ip_cards_per_author' => 5,
     'ip_et_login' => '',
-    'cinnamon_show_uploads' => 1,
-    'cinnamon_show_awards' => 0,
-    'cinnamon_show_about' => 1,
-    'cinnamon_show_followers' => 1,
-    'cinnamon_show_following' => 1,
     'cinnamon_hide_admin' => 1,
     'cinnamon_account_page' => '',
     'cinnamon_edit_page' => '',
-    'cinnamon_show_likes' => 0,
-    'cinnamon_show_collections' => 0,
     'cinnamon_fancy_header' => 1,
     'approvednotification' => 1,
     'declinednotification' => 1,

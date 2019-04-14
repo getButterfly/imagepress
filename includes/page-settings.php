@@ -16,21 +16,14 @@ function imagepress_admin_page() {
             <a href="<?php echo $section; ?>settings_tab" class="nav-tab <?php echo $tab === 'settings_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', 'imagepress'); ?></a>
             <a href="<?php echo $section; ?>configurator_tab" class="nav-tab <?php echo $tab === 'configurator_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Configurator', 'imagepress'); ?></a>
 
-            <?php if ((int) get_imagepress_option('ip_mod_collections') === 1) { ?>
-                <a href="<?php echo $section; ?>collections_tab" class="nav-tab <?php echo $tab === 'collections_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Collections', 'imagepress'); ?></a>
-            <?php } ?>
+            <a href="<?php echo $section; ?>collections_tab" class="nav-tab <?php echo $tab === 'collections_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Collections', 'imagepress'); ?></a>
 
             <a href="<?php echo $section; ?>label_tab" class="nav-tab <?php echo $tab === 'label_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Labels', 'imagepress'); ?></a>
             <a href="<?php echo $section; ?>upload_tab" class="nav-tab <?php echo $tab === 'upload_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Upload', 'imagepress'); ?></a>
             <a href="<?php echo $section; ?>authors_tab" class="nav-tab <?php echo $tab === 'authors_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Authors', 'imagepress'); ?></a>
 
-            <?php if ((int) get_imagepress_option('ip_mod_login') === 1) { ?>
-                <a href="<?php echo $section; ?>login_tab" class="nav-tab <?php echo $tab === 'login_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Login', 'imagepress'); ?></a>
-            <?php } ?>
-
             <a href="<?php echo $section; ?>fields_tab" class="nav-tab <?php echo $tab === 'fields_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Fields', 'imagepress'); ?></a>
             <a href="<?php echo $section; ?>notifications_tab" class="nav-tab <?php echo $tab === 'notifications_tab' ? 'nav-tab-active' : ''; ?>"><?php _e('Notifications', 'imagepress'); ?></a>
-            <a href="<?php echo $section; ?>addons" class="nav-tab <?php echo $tab === 'addons' ? 'nav-tab-active' : ''; ?> highlighted"><?php _e('Add-ons', 'imagepress'); ?></a>
         </h2>
 
         <?php if ($tab === 'dashboard_tab') {
@@ -91,7 +84,6 @@ function imagepress_admin_page() {
             $author_slug = get_imagepress_option('cinnamon_author_slug');
             $author_login_url = get_imagepress_option('cinnamon_account_page');
             $author_edit_url = get_imagepress_option('cinnamon_edit_page');
-            $cinnamon_mod_login = get_imagepress_option('cinnamon_mod_login');
             $ip_profile_page = get_imagepress_option('ip_profile_page');
 
             $single_template = 'single-' . $ipSlug . '.php';
@@ -110,11 +102,6 @@ function imagepress_admin_page() {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your profile page is not set. Go to <b>Authors</b> section and set it.</p>';
                 } else {
                     echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your profile page is <b>' . get_the_title($ip_profile_page) . '</b>. If you changed it recently, visit your <b>Permalinks</b> section and resave the changes.</p>';
-                }
-                if (empty($author_login_url) && (int) $cinnamon_mod_login === 1) {
-                    echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your author login URL is not set. Go to <b>Authors</b> section and set it.</p>';
-                } else if (!empty($author_login_url) && (int) $cinnamon_mod_login === 1) {
-                    echo '<p><div class="dashicons dashicons-yes"></div> <b>Note:</b> Your author login URL is <code>' . esc_url($author_login_url) . '</code>.</p>';
                 }
                 if (empty($author_edit_url)) {
                     echo '<p><div class="dashicons dashicons-no"></div> <b>Error:</b> Your author profile edit URL is not set. Go to <b>Authors</b> section and set it.</p>';
@@ -488,84 +475,6 @@ function imagepress_admin_page() {
                     <input type="submit" name="isCollectionCU" value="Remove <?php echo $orphan_count; ?> missing image references" class="button button-secondary">
                 </p>
             </form>
-        <?php } else if ($tab === 'login_tab') {
-            if (isset($_POST['isGSSubmit'])) {
-                $ipUpdatedOptions = array(
-                    'ip_login_image' => $_POST['ip_login_image'],
-                    'ip_login_bg' => $_POST['ip_login_bg'],
-                    'ip_login_box_bg' => $_POST['ip_login_box_bg'],
-                    'ip_login_box_text' => $_POST['ip_login_box_text'],
-                    'ip_login_page_text' => $_POST['ip_login_page_text'],
-                    'ip_login_button_bg' => $_POST['ip_login_button_bg'],
-                    'ip_login_button_text' => $_POST['ip_login_button_text'],
-                    'ip_login_copyright' => sanitize_text_field($_POST['ip_login_copyright']),
-                );
-                $ipOptions = get_option('imagepress');
-                $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
-                update_option('imagepress', $ipUpdate);
-
-                echo '<div class="updated notice is-dismissible"><p>Settings updated successfully!</p></div>';
-            }
-            ?>
-            <form method="post" action="">
-                <h2><?php _e('Login/Registration', 'imagepress'); ?></h2>
-                <p>This section allows you to customize the native WordPress login/registration page (<code>/wp-login.php</code>) by adding/removing/renaming elements and changing default colours and background properties.</p>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row"><label for="ip_login_image">Page background image<br><small>(optional)</small></label></th>
-                            <td>
-                                <input type="url" name="ip_login_image" id="ip_login_image" class="regular-text" value="<?php echo get_imagepress_option('ip_login_image'); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_login_bg">Page background colour</label></th>
-                            <td>
-                                <input type="text" name="ip_login_bg" id="ip_login_bg" class="ip-color-picker" data-default-color="#FEFEFE" value="<?php echo get_imagepress_option('ip_login_bg'); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_login_box_bg">Login box background colour</label></th>
-                            <td>
-                                <input type="text" name="ip_login_box_bg" id="ip_login_box_bg" class="ip-color-picker" data-default-color="#FFFFFF" value="<?php echo get_imagepress_option('ip_login_box_bg'); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_login_button_bg">Login button background colour</label></th>
-                            <td>
-                                <input type="text" name="ip_login_button_bg" id="ip_login_button_bg" class="ip-color-picker" data-default-color="#00A0D2" value="<?php echo get_imagepress_option('ip_login_button_bg'); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_login_button_text">Login button text colour</label></th>
-                            <td>
-                                <input type="text" name="ip_login_button_text" id="ip_login_button_text" class="ip-color-picker" data-default-color="#FFFFFF" value="<?php echo get_imagepress_option('ip_login_button_text'); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_login_box_text">Text colour<br><small>(inside login box)</small></label></th>
-                            <td>
-                                <input type="text" name="ip_login_box_text" id="ip_login_box_text" class="ip-color-picker" data-default-color="#000000" value="<?php echo get_imagepress_option('ip_login_box_text'); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_login_page_text">Text colour<br><small>(outside login box)</small></label></th>
-                            <td>
-                                <input type="text" name="ip_login_page_text" id="ip_login_page_text" class="ip-color-picker" data-default-color="#000000" value="<?php echo get_imagepress_option('ip_login_page_text'); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_login_copyright">Copyright line<br><small>(optional)</small></label></th>
-                            <td>
-                                <input type="text" name="ip_login_copyright" id="ip_login_copyright" class="regular-text" value="<?php echo get_imagepress_option('ip_login_copyright'); ?>">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <hr>
-                <p><input type="submit" name="isGSSubmit" value="Save Changes" class="button-primary"></p>
-            </form>
         <?php } else if ($tab === 'settings_tab') {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = array(
@@ -573,11 +482,7 @@ function imagepress_admin_page() {
                     'ip_registration' => $_POST['ip_registration'],
                     'ip_click_behaviour' => $_POST['ip_click_behaviour'],
                     'ip_cat_moderation_include' => $_POST['ip_cat_moderation_include'],
-                    'cinnamon_mod_login' => $_POST['cinnamon_mod_login'],
-                    'ip_mod_login' => $_POST['ip_mod_login'],
-                    'ip_mod_collections' => $_POST['ip_mod_collections'],
                     'ip_upload_redirection' => $_POST['ip_upload_redirection'],
-                    'ip_delete_redirection' => $_POST['ip_delete_redirection'],
                     'ip_notification_email' => $_POST['ip_notification_email'],
                     'ip_enable_views' => $_POST['ip_enable_views'],
                 );
@@ -589,44 +494,6 @@ function imagepress_admin_page() {
             }
             ?>
             <form method="post" action="">
-                <h2>Modules</h2>
-                <p>Modules are separate functions which improve ImagePress functionality and extend its behaviour. Modules can be integrated or they can come as separate plugins.</p>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row"><label for="ip_mod_login">Native login/registration</label></th>
-                            <td>
-                                <select name="ip_mod_login" id="ip_mod_login">
-                                    <option value="1"<?php if ((int) get_imagepress_option('ip_mod_login') === 1) echo ' selected'; ?>>Enable native login/registration module</option>
-                                    <option value="0"<?php if ((int) get_imagepress_option('ip_mod_login') === 0) echo ' selected'; ?>>Disable native login/registration module</option>
-                                </select>
-                                <br><small>This module allows users to log in or register using the native WordPress login page (<code>/wp-login.php</code>).</small>
-                                <br><small>The login page can be styled and users redirected to their ImagePress profiles.</small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="cinnamon_mod_login">Frontend login/registration</label></th>
-                            <td>
-                                <select name="cinnamon_mod_login" id="cinnamon_mod_login">
-                                    <option value="1"<?php if ((int) get_imagepress_option('cinnamon_mod_login') === 1) echo ' selected'; ?>>Enable frontend login/registration module</option>
-                                    <option value="0"<?php if ((int) get_imagepress_option('cinnamon_mod_login') === 0) echo ' selected'; ?>>Disable frontend login/registration module</option>
-                                </select>
-                                <br><small>Use the <code>[cinnamon-login]</code> shortcode to place a tabbed login/registration box anywhere on the site.</small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_mod_collections">Collections</label></th>
-                            <td>
-                                <select name="ip_mod_collections" id="ip_mod_collections">
-                                    <option value="1"<?php if ((int) get_imagepress_option('ip_mod_collections') === 1) echo ' selected'; ?>>Enable collections module</option>
-                                    <option value="0"<?php if ((int) get_imagepress_option('ip_mod_collections') === 0) echo ' selected'; ?>>Disable collections module</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <hr>
                 <h2>General Settings</h2>
                 <p>These settings apply globally for all ImagePress users.</p>
                 <table class="form-table">
@@ -693,13 +560,6 @@ function imagepress_admin_page() {
                                 <br><small>Redirect users to this page after image upload (optional, leave blank to disable).</small>
                             </td>
                         </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_delete_redirection">Delete redirect</label></th>
-                            <td>
-                                <input type="url" name="ip_delete_redirection" id="ip_delete_redirection" placeholder="https://" class="regular-text" value="<?php echo get_imagepress_option('ip_delete_redirection'); ?>">
-                                <br><small>Redirect users to this page after image deletion (optional, leave blank to disable).</small>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
 
@@ -728,16 +588,9 @@ function imagepress_admin_page() {
                     'cinnamon_author_slug' => $_POST['cinnamon_author_slug'],
                     'ip_cards_per_author' => $_POST['ip_cards_per_author'],
                     'ip_et_login' => $_POST['ip_et_login'],
-                    'cinnamon_show_uploads' => $_POST['cinnamon_show_uploads'],
-                    'cinnamon_show_awards' => $_POST['cinnamon_show_awards'],
-                    'cinnamon_show_about' => $_POST['cinnamon_show_about'],
-                    'cinnamon_show_followers' => $_POST['cinnamon_show_followers'],
-                    'cinnamon_show_following' => $_POST['cinnamon_show_following'],
                     'cinnamon_hide_admin' => $_POST['cinnamon_hide_admin'],
                     'cinnamon_account_page' => $_POST['cinnamon_account_page'],
                     'cinnamon_edit_page' => (int) sanitize_text_field($_POST['cinnamon_edit_page']),
-                    'cinnamon_show_likes' => $_POST['cinnamon_show_likes'],
-                    'cinnamon_show_collections' => $_POST['cinnamon_show_collections'],
                     'cinnamon_fancy_header' => $_POST['cinnamon_fancy_header'],
                     'approvednotification' => $_POST['approvednotification'],
                     'declinednotification' => $_POST['declinednotification'],
@@ -848,49 +701,9 @@ function imagepress_admin_page() {
                             <th scope="row"><label>Profile Settings</label></th>
                             <td>
                                 <p>
-                                    <select name="cinnamon_show_uploads" id="cinnamon_show_uploads">
-                                        <option value="1"<?php if(get_imagepress_option('cinnamon_show_uploads') == 1) echo ' selected'; ?>>Show latest ImagePress uploads</option>
-                                        <option value="0"<?php if(get_imagepress_option('cinnamon_show_uploads') == 0) echo ' selected'; ?>>Hide latest ImagePress uploads</option>
-                                    </select>
-                                </p>
-                                <p>
-                                    <select name="cinnamon_show_awards" id="cinnamon_show_awards">
-                                        <option value="1"<?php if(get_imagepress_option('cinnamon_show_awards') == 1) echo ' selected'; ?>>Show awards</option>
-                                        <option value="0"<?php if(get_imagepress_option('cinnamon_show_awards') == 0) echo ' selected'; ?>>Hide awards</option>
-                                    </select>
-                                </p>
-                                <p>
-                                    <select name="cinnamon_show_about" id="cinnamon_show_about">
-                                        <option value="1"<?php if(get_imagepress_option('cinnamon_show_about') == 1) echo ' selected'; ?>>Show "About" section</option>
-                                        <option value="0"<?php if(get_imagepress_option('cinnamon_show_about') == 0) echo ' selected'; ?>>Hide "About" section</option>
-                                    </select>
-                                </p>
-                                <p>
                                     <select name="cinnamon_hide_admin" id="cinnamon_hide_admin">
                                         <option value="1"<?php if(get_imagepress_option('cinnamon_hide_admin') == 1) echo ' selected'; ?>>Hide admin bar for non-admin users</option>
                                         <option value="0"<?php if(get_imagepress_option('cinnamon_hide_admin') == 0) echo ' selected'; ?>>Show admin bar for non-admin users</option>
-                                    </select>
-                                </p>
-                                <hr>
-                                <p>
-                                    <select name="cinnamon_show_followers" id="cinnamon_show_followers">
-                                        <option value="1"<?php if(get_imagepress_option('cinnamon_show_followers') == 1) echo ' selected'; ?>>Show followers</option>
-                                        <option value="0"<?php if(get_imagepress_option('cinnamon_show_followers') == 0) echo ' selected'; ?>>Hide followers</option>
-                                    </select>
-                                    <select name="cinnamon_show_following" id="cinnamon_show_following">
-                                        <option value="1"<?php if(get_imagepress_option('cinnamon_show_following') == 1) echo ' selected'; ?>>Show following</option>
-                                        <option value="0"<?php if(get_imagepress_option('cinnamon_show_following') == 0) echo ' selected'; ?>>Hide following</option>
-                                    </select> <label>Followers behaviour</label>
-                                </p>
-                                <hr>
-                                <p>
-                                    <select name="cinnamon_show_likes" id="cinnamon_show_likes">
-                                        <option value="1"<?php if(get_imagepress_option('cinnamon_show_likes') == 1) echo ' selected'; ?>>Show likes</option>
-                                        <option value="0"<?php if(get_imagepress_option('cinnamon_show_likes') == 0) echo ' selected'; ?>>Hide likes</option>
-                                    </select>
-                                    <select name="cinnamon_show_collections" id="cinnamon_show_collections">
-                                        <option value="1"<?php if(get_imagepress_option('cinnamon_show_collections') == 1) echo ' selected'; ?>>Show collections</option>
-                                        <option value="0"<?php if(get_imagepress_option('cinnamon_show_collections') == 0) echo ' selected'; ?>>Hide collections</option>
                                     </select>
                                 </p>
                                 <hr>
@@ -938,13 +751,6 @@ function imagepress_admin_page() {
                     'ip_upload_success' => $_POST['ip_upload_success'],
                     'ip_vote_like' => stripslashes_deep($_POST['ip_vote_like']),
                     'ip_vote_unlike' => stripslashes_deep($_POST['ip_vote_unlike']),
-                    'cinnamon_edit_label' => $_POST['cinnamon_edit_label'],
-                    'cinnamon_pt_account' => $_POST['cinnamon_pt_account'],
-                    'cinnamon_pt_social' => $_POST['cinnamon_pt_social'],
-                    'cinnamon_pt_profile' => $_POST['cinnamon_pt_profile'],
-                    'cinnamon_pt_collections' => $_POST['cinnamon_pt_collections'],
-                    'cinnamon_pt_images' => $_POST['cinnamon_pt_images'],
-                    'ip_load_more_label' => $_POST['ip_load_more_label'],
                 );
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
@@ -1031,39 +837,6 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_upload_success">Upload success</label></th>
                             <td>
                                 <input type="text" name="ip_upload_success" id="ip_upload_success" value="<?php echo get_imagepress_option('ip_upload_success'); ?>" class="regular-text">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <hr>
-                <h2><?php _e('Users', 'imagepress'); ?></h2>
-                <p>This text will appear when the image upload is successful. Leave blank to disable.</p>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row"><label for="cinnamon_edit_label">Author profile edit label</label></th>
-                            <td>
-                                <input type="text" name="cinnamon_edit_label" id="cinnamon_edit_label" value="<?php echo get_imagepress_option('cinnamon_edit_label'); ?>" placeholder="Edit profile" class="regular-text">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label>Profile edit tab labels</label></th>
-                            <td>
-                                <p>
-                                    <!-- pt = profile tab -->
-                                    <input type="text" name="cinnamon_pt_account" value="<?php echo get_imagepress_option('cinnamon_pt_account'); ?>" class="regular-text" placeholder="Account details"><br>
-                                    <input type="text" name="cinnamon_pt_social" value="<?php echo get_imagepress_option('cinnamon_pt_social'); ?>" class="regular-text" placeholder="Social details"><br>
-                                    <input type="text" name="cinnamon_pt_profile" value="<?php echo get_imagepress_option('cinnamon_pt_profile'); ?>" class="regular-text" placeholder="Profile details"><br>
-                                    <input type="text" name="cinnamon_pt_collections" value="<?php echo get_imagepress_option('cinnamon_pt_collections'); ?>" class="regular-text" placeholder="Collections"><br>
-                                    <input type="text" name="cinnamon_pt_images" value="<?php echo get_imagepress_option('cinnamon_pt_images'); ?>" class="regular-text" placeholder="Image editor">
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_load_more_label">"Load more" button</label></th>
-                            <td>
-                                <input type="text" name="ip_load_more_label" id="ip_load_more_label" value="<?php echo get_imagepress_option('ip_load_more_label'); ?>" placeholder="Load more" class="regular-text">
                             </td>
                         </tr>
                     </tbody>
@@ -1528,31 +1301,6 @@ function imagepress_admin_page() {
                 echo '</tbody></table>';
                 ?>
             </form>
-        <?php } else if ($tab === 'addons') { ?>
-            <h2><?php _e('Add-ons', 'imagepress'); ?></h2>
-            <div class="flex-grid-thirds">
-                <div class="ip-card">
-                    <h3>ImagePress Elements</h3>
-                    <p>This add-on contains several modules including email approval, bulk upload, category listing, a user directory and an image feed.</p>
-                    <div class="ip-card-cta">
-                        <a href="https://getbutterfly.com/downloads/imagepress-elements/" class="button button-primary">Get it!</a>
-                    </div>
-                </div>
-                <div class="ip-card">
-                    <h3>ImagePress Lightbox</h3>
-                    <p>This add-on allows images to automatically open into a responsive lightbox, with navigation controls. No configuration required.</p>
-                    <div class="ip-card-cta">
-                        <a href="https://getbutterfly.com/downloads/imagepress-lightbox/" class="button button-primary">Get it!</a>
-                    </div>
-                </div>
-                <div class="ip-card">
-                    <h3>ImagePress Installation</h3>
-                    <p>This service includes full ImagePress installation, along with full customisation, required pages creation and demo content.</p>
-                    <div class="ip-card-cta">
-                        <a href="https://getbutterfly.com/downloads/imagepress-installation-service/" class="button button-primary">Book it!</a>
-                    </div>
-                </div>
-            </div>
         <?php } ?>
     </div>
     <?php

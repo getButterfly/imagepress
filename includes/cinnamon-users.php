@@ -59,10 +59,10 @@ function cinnamon_extra_contact_info($contactmethods) {
     unset($contactmethods['aim']);
     unset($contactmethods['yim']);
     unset($contactmethods['jabber']);
+    unset($contactmethods['googleplus']);
 
     $contactmethods['facebook'] = 'Facebook';
     $contactmethods['twitter'] = 'Twitter';
-    $contactmethods['googleplus'] = 'Google+';
 
     return $contactmethods;
 }
@@ -200,10 +200,7 @@ function cinnamon_profile($atts) {
 
     $display = '';
 
-    $hub_googleplus = ''; $hub_facebook = ''; $hub_twitter = ''; $hub_user_url = '';
-    if ((string) $hub_user_info->googleplus !== '') {
-        $hub_googleplus = ' <a href="' . $hub_user_info->googleplus . '" target="_blank"><i class="fab fa-fw fa-google-plus-g"></i></a>';
-    }
+    $hub_facebook = ''; $hub_twitter = ''; $hub_user_url = '';
     if ((string) $hub_user_info->facebook !== '') {
         $hub_facebook = ' <a href="' . $hub_user_info->facebook . '" target="_blank"><i class="fab fa-fw fa-facebook-f"></i></a>';
     }
@@ -248,10 +245,10 @@ function cinnamon_profile($atts) {
                             ' . $hub_name;
                             if ((string) is_user_logged_in() && $username === (string) $logged_in_user->user_login) {
                                 $display .= ' <a href="' . $hub_anchor . '">#</a>';
-                                $display .= ' <small><a href="' . get_permalink(get_imagepress_option('cinnamon_edit_page')) . '">' . get_imagepress_option('cinnamon_edit_label') . '</a></small>';
+                                $display .= ' <small><a href="' . get_permalink(get_imagepress_option('cinnamon_edit_page')) . '">' . __('Edit Profile', 'imagepress') . '</a></small>';
                             }
                         $display .= '</div>
-                        <div class="ph-locationtag">' . $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url . '</div>
+                        <div class="ph-locationtag">' . $hub_facebook . $hub_twitter . $hub_user_url . '</div>
                     </div>';
                 $display .= '</div>';
             $display .= '</div>';
@@ -276,133 +273,43 @@ function cinnamon_profile($atts) {
 
                 $display .= '<h2>' . $hub_name . '</h2>
                 <p>';
-                    $display .= $hub_facebook . $hub_twitter . $hub_googleplus . $hub_user_url;
+                    $display .= $hub_facebook . $hub_twitter . $hub_user_url;
 
                     if (is_user_logged_in() && $username == $logged_in_user->user_login) {
-                        $display .= ' | <a href="' . get_permalink(get_imagepress_option('cinnamon_edit_page')) . '">' . get_imagepress_option('cinnamon_edit_label') . '</a>';
+                        $display .= ' | <a href="' . get_permalink(get_imagepress_option('cinnamon_edit_page')) . '">' . __('Edit Profile', 'imagepress') . '</a>';
                     }
                 $display .= '</p>
             </div>';
         }
 
-        $display .= '<div class="ip-tab">
-            <ul class="ip-tabs active">';
-                if ((int) get_imagepress_option('cinnamon_show_uploads') === 1) {
-                    $display .= '<li><a href="#">' . __('Uploads', 'imagepress') . '</a></li>';
-                }
+        // Cinnamon Stats
+        $display .= '<div class="cinnamon-stats">
+            <div class="cinnamon-meta"><b>' . kformat(cinnamon_PostViews($author)) . '</b> ' . __('profile views', 'imagepress') . '</div>
+            <div class="cinnamon-meta"><b>' . kformat(pwuf_get_follower_count($author)) . '</b> ' . __('followers', 'imagepress') . '</div>
+            <div class="cinnamon-meta"><b>' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>
+        </div>';
+        $display .= '<div class="ip-profile" data-ipw="' . get_imagepress_option('ip_ipw') . '">';
 
-                if ((int) get_imagepress_option('cinnamon_show_about') === 1) {
-                    $display .= '<li><a href="#">' . __('About', 'imagepress') . '</a></li>';
-                }
+            if (!empty($hub_user_info->description))
+                $display .= wpautop($hub_user_info->description);
+            $display .= '<br>';
 
-                if ((int) get_imagepress_option('cinnamon_show_followers') === 1) {
-                    $display .= '<li><a href="#">' . __('Followers', 'imagepress') . '</a></li>';
-                }
-                if ((int) get_imagepress_option('cinnamon_show_following') === 1) {
-                    $display .= '<li><a href="#">' . __('Following', 'imagepress') . '</a></li>';
-                }
-                if ((int) get_imagepress_option('cinnamon_show_likes') === 1) {
-                    $display .= '<li><a href="#">' . __('Likes', 'imagepress') . '</a></li>';
-                }
-                if ((int) get_imagepress_option('cinnamon_show_awards') === 1) {
-                    $display .= '<li><a href="#">' . __('Awards', 'imagepress') . '</a></li>';
-                }
+            $award_terms = wp_get_object_terms($author, 'award');
+            if (!empty($award_terms)) {
+                if (!is_wp_error($award_terms)) {
+                    foreach ($award_terms as $term) {
+                    // get custom FontAwesome
+                        $t_ID = $term->term_id;
+                        $term_data = get_option("taxonomy_$t_ID");
 
-                if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                    if ((int) get_imagepress_option('cinnamon_show_collections') === 1) {
-                        $display .= '<li><a href="#">' . __('Collections', 'imagepress') . '</a></li>';
+                        $display .= '<span class="cinnamon-award-list-item" title="' . $term->description . '"><i class="fas fa-trophy"></i> ' . $term->name . '</span>';
                     }
                 }
+            }
 
-                // Cinnamon Stats
-                $display .= '<li class="cinnamon-stats-column">
-                    <div class="cinnamon-stats">
-                        <div class="cinnamon-meta"><b>' . kformat(cinnamon_PostViews($author)) . '</b> ' . __('profile views', 'imagepress') . '</div>
-                        <div class="cinnamon-meta"><b>' . kformat(pwuf_get_follower_count($author)) . '</b> ' . __('followers', 'imagepress') . '</div>
-                        <div class="cinnamon-meta"><b>' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>
-                    </div>
-                </li>
-            </ul>
-            <div class="tab_content">';
-                if ((int) get_imagepress_option('cinnamon_show_uploads') === 1) {
-                    $display .= '<div class="ip-tabs-item ip-profile" data-ipw="' . get_imagepress_option('ip_ipw') . '" style="display: block;">' .
-                        do_shortcode('[imagepress-loop user="' . $author . '" order="custom" count="999999"]') .
-                    '</div>
-                    <div class="ip-clear"></div>
-                    <div class="thin-ui-button ip-clear" id="ipProfileShowMore">' . get_imagepress_option('ip_load_more_label') . '</div>';
-                }
+            $display .= do_shortcode('[imagepress-loop user="' . $author . '" order="custom" count="999999"]') .
+        '</div>
 
-                if ((int) get_imagepress_option('cinnamon_show_about') === 1) {
-                    $display .= '<div class="ip-tabs-item" style="display: none;">';
-                        if (!empty($hub_user_info->description))
-                            $display .= wpautop($hub_user_info->description);
-                        $display .= '<br>';
-                    $display .= '</div>';
-                }
-
-                if ((int) get_imagepress_option('cinnamon_show_followers') === 1) {
-                    $display .= '<div class="ip-tabs-item" style="display: none;">';
-                        $arr = pwuf_get_followers($author);
-                        if ($arr) {
-                            $display .= '<div class="cinnamon-followers">';
-                                foreach ($arr as $value) {
-                                    $user = get_user_by('id', $value);
-                                    $display .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
-                                }
-                                unset($value);
-                            $display .= '</div>';
-                        }
-                    $display .= '</div>';
-                }
-
-                if ((int) get_imagepress_option('cinnamon_show_following') === 1) {
-                    $display .= '<div class="ip-tabs-item" style="display: none;">';
-                        $arr = pwuf_get_following($author);
-                        if ($arr) {
-                            $display .= '<div class="cinnamon-followers">';
-                                foreach ($arr as $value) {
-                                    $user = get_user_by('id', $value);
-                                    $display .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
-                                }
-                                unset($value);
-                            $display .= '</div>';
-                        }
-                    $display .= '</div>';
-                }
-
-                if ((int) get_imagepress_option('cinnamon_show_likes') === 1) {
-                    $display .= '<div class="ip-tabs-item" style="display: none;">';
-                        $display .= ipFrontEndUserLikes($author);
-                    $display .= '</div>';
-                }
-
-                if ((int) get_imagepress_option('cinnamon_show_awards') === 1) {
-                    $display .= '<div class="ip-tabs-item" style="display: none;">';
-                        $award_terms = wp_get_object_terms($author, 'award');
-                        if (!empty($award_terms)) {
-                            if (!is_wp_error($award_terms)) {
-                                foreach ($award_terms as $term) {
-                                    // get custom FontAwesome
-                                    $t_ID = $term->term_id;
-                                    $term_data = get_option("taxonomy_$t_ID");
-
-                                    $display .= '<span class="cinnamon-award-list-item" title="' . $term->description . '"><i class="fas fa-trophy"></i> ' . $term->name . '</span>';
-                                }
-                            }
-                        }
-                    $display .= '</div>';
-                }
-
-                if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                    if ((int) get_imagepress_option('cinnamon_show_collections') === 1) {
-                        $display .= '<div class="ip-tabs-item" style="display: none;">';
-                            $display .= ip_collections_display_public($author);
-                        $display .= '</div>';
-                    }
-                }
-
-            $display .= '</div>
-        </div>
         <div style="clear: both;"></div>
     </div>';
 
@@ -451,7 +358,6 @@ function cinnamon_profile_edit($atts) {
 
         update_user_meta($userid, 'facebook', esc_attr($_POST['facebook']));
         update_user_meta($userid, 'twitter', esc_attr($_POST['twitter']));
-        update_user_meta($userid, 'googleplus', esc_attr($_POST['googleplus']));
 
         // Avatar and cover upload
         if ($_FILES) {
@@ -483,232 +389,239 @@ function cinnamon_profile_edit($atts) {
             }
 
             $out .= '<form method="post" id="adduser" action="" enctype="multipart/form-data" class="thin-ui-form">
-                <div class="ip-tab">
-                    <ul class="ip-tabs active">
-                        <li class="current"><a href="#">' . __('Summary', 'imagepress') . '</a></li>
-                        <li><a href="#">' . get_imagepress_option('cinnamon_pt_account') . '</a></li>
-                        <li><a href="#">' . get_imagepress_option('cinnamon_pt_social') . '</a></li>
-                        <li><a href="#">' . get_imagepress_option('cinnamon_pt_profile') . '</a></li>';
-                        if (get_imagepress_option('ip_mod_collections') == 1) {
-                            $out .= '<li><a href="#" class="imagepress-collections">' . get_imagepress_option('cinnamon_pt_collections') . '</a></li>';
-                        }
-                        $out .= '<li><a href="#">' . get_imagepress_option('cinnamon_pt_images') . '</a></li>
-                    </ul>
-                    <div class="tab_content">
-                        <div class="ip-tabs-item" style="display: block;">
-                            <h3>' . __('Statistics', 'imagepress') . '</h3>';
-                            $ip_slug = get_imagepress_option('ip_slug');
+                <ul class="tabs">
+                    <li><a href="#summary" class="is-active">' . __('Summary', 'imagepress') . '</a></li>
+                    <li><a href="#account">' . __('Account Details', 'imagepress') . '</a></li>
+                    <li><a href="#collections" class="imagepress-collections">' . __('Collections', 'imagepress') . '</a></li>
+                    <li><a href="#editor">' . __('Image Editor', 'imagepress') . '</a></li>
+                </ul>
+                <div class="tab-content" id="summary">
+                    <h3>' . __('Statistics', 'imagepress') . '</h3>';
+                    $ip_slug = get_imagepress_option('ip_slug');
 
-                            // get global upload limit
-                            $ipGlobalUploadLimit = get_imagepress_option('ip_global_upload_limit');
-                            if (empty($ipGlobalUploadLimit)) {
-                                $ipGlobalUploadLimit = 999999;
-                            }
-                            $ipGlobalUploadLimitMessage = get_imagepress_option('ip_global_upload_limit_message');
+                    // get global upload limit
+                    $ipGlobalUploadLimit = get_imagepress_option('ip_global_upload_limit');
+                    if (empty($ipGlobalUploadLimit)) {
+                        $ipGlobalUploadLimit = 999999;
+                    }
+                    $ipGlobalUploadLimitMessage = get_imagepress_option('ip_global_upload_limit_message');
 
-                            // get current user uploads
-                            $user_uploads = cinnamon_count_user_posts_by_type($userid, $ip_slug);
+                    // get current user uploads
+                    $user_uploads = cinnamon_count_user_posts_by_type($userid, $ip_slug);
 
-                            // get upload limit for current user
-                            $ip_upload_limit = $ipGlobalUploadLimit;
+                    // get upload limit for current user
+                    $ip_upload_limit = $ipGlobalUploadLimit;
 
-                            $ip_user_upload_limit = get_the_author_meta('ip_upload_limit', $userid);
-                            if (!empty($ip_user_upload_limit)) {
-                                $ip_upload_limit = $ip_user_upload_limit;
-                            }
+                    $ip_user_upload_limit = get_the_author_meta('ip_upload_limit', $userid);
+                    if (!empty($ip_user_upload_limit)) {
+                        $ip_upload_limit = $ip_user_upload_limit;
+                    }
 
-                            if ($user_uploads >= $ip_upload_limit) {
-                                $out .= '<p>' . $ipGlobalUploadLimitMessage . ' (' . $user_uploads . '/' . $ip_upload_limit . ')</p>';
-                            }
+                    if ($user_uploads >= $ip_upload_limit) {
+                        $out .= '<p>' . $ipGlobalUploadLimitMessage . ' (' . $user_uploads . '/' . $ip_upload_limit . ')</p>';
+                    }
 
-                            $out .= '<div class="ip-user-dashboard">
-                                <div class="ip-user-dashboard-stat">
-                                    <span>' . kformat(cinnamon_PostViews($userid, false)) . '</span>' .
-                                    __('total profile views', 'imagepress') . '
-                                </div>
-                                <div class="ip-user-dashboard-stat">
-                                    <span>' . kformat(pwuf_get_follower_count($userid)) . '</span>' .
-                                    __('followers', 'imagepress') . '
-                                </div>
-                                <div class="ip-user-dashboard-stat">
-                                    <span>' . kformat(pwuf_get_following_count($userid)) . '</span>' .
-                                    __('following', 'imagepress') . '
-                                </div>
-                                <div class="ip-user-dashboard-stat">
-                                    <span>' . kformat(cinnamon_count_user_posts_by_type($userid, $ip_slug)) . '<small>/' . $ip_upload_limit . '</small></span>' .
-                                    __('uploads', 'imagepress') . '
-                                </div>';
-
-                                if(get_imagepress_option('ip_mod_collections') == 1) {
-                                    $out .= '<div class="ip-user-dashboard-stat">
-                                        <span>' . kformat(ip_collection_count($userid)) . '</span>' .
-                                        __('collections', 'imagepress') . '
-                                    </div>';
-                                }
-
-                                $out .= '<div class="ip_clear"></div>
-                            </div>
+                    $out .= '<div class="ip-user-dashboard">
+                        <div class="ip-user-dashboard-stat">
+                            <span>' . kformat(cinnamon_PostViews($userid, false)) . '</span>' .
+                            __('total profile views', 'imagepress') . '
                         </div>
-
-                        <div class="ip-tabs-item" style="display: none;">
-                            <table class="form-table">
-                                <tr>
-                                    <th><label for="first-name">' . __('First name', 'imagepress') . '</label></th>
-                                    <td><input name="first-name" type="text" id="first-name" value="' . get_the_author_meta('first_name', $userid) . '"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="last-name">' . __('Last name', 'imagepress') . '</label></th>
-                                    <td><input name="last-name" type="text" id="last-name" value="' . get_the_author_meta('last_name', $userid) . '"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="nickname">' . __('Nickname', 'imagepress') . '</label></th>
-                                    <td><input name="nickname" type="text" id="nickname" value="' . get_the_author_meta('nickname', $userid) . '"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="email">' . __('E-mail *', 'imagepress') . '</label></th>
-                                    <td><input name="email" type="text" id="email" value="' . get_the_author_meta('user_email', $userid) . '"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="url">' . __('Website', 'imagepress') . '</label></th>
-                                    <td><input name="url" type="text" id="url" value="' . get_the_author_meta('user_url', $userid) . '"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="pass1">' . __('Password *', 'imagepress') . '</label></th>
-                                    <td><input name="pass1" type="password" id="pass1"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="pass2">' . __('Repeat password *', 'imagepress') . '</label></th>
-                                    <td><input name="pass2" type="password" id="pass2"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="description">' . __('About', 'imagepress') . '</label></th>
-                                    <td><textarea name="description" id="description" rows="4" style="width: 100%;">' . get_the_author_meta('description', $userid) . '</textarea></td>
-                                </tr>
-                            </table>
+                        <div class="ip-user-dashboard-stat">
+                            <span>' . kformat(pwuf_get_follower_count($userid)) . '</span>' .
+                            __('followers', 'imagepress') . '
                         </div>
-                        <div class="ip-tabs-item" style="display: none;">
-                            <table class="form-table">
-                                <tr>
-                                    <th><label for="facebook">' . __('Facebook profile URL', 'imagepress') . '</label></th>
-                                    <td><input name="facebook" type="url" id="facebook" value="' . get_the_author_meta('facebook', $userid) . '"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="twitter">' . __('Twitter username', 'imagepress') . '</label></th>
-                                    <td><input name="twitter" type="text" id="twitter" value="' . get_the_author_meta('twitter', $userid) . '"></td>
-                                </tr>
-                                <tr>
-                                    <th><label for="googleplus">' . __('Google+ profile URL', 'imagepress') . '</label></th>
-                                    <td><input name="googleplus" type="url" id="googleplus" value="' . get_the_author_meta('googleplus', $userid) . '"></td>
-                                </tr>
-                                <tr><td colspan="2"><hr></td></tr>
-                            </table>
+                        <div class="ip-user-dashboard-stat">
+                            <span>' . kformat(pwuf_get_following_count($userid)) . '</span>' .
+                            __('following', 'imagepress') . '
                         </div>
-                        <div class="ip-tabs-item" style="display: none;">
-                            <table class="form-table">';
-                                if (!is_admin()) {
-                                    $out .= '<tr>
-                                        <th>' . __('Cover/avatar preview', 'imagepress') . '</th>
-                                        <td>';
-                                            $hcc = get_the_author_meta('hub_custom_cover', $userid);
-                                            $hca = get_the_author_meta('hub_custom_avatar', $userid);
-                                            $hcc = wp_get_attachment_url($hcc);
-                                            $hca = wp_get_attachment_url($hca);
-
-                                            $out .= '<div class="cinnamon-cover-preview" style="background: url(' . $hcc . ') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"><img src="' . $hca . '" alt=""></div>
-                                        </td>
-                                    </tr>';
-                                }
-                                $out .= '<tr>
-                                    <th><label for="hub_custom_cover">' . __('Profile cover image', 'imagepress') . '</label></th>
-                                    <td>
-                                        <input type="file" name="hub_custom_cover" id="hub_custom_cover" value="' . get_the_author_meta('hub_custom_cover', $userid) . '" class="regular-text">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><label for="hub_custom_avatar">' . __('Profile avatar image', 'imagepress') . '</label></th>
-                                    <td>
-                                        <input type="file" name="hub_custom_avatar" id="hub_custom_avatar" value="' .  get_the_author_meta('hub_custom_avatar', $userid) . '" class="regular-text">
-                                        <br><small>' . __('Recommended cover size is 1080x300.', 'imagepress') . '</small>
-                                        <br><small>' . __('Recommended avatar size is 240x240. If there is no custom avatar, your Gravatar will be used.', 'imagepress') . '</small>
-                                    </td>
-                                </tr>
-                                <tr><td colspan="2"><hr></td></tr>
-                            </table>
+                        <div class="ip-user-dashboard-stat">
+                            <span>' . kformat(cinnamon_count_user_posts_by_type($userid, $ip_slug)) . '<small>/' . $ip_upload_limit . '</small></span>' .
+                            __('uploads', 'imagepress') . '
                         </div>';
-                        if(get_imagepress_option('ip_mod_collections') == 1) {
-                            $out .= '<div class="ip-tabs-item" style="display: none;">
-                                <p>
-                                    <a href="#" class="toggleModal button noir-secondary">' . __('Create new collection', 'imagepress') . '</a>
-                                    <span class="ip-loadingCollections">' . __('Loading collections...', 'imagepress') . '</span>
-                                    <span class="ip-loadingCollectionImages">' . __('Loading collection images...', 'imagepress') . '</span>
-                                    <a href="#" class="imagepress-collections imagepress-float-right button"><i class="fas fa-cog fa-spin"></i></a>
-                                </p>
-                                <div class="ip-modal">
-                                    <h2>' . __('Create new collection', 'imagepress') . '</h2>
-                                    <a href="#" class="close toggleModal">' . __('Close', 'imagepress') . '</a>
 
-                                    <input type="hidden" id="collection_author_id" name="collection_author_id" value="' . $userid . '">
-                                    <p><input type="text" id="collection_title" name="collection_title" placeholder="' . __('Collection title', 'imagepress') . '"></p>
-                                    <p><label>Make this collection</label> <select id="collection_status"><option value="1">' . __('Public', 'imagepress') . '</option><option value="0">' . __('Private', 'imagepress') . '</option></select></p>
-                                    <p>
-                                        <input type="submit" value="' . __('Create', 'imagepress') . '" class="addCollection">
-                                        <label class="collection-progress">' . __('Creating collection...', 'imagepress') . '</label>
-                                        <label class="showme">' . __('Collection created!', 'imagepress') . '</label>
-                                    </p>
-                                </div>
+                        $out .= '<div class="ip-user-dashboard-stat">
+                            <span>' . kformat(ip_collection_count($userid)) . '</span>' .
+                            __('collections', 'imagepress') . '
+                        </div>';
 
-                                <div class="collections-display"></div>
-                            </div>';
-                        }
-                        // Image Editor
-                        // View, delete, reorder
-                        $out .= '<div class="ip-tabs-item" style="display: none;">';
+                    $out .= '</div>';
+                    $out .= '<div class="ip_clear"></div>';
 
-                            $out .= '<div id="ip-info">' . __('Drag images to reorder them', 'imagepress') . '<br><small>' . __('Click titles to rename images', 'imagepress') . '</small></div>';
-
-                            $args = array(
-                                'post_type' 				=> get_imagepress_option('ip_slug'),
-                                'post_status' 				=> array('publish', 'pending'),
-                                'posts_per_page' 			=> '-1',
-                                'orderby' 					=> 'menu_order',
-                                'order' 					=> 'ASC',
-                                'author' 					=> $userid,
-                                'cache_results'             => false,
-                                'no_found_rows'             => true,
-                            );
-                            $posts = get_posts($args);
-
-                            $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
-
-                            $out .= '<div class="editor-image-manager">';
-                                if ($posts) {
-                                    foreach($posts as $user_image) {
-                                        $i = $user_image->ID;
-
-                                        $post_thumbnail_id = get_post_thumbnail_id($i);
-                                        $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
-
-                                        if ($ip_click_behaviour == 'media')
-                                            $ip_image_link = $image_attributes[0];
-                                        if ($ip_click_behaviour == 'custom')
-                                            $ip_image_link = get_permalink($i);
-
-                                        $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '" data-id="' . $i . '">
-                                            <div class="editor-image-handle"><i class="fas fa-arrows-alt"></i></div>
-                                            <div class="editor-image-thumbnail">
-                                                <a href="' . $ip_image_link . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a>
-                                            </div>
-                                            <input type="text" class="editableImage" id="listImage_' . $i . '" data-image-id="' . $i . '" value="' . get_the_title($i) . '">
-                                            <span class="editableImageStatus editableImageStatus_' . $i . '"></span>
-                                            <br><small>' . __('in', 'imagepress') . ' ' .  strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . ' ' . __('on', 'imagepress') . ' ' . get_the_date('Y-m-d H:i', $i) . '</small>
-                                            <br><small><a href="' . $ip_image_link . '">' . __('View/Edit', 'imagepress') . '</a> | <a href="#" class="editor-image-delete" data-image-id="' . $i . '">' . __('Delete', 'imagepress') . '</a></small>
-                                        </div>';
-                                    }
-                                }
-                            $out .= '</div>';
+                    $arr = pwuf_get_followers($userid);
+                    if ($arr) {
+                        $out .= '<div class="cinnamon-followers">';
+                            foreach ($arr as $value) {
+                                $user = get_user_by('id', $value);
+                                $out .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
+                            }
+                            unset($value);
                         $out .= '</div>';
-                    $out .= '</div>
+                    }
+
+                    $arr = pwuf_get_following($userid);
+                    if ($arr) {
+                        $out .= '<div class="cinnamon-followers">';
+                            foreach ($arr as $value) {
+                                $user = get_user_by('id', $value);
+                                $out .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
+                            }
+                            unset($value);
+                        $out .= '</div>';
+                    }
+    
+                    $out .= ipFrontEndUserLikes($userid);
+
+                $out .= '</div>
+
+                <div class="tab-content" id="account">
+                    <table class="form-table">
+                        <tr>
+                            <th><label for="first-name">' . __('First name', 'imagepress') . '</label></th>
+                            <td><input name="first-name" type="text" id="first-name" value="' . get_the_author_meta('first_name', $userid) . '"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="last-name">' . __('Last name', 'imagepress') . '</label></th>
+                            <td><input name="last-name" type="text" id="last-name" value="' . get_the_author_meta('last_name', $userid) . '"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="nickname">' . __('Nickname', 'imagepress') . '</label></th>
+                            <td><input name="nickname" type="text" id="nickname" value="' . get_the_author_meta('nickname', $userid) . '"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="email">' . __('E-mail *', 'imagepress') . '</label></th>
+                            <td><input name="email" type="text" id="email" value="' . get_the_author_meta('user_email', $userid) . '"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="url">' . __('Website', 'imagepress') . '</label></th>
+                            <td><input name="url" type="text" id="url" value="' . get_the_author_meta('user_url', $userid) . '"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="pass1">' . __('Password *', 'imagepress') . '</label></th>
+                            <td><input name="pass1" type="password" id="pass1"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="pass2">' . __('Repeat password *', 'imagepress') . '</label></th>
+                            <td><input name="pass2" type="password" id="pass2"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="description">' . __('About', 'imagepress') . '</label></th>
+                            <td><textarea name="description" id="description" rows="4" style="width: 100%;">' . get_the_author_meta('description', $userid) . '</textarea></td>
+                        </tr>
+                        <tr>
+                            <th><label for="facebook">' . __('Facebook profile URL', 'imagepress') . '</label></th>
+                            <td><input name="facebook" type="url" id="facebook" value="' . get_the_author_meta('facebook', $userid) . '"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="twitter">' . __('Twitter username', 'imagepress') . '</label></th>
+                            <td><input name="twitter" type="text" id="twitter" value="' . get_the_author_meta('twitter', $userid) . '"></td>
+                        </tr>
+                        <tr><td colspan="2"><hr></td></tr>';
+
+                        if (!is_admin()) {
+                            $out .= '<tr>
+                                <th>' . __('Cover/avatar preview', 'imagepress') . '</th>
+                                <td>';
+                                    $hcc = get_the_author_meta('hub_custom_cover', $userid);
+                                    $hca = get_the_author_meta('hub_custom_avatar', $userid);
+                                    $hcc = wp_get_attachment_url($hcc);
+                                    $hca = wp_get_attachment_url($hca);
+
+                                    $out .= '<div class="cinnamon-cover-preview" style="background: url(' . $hcc . ') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"><img src="' . $hca . '" alt=""></div>
+                                </td>
+                            </tr>';
+                        }
+                        $out .= '<tr>
+                            <th><label for="hub_custom_cover">' . __('Profile cover image', 'imagepress') . '</label></th>
+                            <td>
+                                <input type="file" name="hub_custom_cover" id="hub_custom_cover" value="' . get_the_author_meta('hub_custom_cover', $userid) . '" class="regular-text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="hub_custom_avatar">' . __('Profile avatar image', 'imagepress') . '</label></th>
+                            <td>
+                                <input type="file" name="hub_custom_avatar" id="hub_custom_avatar" value="' .  get_the_author_meta('hub_custom_avatar', $userid) . '" class="regular-text">
+                                <br><small>' . __('Recommended cover size is 1080x300.', 'imagepress') . '</small>
+                                <br><small>' . __('Recommended avatar size is 240x240. If there is no custom avatar, your Gravatar will be used.', 'imagepress') . '</small>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr></td></tr>
+                    </table>
                 </div>';
+
+                $out .= '<div class="tab-content" id="collections">
+                    <p>
+                        <a href="#" class="toggleModal button noir-secondary">' . __('Create new collection', 'imagepress') . '</a>
+                        <span class="ip-loadingCollections">' . __('Loading collections...', 'imagepress') . '</span>
+                        <span class="ip-loadingCollectionImages">' . __('Loading collection images...', 'imagepress') . '</span>
+                        <a href="#" class="imagepress-collections imagepress-float-right button"><i class="fas fa-cog fa-spin"></i></a>
+                    </p>
+                    <div class="ip-modal">
+                        <h2>' . __('Create new collection', 'imagepress') . '</h2>
+                        <a href="#" class="close toggleModal">' . __('Close', 'imagepress') . '</a>
+
+                        <input type="hidden" id="collection_author_id" name="collection_author_id" value="' . $userid . '">
+                        <p><input type="text" id="collection_title" name="collection_title" placeholder="' . __('Collection title', 'imagepress') . '"></p>
+                        <p><label>Make this collection</label> <select id="collection_status"><option value="1">' . __('Public', 'imagepress') . '</option><option value="0">' . __('Private', 'imagepress') . '</option></select></p>
+                        <p>
+                            <input type="submit" value="' . __('Create', 'imagepress') . '" class="addCollection">
+                            <label class="collection-progress">' . __('Creating collection...', 'imagepress') . '</label>
+                            <label class="showme">' . __('Collection created!', 'imagepress') . '</label>
+                        </p>
+                    </div>
+
+                    <div class="collections-display"></div>
+                </div>';
+
+                // Image Editor
+                // View, delete, reorder
+                $out .= '<div class="tab-content" id="editor">
+                    <div id="ip-info">' . __('Drag images to reorder them', 'imagepress') . '<br><small>' . __('Click titles to rename images', 'imagepress') . '</small></div>';
+
+                    $args = array(
+                        'post_type' 				=> get_imagepress_option('ip_slug'),
+                        'post_status' 				=> array('publish', 'pending'),
+                        'posts_per_page' 			=> '-1',
+                        'orderby' 					=> 'menu_order',
+                        'order' 					=> 'ASC',
+                        'author' 					=> $userid,
+                        'cache_results'             => false,
+                        'no_found_rows'             => true,
+                    );
+                    $posts = get_posts($args);
+
+                    $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
+
+                    $out .= '<div class="editor-image-manager">';
+                        if ($posts) {
+                            foreach($posts as $user_image) {
+                                $i = $user_image->ID;
+
+                                $post_thumbnail_id = get_post_thumbnail_id($i);
+                                $image_attributes = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
+
+                                if ($ip_click_behaviour == 'media')
+                                    $ip_image_link = $image_attributes[0];
+                                if ($ip_click_behaviour == 'custom')
+                                    $ip_image_link = get_permalink($i);
+
+                                $out .= '<div class="editor-image ip_box_' . $i . '" id="listItem_' . $i . '" data-id="' . $i . '">
+                                    <div class="editor-image-handle"><i class="fas fa-arrows-alt"></i></div>
+                                    <div class="editor-image-thumbnail">
+                                        <a href="' . $ip_image_link . '"><img src="' . $image_attributes[0] . '" alt="' . get_the_title($i) . '"></a>
+                                    </div>
+                                    <input type="text" class="editableImage" id="listImage_' . $i . '" data-image-id="' . $i . '" value="' . get_the_title($i) . '">
+                                    <span class="editableImageStatus editableImageStatus_' . $i . '"></span>
+                                    <br><small>' . __('in', 'imagepress') . ' ' .  strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . ' ' . __('on', 'imagepress') . ' ' . get_the_date('Y-m-d H:i', $i) . '</small>
+                                    <br><small><a href="' . $ip_image_link . '">' . __('View/Edit', 'imagepress') . '</a> | <span class="clickable-span" onclick="do_confirm(' . $i . ');" data-image-id="' . $i . '">' . __('Delete', 'imagepress') . '</span></small>
+                                </div>';
+                            }
+                        }
+                    $out .= '</div>';
+                $out .= '</div>
+
+                <!-- Begin do_confirm -->
+                <div id="aep_ww" style="display: none;"><div id="aep_win"><div id="aep_prompt"></div><input type="button" class="aep_ok" value="OK"><input type="button" class="aep_cancel" value="Cancel"></div></div>
+                <!-- End do_confirm -->';
 
                 do_action('edit_user_profile', $current_user);
 

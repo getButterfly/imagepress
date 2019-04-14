@@ -70,15 +70,7 @@ include IP_PLUGIN_PATH . '/modules/mod-user-following.php';
 include IP_PLUGIN_PATH . '/modules/mod-likes.php';
 include IP_PLUGIN_PATH . '/modules/mod-notifications.php';
 
-if (get_imagepress_option('ip_mod_collections') == 1) {
-    include IP_PLUGIN_PATH . '/modules/mod-collections.php';
-}
-
-// user classes
-if (get_imagepress_option('cinnamon_mod_login') == 1) {
-    include IP_PLUGIN_PATH . '/classes/Frontend.php';
-}
-//
+include IP_PLUGIN_PATH . '/modules/mod-collections.php';
 
 include IP_PLUGIN_PATH . '/includes/shortcodes.php';
 
@@ -314,18 +306,16 @@ function imagepress_add($atts) {
             //
 
             // collections
-            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                $ip_collections = (int) ($_POST['ip_collections']);
+            $ip_collections = (int) ($_POST['ip_collections']);
 
-                if (!empty($_POST['ip_collections_new'])) {
-                    $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
-                    $ip_collection_status = (int) ($_POST['collection_status']);
+            if (!empty($_POST['ip_collections_new'])) {
+                $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
+                $ip_collection_status = (int) ($_POST['collection_status']);
 
-                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
-                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
-                } else {
-                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
-                }
+                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
+                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
+            } else {
+                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
             }
             //
 
@@ -416,18 +406,16 @@ function imagepress_add_bulk($atts) {
             }
 
             // collections
-            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                $ip_collections = (int) ($_POST['ip_collections']);
+            $ip_collections = (int) ($_POST['ip_collections']);
 
-                if (!empty($_POST['ip_collections_new'])) {
-                    $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
-                    $ip_collection_status = (int) ($_POST['collection_status']);
+            if (!empty($_POST['ip_collections_new'])) {
+                $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
+                $ip_collection_status = (int) ($_POST['collection_status']);
 
-                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
-                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
-                } else {
-                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
-                }
+                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
+                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
+            } else {
+                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
             }
             //
         }
@@ -565,9 +553,7 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
             $out .= '</p>';
 
             // Add to collection on upload
-            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                $out .= ip_collection_dropdown();
-            }
+            $out .= ip_collection_dropdown();
 
             // Custom fields
             $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
@@ -685,9 +671,7 @@ function imagepress_get_upload_image_form_bulk($ipImageCategory = 0, $imagepress
                 $out .= '</p>';
 
                 // Add to collection on upload
-                if ((int) get_imagepress_option('ip_mod_collections') === 1) {
-                    $out .= ip_collection_dropdown();
-                }
+                $out .= ip_collection_dropdown();
 
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
@@ -837,7 +821,7 @@ function ip_enqueue_scripts() {
 
 	$accountPageUri = get_option('cinnamon_account_page');
 
-    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.1.0/js/all.js', array(), '5.1.0', true);
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.7.2/js/all.js', array(), '5.7.2', true);
 
     if (is_page(get_imagepress_option('cinnamon_edit_page'))) {
         wp_enqueue_script('sortable', plugins_url('js/Sortable.min.js', __FILE__), array(), '1.7.0', true);
@@ -995,4 +979,99 @@ function imagepress_widget($atts) {
     }
 
     return $display;
+}
+
+
+
+// ImagePress Elements
+include 'classes/Email_Post_Approval.php';
+include 'classes/Email_Post_Approval_Options.php';
+
+include 'modules/mod-feed.php';
+
+if ((int) get_option('use_bulk_upload') === 1) {
+    include 'classes/ImagePress_Bulk_Upload.php';
+
+    new ImagePress_Bulk_Upload();
+}
+
+function ip_lightbox_load_scripts() {
+    wp_enqueue_script('halka', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.min.js', [], '1.4.0', true);
+    wp_enqueue_script('halka-init', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.init.js', ['halka'], '1.4.0', true);
+
+    wp_enqueue_style('halka-style', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.min.css');
+}
+
+if ((int) get_option('use_lightbox') === 1) {
+    add_action('wp_enqueue_scripts', 'ip_lightbox_load_scripts');
+}
+
+
+add_shortcode('imagepress-categories', 'imagepress_element_categories');
+add_shortcode('imagepress-member-directory', 'imagepress_element_member_directory');
+
+function imagepress_element_categories($atts) {
+    extract(shortcode_atts([
+        'gallery' => '',
+        'columns' => 3
+    ], $atts));
+
+    $display = '<ul class="ip-element-categories">';
+
+        $args = [
+            'taxonomy' => 'imagepress_image_category',
+            'orderby' => 'name',
+            'order' => 'ASC',
+            'hide_empty' => 0
+        ];
+        $categories = get_categories($args);
+        foreach ($categories as $category) {    
+            if (!empty($gallery)) {
+                $link = $gallery . '?sort=newest&range=alltime&t=' . $category->slug . '&q=';
+            }
+
+            $display .= '<li><a href="' . $link . '">' . $category->name . '</a></li>';
+        }
+
+    $display .= '</ul>';
+
+
+    return $display;
+}
+
+function ip_member_directory_user_query($args) {
+    $ip_slug = get_imagepress_option('ip_slug');
+    $args->query_from = str_replace("post_type = post AND", "post_type IN ('$ip_slug') AND ", $args->query_from);
+}
+
+function imagepress_element_member_directory() {
+    global $wpdb;
+
+    $out = '';
+
+    $query = "SELECT id, display_name"
+            . " FROM {$wpdb->prefix}users";
+    $members = $wpdb->get_results($query);
+
+    add_action('pre_user_query', 'ip_member_directory_user_query');
+    $members = get_users([
+        'fields' => ['ID', 'display_name'],
+        'orderby' => 'post_count',
+        'who' => 'authors',
+        'has_published_posts' => get_post_types(['public' => true])
+    ]);
+    remove_action('pre_user_query', 'ip_member_directory_user_query');
+
+    $ipProfilePageId = (int) get_imagepress_option('ip_profile_page');
+    $ipProfilePageUri = get_permalink($ipProfilePageId);
+    $ipProfileSlug = (string) get_imagepress_option('cinnamon_author_slug');
+
+    $out .= '<ul class="ip-element-member-directory">';
+        foreach ($members as $group) {
+            $ipProfileUri = $ipProfilePageUri . '?' . $ipProfileSlug . '=' . get_the_author_meta('user_login', $group->ID);
+            $out .= '<li><a href="' . $ipProfileUri . '">' . $group->display_name . '</a></li>';
+        }
+    $out .= '</ul>';
+
+    return $out;
 }
