@@ -144,10 +144,10 @@ function ip_collections_display_public($author_ID) {
     return $out;
 }
 function ip_collections_display_custom($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'mode' => 'random', // random, latest
-        'count' => 1,
-    ), $atts));
+        'count' => 1
+    ], $atts));
 
     global $wpdb;
     $collectionCount = 0;
@@ -300,15 +300,15 @@ function ip_frontend_view_image_collection($ip_id) {
 
 
 function imagepress_collection($atts) {
-    extract(shortcode_atts(array(
-        'count'         => 0,
-        'limit'         => 999999,
-        'columns'       => '',
-        'type'          => '', // 'random'
-        'collection'    => '', // new parameter (will extract all images from a certain collection)
+    extract(shortcode_atts([
+        'count' => 0,
+        'limit' => 999999,
+        'columns' => '',
+        'type' => '', // 'random'
+        'collection' => '', // new parameter (will extract all images from a certain collection)
         'collection_id' => '', // new parameter (will extract all images from a certain collection)
-        'order'         => '', // only used by profile viewer
-    ), $atts));
+        'order' => '' // only used by profile viewer
+    ], $atts));
 
     global $wpdb;
 
@@ -351,16 +351,16 @@ function imagepress_collection($atts) {
         return $out;
     }
 
-    $args = array(
+    $args = [
         'post_type'                 => get_imagepress_option('ip_slug'),
-        'post_status'               => array('publish'),
+        'post_status'               => ['publish'],
         'posts_per_page'            => $limit,
         'orderby'                   => $ip_order,
         'order'                     => $ip_order_asc_desc,
         'post__in'                  => $collectedArray,
         'fields'                    => 'ids',
         'no_found_rows'             => true
-    );
+    ];
 
     $posts = get_posts($args);
 

@@ -47,9 +47,9 @@ function imagepress_init() {
     $ip_slug = get_imagepress_option('ip_slug');
 
     if (empty($ip_slug)) {
-        $optionArray = array(
-            'ip_slug' => 'image',
-        );
+        $optionArray = [
+            'ip_slug' => 'image'
+        ];
         updateImagePressOption($optionArray);
     }
 }
@@ -111,13 +111,13 @@ function imagepress_menu() {
     add_submenu_page('edit.php?post_type=' . get_imagepress_option('ip_slug'), 'ImagePress Settings', 'ImagePress Settings', 'manage_options', 'imagepress_admin_page', 'imagepress_admin_page');
 
     $url = 'https://getbutterfly.com/support/documentation/imagepress/';
-    $submenu['edit.php?post_type=' . get_imagepress_option('ip_slug')][] = array('<span style="color: #F1C40F;">Documentation</span>', 'manage_options', $url);
+    $submenu['edit.php?post_type=' . get_imagepress_option('ip_slug')][] = ['<span style="color: #F1C40F;">Documentation</span>', 'manage_options', $url];
 
-    $args = array(
+    $args = [
         'post_type' => get_imagepress_option('ip_slug'),
         'post_status' => 'pending',
-        'showposts' => -1,
-    );
+        'showposts' => -1
+    ];
     $draft_ip_links = get_posts($args) ? count(get_posts($args)) : 0;
 
     if ($draft_ip_links) {
@@ -192,7 +192,7 @@ $ip_column_slug = get_imagepress_option('ip_slug');
 
 add_filter('manage_edit-' . $ip_column_slug . '_columns', 'ip_columns_filter', 10, 1);
 function ip_columns_filter($columns) {
-    $column_thumbnail = array('thumbnail' => 'Thumbnail');
+    $column_thumbnail = ['thumbnail' => 'Thumbnail'];
     $columns = array_slice($columns, 0, 1, true) + $column_thumbnail + array_slice($columns, 1, NULL, true);
 
     return $columns;
@@ -240,9 +240,9 @@ add_filter('manage_users_columns', 'ip_manage_users_columns');
 
 // Main upload function
 function imagepress_add($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'category' => ''
-    ), $atts));
+    ], $atts));
 
     global $wpdb, $current_user;
 
@@ -258,13 +258,13 @@ function imagepress_add($atts) {
         if (!empty($_POST['imagepress_image_caption']))
             $ipImageCaption = sanitize_text_field($_POST['imagepress_image_caption']);
 
-        $user_image_data = array(
+        $user_image_data = [
             'post_title' => $ipImageCaption,
             'post_content' => sanitize_text_field($_POST['imagepress_image_description']),
             'post_status' => $ip_status,
             'post_author' => $ip_image_author,
             'post_type' => get_imagepress_option('ip_slug')
-        );
+        ];
 
         // send notification email to administrator
         $notificationEmail = get_imagepress_option('ip_notification_email');
@@ -288,7 +288,7 @@ function imagepress_add($atts) {
             $moderatedCategory = get_imagepress_option('ip_cat_moderation_include');
             if (!empty($moderatedCategory)) {
                 if ($_POST['imagepress_image_category'] == $moderatedCategory) {
-                    $ip_post = array();
+                    $ip_post = [];
                     $ip_post['ID'] = $post_id;
                     $ip_post['post_status'] = 'pending';
 
@@ -350,9 +350,9 @@ function imagepress_add($atts) {
 }
 
 function imagepress_add_bulk($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'category' => ''
-    ), $atts));
+    ], $atts));
 
     global $wpdb, $current_user;
 
@@ -381,23 +381,23 @@ function imagepress_add_bulk($atts) {
 
             foreach ($files['name'] as $key => $value) {
                 if ($files['name'][$key]) {
-                    $file = array(
+                    $file = [
                         'name' => $files['name'][$key],
                         'type' => $files['type'][$key],
                         'tmp_name' => $files['tmp_name'][$key],
                         'error' => $files['error'][$key],
                         'size' => $files['size'][$key]
-                    );
+                    ];
                 }
-                $_FILES = array("attachment" => $file);
+                $_FILES = ["attachment" => $file];
                 foreach ($_FILES as $file => $array) {
                     $attach_id = media_handle_upload($file, 0);
 
-                    $user_image_data = array(
+                    $user_image_data = [
                         'post_status' => $ip_status,
                         'post_author' => $ip_image_author,
                         'post_type' => $ipSlug
-                    );
+                    ];
                     $post_id = wp_insert_post($user_image_data);
                     update_post_meta($post_id, '_thumbnail_id', $attach_id);
 
@@ -696,7 +696,7 @@ function imagepress_get_upload_image_form_bulk($ipImageCategory = 0, $imagepress
 
 
 function imagepress_get_image_categories_dropdown($taxonomy, $selected) {
-    return wp_dropdown_categories(array(
+    return wp_dropdown_categories([
         'taxonomy' => $taxonomy,
         'name' => 'imagepress_image_category',
         'selected' => $selected,
@@ -706,10 +706,10 @@ function imagepress_get_image_categories_dropdown($taxonomy, $selected) {
         'orderby' => 'name',
         'show_option_all' => get_imagepress_option('ip_category_label'),
         'required' => true
-    ));
+    ]);
 }
 function imagepress_get_image_tags_dropdown($taxonomy, $selected) {
-    return wp_dropdown_categories(array(
+    return wp_dropdown_categories([
         'taxonomy' => $taxonomy,
         'name' => 'imagepress_image_tag',
         'selected' => $selected,
@@ -717,7 +717,7 @@ function imagepress_get_image_tags_dropdown($taxonomy, $selected) {
         'echo' => 0,
         'orderby' => 'name',
         'show_option_all' => get_imagepress_option('ip_tag_label')
-    ));
+    ]);
 }
 
 function imagepress_activate() {
@@ -810,7 +810,7 @@ function ip_enqueue_color_picker() {
     wp_enqueue_style('wp-color-picker');
     wp_enqueue_style('imagepress', plugins_url('css/ip-admin.css', __FILE__));
 
-    wp_enqueue_script('ip.functions', plugins_url('js/functions.js', __FILE__), array('wp-color-picker'), false, true);
+    wp_enqueue_script('ip.functions', plugins_url('js/functions.js', __FILE__), ['wp-color-picker'], false, true);
 }
 
 
@@ -821,16 +821,16 @@ function ip_enqueue_scripts() {
 
 	$accountPageUri = get_option('cinnamon_account_page');
 
-    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.7.2/js/all.js', array(), '5.7.2', true);
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.7.2/js/all.js', [], '5.7.2', true);
 
     if (is_page(get_imagepress_option('cinnamon_edit_page'))) {
-        wp_enqueue_script('sortable', plugins_url('js/Sortable.min.js', __FILE__), array(), '1.7.0', true);
-        wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery', 'sortable'), '7.9.1', true);
+        wp_enqueue_script('sortable', plugins_url('js/Sortable.min.js', __FILE__), [], '1.7.0', true);
+        wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), ['jquery', 'sortable'], '7.9.1', true);
     } else {
-        wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), array('jquery'), '7.9.1', true);
+        wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), ['jquery'], '7.9.1', true);
     }
 
-    wp_localize_script('ipjs-main', 'ipAjaxVar', array(
+    wp_localize_script('ipjs-main', 'ipAjaxVar', [
         'imagesperpage' => get_imagepress_option('ip_ipp'),
         'authorsperpage' => get_imagepress_option('ip_app'),
         'likelabel' => get_imagepress_option('ip_vote_like'),
@@ -849,15 +849,15 @@ function ip_enqueue_scripts() {
 
         'swal_confirm_operation' => __("Are you sure? You won't be able to revert this!", 'imagepress'),
         'swal_confirm_button' => __('Yes', 'imagepress'),
-        'swal_cancel_button' => __('No', 'imagepress'),
-    ));
+        'swal_cancel_button' => __('No', 'imagepress')
+    ]);
 }
 // end
 
 function imagepress_search($atts) {
-    extract(shortcode_atts(array(
-        'type' => '',
-    ), $atts));
+    extract(shortcode_atts([
+        'type' => ''
+    ], $atts));
 
     $display = '<form role="search" method="get" action="' . home_url() . '" class="imagepress-form">
             <div>
@@ -908,11 +908,11 @@ function imagepress_notify_status($new_status, $old_status, $post) {
  *
  */
 function imagepress_widget($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'type' => 'list', // list, top
         'mode' => 'views', // views, likes
-        'count' => 5,
-    ), $atts));
+        'count' => 5
+    ], $atts));
 
     $display = '';
     $ip_comments = '';
@@ -923,18 +923,18 @@ function imagepress_widget($atts) {
         $count = 1;
     }
 
-    $args = array(
+    $args = [
         'post_type' => get_imagepress_option('ip_slug'),
         'posts_per_page' => $count,
         'orderby' => 'meta_value_num',
         'meta_key' => $imagepress_meta_key,
-        'meta_query' => array(
-            array(
+        'meta_query' => [
+            [
                 'key' => $imagepress_meta_key,
-                'type' => 'numeric',
-            ),
-        ),
-    );
+                'type' => 'numeric'
+            ]
+        ]
+    ];
 
     $getImages = get_posts($args);
 
@@ -1025,7 +1025,7 @@ function imagepress_element_categories($atts) {
             'hide_empty' => 0
         ];
         $categories = get_categories($args);
-        foreach ($categories as $category) {    
+        foreach ($categories as $category) {
             if (!empty($gallery)) {
                 $link = $gallery . '?sort=newest&range=alltime&t=' . $category->slug . '&q=';
             }

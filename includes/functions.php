@@ -6,7 +6,7 @@ function imagepress_registration() {
         $ip_slug = 'image';
     }
 
-    $image_type_labels = array(
+    $image_type_labels = [
         'name'                  => _x('Images', 'Post type general name', 'imagepress'),
         'singular_name'         => _x('Image', 'Post type singular name', 'imagepress'),
         'menu_name'             => __('ImagePress', 'imagepress'),
@@ -32,13 +32,13 @@ function imagepress_registration() {
         'items_list'            => __('Images list', 'imagepress'),
         'items_list_navigation' => __('Images list navigation', 'imagepress'),
         'filter_items_list'     => __('Filter images list', 'imagepress'),
-    );
+    ];
 
-    $image_type_args = array(
+    $image_type_args = [
         'label'                 => __('Image', 'imagepress'),
         'description'           => __('Image post type', 'imagepress'),
         'labels'                => $image_type_labels,
-        'supports'              => array('title', 'editor', 'author', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown'),
+        'supports'              => ['title', 'editor', 'author', 'thumbnail', 'comments', 'custom-fields', 'publicize', 'wpcom-markdown'],
         'hierarchical'          => false,
         'public'                => true,
         'show_ui'               => true,
@@ -55,11 +55,11 @@ function imagepress_registration() {
         'show_in_rest'          => true,
         'rest_base'             => $ip_slug,
         'rest_controller_class' => 'WP_REST_Posts_Controller',
-    );
+    ];
 
     register_post_type($ip_slug, $image_type_args);
 
-    $imageTaxonomy = array(
+    $imageTaxonomy = [
         'name'                       => _x('Image categories', 'Taxonomy general name', 'imagepress'),
         'singular_name'              => _x('Image category', 'Taxonomy singular name', 'imagepress'),
         'menu_name'                  => __('Image Categories', 'imagepress'),
@@ -80,9 +80,9 @@ function imagepress_registration() {
         'no_terms'                   => __('No image categories', 'imagepress'),
         'items_list'                 => __('Image categories list', 'imagepress'),
         'items_list_navigation'      => __('Image categories list navigation', 'imagepress'),
-    );
+    ];
 
-    $image_category_args = array(
+    $image_category_args = [
         'labels'                => $imageTaxonomy,
         'hierarchical'          => true,
         'public'                => true,
@@ -93,11 +93,11 @@ function imagepress_registration() {
         'show_in_rest'          => true,
         'rest_base'             => 'image-category',
         'rest_controller_class' => 'WP_REST_Terms_Controller',
-    );
+    ];
 
-    register_taxonomy('imagepress_image_category', array($ip_slug), $image_category_args);
+    register_taxonomy('imagepress_image_category', [$ip_slug], $image_category_args);
 
-    $labels = array(
+    $labels = [
         'name'                       => _x('Image tags', 'Taxonomy ceneral name', 'imagepress'),
         'singular_name'              => _x('Image tag', 'Taxonomy singular name', 'imagepress'),
         'menu_name'                  => __('Image Tags', 'imagepress'),
@@ -118,9 +118,9 @@ function imagepress_registration() {
         'no_terms'                   => __('No image tags', 'imagepress'),
         'items_list'                 => __('Image tags list', 'imagepress'),
         'items_list_navigation'      => __('Image tags list navigation', 'imagepress'),
-    );
+    ];
 
-    $args = array(
+    $args = [
         'labels'                => $labels,
         'hierarchical'          => false,
         'public'                => true,
@@ -131,9 +131,9 @@ function imagepress_registration() {
         'show_in_rest'          => true,
         'rest_base'             => 'image-tag',
         'rest_controller_class' => 'WP_REST_Terms_Controller',
-    );
+    ];
 
-    register_taxonomy('imagepress_image_tag', array($ip_slug), $args);
+    register_taxonomy('imagepress_image_tag', [$ip_slug], $args);
 }
 
 function ip_getPostViews($postID) {
@@ -172,26 +172,16 @@ function ip_editor() {
             $post_type = get_post_type($post_id);
             $capability = ('page' == $post_type) ? 'edit_page' : 'edit_post';
             if (current_user_can($capability, $post_id) && wp_verify_nonce($_POST['update_post_nonce'], 'update_post_'. $post_id)) {
-                $post = array(
+                $post = [
                     'ID' => esc_sql($post_id),
                     'post_content' => (stripslashes($_POST['postcontent'])),
                     'post_title' => esc_sql($_POST['post_title']),
                     'post_name' => sanitize_text_field($_POST['post_title'])
-                );
+                ];
                 wp_update_post($post);
 
                 // Multiple images
                 ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
-
-                /**
-                $images = get_children(array('post_parent' => $post_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
-                $count = $images ? count($images) : 0;
-                if ($count == 1 || !has_post_thumbnail($post_id)) {
-                    foreach ($images as $attachment_id => $image) {
-                        set_post_thumbnail($post_id, $image->ID);
-                    }
-                }
-                /**/
 
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
                 if (get_imagepress_option('ip_allow_tags') == 1)
@@ -293,7 +283,7 @@ function ip_editor() {
                     '</p>';
 
                     $thumbnail_ID = get_post_thumbnail_id();
-                    $images = get_children(array('post_parent' => $edit_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
+                    $images = get_children(['post_parent' => $edit_id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID']);
                     $count = $images ? count($images) : 0;
 
                     if ($count >= 1) {
@@ -341,10 +331,10 @@ function ip_delete_post() {
 }
 add_action('wp_ajax_ip_update_post_title', 'ip_update_post_title');
 function ip_update_post_title() {
-    $updated_post = array(
+    $updated_post = [
         'ID' => (int) $_REQUEST['id'],
-        'post_title' => (string) $_REQUEST['title'],
-    );
+        'post_title' => (string) $_REQUEST['title']
+    ];
 
     wp_update_post($updated_post);
 
@@ -405,7 +395,7 @@ function ip_main($imageId) {
             $terms = get_the_terms($imageId, 'imagepress_image_tag');
 
             if ($terms && !is_wp_error($terms)) :
-                $term_links = array();
+                $term_links = [];
                 foreach($terms as $term) {
                     $term_links[] = $term->name;
                 }
@@ -516,7 +506,7 @@ function ip_main_return($imageId) {
             $terms = get_the_terms($imageId, 'imagepress_image_tag');
 
             if ($terms && !is_wp_error($terms)) :
-                $term_links = array();
+                $term_links = [];
                 foreach ($terms as $term) {
                     $term_links[] = $term->name;
                 }
@@ -578,7 +568,7 @@ function ip_main_return($imageId) {
 
 
 
-function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', $after = '', $exclude = array()) {
+function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', $after = '', $exclude = []) {
     $terms = get_the_terms($imageId, $taxonomy);
 
     if (is_wp_error($terms))
@@ -603,7 +593,7 @@ function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', 
 
 function imagepress_get_images($postId, $show) {
     $thumbnail_ID = get_post_thumbnail_id();
-    $images = get_children(array('post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
+    $images = get_children(['post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID']);
     $out = '';
 
     if ($images && count($images) > 0) {
@@ -618,7 +608,7 @@ function imagepress_get_images($postId, $show) {
         $out .= '</div>';
     }
 
-    $videos = get_children(array('post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'order' => 'ASC', 'orderby' => 'menu_order ID'));
+    $videos = get_children(['post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'order' => 'ASC', 'orderby' => 'menu_order ID']);
 
     if ($videos && count($videos) > 1) {
         $out .= '<div class="ip-more">';
@@ -666,14 +656,14 @@ function ip_author() {
 function ip_return_image_sizes() {
     global $_wp_additional_image_sizes;
 
-    $image_sizes = array();
+    $image_sizes = [];
     foreach (get_intermediate_image_sizes() as $size) {
-        $image_sizes[$size] = array(0, 0);
-        if (in_array($size, array('thumbnail', 'medium', 'large'))) {
+        $image_sizes[$size] = [0, 0];
+        if (in_array($size, ['thumbnail', 'medium', 'large'])) {
             $image_sizes[$size][0] = get_option($size . '_size_w');
             $image_sizes[$size][1] = get_option($size . '_size_h');
         } else if (isset($_wp_additional_image_sizes) && isset($_wp_additional_image_sizes[$size])) {
-            $image_sizes[$size] = array($_wp_additional_image_sizes[$size]['width'], $_wp_additional_image_sizes[$size]['height']);
+            $image_sizes[$size] = [$_wp_additional_image_sizes[$size]['width'], $_wp_additional_image_sizes[$size]['height']];
         }
     }
     return $image_sizes;
@@ -689,9 +679,9 @@ function ip_get_user_role() {
 }
 
 function ip_get_field($atts) {
-    extract(shortcode_atts(array(
-        'field' => '',
-    ), $atts));
+    extract(shortcode_atts([
+        'field' => ''
+    ], $atts));
 
     $field = get_post_meta(get_the_ID(), $field, true);
 
@@ -844,15 +834,15 @@ function ip_upload_secondary($filesArray, $postId) {
 
             foreach ($filesArray['name'] as $key => $value) {
                 if ($filesArray['name'][$key]) {
-                    $file = array(
+                    $file = [
                         'name' => $filesArray['name'][$key],
                         'type' => $filesArray['type'][$key],
                         'tmp_name' => $filesArray['tmp_name'][$key],
                         'error' => $filesArray['error'][$key],
                         'size' => $filesArray['size'][$key]
-                    );
+                    ];
                 }
-                $_FILES = array("attachment" => $file);
+                $_FILES = ["attachment" => $file];
                 foreach ($_FILES as $file => $array) {
                     $attach_id = media_handle_upload($file, $postId);
                 }

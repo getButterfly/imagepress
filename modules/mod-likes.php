@@ -25,14 +25,14 @@ function imagepress_like() {
 			}
 
 			if(!is_array($liked_POSTS)) // make array just in case
-				$liked_POSTS = array();
+				$liked_POSTS = [];
 
 			if(count($meta_USERS) != 0) { // meta exists, set up values
 				$liked_USERS = $meta_USERS[0];
 			}
 
 			if(!is_array($liked_USERS)) // make array just in case
-				$liked_USERS = array();
+				$liked_USERS = [];
 
 			$liked_POSTS['post-' . $post_id] = $post_id; // add post id to user meta array
 			$liked_USERS['user-' . $user_id] = $user_id; // add user id to post meta array
@@ -74,7 +74,7 @@ function imagepress_like() {
 			}
 
 			if (!is_array($liked_IPS)) // make array just in case
-				$liked_IPS = array();
+				$liked_IPS =[];
 
 			if (!in_array($userIp, $liked_IPS)) // if IP not in array
 				$liked_IPS['ip-' . $userIp] = $userIp; // add IP to array
@@ -110,7 +110,7 @@ function ipAlreadyLiked($post_id) { // test if user liked before
 		}
 
 		if (!is_array($liked_USERS)) // make array just in case
-			$liked_USERS = array();
+			$liked_USERS = [];
 
 		if (in_array($user_id, $liked_USERS)) { // true if user ID in array
 			return true;
@@ -127,7 +127,7 @@ function ipAlreadyLiked($post_id) { // test if user liked before
 		}
 
 		if (!is_array($liked_IPS)) // make array just in case
-			$liked_IPS = array();
+			$liked_IPS = [];
 
 		if (in_array($ipAddress, $liked_IPS)) { // true if IP in array
 			return true;
@@ -172,7 +172,7 @@ function ipFrontEndUserLikes($author) {
 	}
 
 	if (!is_array($the_likes)) {
-		$the_likes = array();
+		$the_likes = [];
 	}
 
 	$the_likes = array_reverse($the_likes);

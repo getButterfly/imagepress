@@ -6,7 +6,7 @@ function imagepress_feed() {
 
     $user_ID = get_current_user_id();
 
-    $myFollowing = array(pwuf_get_following($user_ID));
+    $myFollowing = [pwuf_get_following($user_ID)];
     $myFollowing = array_unique($myFollowing);
 
     $followers = '';

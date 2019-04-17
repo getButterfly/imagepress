@@ -2,9 +2,9 @@
 add_shortcode('notifications', 'imagepress_notifications');
 
 function imagepress_notifications($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'count' => 50
-    ), $atts));
+    ], $atts));
 
     global $wpdb;
 

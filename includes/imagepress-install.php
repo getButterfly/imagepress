@@ -1,5 +1,5 @@
 <?php
-$optionArray = array(
+$optionArray = [
     // Configurator tab
     'ip_box_ui' => 'default',
     'ip_ipp' => 20,
@@ -69,6 +69,6 @@ $optionArray = array(
 
     'ip_enable_views' => 1,
     'ip_role_quota' => '',
-);
+];
 
 add_option('imagepress', $optionArray);

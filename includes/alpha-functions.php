@@ -27,12 +27,12 @@ function ipUriBuilder($sort, $range, $taxonomy, $query = '') {
         $query = sanitize_text_field($_GET['q']);
     }
 
-    $uriParameters = array(
+    $uriParameters = [
         'sort' => $sort,
         'range' => $range,
         't' => $taxonomy,
         'q' => $query
-    );
+    ];
 
     // Get position where '/page' text starts
     $pos = strpos($_SERVER['REQUEST_URI'], '/page');
@@ -96,7 +96,7 @@ function getImagePressDiscoverFilters() {
 }
 
 function imagepress_loop($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'category'      => '',
         'count'         => 0,
         'limit'         => 999999,
@@ -113,7 +113,7 @@ function imagepress_loop($atts) {
         'fieldname'     => '',
         'fieldvalue'    => '',
         'mode' => '',
-    ), $atts));
+    ], $atts));
 
     $out = '';
     $ipSlug = (string) get_imagepress_option('ip_slug');
@@ -130,12 +130,12 @@ function imagepress_loop($atts) {
         $ipp = (int) $count;
     }
 
-    $args1 = array(
+    $args1 = [
         'post_type' => $ipSlug,
         'paged' => $paged,
         'posts_per_page' => $ipp,
         'post_status' => 'publish',
-    );
+    ];
 
     // Search query arguments
     if (isset($_GET['q']) && !empty($_GET['q'])) {
@@ -146,29 +146,29 @@ function imagepress_loop($atts) {
 
     if (isset($_GET['t']) && !empty($_GET['t'])) {
         $taxonomy = (string) sanitize_text_field($_GET['t']);
-        $tax_query = array(
-            array(
+        $tax_query = [
+            [
                 'taxonomy' => 'imagepress_image_category',
                 'field' => 'slug',
                 'terms' => $taxonomy,
                 'include_children' => true,
                 'operator' => 'IN',
-            )
-        );
+            ]
+        ];
         $args1['tax_query'] = $tax_query;
     }
 
     // Check "category" parameter
     if (!empty($category)) {
-        $tax_query = array(
-            array(
+        $tax_query = [
+            [
                 'taxonomy' => 'imagepress_image_category',
                 'field' => 'slug',
                 'terms' => $category,
                 'include_children' => true,
                 'operator' => 'IN',
-            ),
-        );
+            ]
+        ];
         $args1['tax_query'] = $tax_query;
     }
 
@@ -183,20 +183,20 @@ function imagepress_loop($atts) {
     }
 
     if (!empty($fieldname) && !empty($fieldvalue)) {
-        $field_query = array(
-            array(
+        $field_query = [
+            [
                 'key' => $fieldname,
-                'value' => $fieldvalue,
-            ),
-        );
+                'value' => $fieldvalue
+            ]
+        ];
         $args1['meta_query'] = $field_query;
     }
 
     // Most liked images
     if ((string) $sort !== 'no') {
-        $args1['meta_query'] = array(
+        $args1['meta_query'] = [
             'key' => '_like_count'
-        );
+        ];
         $args1['meta_key'] = '_like_count';
         $args1['orderby'] = 'meta_value_num';
         $args1['order'] = 'DESC';
@@ -207,16 +207,16 @@ function imagepress_loop($atts) {
         $range = (string) trim($_GET['range']);
 
         if ($sort === 'likes') {
-            $args1['meta_query'] = array(
+            $args1['meta_query'] = [
                 'key' => '_like_count'
-            );
+            ];
             $args1['meta_key'] = '_like_count';
             $args1['orderby'] = 'meta_value_num';
             $args1['order'] = 'DESC';
         } else if ($sort === 'views') {
-            $args1['meta_query'] = array(
+            $args1['meta_query'] = [
                 'key' => 'post_views_count'
-            );
+            ];
             $args1['meta_key'] = 'post_views_count';
             $args1['orderby'] = 'meta_value_num';
             $args1['order'] = 'DESC';
@@ -236,28 +236,28 @@ function imagepress_loop($atts) {
 
         // Range filtering
         if ($range === 'lastmonth') {
-            $date_query = array(
-                'date_query' => array(
+            $date_query = [
+                'date_query' => [
                     'column' => 'post_date',
                     'after' => date('Y-m-d', strtotime('-30 days'))
-                )
-            );
+                ]
+            ];
             $args1['date_query'] = $date_query;
         } else if ($range === 'lastweek') {
-            $date_query = array(
-                'date_query' => array(
+            $date_query = [
+                'date_query' => [
                     'column' => 'post_date',
                     'after' => date('Y-m-d', strtotime('-7 days'))
-                )
-            );
+                ]
+            ];
             $args1['date_query'] = $date_query;
         } else if ($range === 'lastday') {
-            $date_query = array(
-                'date_query' => array(
+            $date_query = [
+                'date_query' => [
                     'column' => 'post_date',
                     'after' => date('Y-m-d', strtotime('-1 days'))
-                )
-            );
+                ]
+            ];
             $args1['date_query'] = $date_query;
         }
     }

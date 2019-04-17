@@ -4,23 +4,23 @@ class Email_Post_Approval_Options {
     var $email_fields;
 
     public function __construct() {
-        $this->post_status_types = array(
-            array('key' => 'publish', 'value' => 'Publish'),
-            array('key' => 'pending', 'value' => 'Pending Review'),
-            array('key' => 'draft', 'value' => 'Draft'),
-            array('key' => 'future', 'value' => 'Future'),
-            array('key' => 'private', 'value' => 'Private')
-        );
-        $this->email_fields = array(
-            array('key' => 'title', 'value' => 'Post Title'),
-            array('key' => 'post_author', 'value' => 'Post Author'),
-            array('key' => 'post_date', 'value' => 'Publish Date'),
-            array('key' => 'categories', 'value' => 'Categories'),
-            array('key' => 'body', 'value' => 'Post Body'),
-            array('key' => 'thumbnail', 'value' => 'Featured Image'),
-        );
+        $this->post_status_types = [
+            ['key' => 'publish', 'value' => 'Publish'],
+            ['key' => 'pending', 'value' => 'Pending Review'],
+            ['key' => 'draft', 'value' => 'Draft'],
+            ['key' => 'future', 'value' => 'Future'],
+            ['key' => 'private', 'value' => 'Private']
+        ];
+        $this->email_fields = [
+            ['key' => 'title', 'value' => 'Post Title'],
+            ['key' => 'post_author', 'value' => 'Post Author'],
+            ['key' => 'post_date', 'value' => 'Publish Date'],
+            ['key' => 'categories', 'value' => 'Categories'],
+            ['key' => 'body', 'value' => 'Post Body'],
+            ['key' => 'thumbnail', 'value' => 'Featured Image']
+        ];
 
-        add_action('admin_menu', array($this, 'add_options_page_to_menu'));
+        add_action('admin_menu', [$this, 'add_options_page_to_menu']);
     }
 
     // Add options page to menu
@@ -31,20 +31,20 @@ class Email_Post_Approval_Options {
 
     // Create options page
     public function create_options_page() {
-        $option_values = array(
+        $option_values = [
             'send_to' => get_option('epa_send_to'),
             'post_statuses' => get_option('epa_post_statuses'),
             'email_fields' => get_option('epa_email_fields'),
             'default_author' => get_option('epa_default_author')
-        );
+        ];
 
         if (isset($_POST['epa_form_submission'])) {
-            $option_values = array(
+            $option_values = [
                 'send_to' => $_POST['send_to'],
                 'post_statuses' => $_POST['post_statuses'],
                 'email_fields' => $_POST['email_fields'],
-                'default_author' => $_POST['default_author'],
-            );
+                'default_author' => $_POST['default_author']
+            ];
 
             update_option('epa_send_to', $option_values['send_to']);
             update_option('epa_post_statuses', $option_values['post_statuses']);
@@ -81,7 +81,7 @@ class Email_Post_Approval_Options {
                                     echo '<option value="0">None</option>';
                                 }
 
-                                foreach (get_users(array('orderby' => 'display_name', 'fields' => array('ID', 'display_name'))) as $author) {
+                                foreach (get_users(['orderby' => 'display_name', 'fields' => ['ID', 'display_name']]) as $author) {
                                     $selected = ($option_values['default_author'] === $author->ID) ? 'selected' : '';
                                     echo '<option value="' . $author->ID . '" ' . $selected . '>' . $author->display_name . '</option>';
                                 }

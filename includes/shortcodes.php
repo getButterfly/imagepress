@@ -1,7 +1,6 @@
 <?php
 function imagepress_quota($atts) {
-    extract(shortcode_atts(array(
-    ), $atts));
+    extract(shortcode_atts([], $atts));
 
     global $current_user;
 

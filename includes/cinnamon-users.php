@@ -34,11 +34,11 @@ function cinnamon_author_base() {
 
 function cinnamon_get_related_author_posts($author) {
     $ip_slug = get_imagepress_option('ip_slug');
-    $authors_posts = get_posts(array(
+    $authors_posts = get_posts([
         'author' => $author,
         'posts_per_page' => 9,
         'post_type' => $ip_slug
-    ));
+    ]);
 
     $output = '';
 
@@ -71,12 +71,12 @@ function cinnamon_extra_contact_info($contactmethods) {
 
 /* CINNAMON CARD SHORTCODE */
 function cinnamon_card($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'author' => '',
         'count' => 10,
         'sort' => 0,
-        'role' => '',
-    ), $atts));
+        'role' => ''
+    ], $atts));
 
     $ip_slug = get_imagepress_option('ip_slug');
 
@@ -101,11 +101,11 @@ function cinnamon_card($atts) {
             $author = $q->ID;
 
             $display .= '<li class="cinnamon-card">';
-                $cardArguments = array(
+                $cardArguments = [
                     'author' => $author,
                     'posts_per_page' => get_imagepress_option('ip_cards_per_author'),
-                    'post_type' => $ip_slug,
-                );
+                    'post_type' => $ip_slug
+                ];
                 $authors_posts = get_posts($cardArguments);
                 if ($authors_posts) {
                     $display .= '<div class="mosaicflow">';
@@ -136,14 +136,14 @@ function cinnamon_card($atts) {
         $display .= '<div id="pagination" class="native-pagination">';
         $display .= '<span class="pages">' . __('Pages:', 'imagepress') . '</span>';
         $current_page = max(1, get_query_var('paged'));
-        $display .= paginate_links(array(
+        $display .= paginate_links([
             'base' => get_pagenum_link(1) . '%_%',
             'format' => 'page/%#%/',
             'current' => $current_page,
             'total' => $total_pages,
             'prev_next' => false,
-            'type' => 'list',
-        ));
+            'type' => 'list'
+        ]);
         $display .= '</div>';
     }
 
@@ -156,10 +156,10 @@ function cinnamon_card($atts) {
 
 /* CINNAMON PROFILE SHORTCODE */
 function cinnamon_profile($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'author' => '',
-        'username' => '',
-    ), $atts));
+        'username' => ''
+    ], $atts));
 
     global $wpdb, $current_user;
 
@@ -317,16 +317,16 @@ function cinnamon_profile($atts) {
 }
 
 function cinnamon_profile_edit($atts) {
-    extract(shortcode_atts(array(
+    extract(shortcode_atts([
         'author' => ''
-    ), $atts));
+    ], $atts));
 
     global $wpdb;
 
     $current_user = wp_get_current_user();
     $userid = $current_user->ID;
 
-    $error = array();
+    $error = [];
     $out = '';
 
     if (!empty($_POST['action']) && (string) $_POST['action'] === 'update-user') {
@@ -468,7 +468,7 @@ function cinnamon_profile_edit($atts) {
                             unset($value);
                         $out .= '</div>';
                     }
-    
+
                     $out .= ipFrontEndUserLikes($userid);
 
                 $out .= '</div>

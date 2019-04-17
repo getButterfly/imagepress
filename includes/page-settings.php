@@ -183,7 +183,7 @@ function imagepress_admin_page() {
             </form>
         <?php } else if ($tab === 'configurator_tab') {
             if (isset($_POST['isGSSubmit'])) {
-                $ipUpdatedOptions = array(
+                $ipUpdatedOptions = [
                     'ip_box_ui' => $_POST['ip_box_ui'],
                     'ip_ipp' => $_POST['ip_ipp'],
                     'ip_app' => $_POST['ip_app'],
@@ -196,8 +196,8 @@ function imagepress_admin_page() {
                     'ip_views_optional' => $_POST['ip_views_optional'],
                     'ip_comments' => $_POST['ip_comments'],
                     'ip_likes_optional' => $_POST['ip_likes_optional'],
-                    'ip_author_optional' => $_POST['ip_author_optional'],
-                );
+                    'ip_author_optional' => $_POST['ip_author_optional']
+                ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
                 update_option('imagepress', $ipUpdate);
@@ -354,9 +354,9 @@ function imagepress_admin_page() {
             $orphan_count = $wpdb->get_var("SELECT COUNT(*) FROM `" . $wpdb->prefix . "ip_collectionmeta` WHERE `image_ID` NOT IN (SELECT `ID` FROM `" . $wpdb->posts . "`)");
 
             if (isset($_POST['isGSSubmit'])) {
-                $ipUpdatedOptions = array(
-                    'ip_collections_page' => $_POST['ip_collections_page'],
-                );
+                $ipUpdatedOptions = [
+                    'ip_collections_page' => $_POST['ip_collections_page']
+                ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
                 update_option('imagepress', $ipUpdate);
@@ -379,15 +379,13 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_collections_page"><?php _e('Collection viewer page', 'imagepress'); ?></label></th>
                             <td>
                                 <?php
-                                wp_dropdown_pages(
-                                    array(
-                                        'name' => 'ip_collections_page',
-                                        'echo' => 1,
-                                        'show_option_none' => __('Select collection viewer page...', 'imagepress'),
-                                        'option_none_value' => '0',
-                                        'selected' => (int) get_imagepress_option('ip_collections_page'),
-                                    )
-                                );
+                                wp_dropdown_pages([
+                                    'name' => 'ip_collections_page',
+                                    'echo' => 1,
+                                    'show_option_none' => __('Select collection viewer page...', 'imagepress'),
+                                    'option_none_value' => '0',
+                                    'selected' => (int) get_imagepress_option('ip_collections_page')
+                                ]);
                                 ?>
                                 <input type="submit" name="isGSSubmit" value="<?php _e('Save Changes', 'imagepress'); ?>" class="button button-primary">
                             </td>
@@ -477,15 +475,15 @@ function imagepress_admin_page() {
             </form>
         <?php } else if ($tab === 'settings_tab') {
             if (isset($_POST['isGSSubmit'])) {
-                $ipUpdatedOptions = array(
+                $ipUpdatedOptions = [
                     'ip_moderate' => $_POST['ip_moderate'],
                     'ip_registration' => $_POST['ip_registration'],
                     'ip_click_behaviour' => $_POST['ip_click_behaviour'],
                     'ip_cat_moderation_include' => $_POST['ip_cat_moderation_include'],
                     'ip_upload_redirection' => $_POST['ip_upload_redirection'],
                     'ip_notification_email' => $_POST['ip_notification_email'],
-                    'ip_enable_views' => $_POST['ip_enable_views'],
-                );
+                    'ip_enable_views' => $_POST['ip_enable_views']
+                ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
                 update_option('imagepress', $ipUpdate);
@@ -583,7 +581,7 @@ function imagepress_admin_page() {
             </form>
         <?php } else if ($tab === 'authors_tab') {
             if (isset($_POST['cinnamon_submit'])) {
-                $ipUpdatedOptions = array(
+                $ipUpdatedOptions = [
                     'ip_profile_page' => (int) sanitize_text_field($_POST['ip_profile_page']),
                     'cinnamon_author_slug' => $_POST['cinnamon_author_slug'],
                     'ip_cards_per_author' => $_POST['ip_cards_per_author'],
@@ -594,7 +592,7 @@ function imagepress_admin_page() {
                     'cinnamon_fancy_header' => $_POST['cinnamon_fancy_header'],
                     'approvednotification' => $_POST['approvednotification'],
                     'declinednotification' => $_POST['declinednotification'],
-                );
+                ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
                 update_option('imagepress', $ipUpdate);
@@ -618,13 +616,13 @@ function imagepress_admin_page() {
                             <td>
                                 <p>
                                     <?php
-                                    wp_dropdown_pages(array(
+                                    wp_dropdown_pages([
                                         'name' => 'ip_profile_page',
                                         'echo' => 1,
                                         'show_option_none' => __('Select profile page...', 'imagepress'),
                                         'option_none_value' => 0,
                                         'selected' => get_imagepress_option('ip_profile_page'),
-                                    ));
+                                    ]);
 
                                     $ipProfilePage = (int) get_imagepress_option('ip_profile_page')
                                     ?>
@@ -651,13 +649,13 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="cinnamon_edit_page">Author profile edit page URL</label></th>
                             <td>
                                 <?php
-                                wp_dropdown_pages(array(
+                                wp_dropdown_pages([
                                     'name' => 'cinnamon_edit_page',
                                     'echo' => 1,
                                     'show_option_none' => __('Select profile editor page...', 'imagepress'),
                                     'option_none_value' => 0,
                                     'selected' => get_imagepress_option('cinnamon_edit_page'),
-                                ));
+                                ]);
                                 ?>
                                 <br><small>Create a new page and add the <code>[cinnamon-profile-edit]</code> shortcode.</small>
                                 <br><small>This shortcode will display all user fields in a tabbed section.</small>
@@ -738,7 +736,7 @@ function imagepress_admin_page() {
             </form>
         <?php } else if ($tab === 'label_tab') {
             if (isset($_POST['isGSSubmit'])) {
-                $ipUpdatedOptions = array(
+                $ipUpdatedOptions = [
                     'ip_caption_label' => $_POST['ip_caption_label'],
                     'ip_category_label' => $_POST['ip_category_label'],
                     'ip_tag_label' => $_POST['ip_tag_label'],
@@ -751,7 +749,7 @@ function imagepress_admin_page() {
                     'ip_upload_success' => $_POST['ip_upload_success'],
                     'ip_vote_like' => stripslashes_deep($_POST['ip_vote_like']),
                     'ip_vote_unlike' => stripslashes_deep($_POST['ip_vote_unlike']),
-                );
+                ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
                 update_option('imagepress', $ipUpdate);
@@ -873,12 +871,12 @@ function imagepress_admin_page() {
             $editable_roles = apply_filters('editable_roles', $all_roles);
 
             if (isset($_POST['isGSSubmit'])) {
-                $roleQuota = array();
+                $roleQuota = [];
                 foreach ($editable_roles as $role => $details) {
                     $roleQuota[$details['name']] = $_POST['ip_quota_' . str_replace('-', '_', sanitize_title($details['name']))];
                 }
 
-                $ipUpdatedOptions = array(
+                $ipUpdatedOptions = [
                     'ip_upload_secondary' => $_POST['ip_upload_secondary'],
                     'ip_allow_tags' => $_POST['ip_allow_tags'],
                     'ip_upload_tos' => $_POST['ip_upload_tos'],
@@ -893,7 +891,7 @@ function imagepress_admin_page() {
                     'ip_dropbox_enable' => $_POST['ip_dropbox_enable'],
                     'ip_dropbox_key' => $_POST['ip_dropbox_key'],
                     'ip_role_quota' => $roleQuota,
-                );
+                ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
                 update_option('imagepress', $ipUpdate);

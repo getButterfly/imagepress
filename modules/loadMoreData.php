@@ -4,7 +4,7 @@ require '../../../../wp-load.php';
 $user_ID = get_current_user_id();
 $last_id = (int) trim($_GET['last_id']);
 
-$myFollowing = array(pwuf_get_following($user_ID));
+$myFollowing = [pwuf_get_following($user_ID)];
 
 $followers = '';
 if (!empty($myFollowing[0])) {
