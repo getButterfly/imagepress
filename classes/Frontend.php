@@ -5,14 +5,14 @@ if (!defined('ABSPATH')) {
 
 class Cinnamon_Frontend_User_Manager {
 	public function __construct() {
-		add_action('wp_ajax_cinnamon_ajax_login', array($this, 'cinnamon_ajax_login'));
-		add_action('wp_ajax_nopriv_cinnamon_ajax_login', array($this, 'cinnamon_ajax_login'));
-		add_action('wp_ajax_cinnamon_process_registration', array($this, 'cinnamon_process_registration'));
-		add_action('wp_ajax_nopriv_cinnamon_process_registration', array($this, 'cinnamon_process_registration'));
-		add_action('wp_ajax_cinnamon_process_psw_recovery', array($this, 'cinnamon_process_psw_recovery'));
-		add_action('wp_ajax_nopriv_cinnamon_process_psw_recovery', array($this, 'cinnamon_process_psw_recovery'));
+		add_action('wp_ajax_cinnamon_ajax_login', [$this, 'cinnamon_ajax_login']);
+		add_action('wp_ajax_nopriv_cinnamon_ajax_login', [$this, 'cinnamon_ajax_login']);
+		add_action('wp_ajax_cinnamon_process_registration', [$this, 'cinnamon_process_registration']);
+		add_action('wp_ajax_nopriv_cinnamon_process_registration', [$this, 'cinnamon_process_registration']);
+		add_action('wp_ajax_cinnamon_process_psw_recovery', [$this, 'cinnamon_process_psw_recovery']);
+		add_action('wp_ajax_nopriv_cinnamon_process_psw_recovery', [$this, 'cinnamon_process_psw_recovery']);
 
-		add_shortcode('cinnamon-login', array($this,'cinnamon_user_frontend_shortcode'));
+		add_shortcode('cinnamon-login', [$this,'cinnamon_user_frontend_shortcode']);
 	}
 
 	public function cinnamon_login_form() { ?>
@@ -32,7 +32,7 @@ class Cinnamon_Frontend_User_Manager {
                     if (!is_user_logged_in()) {
                         $accountPageUri = get_option('cinnamon_account_page');
 
-                        $login_arguments = array(
+                        $login_arguments = [
                             'echo' => true,
                             'remember' => true,
                             'redirect' => $accountPageUri,
@@ -47,7 +47,7 @@ class Cinnamon_Frontend_User_Manager {
                             'label_log_in' => __('Log in', 'imagepress'),
                             'value_username' => '',
                             'value_remember' => true
-                        );
+                        ];
                         wp_login_form($login_arguments);
                     } else { ?>
                         <p>
@@ -110,10 +110,10 @@ class Cinnamon_Frontend_User_Manager {
             $message = sprintf(__('Something was wrong:</br> %s', 'imagepress'), $display_errors);
         }
 
-        echo json_encode(array(
+        echo json_encode([
             'registered' => $registered,
-            'message' => $message,
-        ));
+            'message' => $message
+        ]);
 
         wp_die();
     }
@@ -137,10 +137,10 @@ class Cinnamon_Frontend_User_Manager {
             $message = $user_forgotten->get_error_message();
 		}
 
-        echo json_encode(array(
+        echo json_encode([
             'reset' => $reset,
-            'message' => $message,
-        ));
+            'message' => $message
+        ]);
 
 		wp_die();
 	}
@@ -203,9 +203,9 @@ class Cinnamon_Frontend_User_Manager {
 	}
 
 	public function cinnamon_user_frontend_shortcode($atts) {
-        extract(shortcode_atts(array(
-            'form' => '',
-        ), $atts));
+        extract(shortcode_atts([
+            'form' => ''
+        ], $atts));
         ob_start();
         $this->cinnamon_login_form();
         return ob_get_clean();

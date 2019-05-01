@@ -25,8 +25,7 @@ class Email_Post_Approval_Options {
 
     // Add options page to menu
     public function add_options_page_to_menu() {
-        //add_options_page('Email Post Approval Settings', 'Email Post Approval', 'manage_options', 'email-post-approval', array($this, 'create_options_page'));
-        add_submenu_page('edit.php?post_type=' . get_imagepress_option('ip_slug'), __('Email Approval', 'imagepress'), __('Email Approval', 'imagepress'), 'manage_options', 'imagepress_email_post_approval', array($this, 'create_options_page'));
+        add_submenu_page('edit.php?post_type=' . get_imagepress_option('ip_slug'), __('Email Approval', 'imagepress'), __('Email Approval', 'imagepress'), 'manage_options', 'imagepress_email_post_approval', [$this, 'create_options_page']);
     }
 
     // Create options page

@@ -221,28 +221,6 @@ a img { border: none; }
 }
 
 
-.question {
-    text-align: center;
-    font-size: 14px;
-    background-color: rgba(0, 0, 0, 0.75);
-    padding: 24px;
-    opacity: 0;
-    z-index: 999999999999;
-}
-
-.yes, .cancel {
-    margin-top: .5em;
-    margin-right: .5em;
-    cursor: pointer;
-}
-
-
-
-
-
-
-
-
 
 /**
  * Native pagination styles

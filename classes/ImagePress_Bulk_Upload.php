@@ -5,16 +5,16 @@ class ImagePress_Bulk_Upload {
     var $taxonomy_term = 0;
 
     public function __construct() {
-        register_activation_hook(__FILE__, array($this, 'activate'));
+        register_activation_hook(__FILE__, [$this, 'activate']);
 
-        add_action('admin_menu', array($this, 'add_settings'));
-        add_action('admin_init', array($this, 'register_settings'));
-        add_action('add_attachment', array($this, 'create_post_from_image'), 20);
+        add_action('admin_menu', [$this, 'add_settings']);
+        add_action('admin_init', [$this, 'register_settings']);
+        add_action('add_attachment', [$this, 'create_post_from_image'], 20);
     }
 
     public function activate() {
         $current_afip_options = get_option('afip_options');
-        $afip_options = array();
+        $afip_options = [];
 
         if (empty($current_afip_options['default_post_status']))
             $afip_options['default_post_status'] = $this->post_status;
@@ -35,8 +35,7 @@ class ImagePress_Bulk_Upload {
     }
 
     public function add_settings() {
-        //add_options_page(__('ImagePress Bulk Upload', 'imagepress'), __('ImagePress Bulk Upload', 'imagepress'), 'manage_options', 'automatic-featured-image-posts-settings', array($this, 'view_settings'));
-        add_submenu_page('edit.php?post_type=' . get_imagepress_option('ip_slug'), __('Bulk Upload', 'imagepress'), __('Bulk Upload', 'imagepress'), 'manage_options', 'automatic-featured-image-posts-settings', array($this, 'view_settings'));
+        add_submenu_page('edit.php?post_type=' . get_imagepress_option('ip_slug'), __('Bulk Upload', 'imagepress'), __('Bulk Upload', 'imagepress'), 'manage_options', 'automatic-featured-image-posts-settings', [$this, 'view_settings']);
     }
 
     public function view_settings() {
@@ -73,20 +72,20 @@ class ImagePress_Bulk_Upload {
     }
 
     public function register_settings() {
-        register_setting('afip_options', 'afip_options', array($this, 'validate_options'));
+        register_setting('afip_options', 'afip_options', [$this, 'validate_options']);
 
-        add_settings_section('afip_section_main', '', array($this, 'output_section_text'), 'afip');
+        add_settings_section('afip_section_main', '', [$this, 'output_section_text'], 'afip');
 
-        add_settings_field('afip_default_post_status', __('Default Post Status:', 'imagepress'), array($this, 'output_default_post_status_text'), 'afip', 'afip_section_main');
-        add_settings_field('afip_default_post_type', __('Default Post Type:',   'imagepress'), array($this, 'output_default_post_type_text'), 'afip', 'afip_section_main');
-        add_settings_field('afip_default_taxonomy_term', __('Default Taxonomy Term (optional):', 'imagepress'), array($this, 'output_default_taxonomy_term_text'), 'afip', 'afip_section_main');
+        add_settings_field('afip_default_post_status', __('Default Post Status:', 'imagepress'), [$this, 'output_default_post_status_text'], 'afip', 'afip_section_main');
+        add_settings_field('afip_default_post_type', __('Default Post Type:',   'imagepress'), [$this, 'output_default_post_type_text'], 'afip', 'afip_section_main');
+        add_settings_field('afip_default_taxonomy_term', __('Default Taxonomy Term (optional):', 'imagepress'), [$this, 'output_default_taxonomy_term_text'], 'afip', 'afip_section_main');
     }
 
     public function output_section_text() { }
 
     public function output_default_post_type_text() {
         $afip_options = get_option('afip_options');
-        $all_post_types = get_post_types(array('_builtin' => false));
+        $all_post_types = get_post_types(['_builtin' => false]);
 
         if (!isset($afip_options['default_post_type']))
             $afip_options['default_post_type'] = $this->post_type;
@@ -120,7 +119,7 @@ class ImagePress_Bulk_Upload {
         if (!isset($afip_options['default_taxonomy_term']))
             $afip_options['default_taxonomy_term'] = $this->taxonomy_term;
 
-        wp_dropdown_categories(array(
+        wp_dropdown_categories([
             'taxonomy' => 'imagepress_image_category',
             'name' => 'afip_options[default_taxonomy_term]',
             'hide_empty' => 0,
@@ -129,15 +128,15 @@ class ImagePress_Bulk_Upload {
             'orderby' => 'name',
             'show_option_all' => 'None',
             'selected' => $afip_options['default_taxonomy_term'],
-            'required' => false,
-        ));
+            'required' => false
+        ]);
     }
 
     public function validate_options($input) {
         global $_wp_theme_features;
 
-        $valid_post_status_options = array('draft', 'publish', 'private');
-        $valid_post_type_options = get_post_types(array('_builtin' => false));
+        $valid_post_status_options = ['draft', 'publish', 'private'];
+        $valid_post_type_options = get_post_types(['_builtin' => false]);
         $valid_post_type_options[] = $this->post_type;
 
         if (!in_array($input['default_post_status'], $valid_post_status_options))
@@ -153,7 +152,7 @@ class ImagePress_Bulk_Upload {
         if (!wp_attachment_is_image($post_id))
             return;
 
-        $new_post_category = array();
+        $new_post_category = [];
 
         // If an image is being uploaded through an existing post, it will have been assigned a post parent
         if ($parent_post_id = get_post($post_id)->post_parent) {
@@ -198,24 +197,24 @@ class ImagePress_Bulk_Upload {
         // Allow others to hook in and perform an action before a post is created.
         do_action('afip_pre_create_post', $post_id);
 
-        $new_post_id = wp_insert_post( array(
-            'post_title'    => $new_post_title,
-            'post_content'  => $new_post_content,
-            'post_status'   => $afip_options['default_post_status'],
-            'post_author'   => $current_user->ID,
-            'post_date'     => $new_post_date,
+        $new_post_id = wp_insert_post([
+            'post_title' => $new_post_title,
+            'post_content' => $new_post_content,
+            'post_status' => $afip_options['default_post_status'],
+            'post_author' => $current_user->ID,
+            'post_date' => $new_post_date,
             'post_category' => $new_post_category,
-            'post_type'     => $afip_options['default_post_type'],
-        ));
+            'post_type' => $afip_options['default_post_type']
+        ]);
 
         update_post_meta($new_post_id, '_thumbnail_id', $post_id);
 
         // Update the original image (attachment) to reflect new status.
-        wp_update_post(array(
-            'ID'          => $post_id,
+        wp_update_post([
+            'ID' => $post_id,
             'post_parent' => $new_post_id,
-            'post_status' => 'inherit',
-        ));
+            'post_status' => 'inherit'
+        ]);
 
         wp_set_object_terms($new_post_id, (int) $afip_options['default_taxonomy_term'], 'imagepress_image_category');
 

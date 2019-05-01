@@ -907,11 +907,8 @@ function ip_login() {
 						<label for="rememberme">
 							<input type="checkbox" name="rememberme" value="forever" checked="checked" id="rememberme"> Remember me
 						</label>
-					</div>';
-
-                    //do_action('login_form');
-
-                    $out .= '<input type="submit" name="user-submit" value="Login" class="user-submit">
+					</div>
+                    <input type="submit" name="user-submit" value="Login" class="user-submit">
 					<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '">
 					<input type="hidden" name="user-cookie" value="1">
 				</div>
@@ -930,7 +927,6 @@ function ip_login() {
 					<input type="text" name="user_email" value="' . esc_attr(stripslashes($user_email)) . '" size="25" id="user_email">
 				</div>
 				<div class="login_fields">';
-					// do_action('register_form');
 					$out .= '<input type="submit" name="user-submit" value="Sign up!" class="user-submit">';
 					$register = $_GET['register'];
                     if ($register == true) {
@@ -950,7 +946,6 @@ function ip_login() {
 					<input type="text" name="user_login" value="" size="20" id="user_login">
 				</div>
 				<div class="login_fields">';
-					// do_action('login_form', 'resetpass');
 					$out .= '<input type="submit" name="user-submit" value="Reset my password" class="user-submit">';
 					$reset = $_GET['reset'];
                     if ($reset == true) {

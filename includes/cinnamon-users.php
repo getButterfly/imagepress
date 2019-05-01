@@ -332,27 +332,27 @@ function cinnamon_profile_edit($atts) {
     if (!empty($_POST['action']) && (string) $_POST['action'] === 'update-user') {
         if (!empty($_POST['pass1']) && !empty($_POST['pass2'])) {
             if ((string) $_POST['pass1'] === (string) $_POST['pass2']) {
-                wp_update_user(array('ID' => $userid, 'user_pass' => esc_attr($_POST['pass1'])));
+                wp_update_user(['ID' => $userid, 'user_pass' => esc_attr($_POST['pass1'])]);
             } else {
                 $error[] = esc_html__('The passwords you entered do not match. Your password was not updated.', 'imagepress');
             }
         }
 
-        wp_update_user(array('ID' => $userid, 'user_url' => esc_url($_POST['url'])));
+        wp_update_user(['ID' => $userid, 'user_url' => esc_url($_POST['url'])]);
 
         if (!is_email(esc_attr($_POST['email']))) {
             $error[] = esc_html__('The email you entered is not valid. Please try again.', 'imagepress');
         } else if (email_exists(esc_attr($_POST['email'])) != $userid) {
             $error[] = esc_html__('This email is already used by another user. Try a different one.', 'imagepress');
         } else {
-            wp_update_user(array('ID' => $userid, 'user_email' => esc_attr($_POST['email'])));
+            wp_update_user(['ID' => $userid, 'user_email' => esc_attr($_POST['email'])]);
         }
 
         update_user_meta($userid, 'first_name', esc_attr($_POST['first-name']));
         update_user_meta($userid, 'last_name', esc_attr($_POST['last-name']));
 
         update_user_meta($userid, 'nickname', esc_attr($_POST['nickname']));
-        $wpdb->update($wpdb->users, array('display_name' => $_POST['nickname']), array('ID' => $userid), null, null);
+        $wpdb->update($wpdb->users, ['display_name' => $_POST['nickname']], ['ID' => $userid], null, null);
 
         update_user_meta($userid, 'description', esc_attr($_POST['description']));
 
@@ -577,16 +577,16 @@ function cinnamon_profile_edit($atts) {
                 $out .= '<div class="tab-content" id="editor">
                     <div id="ip-info">' . __('Drag images to reorder them', 'imagepress') . '<br><small>' . __('Click titles to rename images', 'imagepress') . '</small></div>';
 
-                    $args = array(
-                        'post_type' 				=> get_imagepress_option('ip_slug'),
-                        'post_status' 				=> array('publish', 'pending'),
-                        'posts_per_page' 			=> '-1',
-                        'orderby' 					=> 'menu_order',
-                        'order' 					=> 'ASC',
-                        'author' 					=> $userid,
-                        'cache_results'             => false,
-                        'no_found_rows'             => true,
-                    );
+                    $args = [
+                        'post_type' => get_imagepress_option('ip_slug'),
+                        'post_status' => ['publish', 'pending'],
+                        'posts_per_page' => '-1',
+                        'orderby' => 'menu_order',
+                        'order' => 'ASC',
+                        'author' => $userid,
+                        'cache_results' => false,
+                        'no_found_rows' => true
+                    ];
                     $posts = get_posts($args);
 
                     $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
@@ -687,10 +687,10 @@ function hub_gravatar_filter($avatar, $id_or_email, $size) {
 }
 
 function cinnamon_awards() {
-    $args = array(
+    $args = [
         'hide_empty' => false,
         'pad_counts' => true
-    );
+    ];
     $terms = get_terms('award', $args);
 
     if (!empty($terms) && !is_wp_error($terms)) {
