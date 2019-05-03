@@ -276,7 +276,8 @@ function imagepress_add($atts) {
             imagepress_process_image('imagepress_image_file', $post_id);
 
             // Multiple images
-            ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
+            if ( isset($_FILES['imagepress_image_additional']) )
+                ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
 
             if (isset($_POST['imagepress_image_category']))
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
