@@ -727,7 +727,7 @@ function imagepress_activate() {
 
     // notifications table
     $table_name = $wpdb->prefix . 'notifications';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+    if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `ID` int(11) NOT NULL AUTO_INCREMENT,
             `userID` int(11) NOT NULL,
@@ -746,7 +746,7 @@ function imagepress_activate() {
 
     // collections table
     $table_name = $wpdb->prefix . 'ip_collections';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+    if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `collection_ID` int(11) NOT NULL AUTO_INCREMENT,
             `collection_title` mediumtext COLLATE utf8_unicode_ci NOT NULL,
@@ -761,7 +761,7 @@ function imagepress_activate() {
         maybe_convert_table_to_utf8mb4($table_name);
     }
     $table_name = $wpdb->prefix . 'ip_collectionmeta';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+    if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `image_meta_ID` int(11) NOT NULL AUTO_INCREMENT,
             `image_ID` int(11) NOT NULL,
@@ -777,7 +777,7 @@ function imagepress_activate() {
 
     // custom fields table
     $table_name = $wpdb->prefix . 'ip_fields';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+    if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `field_id` int(11) NOT NULL AUTO_INCREMENT,
             `field_order` int(11) NOT NULL,
