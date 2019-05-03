@@ -589,9 +589,9 @@ function imagepress_admin_page() {
                     'cinnamon_hide_admin' => $_POST['cinnamon_hide_admin'],
                     'cinnamon_account_page' => $_POST['cinnamon_account_page'],
                     'cinnamon_edit_page' => (int) sanitize_text_field($_POST['cinnamon_edit_page']),
-                    'cinnamon_fancy_header' => $_POST['cinnamon_fancy_header'],
-                    'approvednotification' => $_POST['approvednotification'],
-                    'declinednotification' => $_POST['declinednotification'],
+                    'cinnamon_fancy_header' => isset($_POST['cinnamon_fancy_header']) ? 'yes' : 'no',
+                    'approvednotification' => isset($_POST['approvednotification']) ? 'yes' : 'no',
+                    'declinednotification' => isset($_POST['declinednotification']) ? 'yes' : 'no',
                 ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);

@@ -712,7 +712,7 @@ add_action('wp_ajax_nopriv_imagepress_list_update_order','imagepress_order_list'
 function get_imagepress_option($option) {
     $ipOptions = get_option('imagepress');
 
-    return $ipOptions[$option];
+    return isset($ipOptions[$option]) ? $ipOptions[$option] : false;
 }
 
 function updateImagePressOption($optionArray) {
