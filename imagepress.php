@@ -511,16 +511,22 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
     // get upload limit per user role
     $userRoleQuota = get_imagepress_option('ip_role_quota');
 
-    $user_meta = get_userdata($current_user->ID);
-    $user_roles = $user_meta->roles; //array of roles the user is part of.
-    $userRole = $user_roles[0];
+    // Role quotes have been defined
+    if ( is_array($userRoleQuota) && ! empty($userRoleQuota) ) {
+        $user_meta = get_userdata($current_user->ID);
+        $user_roles = $user_meta->roles; //array of roles the user is part of.
+        $userRole = $user_roles[0];
 
-    $all_roles = $wp_roles->roles;
-    $editable_roles = apply_filters('editable_roles', $all_roles);
-    foreach ($editable_roles as $role => $details) {
-        if ((string) $userRole === (string) str_replace('-', '_', sanitize_title($details['name']))) {
-            $ip_role_limit = $userRoleQuota[$details['name']];
+        $all_roles = $wp_roles->roles;
+        $editable_roles = apply_filters('editable_roles', $all_roles);
+        foreach ($editable_roles as $role => $details) {
+            if ((string) $userRole === (string) str_replace('-', '_', sanitize_title($details['name']))) {
+                $ip_role_limit = $userRoleQuota[$details['name']];
+            }
         }
+    } // No roles quota defined, set upload limit to default 1000
+    else {
+        $ip_role_limit = 1000;
     }
 
     $out = '<div class="ip-uploader" id="fileuploads" data-user-uploads="' . $user_uploads . '" data-upload-limit="' . $ip_upload_limit . '" data-role-limit="' . $ip_role_limit . '">
