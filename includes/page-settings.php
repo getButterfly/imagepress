@@ -994,7 +994,7 @@ function imagepress_admin_page() {
                                 $savedRoleQuota = get_imagepress_option('ip_role_quota');
 
                                 foreach ($editable_roles as $role => $details) {
-                                    echo '<p><input type="number" name="ip_quota_' . str_replace('-', '_', sanitize_title($details['name'])) . '" id="ip-quota-' . sanitize_title($details['name']) . '" value="' . $savedRoleQuota[$details['name']] . '"> <label for="ip-quota-' . sanitize_title($details['name']) . '">' . $details['name'] . '</label></p>';
+                                    echo '<p><input type="number" name="ip_quota_' . str_replace('-', '_', sanitize_title($details['name'])) . '" id="ip-quota-' . sanitize_title($details['name']) . '" value="' . (is_array($savedRoleQuota) && isset($savedRoleQuota[$details['name']]) ? $savedRoleQuota[$details['name']] : '' ) . '"> <label for="ip-quota-' . sanitize_title($details['name']) . '">' . $details['name'] . '</label></p>';
                                 }
                                 ?>
 
