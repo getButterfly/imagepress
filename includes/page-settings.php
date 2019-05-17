@@ -888,7 +888,7 @@ function imagepress_admin_page() {
                     'ip_global_upload_limit_message' => $_POST['ip_global_upload_limit_message'],
                     'ip_cat_exclude' => $_POST['ip_cat_exclude'],
                     'ip_max_quality' => $_POST['ip_max_quality'],
-                    'ip_dropbox_enable' => $_POST['ip_dropbox_enable'],
+                    'ip_dropbox_enable' => isset($_POST['ip_dropbox_enable']),
                     'ip_dropbox_key' => $_POST['ip_dropbox_key'],
                     'ip_role_quota' => $roleQuota,
                 ];
