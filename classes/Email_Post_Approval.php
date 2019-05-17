@@ -33,7 +33,7 @@ class Email_Post_Approval {
         $post_data = get_page($post_ID);
 
         // If post is saved via autosave, post is a revision or if it is not in the designated list of post status types, stop running.
-        if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || $post_data->post_type=="revision" || ((array_search($post_data->post_status, get_option('epa_post_statuses')) == FALSE) && (array_search($post_data->post_status, get_option('epa_post_statuses')) !== 0))) { return false; }
+        if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || $post_data->post_type=="revision" || ! is_array(get_option('epa_post_statuses')) || ((array_search($post_data->post_status, get_option('epa_post_statuses')) == FALSE) && (array_search($post_data->post_status, get_option('epa_post_statuses')) !== 0))) { return false; }
 
         // Get the needed information
         $post_taxonomies = get_the_taxonomies($post_ID);

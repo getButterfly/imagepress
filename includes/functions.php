@@ -267,7 +267,10 @@ function ip_editor() {
                     $ip_tag = wp_get_post_terms($edit_id, 'imagepress_image_tag');
                 }
 
-                $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
+                if ( is_array($ip_category) && ! empty($ip_category) ) {
+                    $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
+                }
+
                 if ((int) get_imagepress_option('ip_allow_tags') === 1) {
                     $out .= '<p>' . imagepress_get_image_tags_dropdown('imagepress_image_tag', $ip_tag[0]->term_id) . '</p>';
                 }
@@ -709,7 +712,7 @@ add_action('wp_ajax_nopriv_imagepress_list_update_order','imagepress_order_list'
 function get_imagepress_option($option) {
     $ipOptions = get_option('imagepress');
 
-    return $ipOptions[$option];
+    return isset($ipOptions[$option]) ? $ipOptions[$option] : false;
 }
 
 function updateImagePressOption($optionArray) {

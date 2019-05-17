@@ -589,9 +589,9 @@ function imagepress_admin_page() {
                     'cinnamon_hide_admin' => $_POST['cinnamon_hide_admin'],
                     'cinnamon_account_page' => $_POST['cinnamon_account_page'],
                     'cinnamon_edit_page' => (int) sanitize_text_field($_POST['cinnamon_edit_page']),
-                    'cinnamon_fancy_header' => $_POST['cinnamon_fancy_header'],
-                    'approvednotification' => $_POST['approvednotification'],
-                    'declinednotification' => $_POST['declinednotification'],
+                    'cinnamon_fancy_header' => isset($_POST['cinnamon_fancy_header']) ? 'yes' : 'no',
+                    'approvednotification' => isset($_POST['approvednotification']) ? 'yes' : 'no',
+                    'declinednotification' => isset($_POST['declinednotification']) ? 'yes' : 'no',
                 ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
@@ -888,7 +888,7 @@ function imagepress_admin_page() {
                     'ip_global_upload_limit_message' => $_POST['ip_global_upload_limit_message'],
                     'ip_cat_exclude' => $_POST['ip_cat_exclude'],
                     'ip_max_quality' => $_POST['ip_max_quality'],
-                    'ip_dropbox_enable' => $_POST['ip_dropbox_enable'],
+                    'ip_dropbox_enable' => isset($_POST['ip_dropbox_enable']),
                     'ip_dropbox_key' => $_POST['ip_dropbox_key'],
                     'ip_role_quota' => $roleQuota,
                 ];
@@ -994,7 +994,7 @@ function imagepress_admin_page() {
                                 $savedRoleQuota = get_imagepress_option('ip_role_quota');
 
                                 foreach ($editable_roles as $role => $details) {
-                                    echo '<p><input type="number" name="ip_quota_' . str_replace('-', '_', sanitize_title($details['name'])) . '" id="ip-quota-' . sanitize_title($details['name']) . '" value="' . $savedRoleQuota[$details['name']] . '"> <label for="ip-quota-' . sanitize_title($details['name']) . '">' . $details['name'] . '</label></p>';
+                                    echo '<p><input type="number" name="ip_quota_' . str_replace('-', '_', sanitize_title($details['name'])) . '" id="ip-quota-' . sanitize_title($details['name']) . '" value="' . (is_array($savedRoleQuota) && isset($savedRoleQuota[$details['name']]) ? $savedRoleQuota[$details['name']] : '' ) . '"> <label for="ip-quota-' . sanitize_title($details['name']) . '">' . $details['name'] . '</label></p>';
                                 }
                                 ?>
 

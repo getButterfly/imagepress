@@ -96,7 +96,7 @@ class Email_Post_Approval_Options {
                             <fieldset>
                                 <?php
                                 foreach ($this->post_status_types as $post_status) {
-                                    if (array_search($post_status['key'], $option_values['post_statuses']) !== false) {
+                                    if (is_array($option_values['post_statuses']) && array_search($post_status['key'], $option_values['post_statuses']) !== false) {
                                         $checked = 'checked';
                                     } else {
                                         $checked = '';
@@ -115,7 +115,7 @@ class Email_Post_Approval_Options {
                             <fieldset>
                                 <?php
                                 foreach ($this->email_fields as $email_field) {
-                                    if (array_search($email_field['key'], $option_values['email_fields']) !== false) {
+                                    if (is_array($option_values['email_fields']) && array_search($email_field['key'], $option_values['email_fields']) !== false) {
                                         $checked = 'checked';
                                     } else {
                                         $checked = '';

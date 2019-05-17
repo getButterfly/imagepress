@@ -276,7 +276,8 @@ function imagepress_add($atts) {
             imagepress_process_image('imagepress_image_file', $post_id);
 
             // Multiple images
-            ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
+            if ( isset($_FILES['imagepress_image_additional']) )
+                ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
 
             if (isset($_POST['imagepress_image_category']))
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
@@ -510,16 +511,22 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
     // get upload limit per user role
     $userRoleQuota = get_imagepress_option('ip_role_quota');
 
-    $user_meta = get_userdata($current_user->ID);
-    $user_roles = $user_meta->roles; //array of roles the user is part of.
-    $userRole = $user_roles[0];
+    // Role quotes have been defined
+    if ( is_array($userRoleQuota) && ! empty($userRoleQuota) ) {
+        $user_meta = get_userdata($current_user->ID);
+        $user_roles = $user_meta->roles; //array of roles the user is part of.
+        $userRole = $user_roles[0];
 
-    $all_roles = $wp_roles->roles;
-    $editable_roles = apply_filters('editable_roles', $all_roles);
-    foreach ($editable_roles as $role => $details) {
-        if ((string) $userRole === (string) str_replace('-', '_', sanitize_title($details['name']))) {
-            $ip_role_limit = $userRoleQuota[$details['name']];
+        $all_roles = $wp_roles->roles;
+        $editable_roles = apply_filters('editable_roles', $all_roles);
+        foreach ($editable_roles as $role => $details) {
+            if ((string) $userRole === (string) str_replace('-', '_', sanitize_title($details['name']))) {
+                $ip_role_limit = $userRoleQuota[$details['name']];
+            }
         }
+    } // No roles quota defined, set upload limit to default 1000
+    else {
+        $ip_role_limit = 1000;
     }
 
     $out = '<div class="ip-uploader" id="fileuploads" data-user-uploads="' . $user_uploads . '" data-upload-limit="' . $ip_upload_limit . '" data-role-limit="' . $ip_role_limit . '">
@@ -727,7 +734,7 @@ function imagepress_activate() {
 
     // notifications table
     $table_name = $wpdb->prefix . 'notifications';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+    if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `ID` int(11) NOT NULL AUTO_INCREMENT,
             `userID` int(11) NOT NULL,
@@ -746,7 +753,7 @@ function imagepress_activate() {
 
     // collections table
     $table_name = $wpdb->prefix . 'ip_collections';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+    if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `collection_ID` int(11) NOT NULL AUTO_INCREMENT,
             `collection_title` mediumtext COLLATE utf8_unicode_ci NOT NULL,
@@ -761,7 +768,7 @@ function imagepress_activate() {
         maybe_convert_table_to_utf8mb4($table_name);
     }
     $table_name = $wpdb->prefix . 'ip_collectionmeta';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+    if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `image_meta_ID` int(11) NOT NULL AUTO_INCREMENT,
             `image_ID` int(11) NOT NULL,
@@ -777,7 +784,7 @@ function imagepress_activate() {
 
     // custom fields table
     $table_name = $wpdb->prefix . 'ip_fields';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
+    if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
         $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
             `field_id` int(11) NOT NULL AUTO_INCREMENT,
             `field_order` int(11) NOT NULL,
