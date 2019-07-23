@@ -21,6 +21,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 == Changelog ==
 
 = 8.0.0 =
+* FIX: Remove non-functional image search
 * UPDATE: Removed upload limits (implementation was JavaScript-based and not reliable)
 * UPDATE: Removed feed (feature adoption was low)
 * UPDATE: Removed front-end bulk uploader (implementation was done for several customers only)

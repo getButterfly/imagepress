@@ -86,8 +86,6 @@ function getImagePressDiscoverFilters() {
                 }
             $out .= '</select>
 
-            <input type="text" name="q" id="q" value="' . $queryValue . '" placeholder="' . __('Search...', 'imagepress') . '">
-
             <div id="ip-sorter-loader" class="ip-sorter-loader"></div>
         </div>
     </div>';

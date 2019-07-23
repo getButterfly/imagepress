@@ -139,8 +139,8 @@ a img { border: none; }
     flex-wrap: wrap;
 }
 .ip-box-container .ip_box {
-    flex-basis: 31%;
-    margin: 1%;
+    flex-basis: 32%;
+    margin: 0.5%;
 }
 
 

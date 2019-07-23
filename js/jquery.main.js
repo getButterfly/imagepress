@@ -426,7 +426,6 @@ document.addEventListener('DOMContentLoaded', function() {
             sorterDropdown = document.getElementById('sorter'),
             rangerDropdown = document.getElementById('ranger'),
             taxxxerDropdown = document.getElementById('taxxxer'),
-            queryElement = document.getElementById('q'),
             queryLocation;
 
         // Check URI parameters, select default values, and redirect based on user selection
@@ -460,20 +459,6 @@ document.addEventListener('DOMContentLoaded', function() {
         taxxxerDropdown.onchange = function () {
             document.getElementById('ip-sorter-loader').innerHTML = '<i class="fas fa-cog fa-spin"></i>';
             window.location.href = taxxxerDropdown.value;
-        };
-
-        queryElement.onkeypress = function (e) {
-            var event = e || window.event;
-            var charCode = event.which || event.keyCode;
-
-            if (charCode === '13') {
-                // Enter key pressed
-
-                queryLocation = window.location.search.replace(/(q=)[^\&]+/, '$1' + queryElement.value);
-                window.location = queryLocation;
-
-                return false;
-            }
         };
     }
 }, !1);
