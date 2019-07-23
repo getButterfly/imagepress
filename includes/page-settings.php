@@ -449,8 +449,7 @@ function imagepress_admin_page() {
                     'ip_click_behaviour' => $_POST['ip_click_behaviour'],
                     'ip_cat_moderation_include' => $_POST['ip_cat_moderation_include'],
                     'ip_upload_redirection' => $_POST['ip_upload_redirection'],
-                    'ip_notification_email' => $_POST['ip_notification_email'],
-                    'ip_enable_views' => $_POST['ip_enable_views']
+                    'ip_notification_email' => $_POST['ip_notification_email']
                 ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
@@ -464,16 +463,6 @@ function imagepress_admin_page() {
                 <p>These settings apply globally for all ImagePress users.</p>
                 <table class="form-table">
                     <tbody>
-                        <tr>
-                            <th scope="row"><label for="ip_enable_views">Image views</label></th>
-                            <td>
-                                <select name="ip_enable_views" id="ip_enable_views">
-                                    <option value="0"<?php if ((int) get_imagepress_option('ip_enable_views') === 0) echo ' selected'; ?>>Disable image views</option>
-                                    <option value="1"<?php if ((int) get_imagepress_option('ip_enable_views') === 1) echo ' selected'; ?>>Enable image views</option>
-                                </select>
-                                <br><small>Note that disabling image views will render some sorting functions and/or widgets unusable.</small>
-                            </td>
-                        </tr>
                         <tr>
                             <th scope="row"><label for="ip_registration">User registration</label></th>
                             <td>

@@ -316,18 +316,12 @@ function ip_main($imageId) {
         <a href="<?php echo $post_thumbnail_url; ?>">
             <?php the_post_thumbnail('full'); ?>
         </a>
-        <?php
-        if ((int) get_imagepress_option('ip_enable_views') === 1) {
-            ip_setPostViews($imageId);
-        }
-        ?>
+        <?php ip_setPostViews($imageId); ?>
     </div>
 
     <div class="ip-bar">
         <?php echo ipGetPostLikeLink($imageId); ?><em> | </em>
-        <?php if ((int) get_imagepress_option('ip_enable_views') === 1) { ?>
-            <i class="far fa-eye"></i> <?php echo ip_getPostViews($imageId); ?>
-        <?php } ?>
+        <i class="far fa-eye"></i> <?php echo ip_getPostViews($imageId); ?>
         <?php echo $ip_comments; ?>
         <em> | </em>
         <?php if (function_exists('ip_frontend_add_collection')) {
@@ -407,9 +401,7 @@ function ip_main_return($imageId) {
     global $wpdb, $post;
 
     $out = '';
-    if ((int) get_imagepress_option('ip_enable_views') === 1) {
-        ip_setPostViews($imageId);
-    }
+    ip_setPostViews($imageId);
 
     $postThumbnailId = get_post_thumbnail_id($imageId);
     $image_attributes = wp_get_attachment_image_src($postThumbnailId, 'full');
@@ -427,9 +419,7 @@ function ip_main_return($imageId) {
 
     <div class="ip-bar">' .
         ipGetPostLikeLink($imageId) . '<em> | </em>';
-        if ((int) get_imagepress_option('ip_enable_views') === 1) {
-            $out .= '<i class="far fa-eye"></i> ' . ip_getPostViews($imageId);
-        }
+        $out .= '<i class="far fa-eye"></i> ' . ip_getPostViews($imageId);
         $out .= $ip_comments;
 
         $out .= '<em> | </em>';
@@ -699,7 +689,7 @@ function ipRenderGridElement($elementId) {
         $ip_meta_optional = '<span class="imagecategory" data-tag="' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '">' . strip_tags(get_the_term_list($elementId, 'imagepress_image_category', '', ', ', '')) . '</span>';
 
     $ip_views_optional = '';
-    if ((int) $getImagePressViews === 1 && (int) get_imagepress_option('ip_enable_views') === 1) {
+    if ((int) $getImagePressViews === 1) {
         $ip_views_optional = '<span class="imageviews"><i class="far fa-eye"></i> ' . ip_getPostViews($elementId) . '</span> ';
     }
 

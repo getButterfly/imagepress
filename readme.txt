@@ -21,12 +21,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 == Changelog ==
 
 = 8.0.0 =
-* FIX: Remove non-functional image search
+* FIX: Removed non-functional image search
 * UPDATE: Removed upload limits (implementation was JavaScript-based and not reliable)
 * UPDATE: Removed feed (feature adoption was low)
 * UPDATE: Removed front-end bulk uploader (implementation was done for several customers only)
 * UPDATE: Removed tags (they have been disabled for the past 4 minor versions)
 * UPDATE: Removed pre-7.8 cleanup feature (starting fresh)
+* UPDATE: Removed option to enable/disable image views (performance gain)
 * FEATURE: Moved grid display to Flex
 Remove/fix image grid details (not working anyway)
 Release major version

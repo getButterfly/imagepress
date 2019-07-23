@@ -62,8 +62,6 @@ $optionArray = [
     'ip_max_quality' => 100,
     'ip_dropbox_enable' => 0,
     'ip_dropbox_key' => '',
-
-    'ip_enable_views' => 1,
 ];
 
 add_option('imagepress', $optionArray);
