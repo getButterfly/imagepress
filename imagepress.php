@@ -137,7 +137,6 @@ function imagepress_menu() {
 }
 
 add_shortcode('imagepress-add', 'imagepress_add');
-add_shortcode('imagepress-add-bulk', 'imagepress_add_bulk');
 add_shortcode('imagepress-collection', 'imagepress_collection');
 add_shortcode('imagepress-search', 'imagepress_search');
 add_shortcode('imagepress-top', 'imagepress_top');
@@ -338,98 +337,7 @@ function imagepress_add($atts) {
     return $out;
 }
 
-function imagepress_add_bulk($atts) {
-    extract(shortcode_atts([
-        'category' => ''
-    ], $atts));
 
-    global $wpdb, $current_user;
-
-    $out = '';
-
-    if (isset($_POST['imagepress_upload_image_form_submitted_bulk']) && wp_verify_nonce($_POST['imagepress_upload_image_form_submitted_bulk'], 'imagepress_upload_image_form_bulk')) {
-        $ip_status = 'publish';
-        if ((int) get_imagepress_option('ip_moderate') === 0) {
-            $ip_status = 'pending';
-        }
-
-        $ip_image_author = $current_user->ID;
-        $ipSlug = get_imagepress_option('ip_slug');
-
-        // send notification email to administrator
-        $notificationEmail = get_imagepress_option('ip_notification_email');
-        $notificationSubject = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
-        $notificationMessage = __('New image uploaded!', 'imagepress') . ' | ' . get_bloginfo('name');
-
-        // alpha
-        $files = $_FILES['imagepress_image_file_bulk'];
-        if (!empty($files)) {
-            require_once ABSPATH . 'wp-admin/includes/image.php';
-            require_once ABSPATH . 'wp-admin/includes/file.php';
-            require_once ABSPATH . 'wp-admin/includes/media.php';
-
-            foreach ($files['name'] as $key => $value) {
-                if ($files['name'][$key]) {
-                    $file = [
-                        'name' => $files['name'][$key],
-                        'type' => $files['type'][$key],
-                        'tmp_name' => $files['tmp_name'][$key],
-                        'error' => $files['error'][$key],
-                        'size' => $files['size'][$key]
-                    ];
-                }
-                $_FILES = ["attachment" => $file];
-                foreach ($_FILES as $file => $array) {
-                    $attach_id = media_handle_upload($file, 0);
-
-                    $user_image_data = [
-                        'post_status' => $ip_status,
-                        'post_author' => $ip_image_author,
-                        'post_type' => $ipSlug
-                    ];
-                    $post_id = wp_insert_post($user_image_data);
-                    update_post_meta($post_id, '_thumbnail_id', $attach_id);
-
-                    wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
-                }
-            }
-
-            // collections
-            $ip_collections = (int) ($_POST['ip_collections']);
-
-            if (!empty($_POST['ip_collections_new'])) {
-                $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
-                $ip_collection_status = (int) ($_POST['collection_status']);
-
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
-            } else {
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
-            }
-            //
-        }
-
-        $headers[] = "MIME-Version: 1.0\r\n";
-        $headers[] = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\r\n";
-        wp_mail($notificationEmail, $notificationSubject, $notificationMessage, $headers);
-
-        $out .= '<p class="message noir-success">' . get_imagepress_option('ip_upload_success_title') . '</p>';
-        $out .= '<p class="message"><a href="' . get_permalink($post_id) . '">' . get_imagepress_option('ip_upload_success') . '</a></p>';
-    }
-
-    if (get_imagepress_option('ip_registration') == 0 && !is_user_logged_in()) {
-        $out .= '<p>' . __('You need to be logged in to upload an image.', 'imagepress') . '</p>';
-    }
-    if ((get_imagepress_option('ip_registration') == 0 && is_user_logged_in()) || get_imagepress_option('ip_registration') == 1) {
-        if (isset($_POST['imagepress_image_caption']) && isset($_POST['imagepress_image_category'])) {
-            $out .= imagepress_get_upload_image_form_bulk($ipImageCategory = $_POST['imagepress_image_category'], $category);
-        } else {
-            $out .= imagepress_get_upload_image_form_bulk($ipImageCategory = '', $category);
-        }
-    }
-
-    return $out;
-}
 
 function imagepress_jpeg_quality($quality, $context) {
     $ip_quality = (int) get_imagepress_option('ip_max_quality');
@@ -607,50 +515,6 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
 
     return $out;
 }
-
-
-
-function imagepress_get_upload_image_form_bulk($ipImageCategory = 0, $imagepress_hardcoded_category) {
-    // upload form // customize
-
-    $ip_upload_size = get_imagepress_option('ip_upload_size');
-
-    $out = '<div class="ip-uploader">
-        <form id="imagepress_upload_image_form_bulk" method="post" action="" enctype="multipart/form-data" class="imagepress-upload-form">';
-            $out .= wp_nonce_field('imagepress_upload_image_form_bulk', 'imagepress_upload_image_form_submitted_bulk');
-
-            $out .= '<div id="fileuploads">
-                <p>';
-                    if ('' != $imagepress_hardcoded_category) {
-                        $iphcc = get_term_by('slug', $imagepress_hardcoded_category, 'imagepress_image_category'); // ImagePress hard-coded category
-                        $out .= '<input type="hidden" id="imagepress_image_category" name="imagepress_image_category[]" value="' . $iphcc->term_id . '">';
-                    } else {
-                        $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', '') . '';
-                    }
-                $out .= '</p>';
-
-                // Add to collection on upload
-                $out .= ip_collection_dropdown();
-
-                $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
-                $datauploadsize = $uploadsize * 1024000;
-
-                $out .= '<p><label for="imagepress_image_file">' . __('Select a file', 'imagepress') . ' (' . $uploadsize . 'MB ' . __('maximum', 'imagepress') . ')...</label><br><input type="file" accept="image/*" data-max-size="' . $datauploadsize . '" name="imagepress_image_file_bulk[]" id="imagepress_image_file_bulk" multiple></p>
-                <hr>
-            </div>
-
-            <p>
-                <input type="submit" id="imagepress_submit_bulk" name="imagepress_submit_bulk" value="' . get_imagepress_option('ip_upload_label') . '" class="button noir-secondary">
-                 <span id="ipload"></span>
-            </p>
-        </form>
-    </div>';
-
-    return $out;
-}
-
-
-
 
 
 

@@ -53,7 +53,6 @@ function imagepress_admin_page() {
             <p>
                 <code>[imagepress-add]</code> - show the submission form.<br>
                 <code>[imagepress-add category="landscapes"]</code> - show the submission form with a fixed (hidden) category. Use the category <b>slug</b>.<br>
-                <code>[imagepress-add-bulk]</code> - show the bulk submission form.<br>
                 <br>
                 <code>[imagepress-search]</code> - show the search form.<br>
                 <br>
