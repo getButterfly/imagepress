@@ -25,15 +25,13 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed feed (feature adoption was low)
 * UPDATE: Removed front-end bulk uploader (implementation was done for several customers only)
 * UPDATE: Removed tags (they have been disabled for the past 4 minor versions)
-Remove/fix image grid details (not working anyway)
 * UPDATE: Removed pre-7.8 cleanup feature (starting fresh)
+* FEATURE: Moved grid display to Flex
+Remove/fix image grid details (not working anyway)
 Release major version
-Move to Flex
 Update changelog
 Update page
 Update screenshots
-Post several articles
-* TODO: Refactor notifications and merge with feed (this will break Noir UI)
 * TODO: Refactor collections (CPT?)
 * TODO: Refactor custom fields
 * TODO/ROADMAP: Remove jQuery dependency
