@@ -21,6 +21,18 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 == Changelog ==
 
 = 8.0.0 =
+* UPDATE: Removed upload limits (implementation was JavaScript-based and not reliable)
+Remove feed
+Remove bulk editor (frontend)
+Remove tags
+Remove/fix image grid details (not working anyway)
+Remove pre-7.8 cleanup feature
+Release major version
+Move to Flex
+Update changelog
+Update page
+Update screenshots
+Post several articles
 * TODO: Refactor notifications and merge with feed (this will break Noir UI)
 * TODO: Refactor collections (CPT?)
 * TODO: Refactor custom fields

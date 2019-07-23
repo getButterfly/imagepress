@@ -72,8 +72,6 @@ include IP_PLUGIN_PATH . '/modules/mod-notifications.php';
 
 include IP_PLUGIN_PATH . '/modules/mod-collections.php';
 
-include IP_PLUGIN_PATH . '/includes/shortcodes.php';
-
 add_action('init', 'imagepress_registration');
 
 add_action('admin_menu', 'imagepress_menu'); // settings menu
@@ -210,15 +208,6 @@ function ip_column_action($column) {
 
 function ip_manage_users_custom_column($output = '', $column_name, $user_id) {
     if ($column_name === 'post_type_quota') {
-        $quota = get_the_author_meta('ip_upload_limit', $user_id);
-        $limit = __('No quota', 'imagepress');
-
-        if (isset($quota) && !empty($quota)) {
-            $limit = $quota;
-        } else if (!empty(get_imagepress_option('ip_global_upload_limit'))) {
-            $limit = get_imagepress_option('ip_global_upload_limit');
-        }
-
         // get current user uploads
         $userUploads = cinnamon_count_user_posts_by_type($user_id);
 
@@ -226,13 +215,13 @@ function ip_manage_users_custom_column($output = '', $column_name, $user_id) {
             $userUploads = '<a href="' . admin_url('edit.php?post_type=' . get_imagepress_option('ip_slug') . '&author=' . $user_id) . '">' . $userUploads . '</a>';
         }
 
-        return $userUploads . '/<small>' . $limit . '</small>';
+        return $userUploads;
     }
 }
 add_filter('manage_users_custom_column', 'ip_manage_users_custom_column', 10, 3);
 
 function ip_manage_users_columns($columns) {
-    $columns['post_type_quota'] = __('Images/Quota', 'imagepress');
+    $columns['post_type_quota'] = __('Images', 'imagepress');
 
     return $columns;
 }
@@ -489,40 +478,10 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
     $ip_dropbox_key = get_imagepress_option('ip_dropbox_key');
     $ip_upload_secondary = get_imagepress_option('ip_upload_secondary');
 
-    // get global upload limit
-    $ipGlobalUploadLimit = get_imagepress_option('ip_global_upload_limit');
-    if (empty($ipGlobalUploadLimit)) {
-        $ipGlobalUploadLimit = 999999;
-    }
-
     // get current user uploads
     $user_uploads = cinnamon_count_user_posts_by_type($current_user->ID);
 
-    // get upload limit for current user
-    $ip_user_upload_limit = get_the_author_meta('ip_upload_limit', $current_user->ID);
-    if (!empty($ip_user_upload_limit)) {
-        $ip_upload_limit = $ip_user_upload_limit;
-    }
-    if (empty($ip_upload_limit)) {
-        $ip_upload_limit = 999999;
-    }
-
-    // get upload limit per user role
-    $userRoleQuota = get_imagepress_option('ip_role_quota');
-
-    $user_meta = get_userdata($current_user->ID);
-    $user_roles = $user_meta->roles; //array of roles the user is part of.
-    $userRole = $user_roles[0];
-
-    $all_roles = $wp_roles->roles;
-    $editable_roles = apply_filters('editable_roles', $all_roles);
-    foreach ($editable_roles as $role => $details) {
-        if ((string) $userRole === (string) str_replace('-', '_', sanitize_title($details['name']))) {
-            $ip_role_limit = $userRoleQuota[$details['name']];
-        }
-    }
-
-    $out = '<div class="ip-uploader" id="fileuploads" data-user-uploads="' . $user_uploads . '" data-upload-limit="' . $ip_upload_limit . '" data-role-limit="' . $ip_role_limit . '">
+    $out = '<div class="ip-uploader" id="fileuploads" data-user-uploads="' . $user_uploads . '">
         <form id="imagepress_upload_image_form" method="post" action="" enctype="multipart/form-data" class="imagepress-form imagepress-upload-form">';
             $out .= wp_nonce_field('imagepress_upload_image_form', 'imagepress_upload_image_form_submitted');
 
@@ -845,7 +804,6 @@ function ip_enqueue_scripts() {
         'redirecturl' => apply_filters('fum_redirect_to', $accountPageUri),
 		'loadingmessage' => __('Checking credentials...', 'imagepress'),
 		'registrationloadingmessage' => __('Processing registration...', 'imagepress'),
-		'ip_global_upload_limit_message' => get_imagepress_option('ip_global_upload_limit_message'),
 
         'swal_confirm_operation' => __("Are you sure? You won't be able to revert this!", 'imagepress'),
         'swal_confirm_button' => __('Yes', 'imagepress'),

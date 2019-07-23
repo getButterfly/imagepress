@@ -399,27 +399,8 @@ function cinnamon_profile_edit($atts) {
                     <h3>' . __('Statistics', 'imagepress') . '</h3>';
                     $ip_slug = get_imagepress_option('ip_slug');
 
-                    // get global upload limit
-                    $ipGlobalUploadLimit = get_imagepress_option('ip_global_upload_limit');
-                    if (empty($ipGlobalUploadLimit)) {
-                        $ipGlobalUploadLimit = 999999;
-                    }
-                    $ipGlobalUploadLimitMessage = get_imagepress_option('ip_global_upload_limit_message');
-
                     // get current user uploads
                     $user_uploads = cinnamon_count_user_posts_by_type($userid, $ip_slug);
-
-                    // get upload limit for current user
-                    $ip_upload_limit = $ipGlobalUploadLimit;
-
-                    $ip_user_upload_limit = get_the_author_meta('ip_upload_limit', $userid);
-                    if (!empty($ip_user_upload_limit)) {
-                        $ip_upload_limit = $ip_user_upload_limit;
-                    }
-
-                    if ($user_uploads >= $ip_upload_limit) {
-                        $out .= '<p>' . $ipGlobalUploadLimitMessage . ' (' . $user_uploads . '/' . $ip_upload_limit . ')</p>';
-                    }
 
                     $out .= '<div class="ip-user-dashboard">
                         <div class="ip-user-dashboard-stat">
@@ -435,7 +416,7 @@ function cinnamon_profile_edit($atts) {
                             __('following', 'imagepress') . '
                         </div>
                         <div class="ip-user-dashboard-stat">
-                            <span>' . kformat(cinnamon_count_user_posts_by_type($userid, $ip_slug)) . '<small>/' . $ip_upload_limit . '</small></span>' .
+                            <span>' . kformat(cinnamon_count_user_posts_by_type($userid, $ip_slug)) . '</span>' .
                             __('uploads', 'imagepress') . '
                         </div>';
 
@@ -660,10 +641,6 @@ function save_cinnamon_profile_fields($user_id) {
 
     // awards
     if (current_user_can('manage_options', $user_id)) {
-        if (!empty($_POST['ip_upload_limit'])) {
-            update_user_meta($user_id, 'ip_upload_limit', $_POST['ip_upload_limit']);
-        }
-
         if (!empty($_POST['award'])) {
             $term = $_POST['award'];
             wp_set_object_terms($user_id, $term, 'award', false);

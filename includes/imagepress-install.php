@@ -60,15 +60,12 @@ $optionArray = [
     'ip_upload_tos_error' => 'You have to agree! You definitely have to!',
     'ip_upload_tos_content' => 'I have read and agree to the terms & conditions of use.',
     'ip_upload_size' => 4096,
-    'ip_global_upload_limit' => 1000,
-    'ip_global_upload_limit_message' => 'You have reached the maximum number of images allowed.',
     'ip_cat_exclude' => '',
     'ip_max_quality' => 100,
     'ip_dropbox_enable' => 0,
     'ip_dropbox_key' => '',
 
     'ip_enable_views' => 1,
-    'ip_role_quota' => '',
 ];
 
 add_option('imagepress', $optionArray);

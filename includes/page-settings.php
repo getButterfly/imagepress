@@ -871,11 +871,6 @@ function imagepress_admin_page() {
             $editable_roles = apply_filters('editable_roles', $all_roles);
 
             if (isset($_POST['isGSSubmit'])) {
-                $roleQuota = [];
-                foreach ($editable_roles as $role => $details) {
-                    $roleQuota[$details['name']] = $_POST['ip_quota_' . str_replace('-', '_', sanitize_title($details['name']))];
-                }
-
                 $ipUpdatedOptions = [
                     'ip_upload_secondary' => $_POST['ip_upload_secondary'],
                     'ip_allow_tags' => $_POST['ip_allow_tags'],
@@ -884,36 +879,14 @@ function imagepress_admin_page() {
                     'ip_upload_tos_error' => $_POST['ip_upload_tos_error'],
                     'ip_upload_tos_content' => $_POST['ip_upload_tos_content'],
                     'ip_upload_size' => $_POST['ip_upload_size'],
-                    'ip_global_upload_limit' => $_POST['ip_global_upload_limit'],
-                    'ip_global_upload_limit_message' => $_POST['ip_global_upload_limit_message'],
                     'ip_cat_exclude' => $_POST['ip_cat_exclude'],
                     'ip_max_quality' => $_POST['ip_max_quality'],
                     'ip_dropbox_enable' => $_POST['ip_dropbox_enable'],
                     'ip_dropbox_key' => $_POST['ip_dropbox_key'],
-                    'ip_role_quota' => $roleQuota,
                 ];
                 $ipOptions = get_option('imagepress');
                 $ipUpdate = array_merge($ipOptions, $ipUpdatedOptions);
                 update_option('imagepress', $ipUpdate);
-
-                if (!empty($_POST['ip_quota_increase']) && (int) trim($_POST['ip_quota_increase']) >= 0) {
-                    $ipUsers = get_users();
-                    $ip_quota_increase = (int) trim($_POST['ip_quota_increase']);
-
-                    foreach ($ipUsers as $user) {
-                        $quota = (int) get_the_author_meta('ip_upload_limit', $user->ID);
-
-                        if ((string) $_POST['ip_quota_action'] === 'increase') {
-                            update_user_meta($user->ID, 'ip_upload_limit', $quota + $ip_quota_increase);
-                        } else if ((string) $_POST['ip_quota_action'] === 'decrease') {
-                            update_user_meta($user->ID, 'ip_upload_limit', $quota - $ip_quota_increase);
-                        } else if ((string) $_POST['ip_quota_action'] === 'set') {
-                            update_user_meta($user->ID, 'ip_upload_limit', $ip_quota_increase);
-                        }
-                    }
-
-                    echo '<div class="updated notice is-dismissible"><p>User quota increased successfully!</p></div>';
-                }
 
                 echo '<div class="updated notice is-dismissible"><p>Settings updated successfully!</p></div>';
             }
@@ -971,45 +944,6 @@ function imagepress_admin_page() {
                                 <br>
                                 <input type="url" name="ip_upload_tos_url" id="ip_upload_tos_url" class="regular-text" value="<?php echo get_imagepress_option('ip_upload_tos_url'); ?>" placeholder="https://"> <label for="ip_upload_tos_url">Terms and conditions of use URL</label>
                                 <br><small>Opens in new tab/window</small>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <hr>
-                <h2>Limits and Quotas</h2>
-                <p>
-                    Set global and per-user upload limits.<br>
-                    Set individual limits for each user in their <a href="<?php echo admin_url('users.php'); ?>">profile editor</a>. Individual limits have higher priority than global limits.
-                </p>
-                <table class="form-table">
-                    <tbody>
-                        <tr>
-                            <th scope="row"><label for="ip_global_upload_limit">Maximum image upload limit</label></th>
-                            <td>
-                                <input type="number" name="ip_global_upload_limit" id="ip_global_upload_limit" min="0" max="999999" step="1" value="<?php echo get_imagepress_option('ip_global_upload_limit'); ?>"> <label for="ip_global_upload_limit">Image upload limit (global, if no other limits are specified)</label>
-                                <hr>
-
-                                <?php
-                                $savedRoleQuota = get_imagepress_option('ip_role_quota');
-
-                                foreach ($editable_roles as $role => $details) {
-                                    echo '<p><input type="number" name="ip_quota_' . str_replace('-', '_', sanitize_title($details['name'])) . '" id="ip-quota-' . sanitize_title($details['name']) . '" value="' . $savedRoleQuota[$details['name']] . '"> <label for="ip-quota-' . sanitize_title($details['name']) . '">' . $details['name'] . '</label></p>';
-                                }
-                                ?>
-
-                                <p>
-                                    <select name="ip_quota_action">
-                                        <option value="increase">Increase all users quota by</option>
-                                        <option value="decrease">Decrease all users quota by</option>
-                                        <option value="set">Set all users quota to</option>
-                                    </select> <input name="ip_quota_increase" type="number" min="0" placeholder="0"> images
-                                    <br><small>Note that setting a limit higher than the global limit will override it.</small>
-                                </p>
-
-                                <hr>
-                                <textarea class="large-text" rows="4" id="ip_global_upload_limit_message" name="ip_global_upload_limit_message" placeholder="You have reached the maximum number of images allowed."><?php echo get_imagepress_option('ip_global_upload_limit_message'); ?></textarea>
-                                <br><small>Set a message when maximum number of images is reached.</small>
                             </td>
                         </tr>
                     </tbody>

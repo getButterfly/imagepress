@@ -14,7 +14,7 @@ function do_confirm(imageId) {
 
 function do_click(m) {
     // Hide confirm modal
-    document.getElementById('aep_ww').style.display = 'none'; 
+    document.getElementById('aep_ww').style.display = 'none';
 
     if (!m) {
         // false
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.querySelector('ul.tabs')) {
         var tabLinks = document.querySelectorAll('ul.tabs li a');
 
-        for (var i = 0; i < tabLinks.length; i++) { 
+        for (var i = 0; i < tabLinks.length; i++) {
             tabLinks[i].onclick = function () {
                 var target = this.getAttribute('href').replace('#', '');
                 var sections = document.querySelectorAll('div.tab-content');
@@ -373,30 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
-    }
-
-
-
-
-
-    if (document.querySelector('.ip-uploader')) {
-        var userUploads = parseInt(document.querySelector('.ip-uploader').dataset.userUploads, 10),
-            uploadLimit = parseInt(document.querySelector('.ip-uploader').dataset.uploadLimit, 10),
-            roleLimit = parseInt(document.querySelector('.ip-uploader').dataset.roleLimit, 10),
-            globalUploadLimitMessage = ipAjaxVar.ip_global_upload_limit_message;
-
-        /**
-        console.log('Your limit based on global limit is ' + userUploads + '/' + uploadLimit);
-        console.log('Your limit based on your role is ' + userUploads + '/' + roleLimit);
-        /**/
-
-        if (!isNaN(uploadLimit) && userUploads >= uploadLimit) {
-            jQuery('<div>' + globalUploadLimitMessage + ' (' + userUploads + '/' + uploadLimit + ')</div>').insertBefore('.ip-uploader');
-            jQuery('.ip-uploader').remove();
-        } else if (!isNaN(roleLimit) && userUploads >= roleLimit) {
-            jQuery('<div>' + globalUploadLimitMessage + ' (' + userUploads + '/' + roleLimit + ')</div>').insertBefore('.ip-uploader');
-            jQuery('.ip-uploader').remove();
-        }
     }
 });
 

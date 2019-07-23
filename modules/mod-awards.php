@@ -92,13 +92,6 @@ function my_edit_user_award_section($user) {
 		<h3><?php esc_html_e('ImagePress Details', 'imagepress'); ?></h3>
 		<table class="form-table">
 			<tr>
-				<th><label for="ip_upload_limit"><?php esc_html_e('User upload limit', 'imagepress'); ?></label></th>
-				<td>
-					<input type="number" min="0" max="999999" step="1" name="ip_upload_limit" id="ip_upload_limit" value="<?php echo esc_attr(get_the_author_meta('ip_upload_limit', $user->ID)); ?>">
-					<span class="description"><?php esc_html_e('Set user upload limit', 'imagepress'); ?></span>
-				</td>
-			</tr>
-			<tr>
 				<th><label for="award"><?php esc_html_e('Select award(s)', 'imagepress'); ?></label></th>
 				<td><?php
 				if (!empty($terms)) {
