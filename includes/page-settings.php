@@ -132,33 +132,6 @@ function imagepress_admin_page() {
                 $wpdb->query("DELETE FROM " . $wpdb->prefix . "postmeta WHERE meta_key = 'post_views_count'");
                 echo '<div class="updated notice is-dismissible"><p>Action completed successfully!</p></div>';
             }
-            if (isset($_POST['isCleanupSubmit'])) {
-                // Check ImagePress version for cleanup
-                $ipdata = get_plugin_data(IP_PLUGIN_FILE_PATH);
-                if (version_compare($ipdata['Version'], '7.8.0', '<')) {
-                    delete_post_meta_by_key('imagepress_author');
-                    delete_post_meta_by_key('imagepress_email');
-                    delete_post_meta_by_key('imagepress_video');
-
-                    // unset from options array: remove ip_request_user_details
-                    // unset from options array: remove ip_name_label
-                    // unset from options array: remove ip_email_label
-                    // unset from options array: remove ip_video_label
-                    // unset from options array: remove cms_verified_profile
-                    // unset from options array: remove ip_ezdz
-                    // unset from options array: remove ip_ezdz_label
-                    // unset from options array: remove cinnamon_pt_author
-                    // unset from options array: remove ip_rel_tag
-                    // unset from options array: remove ip_tracking
-
-                    delete_metadata('user', 0, 'user_title', '', true);
-
-                    delete_metadata('user', 0, 'hub_employer', '', true);
-                    delete_metadata('user', 0, 'hub_location', '', true);
-                    delete_metadata('user', 0, 'hub_status', '', true);
-                    delete_metadata('user', 0, 'hub_field', '', true);
-                }
-            }
             ?>
 
             <h3><?php esc_html_e('Maintenance', 'imagepress'); ?></h3>
@@ -174,10 +147,6 @@ function imagepress_admin_page() {
                 <p>
                     <input type="submit" name="isResetViewsSubmit" value="Delete all views" class="button-primary">
                     <br><small>This option deletes all image views. This action is irreversible.</small>
-                </p>
-                <p>
-                    <input type="submit" name="isCleanupSubmit" value="Pre-7.8 Cleanup" class="button-secondary">
-                    <br><small>This option removes all orphaned/unused options from ImagePress pre-<code>7.7</code>. This action is irreversible.</small>
                 </p>
             </form>
         <?php } else if ($tab === 'configurator_tab') {

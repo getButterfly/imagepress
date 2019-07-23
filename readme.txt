@@ -26,7 +26,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed front-end bulk uploader (implementation was done for several customers only)
 * UPDATE: Removed tags (they have been disabled for the past 4 minor versions)
 Remove/fix image grid details (not working anyway)
-Remove pre-7.8 cleanup feature
+* UPDATE: Removed pre-7.8 cleanup feature (starting fresh)
 Release major version
 Move to Flex
 Update changelog
