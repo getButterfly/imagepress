@@ -945,8 +945,6 @@ function imagepress_widget($atts) {
 include 'classes/Email_Post_Approval.php';
 include 'classes/Email_Post_Approval_Options.php';
 
-include 'modules/mod-feed.php';
-
 if ((int) get_option('use_bulk_upload') === 1) {
     include 'classes/ImagePress_Bulk_Upload.php';
 

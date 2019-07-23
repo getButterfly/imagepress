@@ -22,7 +22,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 8.0.0 =
 * UPDATE: Removed upload limits (implementation was JavaScript-based and not reliable)
-Remove feed
+* UPDATE: Removed feed (feature adoption was low)
 Remove bulk editor (frontend)
 Remove tags
 Remove/fix image grid details (not working anyway)
