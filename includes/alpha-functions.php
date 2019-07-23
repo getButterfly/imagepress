@@ -23,15 +23,11 @@ function ipUriBuilder($sort, $range, $taxonomy, $query = '') {
     } else if (empty($taxonomy) && !empty($_GET['t'])) {
         $taxonomy = sanitize_text_field($_GET['t']);
     }
-    if (empty($query) && !empty($_GET['q'])) {
-        $query = sanitize_text_field($_GET['q']);
-    }
 
     $uriParameters = [
         'sort' => $sort,
         'range' => $range,
-        't' => $taxonomy,
-        'q' => $query
+        't' => $taxonomy
     ];
 
     // Get position where '/page' text starts
@@ -47,10 +43,6 @@ function getImagePressDiscoverFilters() {
 
     if (is_tax()) {
         $term = get_query_var('term');
-    }
-
-    if (isset($_GET['q'])) {
-        $queryValue = sanitize_text_field($_GET['q']);
     }
 
     $out .= '<div class="poster-filters">
