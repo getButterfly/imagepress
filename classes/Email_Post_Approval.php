@@ -18,7 +18,7 @@ class Email_Post_Approval {
     public function activation() {
         add_option('epa_send_to', get_bloginfo('admin_email'));
         add_option('epa_post_statuses', ['pending']);
-        add_option('epa_email_fields', ['title', 'post_author', 'post_date', 'categories', 'tags', 'post_meta', 'body', 'thumbnail']);
+        add_option('epa_email_fields', ['title', 'post_author', 'post_date', 'categories', 'post_meta', 'body', 'thumbnail']);
     }
 
     // Fire off function when plugin is deactivated

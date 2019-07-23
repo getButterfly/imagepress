@@ -738,7 +738,6 @@ function imagepress_admin_page() {
                 $ipUpdatedOptions = [
                     'ip_caption_label' => $_POST['ip_caption_label'],
                     'ip_category_label' => $_POST['ip_category_label'],
-                    'ip_tag_label' => $_POST['ip_tag_label'],
                     'ip_description_label' => $_POST['ip_description_label'],
                     'ip_upload_label' => $_POST['ip_upload_label'],
                     'ip_image_label' => $_POST['ip_image_label'],
@@ -771,12 +770,6 @@ function imagepress_admin_page() {
                             <th scope="row"><label for="ip_category_label">Image category label<br><small>(dropdown)</small></label></th>
                             <td>
                                 <input type="text" name="ip_category_label" id="ip_category_label" value="<?php echo get_imagepress_option('ip_category_label'); ?>" class="regular-text">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="ip_tag_label">Image tag label<br><small>(dropdown)</small></label></th>
-                            <td>
-                                <input type="text" name="ip_tag_label" id="ip_tag_label" value="<?php echo get_imagepress_option('ip_tag_label'); ?>" class="regular-text">
                             </td>
                         </tr>
                         <tr>
@@ -872,7 +865,6 @@ function imagepress_admin_page() {
             if (isset($_POST['isGSSubmit'])) {
                 $ipUpdatedOptions = [
                     'ip_upload_secondary' => $_POST['ip_upload_secondary'],
-                    'ip_allow_tags' => $_POST['ip_allow_tags'],
                     'ip_upload_tos' => $_POST['ip_upload_tos'],
                     'ip_upload_tos_url' => $_POST['ip_upload_tos_url'],
                     'ip_upload_tos_error' => $_POST['ip_upload_tos_error'],
@@ -922,11 +914,6 @@ function imagepress_admin_page() {
                                     <option value="1"<?php if(get_imagepress_option('ip_upload_secondary') == 1) echo ' selected'; ?>>Enable secondary upload button</option>
                                     <option value="0"<?php if(get_imagepress_option('ip_upload_secondary') == 0) echo ' selected'; ?>>Disable secondary upload button</option>
                                 </select> <label for="ip_upload_secondary">Enable/disable additional images (variants, progress shots, making of, etc.)</label>
-                                <br>
-                                <select name="ip_allow_tags" id="ip_allow_tags">
-                                    <option value="1"<?php if(get_imagepress_option('ip_allow_tags') == 1) echo ' selected'; ?>>Enable tags</option>
-                                    <option value="0"<?php if(get_imagepress_option('ip_allow_tags') == 0) echo ' selected'; ?>>Disable tags</option>
-                                </select> <label for="ip_allow_tags">Enable/disable image tags dropdown</label>
                             </td>
                         </tr>
                         <tr>

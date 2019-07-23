@@ -96,44 +96,6 @@ function imagepress_registration() {
     ];
 
     register_taxonomy('imagepress_image_category', [$ip_slug], $image_category_args);
-
-    $labels = [
-        'name'                       => _x('Image tags', 'Taxonomy ceneral name', 'imagepress'),
-        'singular_name'              => _x('Image tag', 'Taxonomy singular name', 'imagepress'),
-        'menu_name'                  => __('Image Tags', 'imagepress'),
-        'all_items'                  => __('All image tags', 'imagepress'),
-        'parent_item'                => __('Parent image tag', 'imagepress'),
-        'parent_item_colon'          => __('Parent image tag:', 'imagepress'),
-        'new_item_name'              => __('New image tag', 'imagepress'),
-        'add_new_item'               => __('Add new image tag', 'imagepress'),
-        'edit_item'                  => __('Edit image tag', 'imagepress'),
-        'update_item'                => __('Update image tag', 'imagepress'),
-        'view_item'                  => __('View image tag', 'imagepress'),
-        'separate_items_with_commas' => __('Separate image tags with commas', 'imagepress'),
-        'add_or_remove_items'        => __('Add or remove image tags', 'imagepress'),
-        'choose_from_most_used'      => __('Choose from the most used', 'imagepress'),
-        'popular_items'              => __('Popular image tags', 'imagepress'),
-        'search_items'               => __('Search image tags', 'imagepress'),
-        'not_found'                  => __('Not found', 'imagepress'),
-        'no_terms'                   => __('No image tags', 'imagepress'),
-        'items_list'                 => __('Image tags list', 'imagepress'),
-        'items_list_navigation'      => __('Image tags list navigation', 'imagepress'),
-    ];
-
-    $args = [
-        'labels'                => $labels,
-        'hierarchical'          => false,
-        'public'                => true,
-        'show_ui'               => true,
-        'show_admin_column'     => true,
-        'show_in_nav_menus'     => true,
-        'show_tagcloud'         => false,
-        'show_in_rest'          => true,
-        'rest_base'             => 'image-tag',
-        'rest_controller_class' => 'WP_REST_Terms_Controller',
-    ];
-
-    register_taxonomy('imagepress_image_tag', [$ip_slug], $args);
 }
 
 function ip_getPostViews($postID) {
@@ -184,8 +146,6 @@ function ip_editor() {
                 ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
 
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
-                if (get_imagepress_option('ip_allow_tags') == 1)
-                    wp_set_object_terms($post_id, (int) $_POST['imagepress_image_tag'], 'imagepress_image_tag');
 
                 // Custom fields
                 $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
@@ -263,14 +223,8 @@ function ip_editor() {
                 $out .= '<hr>';
 
                 $ip_category = wp_get_object_terms($edit_id, 'imagepress_image_category');
-                if ((int) get_imagepress_option('ip_allow_tags') === 1) {
-                    $ip_tag = wp_get_post_terms($edit_id, 'imagepress_image_tag');
-                }
 
                 $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
-                if ((int) get_imagepress_option('ip_allow_tags') === 1) {
-                    $out .= '<p>' . imagepress_get_image_tags_dropdown('imagepress_image_tag', $ip_tag[0]->term_id) . '</p>';
-                }
 
                 $ip_upload_size = get_imagepress_option('ip_upload_size');
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
@@ -388,22 +342,7 @@ function ip_main($imageId) {
     </div>
 
     <h1 class="ip-title">
-        <?php
-        echo get_the_title($imageId);
-
-        if (get_imagepress_option('ip_allow_tags') == 1) {
-            $terms = get_the_terms($imageId, 'imagepress_image_tag');
-
-            if ($terms && !is_wp_error($terms)) :
-                $term_links = [];
-                foreach($terms as $term) {
-                    $term_links[] = $term->name;
-                }
-                $tags = join(', ', $term_links);
-                echo '<br><small>' . $tags . '</small>';
-            endif;
-        }
-        ?>
+        <?php echo get_the_title($imageId); ?>
     </h1>
 
     <p>
@@ -501,20 +440,7 @@ function ip_main_return($imageId) {
         $out .= ip_editor();
     $out .= '</div>
 
-    <h1 class="ip-title">';
-        if ((int) get_imagepress_option('ip_allow_tags') === 1) {
-            $terms = get_the_terms($imageId, 'imagepress_image_tag');
-
-            if ($terms && !is_wp_error($terms)) :
-                $term_links = [];
-                foreach ($terms as $term) {
-                    $term_links[] = $term->name;
-                }
-                $tags = join(', ', $term_links);
-                $out .= '<br><small>' . $tags . '</small>';
-            endif;
-        }
-    $out .= '</h1>
+    <h1 class="ip-title"></h1>
 
     <p>
         <div style="float: left; margin: 0 8px 0 0;">' . get_avatar($post->post_author, 40) . '</div>' .

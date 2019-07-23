@@ -269,9 +269,6 @@ function imagepress_add($atts) {
             if (isset($_POST['imagepress_image_category']))
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
 
-            if (isset($_POST['imagepress_image_tag']))
-                wp_set_object_terms($post_id, (int) $_POST['imagepress_image_tag'], 'imagepress_image_tag');
-
             // always moderate this category
             $moderatedCategory = get_imagepress_option('ip_cat_moderation_include');
             if (!empty($moderatedCategory)) {
@@ -380,7 +377,6 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
     $ip_upload_tos_url = get_imagepress_option('ip_upload_tos_url');
     $ipUploadTosContent = get_imagepress_option('ip_upload_tos_content');
 
-    $ip_allow_tags = get_imagepress_option('ip_allow_tags');
     $ip_upload_size = get_imagepress_option('ip_upload_size');
     $ip_dropbox_enable = get_imagepress_option('ip_dropbox_enable');
     $ip_dropbox_key = get_imagepress_option('ip_dropbox_key');
@@ -412,10 +408,6 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
                     $out .= '<input type="hidden" id="imagepress_image_category" name="imagepress_image_category" value="' . $iphcc->term_id . '">';
                 } else {
                     $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', '');
-                }
-
-                if ((int) $ip_allow_tags === 1) {
-                    $out .= imagepress_get_image_tags_dropdown('imagepress_image_tag', '');
                 }
             $out .= '</p>';
 
@@ -529,17 +521,6 @@ function imagepress_get_image_categories_dropdown($taxonomy, $selected) {
         'orderby' => 'name',
         'show_option_all' => get_imagepress_option('ip_category_label'),
         'required' => true
-    ]);
-}
-function imagepress_get_image_tags_dropdown($taxonomy, $selected) {
-    return wp_dropdown_categories([
-        'taxonomy' => $taxonomy,
-        'name' => 'imagepress_image_tag',
-        'selected' => $selected,
-        'hide_empty' => 0,
-        'echo' => 0,
-        'orderby' => 'name',
-        'show_option_all' => get_imagepress_option('ip_tag_label')
     ]);
 }
 

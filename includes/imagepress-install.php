@@ -21,7 +21,6 @@ $optionArray = [
     // Labels tab
     'ip_caption_label' => 'Image Caption',
     'ip_category_label' => 'Image Category',
-    'ip_tag_label' => 'Image Tag',
     'ip_description_label' => 'Image Description',
     'ip_upload_label' => 'Upload',
     'ip_image_label' => 'Select Image',
@@ -54,7 +53,6 @@ $optionArray = [
 
     // Upload tab
     'ip_upload_secondary' => 0,
-    'ip_allow_tags' => 0,
     'ip_upload_tos' => 0,
     'ip_upload_tos_url' => '',
     'ip_upload_tos_error' => 'You have to agree! You definitely have to!',
