@@ -647,18 +647,25 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .imagepress-float-left { float: left; }
 .imagepress-float-right { float: right; }
 
+.the {
+    display: flex;
+    flex-wrap: wrap;
+}
 
-.ip_collections_edit { display: block; float: left; width: 24%; height: 424px; background-color: rgba(0, 0, 0, 0.05); margin: 0 1% 1% 0; padding: 10px; position: relative; border: 1px solid rgba(0, 0, 0, 0); }
+.ip_collections_edit {
+    box-sizing: border-box;
+    flex-basis: 23%;
+    margin: 1%;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
 .ip_collections_edit:hover { background-color: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.75); }
 .ip_collections_edit h3 { margin: 0 0 4px 0; font-weight: 400; text-transform: none; font-size: 1.17em; }
 .ip_collections_edit h3 input { text-align: center; }
 .ip_collections_edit .collection_details {
     text-align: center;
     margin: 10px auto 0 auto;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 30px;
 }
 
 .ip_collection_box img { display: inline-block; width: 32%; height: auto; margin: 0 2% 0 0; }
@@ -926,8 +933,11 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .imagepress-upload-form select {
     font-family: inherit;
     font-size: 14px;
-    padding: 4px;
+    padding: 6px;
     margin: 2px;
+    border: 0 none;
+    border-radius: 3px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
 }
 .imagepress-upload-form label {
     display: block;

@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             e.preventDefault();
         });
-        document.querySelector('.toggleFrontEndModal .close').addEventListener('click', function(e) {
+        document.querySelector('.toggleFrontEndModal.close').addEventListener('click', function(e) {
             document.querySelector('.frontEndModal').classList.toggle('active');
 
             e.preventDefault();

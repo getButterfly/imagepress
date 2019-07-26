@@ -20,7 +20,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
-= 8.0.1 =
+= 8.1 =
 * TODO: Refactor collections (CPT?)
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
@@ -29,6 +29,8 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Removed non-functional image search
 * FIX: Fixed missing pagination
 * FIX: Fixed layout issue with Author Tools
+* FIX: Fixed duplicate image collection
+* FIX: Fixed collection styling for consistency
 * UPDATE: Removed upload limits (implementation was JavaScript-based and not reliable)
 * UPDATE: Removed feed (feature adoption was low)
 * UPDATE: Removed front-end bulk uploader (implementation was done for several customers only)

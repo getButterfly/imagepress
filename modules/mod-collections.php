@@ -216,6 +216,9 @@ function ip_frontend_add_collection($ip_id) {
         // add notification
         $collection_time = current_time('mysql', true);
         $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "notifications (ID, userID, postID, postKeyID, actionType, actionIcon, actionTime) VALUES (null, %d, %d, %d, 'collected', '', %s)", $ipCollectionAuthorId, $ip_id, $ipc, $collection_time));
+
+        // cleanup
+        $wpdb->query("DELETE t1 FROM " . $wpdb->prefix . "ip_collectionmeta t1 INNER JOIN " . $wpdb->prefix . "ip_collectionmeta t2 WHERE t1.image_meta_ID < t2.image_meta_ID AND t1.image_ID = t2.image_ID");
     }
     if (is_user_logged_in()) {
         global $wpdb;
