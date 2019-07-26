@@ -245,12 +245,14 @@ function ip_editor() {
                             foreach ($images as $attachment_id => $image) {
                                 $small_array = image_downsize($image->ID, 'thumbnail');
 
-                                if ($image->ID != $thumbnail_ID)
-                                    $out .= '<div class="ip-additional ip-additional-' . $image->ID . '">';
-                                    $out .= '<div class="ip-toolbar">';
-                                        $out .= '<a href="#" data-image-id="' . $image->ID . '" data-redirect="' . get_permalink() . '" class="ip-delete-post ip-action-icon ip-floatright"><i class="fas fa-trash-alt"></i></a>';
-                                    $out .= '</div>';
-                                $out .= '<img src="' . $small_array[0] . '" alt=""></div>';
+                                if ($image->ID != $thumbnail_ID) {
+                                    $out .= '<div class="ip-additional ip-additional-' . $image->ID . '">
+                                        <div class="ip-toolbar">
+                                            <a href="#" data-image-id="' . $image->ID . '" data-redirect="' . get_permalink() . '" class="ip-delete-post ip-action-icon ip-floatright"><i class="fas fa-trash-alt"></i></a>
+                                        </div>
+                                        <img src="' . $small_array[0] . '" alt="">
+                                    </div>';
+                                }
                             }
                         $out .= '</div>';
                     }
@@ -429,8 +431,6 @@ function ip_main_return($imageId) {
 
         $out .= ip_editor();
     $out .= '</div>
-
-    <h1 class="ip-title"></h1>
 
     <p>
         <div style="float: left; margin: 0 8px 0 0;">' . get_avatar($post->post_author, 40) . '</div>' .

@@ -75,6 +75,7 @@ function imagepress_admin_page() {
                 <br>
                 <code>[cinnamon-profile]</code> - show user profile on a custom page, such as <b>My Profile</b> or <b>View My Portfolio</b>.<br>
                 <code>[cinnamon-profile author="17"]</code> - show a certain user profile on a page, where <b>17</b> is the user ID.<br>
+               <code>[imagepress-categories gallery="https://www.example.com/gallery/"]</code> - show a simple, unstyled ul/li list of all ImagePress categories.<br>
             </p>';
         } else if ($tab === 'install_tab') { ?>
             <h2><?php esc_html_e('Installation', 'imagepress'); ?></h2>

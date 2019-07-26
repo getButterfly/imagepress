@@ -100,35 +100,38 @@ function cinnamon_card($atts) {
         foreach ($query as $q) {
             $author = $q->ID;
 
-            $display .= '<li class="cinnamon-card">';
-                $cardArguments = [
-                    'author' => $author,
-                    'posts_per_page' => get_imagepress_option('ip_cards_per_author'),
-                    'post_type' => $ip_slug
-                ];
-                $authors_posts = get_posts($cardArguments);
-                if ($authors_posts) {
-                    $display .= '<div class="mosaicflow">';
-                        foreach ($authors_posts as $authors_post) {
-                            $display .= '<div><a href="' . get_permalink($authors_post->ID) . '">' . get_the_post_thumbnail($authors_post->ID, get_imagepress_option('ip_image_size')) . '</a></div>';
-                        }
-                    $display .= '</div>';
-                }
-                $display .= '<div class="avatar-holder"><a href="' . getImagePressProfileUri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
+            $cardArguments = [
+                'author' => $author,
+                'posts_per_page' => get_imagepress_option('ip_cards_per_author'),
+                'post_type' => $ip_slug
+            ];
+            $authors_posts = get_posts($cardArguments);
 
-                $hub_user_info = get_userdata($author);
-                $hubUser = $hub_user_info->display_name;
-                if (!empty($hub_user_info->first_name)) {
-                    $hubUser = $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
-                }
+            if (count($authors_posts) > 0) {
+                $display .= '<li class="cinnamon-card">';
+                    if ($authors_posts) {
+                        $display .= '<div class="mosaicflow">';
+                            foreach ($authors_posts as $authors_post) {
+                                $display .= '<div><a href="' . get_permalink($authors_post->ID) . '">' . get_the_post_thumbnail($authors_post->ID, get_imagepress_option('ip_image_size')) . '</a></div>';
+                            }
+                        $display .= '</div>';
+                    }
+                    $display .= '<div class="avatar-holder"><a href="' . getImagePressProfileUri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
 
-                $display .= '<h3><a href="' . getImagePressProfileUri($author, false) . '" class="name">' . $hubUser . '</a></h3>
-                <div class="cinnamon-stats">
-                    <div class="cinnamon-meta"><span class="views">' . kformat(cinnamon_PostViews($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
-                    <div class="cinnamon-meta"><span class="followers">' . kformat(pwuf_get_follower_count($author)) . '</span><br><small>' . __('followers', 'imagepress') . '</small></div>
-                    <div class="cinnamon-meta"><span class="uploads">' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</span><br><small>' . __('uploads', 'imagepress') . '</small></div>
-                </div>';
-            $display .= '</li>';
+                    $hub_user_info = get_userdata($author);
+                    $hubUser = $hub_user_info->display_name;
+                    if (!empty($hub_user_info->first_name)) {
+                        $hubUser = $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
+                    }
+
+                    $display .= '<h3><a href="' . getImagePressProfileUri($author, false) . '" class="name">' . $hubUser . '</a></h3>
+                    <div class="cinnamon-stats">
+                        <div class="cinnamon-meta"><span class="views">' . kformat(cinnamon_PostViews($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
+                        <div class="cinnamon-meta"><span class="followers">' . kformat(pwuf_get_follower_count($author)) . '</span><br><small>' . __('followers', 'imagepress') . '</small></div>
+                        <div class="cinnamon-meta"><span class="uploads">' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</span><br><small>' . __('uploads', 'imagepress') . '</small></div>
+                    </div>';
+                $display .= '</li>';
+            }
         }
     $display .= '</ul>';
 

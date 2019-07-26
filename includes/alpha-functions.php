@@ -264,9 +264,7 @@ function imagepress_loop($atts) {
     $out .= '</div><div class="ip-clear"></div>';
 
     // Pagination
-    if (function_exists('pagination') && (int) $count === 0) {
-        $out .= ip_pagination($ip_query->max_num_pages);
-    }
+    $out .= ip_pagination($ip_query->max_num_pages);
 
     wp_reset_postdata();
 

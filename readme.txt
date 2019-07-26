@@ -1,9 +1,9 @@
 === ImagePress ===
 Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
-Requires at least: 4.7
-Tested up to: 4.9.8
-Stable tag: 7.9.3
+Requires at least: 5.0
+Tested up to: 5.2.2
+Stable tag: 8.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -20,8 +20,16 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
+= 8.0.1 =
+* TODO: Refactor collections (CPT?)
+* TODO: Refactor custom fields
+* TODO/ROADMAP: Remove jQuery dependency
+* TODO: Replace URL fields with page dropdowns
+
 = 8.0.0 =
 * FIX: Removed non-functional image search
+* FIX: Fixed missing pagination
+* FIX: Fixed layout issue with Author Tools
 * UPDATE: Removed upload limits (implementation was JavaScript-based and not reliable)
 * UPDATE: Removed feed (feature adoption was low)
 * UPDATE: Removed front-end bulk uploader (implementation was done for several customers only)
@@ -29,15 +37,6 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed pre-7.8 cleanup feature (starting fresh)
 * UPDATE: Removed option to enable/disable image views (performance gain)
 * FEATURE: Moved grid display to Flex
-Remove/fix image grid details (not working anyway)
-Release major version
-Update changelog
-Update page
-Update screenshots
-* TODO: Refactor collections (CPT?)
-* TODO: Refactor custom fields
-* TODO/ROADMAP: Remove jQuery dependency
-* TODO: Replace URL fields with page dropdowns
 
 = 7.9.3 =
 * FIX: Added missing translation domain for several strings
