@@ -141,8 +141,6 @@ add_shortcode('imagepress-collection', 'imagepress_collection');
 add_shortcode('imagepress-search', 'imagepress_search');
 add_shortcode('imagepress-top', 'imagepress_top');
 
-add_shortcode('ip-field', 'ip_get_field');
-
 add_shortcode('imagepress', 'imagepress_widget');
 
 add_shortcode('imagepress-collections', 'ip_collections_display_custom');
@@ -282,14 +280,6 @@ function imagepress_add($atts) {
             }
             //
 
-            // custom fields
-            $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
-
-            foreach ($result as $field) {
-                add_post_meta($post_id, $field['field_slug'], $_POST[$field['field_slug']], true);
-            }
-            //
-
             // collections
             $ip_collections = (int) ($_POST['ip_collections']);
 
@@ -414,44 +404,6 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
             // Add to collection on upload
             $out .= ip_collection_dropdown();
 
-            // Custom fields
-            $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
-
-            foreach($result as $field) {
-                if((int) $field['field_type'] === 1) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="text" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                } else if((int) $field['field_type'] === 2) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="url" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                } else if((int) $field['field_type'] === 3) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="email" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                } else if((int) $field['field_type'] === 4) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="number" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                } else if((int) $field['field_type'] === 5) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><textarea id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" rows="6" placeholder="' . $field['field_name'] . '"></textarea></p>';
-                } else if((int) $field['field_type'] === 6) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '"><input type="checkbox" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="1"> ' . $field['field_name'] . '</label></p>';
-                } else if((int) $field['field_type'] === 7) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '"><input type="radio" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '" value="1">' . $field['field_name'] . '</label></p>';
-                } else if((int) $field['field_type'] === 8) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><select id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '">';
-                        $options = $wpdb->get_var($wpdb->prepare("SELECT field_content FROM  " . $wpdb->prefix . "ip_fields WHERE field_name = '%s'", $field['field_name']));
-                        $options = explode(',', $options);
-                        foreach($options as $option) {
-                            $out .= '<option>' . trim($option) . '</option>';
-                        }
-                    $out .= '</select></p>';
-                } else if(
-                    (int) $field['field_type'] === 20 ||
-                    (int) $field['field_type'] === 21 ||
-                    (int) $field['field_type'] === 22 ||
-                    (int) $field['field_type'] === 23 ||
-                    (int) $field['field_type'] === 24
-                ) {
-                    $out .= '<p><label for="' . $field['field_slug'] . '">' . $field['field_name'] . '</label><input type="text" id="' . $field['field_slug'] . '" name="' . $field['field_slug'] . '" placeholder="' . $field['field_name'] . '"></p>';
-                }
-            }
-            //
-
             $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
             $datauploadsize = $uploadsize * 1024000;
 
@@ -574,24 +526,6 @@ function imagepress_activate() {
             PRIMARY KEY (`image_meta_ID`),
             UNIQUE KEY `image_meta_ID` (`image_meta_ID`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-
-        dbDelta($sql);
-        maybe_convert_table_to_utf8mb4($table_name);
-    }
-
-    // custom fields table
-    $table_name = $wpdb->prefix . 'ip_fields';
-    if ($wpdb->get_var("SHOW TABLES LIKE `$table_name`") != $table_name) {
-        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-            `field_id` int(11) NOT NULL AUTO_INCREMENT,
-            `field_order` int(11) NOT NULL,
-            `field_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-            `field_slug` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-            `field_type` tinyint(4) NOT NULL,
-            `field_content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-            PRIMARY KEY (`field_id`),
-            UNIQUE KEY `field_id` (`field_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1";
 
         dbDelta($sql);
         maybe_convert_table_to_utf8mb4($table_name);

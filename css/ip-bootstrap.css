@@ -304,9 +304,6 @@ a img { border: none; }
 
 
 
-.ip-more img { max-width: 100%; height: auto; display: block; margin: 24px auto 0 auto; }
-
-
 .ip-editor {
     -webkit-transition: height .25s ease;
     -o-transition: height .25s ease;

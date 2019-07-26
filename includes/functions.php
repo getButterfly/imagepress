@@ -146,13 +146,6 @@ function ip_editor() {
                 ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
 
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
-
-                // Custom fields
-                $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
-
-                foreach ($result as $field) {
-                    update_post_meta($post_id, $field['field_slug'], $_POST[$field['field_slug']]);
-                }
             }
         }
 
@@ -169,56 +162,6 @@ function ip_editor() {
                     <label for="postcontent">' . __('Description', 'imagepress') . '</label><br>
                     <textarea id="postcontent" name="postcontent" rows="3">' . strip_tags(get_post_field('post_content', $edit_id)) . '</textarea></p>
                 <hr>';
-
-                // custom fields
-                $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
-
-                foreach ($result as $field) {
-                    $ps_meta = get_post_meta($edit_id, $field['field_slug'], true);
-
-                    $fieldType = (int) sanitize_text_field($field['field_type']);
-                    $fieldSlug = sanitize_text_field($field['field_slug']);
-                    $fieldName = sanitize_text_field($field['field_name']);
-
-                    if ($fieldType === 1) {
-                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
-                    } else if ($fieldType === 2) {
-                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="url" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
-                    } else if ($fieldType === 3) {
-                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="email" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
-                    } else if ($fieldType === 4) {
-                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="number" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
-                    } else if ($fieldType === 5) {
-                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><textarea id="' . $fieldSlug . '" name="' . $fieldSlug . '" rows="6" placeholder="' . $fieldName . '">' . $ps_meta . '</textarea></p>';
-                    } else if ($fieldType === 6) {
-                        $checked = ((int) $ps_meta === 1) ? 'checked' : '';
-
-                        $out .= '<p><label for="' . $fieldSlug . '"><input type="checkbox" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
-                    } else if ($fieldType === 7) {
-                        $checked = ((int) $ps_meta === 1) ? 'checked' : '';
-
-                        $out .= '<p><label for="' . $fieldSlug . '"><input type="radio" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="1" ' . $checked . '> ' . $fieldName . '</label></p>';
-                    } else if ($fieldType === 8) {
-                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><select id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '">';
-                            $options = $wpdb->get_var($wpdb->prepare("SELECT field_content FROM  " . $wpdb->prefix . "ip_fields WHERE field_name = '%s'", $fieldName));
-                            $options = explode(',', $options);
-                            foreach ($options as $option) {
-                                $selected = ($ps_meta == trim($option)) ? 'selected' : '';
-
-                                $out .= '<option ' . $selected . '>' . trim($option) . '</option>';
-                            }
-                        $out .= '</select></p>';
-                    } else if (
-                        $fieldType === 20 ||
-                        $fieldType === 21 ||
-                        $fieldType === 22 ||
-                        $fieldType === 23 ||
-                        $fieldType === 24
-                    ) {
-                        $out .= '<p><label for="' . $fieldSlug . '">' . $fieldName . '</label><br><input type="text" id="' . $fieldSlug . '" name="' . $fieldSlug . '" placeholder="' . $fieldName . '" value="' . $ps_meta . '"></p>';
-                    }
-                }
-                //
 
                 $out .= '<hr>';
 
@@ -351,37 +294,7 @@ function ip_main($imageId) {
 
     <div class="ip-clear"></div>
 
-    <?php
-    // custom preset fields
-    $result = $wpdb->get_results("SELECT field_type, field_name, field_slug FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
-
-    foreach ($result as $field) {
-        $fs_meta = get_post_meta($imageId, $field['field_slug'], true);
-
-        if ((int) $field['field_type'] === 20 && !empty($fs_meta)) {
-            $sketchfabId = $fs_meta;
-            echo '<iframe width="100%" height="480" src="https://sketchfab.com/models/' . $sketchfabId . '/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe><br>via <a href="https://sketchfab.com/models/' . $sketchfabId . '?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank">Sketchfab</a>';
-        }
-        if ((int) $field['field_type'] === 21 && !empty($fs_meta)) {
-            $vimeoId = $fs_meta;
-            echo '<iframe src="https://player.vimeo.com/video/' . $vimeoId . '" width="100%" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-        }
-        if ((int) $field['field_type'] === 22 && !empty($fs_meta)) {
-            $youtubeId = $fs_meta;
-            echo '<iframe width="100%" height="480" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" frameborder="0" allowfullscreen></iframe>';
-        }
-        if ((int) $field['field_type'] === 23 && !empty($fs_meta)) {
-            $googleMapsLocation = $fs_meta;
-            echo '<p><img class="single-image-map" src="https://maps.googleapis.com/maps/api/staticmap?center=' . $googleMapsLocation . '&scale=2&zoom=13&size=600x300&maptype=terrain" alt="' . $googleMapsLocation . '" width="600"></p>';
-        }
-        if ((int) $field['field_type'] === 24 && !empty($fs_meta)) {
-            $roundMeTourId = $fs_meta;
-            echo '<p><iframe width="100%" height="480" src="https://round.me/embed/' . $roundMeTourId . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>';
-        }
-    }
-
-    imagepress_get_images($imageId, 1);
-    ?>
+    <?php imagepress_get_images($imageId, 1); ?>
 
     <section>
         <?php the_content(); ?>
@@ -440,34 +353,6 @@ function ip_main_return($imageId) {
 
     <div class="ip-clear"></div>';
 
-    // custom preset fields
-    $result = $wpdb->get_results("SELECT field_type, field_name, field_slug FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
-
-    foreach ($result as $field) {
-        $fs_meta = get_post_meta($imageId, $field['field_slug'], true);
-
-        if ((int) $field['field_type'] === 20 && !empty($fs_meta)) {
-            $sketchfabId = $fs_meta;
-            $out .= '<iframe width="100%" height="480" src="https://sketchfab.com/models/' . $sketchfabId . '/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe><br>via <a href="https://sketchfab.com/models/' . $sketchfabId . '?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank">Sketchfab</a>';
-        }
-        if ((int) $field['field_type'] === 21 && !empty($fs_meta)) {
-            $vimeoId = $fs_meta;
-            $out .= '<iframe src="https://player.vimeo.com/video/' . $vimeoId . '" width="100%" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-        }
-        if ((int) $field['field_type'] === 22 && !empty($fs_meta)) {
-            $youtubeId = $fs_meta;
-            $out .= '<iframe width="100%" height="480" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" frameborder="0" allowfullscreen></iframe>';
-        }
-        if ((int) $field['field_type'] === 23 && !empty($fs_meta)) {
-            $googleMapsLocation = $fs_meta;
-            $out .= '<p><img class="single-image-map" src="https://maps.googleapis.com/maps/api/staticmap?center=' . $googleMapsLocation . '&scale=2&zoom=13&size=600x300&maptype=terrain" alt="' . $googleMapsLocation . '" width="600"></p>';
-        }
-        if ((int) $field['field_type'] === 24 && !empty($fs_meta)) {
-            $roundMeTourId = $fs_meta;
-            $out .= '<p><iframe width="100%" height="480" src="https://round.me/embed/' . $roundMeTourId . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>';
-        }
-    }
-
     $out .= '<section>' .
         get_the_content() .
     '</section>';
@@ -510,34 +395,30 @@ function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', 
 function imagepress_get_images($postId, $show) {
     $thumbnail_ID = get_post_thumbnail_id();
     $images = get_children(['post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID']);
-    $out = '';
+    $out = $galleryImages = '';
+    $galleryImagesIds = [];
 
     if ($images && count($images) > 0) {
-        $out .= '<div class="ip-more">';
-            foreach ($images as $attachment_id => $image) {
-                if ($image->ID != $thumbnail_ID) {
-                    $big_array = image_downsize($image->ID, 'full');
+        foreach ($images as $attachment_id => $image) {
+            if ($image->ID != $thumbnail_ID) {
+                $big_array = image_downsize($image->ID, 'full');
 
-                    $out .= '<img src="' . $big_array[0] . '" alt="">';
-                }
+                $galleryImagesIds[] = $image->ID;
+                $galleryImages .= '<li class="blocks-gallery-item">
+                    <figure>
+                        <a href="' . get_permalink($image->ID) . '"><img src="' . $big_array[0] . '" alt="" data-id="' . $image->ID . '" data-link="' . get_permalink($image->ID) . '" class="wp-image-' . $image->ID . '"></a>
+                    </figure>
+                </li>';
             }
-        $out .= '</div>';
+        }
+
+        $out .= '<!-- wp:gallery {"ids":[' . implode(',', $galleryImagesIds) . '],"linkTo":"media"} -->';
+        $out .= '<ul class="wp-block-gallery columns-3 is-cropped">';
+            $out .= $galleryImages;
+        $out .= '</ul>';
     }
 
     $videos = get_children(['post_parent' => $postId, 'post_status' => 'inherit', 'post_type' => 'attachment', 'order' => 'ASC', 'orderby' => 'menu_order ID']);
-
-    if ($videos && count($videos) > 1) {
-        $out .= '<div class="ip-more">';
-            foreach ($videos as $attachment_id => $video) {
-                if (strpos(get_post_mime_type($video->ID), 'video') !== false) {
-                    $out .= '<video width="100%" class="ip-video-secondary" controls>
-                        <source src="' . wp_get_attachment_url($video->ID) . '" type="' . get_post_mime_type($video->ID) . '">
-                        Your browser does not support HTML5 video.
-                    </video>';
-                }
-            }
-        $out .= '</div>';
-    }
 
     if ((int) $show === 1) {
         echo $out;
@@ -592,16 +473,6 @@ function ip_get_user_role() {
     $user_role = array_shift($user_roles);
 
     return $user_role;
-}
-
-function ip_get_field($atts) {
-    extract(shortcode_atts([
-        'field' => ''
-    ], $atts));
-
-    $field = get_post_meta(get_the_ID(), $field, true);
-
-    return $field;
 }
 
 function imagepress_order_list() {

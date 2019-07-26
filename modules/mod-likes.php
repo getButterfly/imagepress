@@ -153,7 +153,7 @@ function ipGetPostLikeLink($post_id) {
 			$like = '<i class="fas fa-heart"></i><span class="ip-icon-label"> ' . $ip_vote_unlike . '</span>';
 		}
 
-		$output = '<a href="#" class="thin-ui-button imagepress-like ' . $class . '" data-post_id="' . $post_id . '">' . $like . '</a>';
+		$output = '<a href="#" class="imagepress-like ' . $class . '" data-post_id="' . $post_id . '">' . $like . '</a>';
 	}
 
     return $output;

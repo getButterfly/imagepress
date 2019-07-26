@@ -22,7 +22,6 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 = 8.0.1 =
 * TODO: Refactor collections (CPT?)
-* TODO: Refactor custom fields
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
 
@@ -36,6 +35,8 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Removed tags (they have been disabled for the past 4 minor versions)
 * UPDATE: Removed pre-7.8 cleanup feature (starting fresh)
 * UPDATE: Removed option to enable/disable image views (performance gain)
+* UPDATE: Removed custom fields (never implemented 100%, potentially breaking)
+* UPDATE: Used Gutenberg gallery for secondary images
 * FEATURE: Moved grid display to Flex
 
 = 7.9.3 =

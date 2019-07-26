@@ -95,9 +95,6 @@ function imagepress_loop($atts) {
         'collection'    => '', // new parameter (will extract all images from a certain collection)
         'collection_id' => '', // new parameter (will extract all images from a certain collection)
         'order'         => '', // only used by profile viewer
-
-        'fieldname'     => '',
-        'fieldvalue'    => '',
         'mode' => '',
     ], $atts));
 
@@ -166,16 +163,6 @@ function imagepress_loop($atts) {
     if ((string) $order === 'custom') {
         $args1['orderby'] = 'menu_order';
         $args1['order'] = 'ASC';
-    }
-
-    if (!empty($fieldname) && !empty($fieldvalue)) {
-        $field_query = [
-            [
-                'key' => $fieldname,
-                'value' => $fieldvalue
-            ]
-        ];
-        $args1['meta_query'] = $field_query;
     }
 
     // Most liked images
