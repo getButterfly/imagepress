@@ -142,8 +142,8 @@ function ipAlreadyLiked($post_id) { // test if user liked before
  */
 function ipGetPostLikeLink($post_id) {
     $output = $class = '';
-	$ip_vote_like = get_imagepress_option('ip_vote_like');
-	$ip_vote_unlike = get_imagepress_option('ip_vote_unlike');
+	$ip_vote_like = imagepress_get_option('ip_vote_like');
+	$ip_vote_unlike = imagepress_get_option('ip_vote_unlike');
 
 	if (is_user_logged_in()) {
 		$like = '<i class="far fa-heart"></i><span class="ip-icon-label"> ' . $ip_vote_like . '</span>';

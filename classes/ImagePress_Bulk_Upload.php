@@ -35,7 +35,7 @@ class ImagePress_Bulk_Upload {
     }
 
     public function add_settings() {
-        add_submenu_page('edit.php?post_type=' . get_imagepress_option('ip_slug'), __('Bulk Upload', 'imagepress'), __('Bulk Upload', 'imagepress'), 'manage_options', 'automatic-featured-image-posts-settings', [$this, 'view_settings']);
+        add_submenu_page('edit.php?post_type=' . imagepress_get_option('ip_slug'), __('Bulk Upload', 'imagepress'), __('Bulk Upload', 'imagepress'), 'manage_options', 'automatic-featured-image-posts-settings', [$this, 'view_settings']);
     }
 
     public function view_settings() {

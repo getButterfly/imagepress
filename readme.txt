@@ -1,9 +1,10 @@
 === ImagePress ===
 Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
-Requires at least: 5.0
-Tested up to: 5.2.2
-Stable tag: 8.0.0
+Requires at least: 5.4
+Tested up to: 5.7
+Requires PHP: 7.0
+Stable tag: 8.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -20,7 +21,25 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 
 == Changelog ==
 
-= 8.1 =
+= 8.1.0 =
+* FIX: Fixed profile editing link for mismatched user_login and username
+* FIX: Added option to turn the lightbox on or off
+* FIX: Fixed PHP 8 notice
+* UPDATE: Updated WordPress compatibility
+* UPDATE: Updated PHP compatibility
+* UPDATE: Removed Dropbox upload option
+* UPDATE: Removed inline CSS
+* UPDATE: Removed inline JavaScript
+* UPDATE: Added strict mode to JavaScript
+* UPDATE: Updated all prefixes to use imagepress_ (3 chars or more)
+* UPDATE: Fixed demo links
+* UPDATE: Updated SortableJS library to latest version
+* UPDATE: Updated HalkaBoxJS library to latest version
+* UPDATE: Changed deprecated onclick() insline functions
+* UPDATE: Removed unused .ip-tab/.ip-tabs classes
+7. __() & _e() does not escape. Simply use WordPress' escaping functions such as esc_attr__(), esc_html__() etc…
+9. The localization file should be in English and delivered as a {plugin-slug}.pot file that contains all your translation strings. The plugin can include an actual translation file, but it should not add the en_US.mo or en_US.po because English is implied.
+* TODO: Delete/reconsider cinnamon_cards()
 * TODO: Refactor collections (CPT?)
 * TODO/ROADMAP: Remove jQuery dependency
 * TODO: Replace URL fields with page dropdowns
@@ -790,7 +809,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * FIX: Fixed image editing mode discarding current featured image
 * FIX: Fixed new image addition notification
 * FIX: Fixed duplicate notifications
-* FEATURE: Added sorting and filtering for author cards (default onclick sorting is DESC)
+* FEATURE: Added sorting and filtering for author cards (default sorting is DESC)
 * I18N: Added more translated strings
 
 = 5.0-beta2 =

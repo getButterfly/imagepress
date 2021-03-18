@@ -6,12 +6,12 @@
             <?php
             /* BEGIN IMAGEPRESS CODE */
             /* main image display (required) */
-			if (function_exists('ip_main'))
-				ip_main(get_the_ID());
+			if (function_exists('imagepress_main'))
+				imagepress_main(get_the_ID());
 
             /* related images (optional, can be placed in the sidebar) */
-			if (function_exists('ip_related'))
-                ip_related();
+			if (function_exists('imagepress_related'))
+                imagepress_related();
             /* END IMAGEPRESS CODE */
             ?>
         </article>

@@ -89,28 +89,28 @@ function ip_collections_display() {
             echo '<div class="collection_details">';
                 echo '<h3 class="collection-title" data-collection-id="' . $collection['collection_ID'] . '">' . $collection['collection_title'] . '</h3>';
 
-                echo '<div><a href="#" class="changeCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '">' . esc_html__('Edit', 'imagepress') . '</a></div>';
+                echo '<div><a href="#" class="changeCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '">' . __('Edit', 'imagepress') . '</a></div>';
             echo '</div>';
 
             echo '<div class="collection_details_edit cde' . $collection['collection_ID'] . '">
-                <h3>' . esc_html__('Edit collection', 'imagepress') . '</h3>
-                <p><label>' . esc_html__('Title', 'imagepress') . '</label><input class="collection-title ct' . $collection['collection_ID'] . '" type="text" data-collection-id="' . $collection['collection_ID'] . '" value="' . $collection['collection_title'] . '"><p>
-                <p><label>' . esc_html__('Visibility', 'imagepress') . '</label><select class="collection-status cs' . $collection['collection_ID'] . '" data-collection-id="' . $collection['collection_ID'] . '">';
+                <h3>' . __('Edit collection', 'imagepress') . '</h3>
+                <p><label>' . __('Title', 'imagepress') . '</label><input class="collection-title ct' . $collection['collection_ID'] . '" type="text" data-collection-id="' . $collection['collection_ID'] . '" value="' . $collection['collection_title'] . '"><p>
+                <p><label>' . __('Visibility', 'imagepress') . '</label><select class="collection-status cs' . $collection['collection_ID'] . '" data-collection-id="' . $collection['collection_ID'] . '">';
                     $selected = ($collection['collection_status'] == 0) ? 'selected' : '';
-                    echo '<option value="1" ' . $selected . '>' . esc_html__('Public', 'imagepress') . '</option>';
-                    echo '<option value="0" ' . $selected . '>' . esc_html__('Private', 'imagepress') . '</option>';
+                    echo '<option value="1" ' . $selected . '>' . __('Public', 'imagepress') . '</option>';
+                    echo '<option value="0" ' . $selected . '>' . __('Private', 'imagepress') . '</option>';
                 echo '</select></p>';
 
-                $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
-                echo '<p><label>' . esc_html__('Share your collection', 'imagepress') . '</label><input type="url" value="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '" readonly></p>';
+                $ipCollectionsPageId = imagepress_get_option('ip_collections_page');
+                echo '<p><label>' . __('Share your collection', 'imagepress') . '</label><input type="url" value="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '" readonly></p>';
 
                 echo '<a href="#" class="saveCollection button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-check"></i></a>';
-                echo '<a href="#" class="closeCollectionEdit button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '">' . esc_html__('Close', 'imagepress') . '</a>';
+                echo '<a href="#" class="closeCollectionEdit button noir-secondary" data-collection-id="' . $collection['collection_ID'] . '">' . __('Close', 'imagepress') . '</a>';
                 echo '<a href="#" class="deleteCollection button" data-collection-id="' . $collection['collection_ID'] . '"><i class="fas fa-trash-alt"></i></a>';
             echo '</div>';
         echo '</div>';
     }
-    echo '</div><div style="clear:both;"></div>';
+    echo '</div>';
 
     die();
 }
@@ -133,13 +133,13 @@ function ip_collections_display_public($author_ID) {
             $out .= '<div class="ip_collections_overlay">' . count($postslistcount) . '</div>';
 
             $out .= '<div class="collection_details">';
-                $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
+                $ipCollectionsPageId = imagepress_get_option('ip_collections_page');
                 $out .= '<h3><a href="' . get_permalink($ipCollectionsPageId) . '?collection=' . $collection['collection_ID'] . '/">' . $collection['collection_title'] . '</a></h3>';
-                $out .= '<div>' . esc_html__('By', 'imagepress') . ' ' . getImagePressProfileUri($collection['collection_author_ID']) . '</div>';
+                $out .= '<div>' . __('By', 'imagepress') . ' ' . imagepress_get_profile_uri($collection['collection_author_ID']) . '</div>';
             $out .= '</div>';
         $out .= '</div>';
     }
-    $out .= '</div><div style="clear:both;"></div>';
+    $out .= '</div>';
 
     return $out;
 }
@@ -175,16 +175,16 @@ function ip_collections_display_custom($atts) {
                     $out .= '<div class="ip_collections_overlay">' . count($postslistcount) . '</div>';
 
                     $out .= '<div class="collection_details">';
-                        $ipCollectionsPageId = get_imagepress_option('ip_collections_page');
+                        $ipCollectionsPageId = imagepress_get_option('ip_collections_page');
                         $out .= '<h3><a href="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></h3>';
-                        $out .= '<div>' . esc_html__('By', 'imagepress') . ' ' . getImagePressProfileUri($collection['collection_author_ID']) . '</div>';
+                        $out .= '<div>' . __('By', 'imagepress') . ' ' . imagepress_get_profile_uri($collection['collection_author_ID']) . '</div>';
                     $out .= '</div>';
                 $out .= '</div>';
             }
             ++$collectionCount;
         }
     }
-    $out .= '</div><div style="clear:both;"></div>';
+    $out .= '</div>';
 
     return $out;
 }
@@ -242,7 +242,7 @@ function ip_frontend_add_collection($ip_id) {
                     $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = %d", get_current_user_id()), ARRAY_A);
 
                     $out .= '<select name="ip_collections">
-                        <option value="">' . esc_html__('Choose a collection...', 'imagepress') . '</option>';
+                        <option value="">' . __('Choose a collection...', 'imagepress') . '</option>';
                         foreach ($result as $collection) {
                             $disabled = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_ID = %d AND image_collection_ID = %d", get_the_ID(), $collection['collection_ID']), ARRAY_A);
 
@@ -280,7 +280,7 @@ function ip_frontend_view_image_collection($ip_id) {
         <?php
         global $wpdb;
 
-        $ipCollectionsPageId = (int) get_imagepress_option('ip_collections_page');
+        $ipCollectionsPageId = (int) imagepress_get_option('ip_collections_page');
         $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_ID = %d", $ip_id), ARRAY_A);
 
         foreach ($result as $collection) {
@@ -289,7 +289,7 @@ function ip_frontend_view_image_collection($ip_id) {
                 $featured = $wpdb->get_row($wpdb->prepare("SELECT image_ID FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d ORDER BY RAND()", $collection['image_collection_ID']), ARRAY_A);
                 echo '<div class="ip-featured-collection">';
                     echo get_the_post_thumbnail($featured['image_ID'], 'thumbnail');
-                    echo '<div class="ip-featured-collection-meta"><a href="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $which['collection_ID'] . '">' . $which['collection_title'] . '</a><br><small>' . esc_html__('by', 'imagepress') . ' ' . getImagePressProfileUri($which['collection_author_ID']) . '</small></div>';
+                    echo '<div class="ip-featured-collection-meta"><a href="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $which['collection_ID'] . '">' . $which['collection_title'] . '</a><br><small>' . __('by', 'imagepress') . ' ' . imagepress_get_profile_uri($which['collection_author_ID']) . '</small></div>';
                     echo '<div class="ip_clear"></div>';
                 echo '</div>';
             }
@@ -339,23 +339,23 @@ function imagepress_collection($atts) {
     $out = '<div class="ip-template-collection-meta">';
         $last_image_row = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d ORDER BY image_meta_ID DESC LIMIT 1", $collection_row['collection_ID']), ARRAY_A);
 
-        $out .= '<div class="imagepress-float-right">' . $collection_row['collection_views'] . ' ' . esc_html__('views', 'imagepress') . ' | ' . count($collectionables) . ' ' . esc_html__('images', 'imagepress') . '</div>';
+        $out .= '<div class="imagepress-float-right">' . $collection_row['collection_views'] . ' ' . __('views', 'imagepress') . ' | ' . count($collectionables) . ' ' . __('images', 'imagepress') . '</div>';
         $out .= '<div class="imagepress-float-left"><a href="' . get_permalink($last_image_row['image_ID']) . '">' . get_the_post_thumbnail($last_image_row['image_ID'], 'thumbnail') . '</a></div>';
         $out .= '<div class="tcm-title">' . $collection_row['collection_title'] . '</div>';
-        $out .= getImagePressProfileUri($collection_row['collection_author_ID']);
+        $out .= imagepress_get_profile_uri($collection_row['collection_author_ID']);
         $out .= '<div class="ipclear"></div>';
     $out .= '</div>';
 
     $hmc = count($collectionables);
 
     if ((int) $hmc === 0 || empty($hmc)) {
-        $out .= '<p>' . esc_html__('This collection is empty.', 'imagepress') . '</p>';
+        $out .= '<p>' . __('This collection is empty.', 'imagepress') . '</p>';
 
         return $out;
     }
 
     $args = [
-        'post_type'                 => get_imagepress_option('ip_slug'),
+        'post_type'                 => imagepress_get_option('ip_slug'),
         'post_status'               => ['publish'],
         'posts_per_page'            => $limit,
         'orderby'                   => $ip_order,
@@ -369,7 +369,7 @@ function imagepress_collection($atts) {
 
     if ($posts) {
         // Image box appearance
-        $ip_box_ui = (string) get_imagepress_option('ip_box_ui');
+        $ip_box_ui = (string) imagepress_get_option('ip_box_ui');
 
         $out .= '<div id="ip-boxes" class="ip-box-container ip-box-container-' . $ip_box_ui . '">';
             foreach ($posts as $user_image) {
@@ -377,12 +377,12 @@ function imagepress_collection($atts) {
                 if (has_post_thumbnail($user_image)) { // $user_image->ID
                     // image ID
 
-                    $out .= ipRenderGridElement($user_image);
+                    $out .= imagepress_render_grid_element($user_image);
                 }
             }
             // end loop
 
-        $out .= '</div><div style="clear: both;"></div>';
+        $out .= '</div>';
         if ((int) $count === 0) {
             $out .= '<ul class="pagination"></ul>';
         }
@@ -390,7 +390,7 @@ function imagepress_collection($atts) {
 
         return $out;
     } else {
-        $out .= '<div class="imagepress-not-found">' . esc_html__('No images found!', 'imagepress') . '</div>';
+        $out .= '<div class="imagepress-not-found">' . __('No images found!', 'imagepress') . '</div>';
         return $out;
     }
 }

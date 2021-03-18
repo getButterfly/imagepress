@@ -1,8 +1,8 @@
 <?php
-function cinnamon_count_user_posts_by_type($userid) {
+function imagepress_count_user_posts_by_type($userid) {
     global $wpdb;
 
-    $ip_slug = get_imagepress_option('ip_slug');
+    $ip_slug = imagepress_get_option('ip_slug');
 
     $where = get_posts_by_author_sql($ip_slug, true, $userid);
     $count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts $where");
@@ -10,7 +10,7 @@ function cinnamon_count_user_posts_by_type($userid) {
     return apply_filters('get_usernumposts', $count, $userid);
 }
 
-function cinnamon_PostViews($userId, $count = true) {
+function imagepress_post_views($userId, $count = true) {
     $axCount = get_user_meta($userId, 'ax_post_views', true);
     if ($axCount == '') {
         $axCount = 0;
@@ -24,16 +24,16 @@ function cinnamon_PostViews($userId, $count = true) {
     return $axCount;
 }
 
-function cinnamon_author_base() {
+function imagepress_author_base() {
     global $wp_rewrite;
 
-    $cinnamon_author_slug = get_imagepress_option('cinnamon_author_slug');
+    $cinnamon_author_slug = imagepress_get_option('cinnamon_author_slug');
 
     $wp_rewrite->author_base = $cinnamon_author_slug;
 }
 
-function cinnamon_get_related_author_posts($author) {
-    $ip_slug = get_imagepress_option('ip_slug');
+function imagepress_get_related_author_posts($author) {
+    $ip_slug = imagepress_get_option('ip_slug');
     $authors_posts = get_posts([
         'author' => $author,
         'posts_per_page' => 9,
@@ -78,10 +78,9 @@ function cinnamon_card($atts) {
         'role' => ''
     ], $atts));
 
-    $ip_slug = get_imagepress_option('ip_slug');
+    $ip_slug = imagepress_get_option('ip_slug');
 
-    $display = '<div style="clear: both;"></div>
-    <div id="author-cards">';
+    $display = '<div id="author-cards">';
 
     // Filter users by role
     $role = sanitize_text_field($role);
@@ -102,7 +101,7 @@ function cinnamon_card($atts) {
 
             $cardArguments = [
                 'author' => $author,
-                'posts_per_page' => get_imagepress_option('ip_cards_per_author'),
+                'posts_per_page' => imagepress_get_option('ip_cards_per_author'),
                 'post_type' => $ip_slug
             ];
             $authors_posts = get_posts($cardArguments);
@@ -112,11 +111,11 @@ function cinnamon_card($atts) {
                     if ($authors_posts) {
                         $display .= '<div class="mosaicflow">';
                             foreach ($authors_posts as $authors_post) {
-                                $display .= '<div><a href="' . get_permalink($authors_post->ID) . '">' . get_the_post_thumbnail($authors_post->ID, get_imagepress_option('ip_image_size')) . '</a></div>';
+                                $display .= '<div><a href="' . get_permalink($authors_post->ID) . '">' . get_the_post_thumbnail($authors_post->ID, imagepress_get_option('ip_image_size')) . '</a></div>';
                             }
                         $display .= '</div>';
                     }
-                    $display .= '<div class="avatar-holder"><a href="' . getImagePressProfileUri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
+                    $display .= '<div class="avatar-holder"><a href="' . imagepress_get_profile_uri($author, false) . '">' . get_avatar($author, 104) . '</a></div>';
 
                     $hub_user_info = get_userdata($author);
                     $hubUser = $hub_user_info->display_name;
@@ -124,11 +123,11 @@ function cinnamon_card($atts) {
                         $hubUser = $hub_user_info->first_name . ' ' . $hub_user_info->last_name;
                     }
 
-                    $display .= '<h3><a href="' . getImagePressProfileUri($author, false) . '" class="name">' . $hubUser . '</a></h3>
+                    $display .= '<h3><a href="' . imagepress_get_profile_uri($author, false) . '" class="name">' . $hubUser . '</a></h3>
                     <div class="cinnamon-stats">
-                        <div class="cinnamon-meta"><span class="views">' . kformat(cinnamon_PostViews($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
-                        <div class="cinnamon-meta"><span class="followers">' . kformat(pwuf_get_follower_count($author)) . '</span><br><small>' . __('followers', 'imagepress') . '</small></div>
-                        <div class="cinnamon-meta"><span class="uploads">' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</span><br><small>' . __('uploads', 'imagepress') . '</small></div>
+                        <div class="cinnamon-meta"><span class="views">' . imagepress_kformat(imagepress_post_views($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
+                        <div class="cinnamon-meta"><span class="followers">' . imagepress_kformat(imagepress_get_follower_count($author)) . '</span><br><small>' . __('followers', 'imagepress') . '</small></div>
+                        <div class="cinnamon-meta"><span class="uploads">' . imagepress_kformat(imagepress_count_user_posts_by_type($author, $ip_slug)) . '</span><br><small>' . __('uploads', 'imagepress') . '</small></div>
                     </div>';
                 $display .= '</li>';
             }
@@ -150,7 +149,7 @@ function cinnamon_card($atts) {
         $display .= '</div>';
     }
 
-    $display .= '</div><div style="clear: both;"></div>';
+    $display .= '</div>';
 
     return $display;
 }
@@ -166,7 +165,7 @@ function cinnamon_profile($atts) {
 
     global $wpdb, $current_user;
 
-    $cinnamon_author_slug = (string) get_imagepress_option('cinnamon_author_slug');
+    $cinnamon_author_slug = (string) imagepress_get_option('cinnamon_author_slug');
 
     // If no user is provided, get logged in user
     if (!isset($_GET[$cinnamon_author_slug])) {
@@ -198,7 +197,7 @@ function cinnamon_profile($atts) {
         $username = $userArray->user_nicename;
     }
 
-    $ip_slug = get_imagepress_option('ip_slug');
+    $ip_slug = imagepress_get_option('ip_slug');
     $hub_user_info = get_userdata((int) $author);
 
     $display = '';
@@ -221,8 +220,9 @@ function cinnamon_profile($atts) {
 
     $display .= '<div class="profile-hub-container">';
 
-        if (get_imagepress_option('cinnamon_fancy_header') === 'yes') {
-            $display .= '<div class="cinnamon-cover" style="background: url(' . $hca . ') no-repeat center center; background-size: cover;"><div class="cinnamon-opaque"></div>';
+        if (imagepress_get_option('cinnamon_fancy_header') === 'yes') {
+            $display .= '<div class="cinnamon-cover" data-background="' . $hca . '">
+                <div class="cinnamon-opaque"></div>';
 
                 $display .= '<div class="cinnamon-avatar"><div class="cinnamon-user">' . get_avatar($author, 120) . '';
                     if (is_user_logged_in() && $username != $logged_in_user->user_login)
@@ -242,13 +242,13 @@ function cinnamon_profile($atts) {
                         $hub_user_url = ' <a href="' . $hub_user_info->user_url . '" rel="external" target="_blank"><i class="fas fa-fw fa-link"></i></a>';
                     }
 
-                    $hub_anchor = getImagePressProfileUri($author, false);
+                    $hub_anchor = imagepress_get_profile_uri($author, false);
                     $display .= '<div>
                         <div class="ph-nametag">
                             ' . $hub_name;
-                            if ((string) is_user_logged_in() && $username === (string) $logged_in_user->user_login) {
+                            if (is_user_logged_in() && (string) strtolower($username) === (string) strtolower($logged_in_user->user_login)) {
                                 $display .= ' <a href="' . $hub_anchor . '">#</a>';
-                                $display .= ' <small><a href="' . get_permalink(get_imagepress_option('cinnamon_edit_page')) . '">' . __('Edit Profile', 'imagepress') . '</a></small>';
+                                $display .= ' <small><a href="' . get_permalink(imagepress_get_option('cinnamon_edit_page')) . '">' . __('Edit Profile', 'imagepress') . '</a></small>';
                             }
                         $display .= '</div>
                         <div class="ph-locationtag">' . $hub_facebook . $hub_twitter . $hub_user_url . '</div>
@@ -279,7 +279,7 @@ function cinnamon_profile($atts) {
                     $display .= $hub_facebook . $hub_twitter . $hub_user_url;
 
                     if (is_user_logged_in() && $username == $logged_in_user->user_login) {
-                        $display .= ' | <a href="' . get_permalink(get_imagepress_option('cinnamon_edit_page')) . '">' . __('Edit Profile', 'imagepress') . '</a>';
+                        $display .= ' | <a href="' . get_permalink(imagepress_get_option('cinnamon_edit_page')) . '">' . __('Edit Profile', 'imagepress') . '</a>';
                     }
                 $display .= '</p>
             </div>';
@@ -287,11 +287,11 @@ function cinnamon_profile($atts) {
 
         // Cinnamon Stats
         $display .= '<div class="cinnamon-stats">
-            <div class="cinnamon-meta"><b>' . kformat(cinnamon_PostViews($author)) . '</b> ' . __('profile views', 'imagepress') . '</div>
-            <div class="cinnamon-meta"><b>' . kformat(pwuf_get_follower_count($author)) . '</b> ' . __('followers', 'imagepress') . '</div>
-            <div class="cinnamon-meta"><b>' . kformat(cinnamon_count_user_posts_by_type($author, $ip_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>
+            <div class="cinnamon-meta"><b>' . imagepress_kformat(imagepress_post_views($author)) . '</b> ' . __('profile views', 'imagepress') . '</div>
+            <div class="cinnamon-meta"><b>' . imagepress_kformat(imagepress_get_follower_count($author)) . '</b> ' . __('followers', 'imagepress') . '</div>
+            <div class="cinnamon-meta"><b>' . imagepress_kformat(imagepress_count_user_posts_by_type($author, $ip_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>
         </div>';
-        $display .= '<div class="ip-profile" data-ipw="' . get_imagepress_option('ip_ipw') . '">';
+        $display .= '<div class="ip-profile" data-ipw="' . imagepress_get_option('ip_ipw') . '">';
 
             if (!empty($hub_user_info->description))
                 $display .= wpautop($hub_user_info->description);
@@ -312,8 +312,6 @@ function cinnamon_profile($atts) {
 
             $display .= do_shortcode('[imagepress-loop user="' . $author . '" order="custom" count="999999"]') .
         '</div>
-
-        <div style="clear: both;"></div>
     </div>';
 
     return $display;
@@ -337,16 +335,16 @@ function cinnamon_profile_edit($atts) {
             if ((string) $_POST['pass1'] === (string) $_POST['pass2']) {
                 wp_update_user(['ID' => $userid, 'user_pass' => esc_attr($_POST['pass1'])]);
             } else {
-                $error[] = esc_html__('The passwords you entered do not match. Your password was not updated.', 'imagepress');
+                $error[] = __('The passwords you entered do not match. Your password was not updated.', 'imagepress');
             }
         }
 
         wp_update_user(['ID' => $userid, 'user_url' => esc_url($_POST['url'])]);
 
         if (!is_email(esc_attr($_POST['email']))) {
-            $error[] = esc_html__('The email you entered is not valid. Please try again.', 'imagepress');
+            $error[] = __('The email you entered is not valid. Please try again.', 'imagepress');
         } else if (email_exists(esc_attr($_POST['email'])) != $userid) {
-            $error[] = esc_html__('This email is already used by another user. Try a different one.', 'imagepress');
+            $error[] = __('This email is already used by another user. Try a different one.', 'imagepress');
         } else {
             wp_update_user(['ID' => $userid, 'user_email' => esc_attr($_POST['email'])]);
         }
@@ -400,54 +398,54 @@ function cinnamon_profile_edit($atts) {
                 </ul>
                 <div class="tab-content" id="summary">
                     <h3>' . __('Statistics', 'imagepress') . '</h3>';
-                    $ip_slug = get_imagepress_option('ip_slug');
+                    $ip_slug = imagepress_get_option('ip_slug');
 
                     // get current user uploads
-                    $user_uploads = cinnamon_count_user_posts_by_type($userid, $ip_slug);
+                    $user_uploads = imagepress_count_user_posts_by_type($userid, $ip_slug);
 
                     $out .= '<div class="ip-user-dashboard">
                         <div class="ip-user-dashboard-stat">
-                            <span>' . kformat(cinnamon_PostViews($userid, false)) . '</span>' .
+                            <span>' . imagepress_kformat(imagepress_post_views($userid, false)) . '</span>' .
                             __('total profile views', 'imagepress') . '
                         </div>
                         <div class="ip-user-dashboard-stat">
-                            <span>' . kformat(pwuf_get_follower_count($userid)) . '</span>' .
+                            <span>' . imagepress_kformat(imagepress_get_follower_count($userid)) . '</span>' .
                             __('followers', 'imagepress') . '
                         </div>
                         <div class="ip-user-dashboard-stat">
-                            <span>' . kformat(pwuf_get_following_count($userid)) . '</span>' .
+                            <span>' . imagepress_kformat(imagepress_get_following_count($userid)) . '</span>' .
                             __('following', 'imagepress') . '
                         </div>
                         <div class="ip-user-dashboard-stat">
-                            <span>' . kformat(cinnamon_count_user_posts_by_type($userid, $ip_slug)) . '</span>' .
+                            <span>' . imagepress_kformat(imagepress_count_user_posts_by_type($userid, $ip_slug)) . '</span>' .
                             __('uploads', 'imagepress') . '
                         </div>';
 
                         $out .= '<div class="ip-user-dashboard-stat">
-                            <span>' . kformat(ip_collection_count($userid)) . '</span>' .
+                            <span>' . imagepress_kformat(ip_collection_count($userid)) . '</span>' .
                             __('collections', 'imagepress') . '
                         </div>';
 
                     $out .= '</div>';
                     $out .= '<div class="ip_clear"></div>';
 
-                    $arr = pwuf_get_followers($userid);
+                    $arr = imagepress_get_followers($userid);
                     if ($arr) {
                         $out .= '<div class="cinnamon-followers">';
                             foreach ($arr as $value) {
                                 $user = get_user_by('id', $value);
-                                $out .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
+                                $out .= '<a href="' . imagepress_get_profile_uri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
                             }
                             unset($value);
                         $out .= '</div>';
                     }
 
-                    $arr = pwuf_get_following($userid);
+                    $arr = imagepress_get_following($userid);
                     if ($arr) {
                         $out .= '<div class="cinnamon-followers">';
                             foreach ($arr as $value) {
                                 $user = get_user_by('id', $value);
-                                $out .= '<a href="' . getImagePressProfileUri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
+                                $out .= '<a href="' . imagepress_get_profile_uri($value, false) . '">' . get_avatar($value, 40) . '</a> ';
                             }
                             unset($value);
                         $out .= '</div>';
@@ -489,7 +487,7 @@ function cinnamon_profile_edit($atts) {
                         </tr>
                         <tr>
                             <th><label for="description">' . __('About', 'imagepress') . '</label></th>
-                            <td><textarea name="description" id="description" rows="4" style="width: 100%;">' . get_the_author_meta('description', $userid) . '</textarea></td>
+                            <td><textarea name="description" id="description" rows="4">' . get_the_author_meta('description', $userid) . '</textarea></td>
                         </tr>
                         <tr>
                             <th><label for="facebook">' . __('Facebook profile URL', 'imagepress') . '</label></th>
@@ -510,7 +508,7 @@ function cinnamon_profile_edit($atts) {
                                     $hcc = wp_get_attachment_url($hcc);
                                     $hca = wp_get_attachment_url($hca);
 
-                                    $out .= '<div class="cinnamon-cover-preview" style="background: url(' . $hcc . ') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"><img src="' . $hca . '" alt=""></div>
+                                    $out .= '<div class="cinnamon-cover-preview" data-background="' . $hcc . '"><img src="' . $hca . '" alt=""></div>
                                 </td>
                             </tr>';
                         }
@@ -562,7 +560,7 @@ function cinnamon_profile_edit($atts) {
                     <div id="ip-info">' . __('Drag images to reorder them', 'imagepress') . '<br><small>' . __('Click titles to rename images', 'imagepress') . '</small></div>';
 
                     $args = [
-                        'post_type' => get_imagepress_option('ip_slug'),
+                        'post_type' => imagepress_get_option('ip_slug'),
                         'post_status' => ['publish', 'pending'],
                         'posts_per_page' => '-1',
                         'orderby' => 'menu_order',
@@ -573,7 +571,7 @@ function cinnamon_profile_edit($atts) {
                     ];
                     $posts = get_posts($args);
 
-                    $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
+                    $ip_click_behaviour = imagepress_get_option('ip_click_behaviour');
 
                     $out .= '<div class="editor-image-manager">';
                         if ($posts) {
@@ -596,7 +594,7 @@ function cinnamon_profile_edit($atts) {
                                     <input type="text" class="editableImage" id="listImage_' . $i . '" data-image-id="' . $i . '" value="' . get_the_title($i) . '">
                                     <span class="editableImageStatus editableImageStatus_' . $i . '"></span>
                                     <br><small>' . __('in', 'imagepress') . ' ' .  strip_tags(get_the_term_list($i, 'imagepress_image_category', '', ', ', '')) . ' ' . __('on', 'imagepress') . ' ' . get_the_date('Y-m-d H:i', $i) . '</small>
-                                    <br><small><a href="' . $ip_image_link . '">' . __('View/Edit', 'imagepress') . '</a> | <span class="clickable-span" onclick="do_confirm(' . $i . ');" data-image-id="' . $i . '">' . __('Delete', 'imagepress') . '</span></small>
+                                    <br><small><a href="' . $ip_image_link . '">' . __('View/Edit', 'imagepress') . '</a> | <span class="clickable-span" data-image-id="' . $i . '">' . __('Delete', 'imagepress') . '</span></small>
                                 </div>';
                             }
                         }
@@ -604,7 +602,7 @@ function cinnamon_profile_edit($atts) {
                 $out .= '</div>
 
                 <!-- Begin do_confirm -->
-                <div id="aep_ww" style="display: none;"><div id="aep_win"><div id="aep_prompt"></div><input type="button" class="aep_ok" value="OK"><input type="button" class="aep_cancel" value="Cancel"></div></div>
+                <div id="aep_ww"><div id="aep_win"><div id="aep_prompt"></div><input type="button" class="aep_ok" value="OK"><input type="button" class="aep_cancel" value="Cancel"></div></div>
                 <!-- End do_confirm -->';
 
                 do_action('edit_user_profile', $current_user);
@@ -616,7 +614,7 @@ function cinnamon_profile_edit($atts) {
                             <input name="updateuser" type="submit" class="button" id="updateuser" value="' . __('Update', 'imagepress') . '">';
                             wp_nonce_field('update-user');
                             $out .= '<input name="action" type="hidden" id="action" value="update-user">
-                            <a href="' . getImagePressProfileUri($userid, false) . '">' . __('View profile', 'imagepress') . '</a>
+                            <a href="' . imagepress_get_profile_uri($userid, false) . '">' . __('View profile', 'imagepress') . '</a>
                         </td>
                     </tr>
                 </table>

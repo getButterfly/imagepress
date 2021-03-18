@@ -99,7 +99,7 @@ function imagepress_loop($atts) {
     ], $atts));
 
     $out = '';
-    $ipSlug = (string) get_imagepress_option('ip_slug');
+    $ipSlug = (string) imagepress_get_option('ip_slug');
 
     if ((string) trim($filters) === 'yes') {
         $out .= getImagePressDiscoverFilters();
@@ -108,7 +108,7 @@ function imagepress_loop($atts) {
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
     // Get images per page
-    $ipp = (int) get_imagepress_option('ip_ipp');
+    $ipp = (int) imagepress_get_option('ip_ipp');
     if ((int) $count > 0) {
         $ipp = (int) $count;
     }
@@ -238,14 +238,14 @@ function imagepress_loop($atts) {
     $ip_query = new WP_Query($args1);
 
     // Image box appearance
-    $ip_box_ui = (string) get_imagepress_option('ip_box_ui');
+    $ip_box_ui = (string) imagepress_get_option('ip_box_ui');
 
     $out .= '<div id="ip-boxes" class="ip-box-container ip-box-container-' . $ip_box_ui . '">';
         if ($ip_query->have_posts()) {
             while ($ip_query->have_posts()) {
                 $ip_query->the_post();
 
-                $out .= ipRenderGridElement(get_the_ID());
+                $out .= imagepress_render_grid_element(get_the_ID());
             }
         }
     $out .= '</div><div class="ip-clear"></div>';

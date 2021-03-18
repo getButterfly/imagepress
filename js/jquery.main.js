@@ -3,18 +3,18 @@
 /* eslint-env browser */
 /* jslint-env browser */
 
-
+'use strict';
 
 function do_confirm(imageId) {
     document.getElementById('aep_prompt').innerHTML = ipAjaxVar.swal_confirm_operation;
-    document.getElementById('aep_ww').style.display = '';
+    document.getElementById('aep_ww').classList.add('is-active');
 
     document.querySelector('.aep_ok').dataset.imageId = imageId;
 }
 
 function do_click(m) {
     // Hide confirm modal
-    document.getElementById('aep_ww').style.display = 'none';
+    document.getElementById('aep_ww').classList.remove('is-active');
 
     if (!m) {
         // false
@@ -22,7 +22,7 @@ function do_click(m) {
         // true
         var id = document.querySelector('.aep_ok').dataset.imageId;
 
-        xhrRequest('ip_delete_post', '&id=' + id, function (caller) {
+        xhrRequest('imagepress_delete_post', '&id=' + id, function (caller) {
             document.getElementById('listItem_' + id).remove();
         });
 
@@ -41,7 +41,7 @@ if (document.querySelector('.aep_ok')) {
 
 
 
-function xhrRequest(action, arguments, onSuccess) {
+function xhrRequest(action, args, on_success) {
     var request = new XMLHttpRequest();
 
     request.open('POST', ipAjaxVar.ajaxurl, true);
@@ -49,7 +49,7 @@ function xhrRequest(action, arguments, onSuccess) {
     request.onload = function (response) {
         if (this.status >= 200 && this.status < 400) {
             // Response success
-            onSuccess(this);
+            on_success(this);
         } else {
             // Response error
         }
@@ -57,7 +57,7 @@ function xhrRequest(action, arguments, onSuccess) {
     request.onerror = function() {
         // Connection error
     };
-    request.send('action=' + action + '&nonce=' + ipAjaxVar.nonce + arguments);
+    request.send('action=' + action + '&nonce=' + ipAjaxVar.nonce + args);
 }
 
 
@@ -66,6 +66,24 @@ function xhrRequest(action, arguments, onSuccess) {
  * ImagePress Javascript functions
  */
 document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('.cinnamon-cover')) {
+        document.querySelector('.cinnamon-cover').style.backgroundImage = 'url(' + document.querySelector('.cinnamon-cover').dataset.background + ')';
+    }
+
+    if (document.querySelector('.cinnamon-cover-preview')) {
+        document.querySelector('.cinnamon-cover-preview').style.backgroundImage = 'url(' + document.querySelector('.cinnamon-cover-preview').dataset.background + ')';
+    }
+
+    if (document.querySelector('.imagepress-custom-validity')) {
+        let on_invalid = document.querySelector('.imagepress-custom-validity').dataset.customValidity;
+
+        document.getElementById('imagepress_agree').setCustomValidity(on_invalid);
+
+        document.getElementById('imagepress_agree').addEventListener('change', () => {
+            document.getElementById('imagepress_agree').setCustomValidity(document.getElementById('imagepress_agree').validity.valueMissing ? on_invalid : '');
+        });
+    }
+
     /**
      * Record Like action for custom post type
      */
@@ -128,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     /* end upload */
 
-    /* ip_editor() related actions */
+    /* imagepress_editor() related actions */
     if (document.querySelector('.ip-editor')) {
         var container = document.querySelector('.ip-editor');
 
@@ -166,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     var id = this.dataset.imageId;
 
-                    xhrRequest('ip_delete_post', '&id=' + id, function (caller) {
+                    xhrRequest('imagepress_delete_post', '&id=' + id, function (caller) {
                         document.querySelector('.ip-additional-' + id).remove();
                     });
                 });
@@ -179,8 +197,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.querySelector('ul.tabs')) {
         var tabLinks = document.querySelectorAll('ul.tabs li a');
 
-        for (var i = 0; i < tabLinks.length; i++) {
-            tabLinks[i].onclick = function () {
+        [].forEach.call(tabLinks, function (el) {
+            el.addEventListener('click', function (e) {
+                e.preventDefault();
+
                 var target = this.getAttribute('href').replace('#', '');
                 var sections = document.querySelectorAll('div.tab-content');
 
@@ -197,8 +217,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.setAttribute('class', 'is-active');
 
                 return false;
-            }
-        };
+            });
+        });
+    }
+
+
+
+    if (document.querySelector('.clickable-span')) {
+        const clickableLinks = document.querySelectorAll('.clickable-span');
+
+        [].forEach.call(clickableLinks, el => {
+            el.addEventListener('click', e => {
+                e.preventDefault();
+
+                do_confirm(el.dataset.imageId);
+            });
+        });
     }
 
 
@@ -217,11 +251,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var action = $this.hasClass('follow') ? 'follow' : 'unfollow';
 
-            document.querySelector('img.pwuf-ajax').style.display = 'inline-block';
+            document.querySelector('img.imagepress-ajax').style.display = 'inline-block';
 
             xhrRequest(action, '&user_id=' + $this.data('user-id') + '&follow_id=' + $this.data('follow-id'), function (caller) {
                 jQuery('.imagepress-follow a').toggle();
-                document.querySelector('img.pwuf-ajax').style.display = 'none';
+                document.querySelector('img.imagepress-ajax').style.display = 'none';
             });
         });
     }
@@ -366,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.querySelector('.editableImageStatus_' + id).innerHTML = '<i class="fas fa-cog fa-spin"></i>';
                     document.querySelector('.editableImageStatus_' + id).style.display = 'inline-block';
 
-                    xhrRequest('ip_update_post_title', '&title=' + title + '&id=' + id, function (caller) {
+                    xhrRequest('imagepress_update_post_title', '&title=' + title + '&id=' + id, function (caller) {
                         document.querySelector('.editableImageStatus_' + id).innerHTML = '<i class="fas fa-check"></i>';
                         document.querySelector('.editableImageStatus_' + id).style.display = 'inline-block';
                     });

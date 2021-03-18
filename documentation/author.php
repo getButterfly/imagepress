@@ -5,8 +5,8 @@
 		<section class="entry-content">
 			<?php
 			/* BEGIN IMAGEPRESS AUTHOR CODE */
-			if (function_exists('ip_author')) {
-				ip_author();
+			if (function_exists('imagepress_author')) {
+				imagepress_author();
 			}
 			/* END IMAGEPRESS AUTHOR CODE */
 			?>

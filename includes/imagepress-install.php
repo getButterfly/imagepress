@@ -59,9 +59,7 @@ $optionArray = [
     'ip_upload_tos_content' => 'I have read and agree to the terms & conditions of use.',
     'ip_upload_size' => 4096,
     'ip_cat_exclude' => '',
-    'ip_max_quality' => 100,
-    'ip_dropbox_enable' => 0,
-    'ip_dropbox_key' => '',
+    'ip_max_quality' => 100
 ];
 
 add_option('imagepress', $optionArray);

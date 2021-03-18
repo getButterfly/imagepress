@@ -350,12 +350,14 @@ a img { border: none; }
 
 .profile-hub-container hr { border-top: 1px solid rgba(255, 255, 255, 0.25); }
 
-.cinnamon-cover { position: relative; height: 300px; }
+
 .cinnamon-cover {
-    background-image: -webkit-linear-gradient(bottom,#000000,rgba(0,0,0,0));
-    background-image: -webkit-gradient(linear,left bottom, left top,from(#000000),to(rgba(0,0,0,0)));
-    background-image: -o-linear-gradient(bottom,#000000,rgba(0,0,0,0));
-    background-image: linear-gradient(to top,#000000,rgba(0,0,0,0));
+    position: relative;
+    height: 300px;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 .cinnamon-cover-preview { width: 100%; height: 150px; margin: 0 0 32px 0; position: relative; }
 .cinnamon-cover-preview img { width: 60px; height: 60px; position: absolute; left: 16px; bottom: 42px; }
@@ -439,11 +441,6 @@ a img { border: none; }
     margin: 0 0 4px 0;
     display: inline-block;
     border: none;
-}
-.profile-hub-container .ip-tabs-item .avatar {
-    width: 90px;
-    height: 90px;
-    margin: 0;
 }
 
 
@@ -541,60 +538,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .cinnamon-filters { clear: both; margin: 16px 0; }
 
 
-
-.ip-tab {
-    position: relative;
-}
-.ip-tabs {
-    display: table;
-    position: relative;
-    margin: 0;
-    padding: 12px 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
-}
-.ip-tabs li {
-    float: left;
-    overflow: hidden;
-    padding: 0;
-    position: relative;
-    margin: 0;
-    list-style: none;
-}
-
-@media all and (max-width: 480px) {
-    .ip-tabs li {
-        float: none;
-        padding: 8px 0;
-    }
-}
-
-.ip-tabs .current a, .ip-tabs a:hover { background: none; }
-.ip-tabs .current a { font-weight: 600; }
-
-.ip-tabs-item p { margin: 0 0 8px 0; }
-
-.ip-tabs a {
-    display: block;
-    padding: 0;
-    margin: 0 12px;
-    font-size: 14px;
-    font-weight: 400;
-    text-decoration: none;
-}
-
-.ip-tabs .cinnamon-meta a {
-    margin: 0 4px;
-}
-
-.ip-tabs-item {
-    display: none;
-    padding: 30px 0;
-}
-.ip-tabs-item:first-child {
-    display: block;
-}
 
 .cinnamon-award-list-item {
     margin: 0 1px 0 0;
@@ -723,7 +666,20 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .frontEndModal .showme { display: none; }
 .frontEndModal .collection-progress { display: none; }
 
-.collection_details_edit { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); z-index: 99999; padding: 24px; }
+.collection_details_edit {
+    display: none;
+    position: fixed;
+    top: 20%;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 480px;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 99999;
+    padding: 24px;
+    backdrop-filter: blur(2px);
+}
 .collection_details_edit.active { display: block; }
 
 .collection_details_edit p { margin: 0 0 12px 0; }
@@ -877,11 +833,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .ip-bar input[type="email"],
 .ip-bar input[type="password"],
 .ip-bar textarea,
-.ip-tab input[type="text"],
-.ip-tab input[type="url"],
-.ip-tab input[type="email"],
-.ip-tab input[type="password"],
-.ip-tab textarea,
 .ip-editor input[type="text"],
 .ip-editor input[type="url"],
 .ip-editor input[type="email"],
@@ -904,7 +855,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
     min-width: 50%;
     max-width: 100%;
 }
-.ip-tab textarea,
 .imagepress-upload-form textarea {
     width: 100%;
 }
@@ -912,9 +862,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
 .ip-bar input[type="submit"],
 .ip-bar input[type="file"],
 .ip-bar button,
-.ip-tab input[type="submit"],
-.ip-tab input[type="file"],
-.ip-tab button,
 .ip-editor input[type="submit"],
 .ip-editor input[type="file"],
 .ip-editor button,
@@ -927,7 +874,6 @@ ul, li {padding: 0; margin: 0; list-style: none}
     margin: 2px;
 }
 .ip-bar select,
-.ip-tab select,
 .ip-editor select,
 .ip-sorter-primary select,
 .imagepress-upload-form select {
@@ -1133,6 +1079,7 @@ a.roar-alert-message-button-confirm:hover {
 
 
 #aep_ww {
+    display: none;
     position: fixed;
     z-index: 100;
     top: 0;
@@ -1140,6 +1087,9 @@ a.roar-alert-message-button-confirm:hover {
     width: 100%;
     height: 100%;
     text-align: center;
+}
+#aep_ww.is-active {
+    display: block;    
 }
 #aep_ww:before {
     content: '';
@@ -1163,6 +1113,7 @@ a.roar-alert-message-button-confirm:hover {
 
     padding: 24px;
     border-radius: 0;
+    color: #000000;
     background-color: #ffffff;
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.10);
 }

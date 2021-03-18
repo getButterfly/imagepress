@@ -1,5 +1,5 @@
 <?php
-function ip_awards_taxonomy() {
+function imagepress_awards_taxonomy() {
     $labels = [
 		'name'                       => _x( 'Awards', 'Taxonomy General Name', 'imagepress' ),
 		'singular_name'              => _x( 'Award', 'Taxonomy Singular Name', 'imagepress' ),
@@ -31,13 +31,13 @@ function ip_awards_taxonomy() {
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => false,
 		'rewrite'                    => false,
-        'update_count_callback'      => 'my_update_award_count',
+        'update_count_callback'      => 'imagepress_update_award_count',
     ];
 	register_taxonomy('award', ['user'], $args );
 }
 
 
-function my_update_award_count($terms, $taxonomy) {
+function imagepress_update_award_count($terms, $taxonomy) {
 	global $wpdb;
 
 	foreach((array)$terms as $term) {
@@ -49,39 +49,39 @@ function my_update_award_count($terms, $taxonomy) {
 	}
 }
 
-add_filter('parent_file', 'fix_user_tax_page');
-function fix_user_tax_page($parent_file = '') {
+add_filter('parent_file', 'imagepress_fix_user_tax_page');
+function imagepress_fix_user_tax_page($parent_file = '') {
     global $pagenow;
 	if(!empty($_GET['taxonomy']) && $_GET['taxonomy'] == 'award' && $pagenow == 'edit-tags.php')
         $parent_file = 'users.php';
     return $parent_file;
 }
 
-add_action('admin_menu', 'my_add_award_admin_page');
-function my_add_award_admin_page() {
+add_action('admin_menu', 'imagepress_add_award_admin_page');
+function imagepress_add_award_admin_page() {
     $tax = get_taxonomy('award');
     add_users_page(esc_attr($tax->labels->menu_name), esc_attr($tax->labels->menu_name), $tax->cap->manage_terms, 'edit-tags.php?taxonomy=' . $tax->name);
 }
 
-add_filter('manage_edit-award_columns', 'my_manage_award_user_column');
-function my_manage_award_user_column($columns) {
+add_filter('manage_edit-award_columns', 'imagepress_manage_award_user_column');
+function imagepress_manage_award_user_column($columns) {
     unset($columns['posts']);
 	$columns['users'] = __('Users', 'imagepress');
 	return $columns;
 }
 
-add_action('manage_award_custom_column', 'my_manage_award_column', 10, 3);
-function my_manage_award_column($display, $column, $term_id) {
+add_action('manage_award_custom_column', 'imagepress_manage_award_column', 10, 3);
+function imagepress_manage_award_column($display, $column, $term_id) {
     if('users' === $column) {
 		$term = get_term($term_id, 'award');
 		echo $term->count;
 	}
 }
 
-add_action('show_user_profile', 'my_edit_user_award_section');
-add_action('edit_user_profile', 'my_edit_user_award_section');
+add_action('show_user_profile', 'imagepress_edit_user_award_section');
+add_action('edit_user_profile', 'imagepress_edit_user_award_section');
 
-function my_edit_user_award_section($user) {
+function imagepress_edit_user_award_section($user) {
 	$tax = get_taxonomy('award');
     if(!current_user_can($tax->cap->assign_terms))
 		return;
@@ -89,10 +89,10 @@ function my_edit_user_award_section($user) {
 	$terms = get_terms('award', ['hide_empty' => false]);
 
 	if(is_admin()) { ?>
-		<h3><?php esc_html_e('ImagePress Details', 'imagepress'); ?></h3>
+		<h3><?php _e('ImagePress Details', 'imagepress'); ?></h3>
 		<table class="form-table">
 			<tr>
-				<th><label for="award"><?php esc_html_e('Select award(s)', 'imagepress'); ?></label></th>
+				<th><label for="award"><?php _e('Select award(s)', 'imagepress'); ?></label></th>
 				<td><?php
 				if (!empty($terms)) {
 					foreach($terms as $term) { ?>
@@ -106,12 +106,9 @@ function my_edit_user_award_section($user) {
 	}
 }
 
-function my_award_count_text($count) {
-	return sprintf(_n('%s user', '%s users', $count), number_format_i18n($count));
-}
-add_action('init', 'ip_awards_taxonomy', 0);
+add_action('init', 'imagepress_awards_taxonomy', 0);
 
-function save_extra_taxonomy_fields($term_id) {
+function imagepress_award_save_extra_taxonomy_fields($term_id) {
     if(isset($_POST['term_meta'])) {
         $t_id = $term_id;
         $term_meta = get_option("taxonomy_$t_id");
@@ -124,5 +121,5 @@ function save_extra_taxonomy_fields($term_id) {
         update_option("taxonomy_$t_id", $term_meta);
     }
 }
-add_action('edited_award', 'save_extra_taxonomy_fields', 10, 2);
-add_action('create_award', 'save_extra_taxonomy_fields', 10, 2);
+add_action('edited_award', 'imagepress_award_save_extra_taxonomy_fields', 10, 2);
+add_action('create_award', 'imagepress_award_save_extra_taxonomy_fields', 10, 2);

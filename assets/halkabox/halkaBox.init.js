@@ -3,6 +3,6 @@ window.onload = function () {
         animation: 'fade',
         theme: 'dark',
         hideButtons: false,
-        preload: 0
+        preload: 2
     });
 };

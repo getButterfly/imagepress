@@ -10,12 +10,12 @@ function imagepress_notifications($atts) {
 
     $user_ID = get_current_user_id();
 
-    $ip_slug = get_imagepress_option('ip_slug');
+    $ip_slug = imagepress_get_option('ip_slug');
     $display = '';
 
     $display .= '<div class="notifications-title">
-		Notifications
-		<a href="#" class="ip_notification_mark" data-userid="' . $user_ID . '">' . get_imagepress_option('ip_notifications_mark') . '</a>
+		' . __('Notifications', 'imagepress') . '
+		<a href="#" class="ip_notification_mark" data-userid="' . $user_ID . '">' . imagepress_get_option('ip_notifications_mark') . '</a>
 	</div>';
     $display .= '<div class="notifications-inner" id="c">';
 
@@ -36,19 +36,19 @@ function imagepress_notifications($atts) {
         }
 
         if ($action == 'loved' && $user_ID == $authorID)
-            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . $action . ' your ' . $ip_slug . ' <a href="' . get_permalink($line->postID) . '">' . get_the_title($line->postID) . '</a><time>' . $time . '</time></div>';
+            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . $action . ' ' . $ip_slug . ' <a href="' . get_permalink($line->postID) . '">' . get_the_title($line->postID) . '</a><time>' . $time . '</time></div>';
 
         if ($action == 'collected' && $user_ID == $authorID)
-            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . $action . ' your ' . $ip_slug . ' <a href="' . get_permalink($line->postID) . '">' . get_the_title($line->postID) . '</a><time>' . $time . '</time></div>';
+            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . $action . ' ' . $ip_slug . ' <a href="' . get_permalink($line->postID) . '">' . get_the_title($line->postID) . '</a><time>' . $time . '</time></div>';
 
-		if ($action == 'added' && pwuf_is_following($user_ID, $authorID))
+		if ($action == 'added' && imagepress_is_following($user_ID, $authorID))
             $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . $action . ' <a href="' . get_permalink($line->postID) . '">' . get_the_title($line->postID) . '</a><time>' . $time . '</time></div>';
 
         if ($action == 'followed' && $user_ID == $line->postID)
             $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . $line->actionType . ' you<time>' . $time . '</time></div>';
 
         if ($action == 'commented on' && $user_ID == $authorID && $user_ID != $line->userID)
-            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . $action . ' your ' . $ip_slug . ' <a href="' . get_permalink($line->postID) . '">' . get_the_title($line->postID) . '</a><time>' . $time . '</time></div>';
+            $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . $action . ' ' . $ip_slug . ' <a href="' . get_permalink($line->postID) . '">' . get_the_title($line->postID) . '</a><time>' . $time . '</time></div>';
 
         if ($action == 'replied to a comment on') {
             $comment_id = get_comment($line->postID);
@@ -56,7 +56,7 @@ function imagepress_notifications($atts) {
             $b = $comment_id->user_id;
 
             if($user_ID == $b)
-                $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> replied to your comment on <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a><time>' . $time . '</time></div>';
+                $display .= '<div class="notification-item n' . $line->ID . ' ' . $class . '" data-id="' . $line->ID . '"><a href="' . get_author_posts_url($line->userID) . '">' . $nickname . '</a> ' . __('replied to your comment on', 'imagepress') . ' <a href="' . get_permalink($comment_post_ID) . '">' . get_the_title($comment_post_ID) . '</a><time>' . $time . '</time></div>';
         }
 
         // custom
@@ -66,12 +66,12 @@ function imagepress_notifications($atts) {
     }
 
 	$display .= '</div>';
-	$display .= '<div class="nall"><a href="' . home_url() . '/notifications/">' . get_imagepress_option('ip_notifications_all') . '</a></div>';
+	$display .= '<div class="nall"><a href="' . home_url() . '/notifications/">' . imagepress_get_option('ip_notifications_all') . '</a></div>';
 
     return $display;
 }
 
-$ip_slug = get_imagepress_option('ip_slug');
+$ip_slug = imagepress_get_option('ip_slug');
 
 add_action('new_to_publish', 'imagepress_post_add');
 add_action('comment_post', 'imagepress_comment_add');
@@ -80,7 +80,7 @@ function imagepress_post_add($act_post) {
     global $wpdb, $user_ID;
 
 	if (!wp_is_post_revision($act_post)) {
-		$ip_slug = get_imagepress_option('ip_slug');
+		$ip_slug = imagepress_get_option('ip_slug');
 
 		if (get_query_var('post_type') == $ip_slug && is_numeric($act_post)) {
 			$act_time = current_time('mysql', true);
@@ -98,7 +98,7 @@ function imagepress_post_add_custom($post, $author) {
 function imagepress_comment_add($act_comment) {
     global $wpdb, $user_ID;
 
-    $ip_slug = get_imagepress_option('ip_slug');
+    $ip_slug = imagepress_get_option('ip_slug');
 
     $comment_id = get_comment($act_comment);
     $comment_post_ID = $comment_id->comment_post_ID;

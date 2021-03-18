@@ -1,6 +1,6 @@
 <?php
 function imagepress_registration() {
-    $ip_slug = sanitize_text_field(get_imagepress_option('ip_slug'));
+    $ip_slug = sanitize_text_field(imagepress_get_option('ip_slug'));
 
     if (empty($ip_slug)) {
         $ip_slug = 'image';
@@ -98,7 +98,7 @@ function imagepress_registration() {
     register_taxonomy('imagepress_image_category', [$ip_slug], $image_category_args);
 }
 
-function ip_getPostViews($postID) {
+function imagepress_get_post_views($postID) {
     $count = get_post_meta($postID, 'post_views_count', true);
     $count = empty($count) ? 0 : $count;
 
@@ -106,7 +106,7 @@ function ip_getPostViews($postID) {
 
     return $count;
 }
-function ip_setPostViews($postID) {
+function imagepress_set_post_views($postID) {
     $count = get_post_meta($postID, 'post_views_count', true);
     $count = empty($count) ? 1 : $count + 1;
 
@@ -116,7 +116,7 @@ function ip_setPostViews($postID) {
 
 
 // frontend image editor
-function ip_editor() {
+function imagepress_editor() {
     global $wpdb, $post;
 
     $out = '';
@@ -143,7 +143,7 @@ function ip_editor() {
                 wp_update_post($post);
 
                 // Multiple images
-                ip_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
+                imagepress_upload_secondary($_FILES['imagepress_image_additional'], $post_id);
 
                 wp_set_object_terms($post_id, (int) $_POST['imagepress_image_category'], 'imagepress_image_category');
             }
@@ -169,11 +169,11 @@ function ip_editor() {
 
                 $out .= imagepress_get_image_categories_dropdown('imagepress_image_category', $ip_category[0]->term_id);
 
-                $ip_upload_size = get_imagepress_option('ip_upload_size');
+                $ip_upload_size = imagepress_get_option('ip_upload_size');
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
 
-                if ((int) get_imagepress_option('ip_upload_secondary') === 1) {
+                if ((int) imagepress_get_option('imagepress_upload_secondary') === 1) {
                     $out .= '<hr>
                     <p>' .
                         __('Delete additional images', 'imagepress') .
@@ -217,9 +217,9 @@ function ip_editor() {
     }
 }
 
-// ip_editor() related actions
-add_action('wp_ajax_ip_delete_post', 'ip_delete_post');
-function ip_delete_post() {
+// imagepress_editor() related actions
+add_action('wp_ajax_imagepress_delete_post', 'imagepress_delete_post');
+function imagepress_delete_post() {
     $imageId = (int) $_POST['id'];
 
     if (wp_delete_post($imageId)) {
@@ -228,8 +228,8 @@ function ip_delete_post() {
 
     die();
 }
-add_action('wp_ajax_ip_update_post_title', 'ip_update_post_title');
-function ip_update_post_title() {
+add_action('wp_ajax_imagepress_update_post_title', 'imagepress_update_post_title');
+function imagepress_update_post_title() {
     $updated_post = [
         'ID' => (int) $_REQUEST['id'],
         'post_title' => (string) $_REQUEST['title']
@@ -244,7 +244,7 @@ function ip_update_post_title() {
 
 
 // main ImagePress image function
-function ip_main($imageId) {
+function imagepress_main($imageId) {
     global $wpdb, $post;
 
     $postThumbnailId = get_post_thumbnail_id($imageId);
@@ -252,7 +252,7 @@ function ip_main($imageId) {
     $post_thumbnail_url = $image_attributes[0];
 
     $ip_comments = '';
-    if ((int) get_imagepress_option('ip_comments') === 1) {
+    if ((int) imagepress_get_option('ip_comments') === 1) {
         $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><i class="fas fa-comments"></i> ' . get_comments_number($imageId) . '</a> ';
     }
     ?>
@@ -261,12 +261,12 @@ function ip_main($imageId) {
         <a href="<?php echo $post_thumbnail_url; ?>">
             <?php the_post_thumbnail('full'); ?>
         </a>
-        <?php ip_setPostViews($imageId); ?>
+        <?php imagepress_set_post_views($imageId); ?>
     </div>
 
     <div class="ip-bar">
         <?php echo ipGetPostLikeLink($imageId); ?><em> | </em>
-        <i class="far fa-eye"></i> <?php echo ip_getPostViews($imageId); ?>
+        <i class="far fa-eye"></i> <?php echo imagepress_get_post_views($imageId); ?>
         <?php echo $ip_comments; ?>
         <em> | </em>
         <?php if (function_exists('ip_frontend_add_collection')) {
@@ -276,7 +276,7 @@ function ip_main($imageId) {
         /*
          * Image editor
          */
-        echo ip_editor();
+        echo imagepress_editor();
         ?>
     </div>
 
@@ -285,14 +285,10 @@ function ip_main($imageId) {
     </h1>
 
     <p>
-        <div style="float: left; margin: 0 8px 0 0;">
-            <?php echo get_avatar($post->post_author, 40); ?>
-        </div>
-        <?php esc_html_e('by', 'imagepress'); ?> <b><?php echo getImagePressProfileUri($post->post_author); ?></b>
-        <br><small><?php esc_html_e('Uploaded', 'imagepress'); ?> <time title="<?php the_time(get_option('date_format')); ?>"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?></time> <?php esc_html_e('in', 'imagepress'); ?> <?php echo get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', ''); ?></small>
+        <?php echo get_avatar($post->post_author, 40); ?><br>
+        <?php _e('by', 'imagepress'); ?> <b><?php echo imagepress_get_profile_uri($post->post_author); ?></b>
+        <br><small><?php _e('Uploaded', 'imagepress'); ?> <time title="<?php the_time(get_option('date_format')); ?>"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?></time> <?php _e('in', 'imagepress'); ?> <?php echo get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', ''); ?></small>
     </p>
-
-    <div class="ip-clear"></div>
 
     <?php imagepress_get_images($imageId, 1); ?>
 
@@ -302,8 +298,8 @@ function ip_main($imageId) {
 
     <section role="navigation">
         <?php
-        previous_post_link('%link', esc_html__('Previous', 'imagepress'));
-        next_post_link('%link', esc_html__('Next', 'imagepress'));
+        previous_post_link('%link', __('Previous', 'imagepress'));
+        next_post_link('%link', __('Next', 'imagepress'));
         ?>
     </section>
     <?php
@@ -312,11 +308,11 @@ function ip_main($imageId) {
 
 
 // main ImagePress image function
-function ip_main_return($imageId) {
+function imagepress_main_return($imageId) {
     global $wpdb, $post;
 
     $out = '';
-    ip_setPostViews($imageId);
+    imagepress_set_post_views($imageId);
 
     $postThumbnailId = get_post_thumbnail_id($imageId);
     $image_attributes = wp_get_attachment_image_src($postThumbnailId, 'full');
@@ -324,7 +320,7 @@ function ip_main_return($imageId) {
 
     $ip_comments = '';
 
-    if ((int) get_imagepress_option('ip_comments') === 1) {
+    if ((int) imagepress_get_option('ip_comments') === 1) {
         $ip_comments = '<em> | </em><a href="' . get_permalink($imageId) . '"><i class="fas fa-comments"></i> ' . get_comments_number($imageId) . '</a> ';
     }
 
@@ -334,7 +330,7 @@ function ip_main_return($imageId) {
 
     <div class="ip-bar">' .
         ipGetPostLikeLink($imageId) . '<em> | </em>';
-        $out .= '<i class="far fa-eye"></i> ' . ip_getPostViews($imageId);
+        $out .= '<i class="far fa-eye"></i> ' . imagepress_get_post_views($imageId);
         $out .= $ip_comments;
 
         $out .= '<em> | </em>';
@@ -342,16 +338,14 @@ function ip_main_return($imageId) {
             $out .= ip_frontend_add_collection(get_the_ID());
         }
 
-        $out .= ip_editor();
+        $out .= imagepress_editor();
     $out .= '</div>
 
     <p>
-        <div style="float: left; margin: 0 8px 0 0;">' . get_avatar($post->post_author, 40) . '</div>' .
-        __('by', 'imagepress') . ' <b>' . getImagePressProfileUri($post->post_author) . '</b>
+        ' . get_avatar($post->post_author, 40) . '<br>' .
+        __('Added by', 'imagepress') . ' <b>' . imagepress_get_profile_uri($post->post_author) . '</b>
         <br><small><time title="' . date_i18n(get_option('time_format'), get_the_time('U')) . '">' . date_i18n(get_option('date_format'), get_the_time('U')) . '</time> ' . __('in', 'imagepress') . ' ' . get_the_term_list(get_the_ID(), 'imagepress_image_category', '', ', ', '') . '</small>
-    </p>
-
-    <div class="ip-clear"></div>';
+    </p>';
 
     $out .= '<section>' .
         get_the_content() .
@@ -360,37 +354,14 @@ function ip_main_return($imageId) {
     $out .= imagepress_get_images($imageId, 0);
 
     $out .= '<hr><section role="navigation"><p>' .
-        get_previous_post_link('%link', esc_html__('Previous', 'imagepress')) . ' | ' .
-        get_next_post_link('%link', esc_html__('Next', 'imagepress')) .
+        get_previous_post_link('%link', __('Previous', 'imagepress')) . ' | ' .
+        get_next_post_link('%link', __('Next', 'imagepress')) .
     '</p></section>';
 
     return $out;
 }
 
 
-
-function ip_get_the_term_list($imageId = 0, $taxonomy, $before = '', $sep = '', $after = '', $exclude = []) {
-    $terms = get_the_terms($imageId, $taxonomy);
-
-    if (is_wp_error($terms))
-        return $terms;
-
-    if (empty($terms))
-        return false;
-
-    foreach ($terms as $term) {
-        if (!in_array($term->term_id, $exclude)) {
-            $link = get_term_link($term, $taxonomy);
-            if (is_wp_error($link))
-                return $link;
-            $term_links[] = '<a href="' . $link . '" rel="tag">' . $term->name . '</a>';
-        }
-    }
-
-    $term_links = apply_filters("term_links-$taxonomy", $term_links);
-
-    return $before . join($sep, $term_links) . $after;
-}
 
 function imagepress_get_images($postId, $show) {
     $thumbnail_ID = get_post_thumbnail_id();
@@ -427,22 +398,22 @@ function imagepress_get_images($postId, $show) {
     }
 }
 
-function kformat($number) {
+function imagepress_kformat($number) {
     $number = (int) $number;
 
     return number_format($number, 0, '.', ',');
 }
 
-function ip_related() {
+function imagepress_related() {
     global $post;
 
     $out = '<h3>' . __('More by the same author', 'imagepress') . '</h3>' .
-    cinnamon_get_related_author_posts($post->post_author);
+    imagepress_get_related_author_posts($post->post_author);
 
     return $out;
 }
 
-function ip_author() {
+function imagepress_author() {
     echo do_shortcode('[cinnamon-profile]');
 }
 
@@ -450,7 +421,7 @@ function ip_author() {
 
 
 
-function ip_return_image_sizes() {
+function imagepress_return_image_sizes() {
     global $_wp_additional_image_sizes;
 
     $image_sizes = [];
@@ -464,15 +435,6 @@ function ip_return_image_sizes() {
         }
     }
     return $image_sizes;
-}
-
-function ip_get_user_role() {
-    global $current_user;
-
-    $user_roles = $current_user->roles;
-    $user_role = array_shift($user_roles);
-
-    return $user_role;
 }
 
 function imagepress_order_list() {
@@ -493,23 +455,23 @@ add_action('wp_ajax_nopriv_imagepress_list_update_order','imagepress_order_list'
  * Refactoring of option management functions.
  * Use a get_option() wrapper.
  */
-function get_imagepress_option($option) {
+function imagepress_get_option($option) {
     $ipOptions = get_option('imagepress');
 
     return $ipOptions[$option];
 }
 
-function updateImagePressOption($optionArray) {
+function imagepress_update_option($optionArray) {
     $imagePressOption = get_option('imagepress');
     $updatedArray = array_merge($imagePressOption, $optionArray);
 
     update_option('imagepress', $updatedArray);
 }
 
-function getImagePressProfileUri($authorId, $structure = true) {
-    $ipProfilePageId = (int) get_imagepress_option('ip_profile_page');
+function imagepress_get_profile_uri($authorId, $structure = true) {
+    $ipProfilePageId = (int) imagepress_get_option('ip_profile_page');
     $ipProfilePageUri = get_permalink($ipProfilePageId);
-    $ipProfileSlug = (string) get_imagepress_option('cinnamon_author_slug');
+    $ipProfileSlug = (string) imagepress_get_option('cinnamon_author_slug');
 
     $ipProfileLink = '<span class="name"><a href="' . $ipProfilePageUri . '?' . $ipProfileSlug . '=' . get_the_author_meta('user_nicename', $authorId) . '">' . get_the_author_meta('user_nicename', $authorId) . '</a></span>';
 
@@ -520,17 +482,17 @@ function getImagePressProfileUri($authorId, $structure = true) {
     return $ipProfileLink;
 }
 
-function ipRenderGridElement($elementId) {
+function imagepress_render_grid_element($elementId) {
     $postThumbnailId = get_post_thumbnail_id($elementId);
 
-    $ip_click_behaviour = get_imagepress_option('ip_click_behaviour');
-    $getImagePressTitle = get_imagepress_option('ip_title_optional');
-    $getImagePressAuthor = get_imagepress_option('ip_author_optional');
-    $getImagePressMeta = get_imagepress_option('ip_meta_optional');
-    $getImagePressViews = get_imagepress_option('ip_views_optional');
-    $getImagePressLikes = get_imagepress_option('ip_likes_optional');
-    $get_ip_comments = get_imagepress_option('ip_comments');
-    $size = get_imagepress_option('ip_image_size');
+    $ip_click_behaviour = imagepress_get_option('ip_click_behaviour');
+    $getImagePressTitle = imagepress_get_option('ip_title_optional');
+    $getImagePressAuthor = imagepress_get_option('ip_author_optional');
+    $getImagePressMeta = imagepress_get_option('ip_meta_optional');
+    $getImagePressViews = imagepress_get_option('ip_views_optional');
+    $getImagePressLikes = imagepress_get_option('ip_likes_optional');
+    $get_ip_comments = imagepress_get_option('ip_comments');
+    $size = imagepress_get_option('ip_image_size');
 
     if ($ip_click_behaviour === 'media') {
         // Get attachment source
@@ -552,7 +514,7 @@ function ipRenderGridElement($elementId) {
         // Get post author ID
         $post_author_id = get_post_field('post_author', $elementId);
 
-        $ip_author_optional = getImagePressProfileUri($post_author_id);
+        $ip_author_optional = imagepress_get_profile_uri($post_author_id);
     }
 
     $ip_meta_optional = '';
@@ -561,7 +523,7 @@ function ipRenderGridElement($elementId) {
 
     $ip_views_optional = '';
     if ((int) $getImagePressViews === 1) {
-        $ip_views_optional = '<span class="imageviews"><i class="far fa-eye"></i> ' . ip_getPostViews($elementId) . '</span> ';
+        $ip_views_optional = '<span class="imageviews"><i class="far fa-eye"></i> ' . imagepress_get_post_views($elementId) . '</span> ';
     }
 
     $ip_comments = '';
@@ -586,7 +548,7 @@ function ipRenderGridElement($elementId) {
 /**
  * Display all collections based on current user ID
  */
-function ip_collection_dropdown() {
+function imagepress_collection_dropdown() {
     global $wpdb;
 
     $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = '" . get_current_user_id() . "'", ARRAY_A);
@@ -612,8 +574,8 @@ function ip_collection_dropdown() {
 /**
  * Upload secondary images
  */
-function ip_upload_secondary($filesArray, $postId) {
-    if ((int) get_imagepress_option('ip_upload_secondary') === 1) {
+function imagepress_upload_secondary($filesArray, $postId) {
+    if ((int) imagepress_get_option('imagepress_upload_secondary') === 1) {
         if ($filesArray) {
             require_once ABSPATH . "wp-admin" . '/includes/image.php';
             require_once ABSPATH . "wp-admin" . '/includes/file.php';
@@ -653,108 +615,111 @@ function ip_upload_secondary($filesArray, $postId) {
 
 
 
-
-function ip_login() {
+/**
+ * Log into WordPress
+ *
+ * Logs the user into WordPress, registers a new account or recovers the password
+ *
+ * @return string $out
+ */
+function imagepress_login() {
     global $user_ID, $user_identity;
 
     $out = '';
 
 	if (!$user_ID) {
-        $out .= '<ul class="tabs">
-            <li><a href="#login" class="is-active">' . __('Login', 'imagepress') . '</a></li>
-            <li><a href="#register">' . __('Register', 'imagepress') . '</a></li>
-            <li><a href="#forgot-password">' . __('Forgot your password?', 'imagepress') . '</a></li>
-        </ul>
-        <div id="login" class="tab-content">';
-            $register = $_GET['register'];
-            $reset = $_GET['reset'];
+        $register = sanitize_text_field($_GET['register']);
+        $reset = sanitize_text_field($_GET['reset']);
 
-            if ($register == true) {
-                $out .= '<h3>Success!</h3>
-                <p>Check your email for the password and then return to log in.</p>';
-			} else if ($reset == true) {
-                $out .= '<h3>Success!</h3>
-                <p>Check your email to reset your password.</p>';
-			} else {
-                $out .= '<h3>Have an account?</h3>
-                <p>Log in or sign up!</p>';
-			}
+        if ((bool) $register === true) {
+            $out .= '<h3>' . __('Success!', 'imagepress') . '</h3>
+            <p>' . __('Check your email for the password and then return to log in.', 'imagepress') . '</p>';
+        } else if ((bool) $reset === true) {
+            $out .= '<h3>' . __('Success!', 'imagepress') . '</h3>
+            <p>' . __('Check your email to reset your password.', 'imagepress') . '</p>';
+        } else {
+            $out .= '<h3>' . __('Have an account?', 'imagepress') . '</h3>
+            <p>' . __('Log in or sign up!', 'imagepress') . '</p>';
+        }
 
-			$out .= '<form method="post" action="' . home_url() . '/wp-login.php" class="wp-user-form">
-				<div class="username">
-					<label for="user_login">Username: </label>
-					<input type="text" name="log" value="' . esc_attr(stripslashes($user_login)) . '" size="20" id="user_login">
-				</div>
-				<div class="password">
-					<label for="user_pass">Password: </label>
-					<input type="password" name="pwd" value="" size="20" id="user_pass">
-				</div>
-				<div class="login_fields">
-					<div class="rememberme">
-						<label for="rememberme">
-							<input type="checkbox" name="rememberme" value="forever" checked="checked" id="rememberme"> Remember me
-						</label>
-					</div>
-                    <input type="submit" name="user-submit" value="Login" class="user-submit">
-					<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '">
-					<input type="hidden" name="user-cookie" value="1">
-				</div>
-			</form>
-		</div>
-		<div id="register" class="tab-content">
-			<h3>Register for this site!</h3>
-			<p>Sign up now for the good stuff.</p>
-			<form method="post" action="' . site_url('wp-login.php?action=register', 'login_post') . '" class="wp-user-form">
-				<div class="username">
-					<label for="user_login">Username: </label>
-					<input type="text" name="user_login" value="' . esc_attr(stripslashes($user_login)) . '" size="20" id="user_login">
-				</div>
-				<div class="password">
-					<label for="user_email">Your Email: </label>
-					<input type="text" name="user_email" value="' . esc_attr(stripslashes($user_email)) . '" size="25" id="user_email">
-				</div>
-				<div class="login_fields">';
-					$out .= '<input type="submit" name="user-submit" value="Sign up!" class="user-submit">';
-					$register = $_GET['register'];
-                    if ($register == true) {
-                        $out .= '<p>Check your email for the password!</p>';
-                    }
-					$out .= '<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '?register=true">
-					<input type="hidden" name="user-cookie" value="1">
-				</div>
-			</form>
-		</div>
-		<div id="forgot-password" class="tab-content">
-			<h3>Lose something?</h3>
-			<p>Enter your username or email to reset your password.</p>
-			<form method="post" action="' . site_url('wp-login.php?action=lostpassword', 'login_post') . '" class="wp-user-form">
-				<div class="username">
-					<label for="user_login" class="hide">Username or Email: </label>
-					<input type="text" name="user_login" value="" size="20" id="user_login">
-				</div>
-				<div class="login_fields">';
-					$out .= '<input type="submit" name="user-submit" value="Reset my password" class="user-submit">';
-					$reset = $_GET['reset'];
-                    if ($reset == true) {
-                        echo '<p>A message will be sent to your email address.</p>';
-                    }
-					$out .= '<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '?reset=true">
-					<input type="hidden" name="user-cookie" value="1">
-				</div>
-			</form>
-		</div>';
+        $out .= '<div class="wp-block-columns">
+            <div class="wp-block-column">
+                <h3>' . __('Login', 'imagepress') . '</h3>
 
-	} else { // is logged in
+                <form method="post" action="' . home_url() . '/wp-login.php">
+                    <p>
+                        <label for="user_login">' . __('Username', 'imagepress') . '</label><br>
+                        <input type="text" name="log" value="' . esc_attr(stripslashes($user_login)) . '" size="20" id="user_login">
+                    </p>
+                    <p>
+                        <label for="user_pass">' . __('Password', 'imagepress') . '</label><br>
+                        <input type="password" name="pwd" value="" size="20" id="user_pass">
+                    </p>
 
-	$out .= '<div class="sidebox">
-		<h3>Welcome, ' . $user_identity . '</h3>
-		<div class="userinfo">
-		</div>
-	</div>';
+                    <div class="login_fields">
+                        <label for="rememberme">
+                            <input type="checkbox" name="rememberme" value="forever" id="rememberme" checked> ' . __('Remember me', 'imagepress') . '
+                        </label>
 
+                        <input type="submit" name="user-submit" value="' . __('Login', 'imagepress') . '">
+                        <input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '">
+                        <input type="hidden" name="user-cookie" value="1">
+                    </div>
+                </form>
+            </div>
+            <div class="wp-block-column">
+                <h3>' . __('Register', 'imagepress') . '</h3>
+
+                <form method="post" action="' . site_url('wp-login.php?action=register', 'login_post') . '">
+                    <p>
+                        <label for="user_login_signup">' . __('Username', 'imagepress') . '</label>
+                        <input type="text" name="user_login" value="' . esc_attr(stripslashes($user_login)) . '" size="20" id="user_login_signup">
+                    </p>
+                    <p>
+                        <label for="user_email">' . __('Email Address', 'imagepress') . '</label>
+                        <input type="text" name="user_email" value="' . esc_attr(stripslashes($user_email)) . '" size="25" id="user_email">
+                    </p>
+
+                    <div class="login_fields">';
+                        $out .= '<input type="submit" name="user-submit" value="' . __('Sign Up', 'imagepress') . '">';
+                        $register = sanitize_text_field($_GET['register']);
+                        if ((bool) $register === true) {
+                            $out .= '<p>' . __('Check your email for the password!', 'imagepress') . '</p>';
+                        }
+                        $out .= '<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '?register=true">
+                        <input type="hidden" name="user-cookie" value="1">
+                    </div>
+                </form>
+            </div>
+            <div class="wp-block-column">
+                <h3>' . __('Forgot your password?', 'imagepress') . '</h3>
+
+                <p>Enter your username or email to reset your password.</p>
+                <form method="post" action="' . site_url('wp-login.php?action=lostpassword', 'login_post') . '">
+                    <p>
+                        <label for="user_login" class="hide">' . __('Username or Email Address', 'imagepress') . '</label>
+                        <input type="text" name="user_login" value="" size="20" id="user_login">
+                    </p>
+
+                    <div class="login_fields">';
+                        $out .= '<input type="submit" name="user-submit" value="' . __('Reset Password', 'imagepress') . '">';
+                        $reset = sanitize_text_field($_GET['reset']);
+                        if ((bool) $reset === true) {
+                            echo '<p>' . __('An email message will be sent to your email address.', 'imagepress') . '</p>';
+                        }
+                        $out .= '<input type="hidden" name="redirect_to" value="' . $_SERVER['REQUEST_URI'] . '?reset=true">
+                        <input type="hidden" name="user-cookie" value="1">
+                    </div>
+                </form>
+            </div>
+        </div>';
+	} else {
+        $out .= '<h3>' . __('Welcome', 'imagepress') . ', ' . $user_identity . '</h3>
+        <div class="userinfo"></div>';
 	}
 
     return $out;
 }
 
-add_shortcode('cinnamon-login', 'ip_login');
+add_shortcode('cinnamon-login', 'imagepress_login');
+add_shortcode('imagepress-login', 'imagepress_login');
