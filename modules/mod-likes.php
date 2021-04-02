@@ -38,7 +38,7 @@ function imagepress_like() {
 			$liked_USERS['user-' . $user_id] = $user_id; // add user id to post meta array
 			$user_likes = count($liked_POSTS); // count user likes
 
-			if(!ipAlreadyLiked($post_id)) { // like the post
+			if(!imagepress_already_liked($post_id)) { // like the post
 				update_post_meta($post_id, '_user_liked', $liked_USERS); // add user ID to post meta
 				update_post_meta($post_id, $ip_vote_meta, ++$like_count); // +1 count post meta
 				update_user_option($user_id, '_liked_posts', $liked_POSTS); // add post ID to user meta
@@ -79,7 +79,7 @@ function imagepress_like() {
 			if (!in_array($userIp, $liked_IPS)) // if IP not in array
 				$liked_IPS['ip-' . $userIp] = $userIp; // add IP to array
 
-			if(!ipAlreadyLiked($post_id)) { // like the post
+			if(!imagepress_already_liked($post_id)) { // like the post
 				update_post_meta($post_id, '_user_IP', $liked_IPS); // add user IP to post meta
 				update_post_meta($post_id, $ip_vote_meta, ++$like_count); // +1 count post meta
 				echo $like_count; // update count on front end
@@ -99,7 +99,7 @@ function imagepress_like() {
 /**
  * Test if user already liked post
  */
-function ipAlreadyLiked($post_id) { // test if user liked before
+function imagepress_already_liked($post_id) { // test if user liked before
 	if (is_user_logged_in()) { // user is logged in
 		$user_id = get_current_user_id(); // current user
 		$meta_USERS = get_post_meta($post_id, '_user_liked'); // user ids from post meta
@@ -140,7 +140,7 @@ function ipAlreadyLiked($post_id) { // test if user liked before
 /**
  * Front end button
  */
-function ipGetPostLikeLink($post_id) {
+function imagepress_get_post_like_link($post_id) {
     $output = $class = '';
 	$ip_vote_like = imagepress_get_option('ip_vote_like');
 	$ip_vote_unlike = imagepress_get_option('ip_vote_unlike');
@@ -148,7 +148,7 @@ function ipGetPostLikeLink($post_id) {
 	if (is_user_logged_in()) {
 		$like = '<i class="far fa-heart"></i><span class="ip-icon-label"> ' . $ip_vote_like . '</span>';
 
-		if (ipAlreadyLiked($post_id)) {
+		if (imagepress_already_liked($post_id)) {
 			$class = esc_attr('liked');
 			$like = '<i class="fas fa-heart"></i><span class="ip-icon-label"> ' . $ip_vote_unlike . '</span>';
 		}
@@ -162,7 +162,7 @@ function ipGetPostLikeLink($post_id) {
 /**
  * If the user is logged in, output a list of posts that the user likes
  */
-function ipFrontEndUserLikes($author) {
+function imagepress_frontend_user_likes($author) {
 	$like_list = '<div class="cinnamon-likes" id="cinnamon-love">';
 	$user_likes = get_user_option('_liked_posts', $author);
 	$the_likes = '';

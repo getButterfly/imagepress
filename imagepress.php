@@ -3,7 +3,7 @@
 Plugin Name: ImagePress
 Plugin URI: https://getbutterfly.com/wordpress-plugins/imagepress/
 Description: Create a user-powered image gallery or an image upload site, using nothing but WordPress custom posts. Moderate image submissions and integrate the plugin into any theme.
-Version: 8.1.0
+Version: 8.1.2
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com/
 GitHub Plugin URI: getbutterfly/imagepress
@@ -35,9 +35,9 @@ if (!function_exists('add_filter')) {
     exit();
 }
 
-define('IP_PLUGIN_URL', WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__)));
-define('IP_PLUGIN_PATH', WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)));
-define('IP_PLUGIN_FILE_PATH', WP_PLUGIN_DIR . '/' . plugin_basename(__FILE__));
+define('IMAGEPRESS_PLUGIN_URL', WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__)));
+define('IMAGEPRESS_PLUGIN_PATH', WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)));
+define('IMAGEPRESS_PLUGIN_FILE_PATH', WP_PLUGIN_DIR . '/' . plugin_basename(__FILE__));
 
 
 
@@ -45,9 +45,9 @@ define('IP_PLUGIN_FILE_PATH', WP_PLUGIN_DIR . '/' . plugin_basename(__FILE__));
 function imagepress_init() {
     load_plugin_textdomain('imagepress', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 
-    $ip_slug = imagepress_get_option('ip_slug');
+    $imagepress_slug = imagepress_get_option('ip_slug');
 
-    if (empty($ip_slug)) {
+    if (empty($imagepress_slug)) {
         $optionArray = [
             'ip_slug' => 'image'
         ];
@@ -58,20 +58,20 @@ add_action('plugins_loaded', 'imagepress_init');
 
 
 
-include_once IP_PLUGIN_PATH . '/includes/imagepress-install.php';
-include_once IP_PLUGIN_PATH . '/includes/functions.php';
+include_once IMAGEPRESS_PLUGIN_PATH . '/includes/imagepress-install.php';
+include_once IMAGEPRESS_PLUGIN_PATH . '/includes/functions.php';
 
-include IP_PLUGIN_PATH . '/includes/alpha-functions.php';
-include IP_PLUGIN_PATH . '/includes/page-settings.php';
-include IP_PLUGIN_PATH . '/includes/cinnamon-users.php';
+include IMAGEPRESS_PLUGIN_PATH . '/includes/alpha-functions.php';
+include IMAGEPRESS_PLUGIN_PATH . '/includes/page-settings.php';
+include IMAGEPRESS_PLUGIN_PATH . '/includes/cinnamon-users.php';
 
 // user modules
-include IP_PLUGIN_PATH . '/modules/mod-awards.php';
-include IP_PLUGIN_PATH . '/modules/mod-user-following.php';
-include IP_PLUGIN_PATH . '/modules/mod-likes.php';
-include IP_PLUGIN_PATH . '/modules/mod-notifications.php';
+include IMAGEPRESS_PLUGIN_PATH . '/modules/mod-awards.php';
+include IMAGEPRESS_PLUGIN_PATH . '/modules/mod-user-following.php';
+include IMAGEPRESS_PLUGIN_PATH . '/modules/mod-likes.php';
+include IMAGEPRESS_PLUGIN_PATH . '/modules/mod-notifications.php';
 
-include IP_PLUGIN_PATH . '/modules/mod-collections.php';
+include IMAGEPRESS_PLUGIN_PATH . '/modules/mod-collections.php';
 
 add_action('init', 'imagepress_registration');
 
@@ -144,7 +144,7 @@ add_shortcode('imagepress-top', 'imagepress_top');
 
 add_shortcode('imagepress', 'imagepress_widget');
 
-add_shortcode('imagepress-collections', 'ip_collections_display_custom');
+add_shortcode('imagepress-collections', 'imagepress_collections_display_custom');
 
 add_image_size('imagepress_sq_std', 250, 250, true);
 add_image_size('imagepress_pt_std', 250, 375, true);
@@ -164,18 +164,18 @@ if (imagepress_get_option('cinnamon_hide_admin') == 1) {
 /* CINNAMON ACTIONS */
 add_action('init', 'imagepress_author_base');
 
-add_action('personal_options_update', 'save_cinnamon_profile_fields');
-add_action('edit_user_profile_update', 'save_cinnamon_profile_fields');
+add_action('personal_options_update', 'imagepress_save_profile_fields');
+add_action('edit_user_profile_update', 'imagepress_save_profile_fields');
 
 /* CINNAMON SHORTCODES */
-add_shortcode('cinnamon-card', 'cinnamon_card');
-add_shortcode('cinnamon-profile', 'cinnamon_profile');
-add_shortcode('cinnamon-profile-edit', 'cinnamon_profile_edit');
-add_shortcode('cinnamon-awards', 'cinnamon_awards');
+add_shortcode('cinnamon-card', 'imagepress_card');
+add_shortcode('cinnamon-profile', 'imagepress_profile');
+add_shortcode('cinnamon-profile-edit', 'imagepress_profile_edit');
+add_shortcode('cinnamon-awards', 'imagepress_awards');
 
 /* CINNAMON FILTERS */
-add_filter('get_avatar', 'hub_gravatar_filter', 1, 5);
-add_filter('user_contactmethods', 'cinnamon_extra_contact_info');
+add_filter('get_avatar', 'imagepress_hub_gravatar_filter', 1, 5);
+add_filter('user_contactmethods', 'imagepress_extra_contact_info');
 
 
 
@@ -358,11 +358,11 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
     // upload form // customize
 
     // labels
-    $ip_slug = imagepress_get_option('ip_slug');
+    $imagepress_slug = imagepress_get_option('ip_slug');
 
     $ip_caption_label = imagepress_get_option('ip_caption_label');
     $ip_description_label = imagepress_get_option('ip_description_label');
-    $ip_upload_label = imagepress_get_optionimagepress_get_option('ip_upload_label');
+    $ip_upload_label = imagepress_get_option('ip_upload_label');
 
     $ip_upload_tos = imagepress_get_option('ip_upload_tos');
     $ip_upload_tos_url = imagepress_get_option('ip_upload_tos_url');
@@ -528,14 +528,14 @@ register_uninstall_hook( __FILE__, 'imagepress_uninstall');
 
 
 
-// enqueue admin scripts and styles
+// Enqueue admin scripts and styles
 add_action('admin_enqueue_scripts', 'imagepress_enqueue_color_picker');
 function imagepress_enqueue_color_picker() {
     wp_enqueue_style('wp-color-picker');
     wp_enqueue_style('imagepress', plugins_url('css/ip-admin.css', __FILE__));
 
-    wp_enqueue_script('ip-functions', plugins_url('js/functions.js', __FILE__), ['wp-color-picker'], false, true);
-    wp_add_inline_script('ip-functions', 'const ajax_var = ' . json_encode([
+    wp_enqueue_script('imagepress-functions', plugins_url('js/functions.js', __FILE__), ['wp-color-picker'], false, true);
+    wp_add_inline_script('imagepress-functions', 'const ajax_var = ' . json_encode([
         'ajaxurl' => admin_url('admin-ajax.php')
     ]), 'before');
 }
@@ -544,20 +544,20 @@ function imagepress_enqueue_color_picker() {
 
 add_action('wp_enqueue_scripts', 'imagepress_enqueue_scripts');
 function imagepress_enqueue_scripts() {
-    wp_enqueue_style('ip-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
+    wp_enqueue_style('imagepress-bootstrap', plugins_url('css/ip-bootstrap.css', __FILE__));
 
 	$accountPageUri = get_option('cinnamon_account_page');
 
-    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.15.2/js/all.js', [], '5.15.2', true);
+    wp_enqueue_script('fa5', 'https://use.fontawesome.com/releases/v5.15.3/js/all.js', [], '5.15.3', true);
 
     if (is_page(imagepress_get_option('cinnamon_edit_page'))) {
-        wp_enqueue_script('sortable', plugins_url('js/Sortable.min.js', __FILE__), [], '1.13.0', true);
-        wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), ['jquery', 'sortable'], '8.1.0', true);
+        wp_enqueue_script('imagepress-sortable', plugins_url('js/Sortable.min.js', __FILE__), [], '1.13.0', true);
+        wp_enqueue_script('imagepress-main', plugins_url('js/jquery.main.js', __FILE__), ['jquery', 'imagepress-sortable'], '8.1.2', true);
     } else {
-        wp_enqueue_script('ipjs-main', plugins_url('js/jquery.main.js', __FILE__), ['jquery'], '8.1.0', true);
+        wp_enqueue_script('imagepress-main', plugins_url('js/jquery.main.js', __FILE__), ['jquery'], '8.1.2', true);
     }
 
-    wp_add_inline_script('ipjs-main', 'const ipAjaxVar = ' . json_encode([
+    wp_add_inline_script('imagepress-main', 'const ipAjaxVar = ' . json_encode([
         'imagesperpage' => imagepress_get_option('ip_ipp'),
         'authorsperpage' => imagepress_get_option('ip_app'),
         'likelabel' => imagepress_get_option('ip_vote_like'),
@@ -567,7 +567,7 @@ function imagepress_enqueue_scripts() {
         'logged_in' => is_user_logged_in() ? 'true' : 'false',
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('ajax-nonce'),
-        'ip_url' => IP_PLUGIN_URL,
+        'ip_url' => IMAGEPRESS_PLUGIN_URL,
 
         'redirecturl' => apply_filters('fum_redirect_to', $accountPageUri),
 		'loadingmessage' => __('Checking credentials...', 'imagepress'),
@@ -717,10 +717,10 @@ if ((int) get_option('use_bulk_upload') === 1) {
 }
 
 function imagepress_lightbox_load_scripts() {
-    wp_enqueue_script('halka', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.min.js', [], '1.6.0', true);
-    wp_enqueue_script('halka-init', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.init.js', ['halka'], '1.6.0', true);
+    wp_enqueue_script('imagepress-halka', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.min.js', [], '1.6.0', true);
+    wp_enqueue_script('imagepress-halka-init', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.init.js', ['imagepress-halka'], '1.6.0', true);
 
-    wp_enqueue_style('halka-style', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.min.css');
+    wp_enqueue_style('imagepress-halka-style', plugin_dir_url(__FILE__) . 'assets/halkabox/halkaBox.min.css');
 }
 
 if ((int) get_option('imagepress_use_lightbox') === 1 && (string) imagepress_get_option('ip_click_behaviour') === 'media') {
@@ -761,8 +761,8 @@ function imagepress_element_categories($atts) {
 }
 
 function imagepress_member_directory_user_query($args) {
-    $ip_slug = imagepress_get_option('ip_slug');
-    $args->query_from = str_replace("post_type = post AND", "post_type IN ('$ip_slug') AND ", $args->query_from);
+    $imagepress_slug = imagepress_get_option('ip_slug');
+    $args->query_from = str_replace("post_type = post AND", "post_type IN ('$imagepress_slug') AND ", $args->query_from);
 }
 
 function imagepress_element_member_directory() {

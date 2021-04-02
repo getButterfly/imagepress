@@ -1,9 +1,9 @@
 <?php
 function imagepress_registration() {
-    $ip_slug = sanitize_text_field(imagepress_get_option('ip_slug'));
+    $imagepress_slug = sanitize_text_field(imagepress_get_option('ip_slug'));
 
-    if (empty($ip_slug)) {
-        $ip_slug = 'image';
+    if (empty($imagepress_slug)) {
+        $imagepress_slug = 'image';
     }
 
     $image_type_labels = [
@@ -53,11 +53,11 @@ function imagepress_registration() {
         'publicly_queryable'    => true,
         'capability_type'       => 'post',
         'show_in_rest'          => true,
-        'rest_base'             => $ip_slug,
+        'rest_base'             => $imagepress_slug,
         'rest_controller_class' => 'WP_REST_Posts_Controller',
     ];
 
-    register_post_type($ip_slug, $image_type_args);
+    register_post_type($imagepress_slug, $image_type_args);
 
     $imageTaxonomy = [
         'name'                       => _x('Image categories', 'Taxonomy general name', 'imagepress'),
@@ -95,7 +95,7 @@ function imagepress_registration() {
         'rest_controller_class' => 'WP_REST_Terms_Controller',
     ];
 
-    register_taxonomy('imagepress_image_category', [$ip_slug], $image_category_args);
+    register_taxonomy('imagepress_image_category', [$imagepress_slug], $image_category_args);
 }
 
 function imagepress_get_post_views($postID) {
@@ -265,12 +265,12 @@ function imagepress_main($imageId) {
     </div>
 
     <div class="ip-bar">
-        <?php echo ipGetPostLikeLink($imageId); ?><em> | </em>
+        <?php echo imagepress_get_post_like_link($imageId); ?><em> | </em>
         <i class="far fa-eye"></i> <?php echo imagepress_get_post_views($imageId); ?>
         <?php echo $ip_comments; ?>
         <em> | </em>
-        <?php if (function_exists('ip_frontend_add_collection')) {
-            echo ip_frontend_add_collection(get_the_ID());
+        <?php if (function_exists('imagepress_frontend_add_collection')) {
+            echo imagepress_frontend_add_collection(get_the_ID());
         }
 
         /*
@@ -329,13 +329,13 @@ function imagepress_main_return($imageId) {
     </div>
 
     <div class="ip-bar">' .
-        ipGetPostLikeLink($imageId) . '<em> | </em>';
+        imagepress_get_post_like_link($imageId) . '<em> | </em>';
         $out .= '<i class="far fa-eye"></i> ' . imagepress_get_post_views($imageId);
         $out .= $ip_comments;
 
         $out .= '<em> | </em>';
-        if (function_exists('ip_frontend_add_collection')) {
-            $out .= ip_frontend_add_collection(get_the_ID());
+        if (function_exists('imagepress_frontend_add_collection')) {
+            $out .= imagepress_frontend_add_collection(get_the_ID());
         }
 
         $out .= imagepress_editor();

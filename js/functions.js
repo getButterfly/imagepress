@@ -1,3 +1,5 @@
+'use strict';
+
 jQuery(document).ready(function() {
     if (jQuery('.ip-color-picker')) {
         jQuery(".ip-color-picker").wpColorPicker();

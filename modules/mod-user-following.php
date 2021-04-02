@@ -329,7 +329,7 @@ function imagepress_get_follow_unfollow_links($follow_id = null) {
 		<a href="#" class="follow thin-ui-button" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><?php _e('Follow', 'imagepress'); ?></a>
 		<a href="#" class="followed unfollow thin-ui-button" style="display: none;" data-user-id="<?php echo $user_ID; ?>" data-follow-id="<?php echo $follow_id; ?>"><?php _e('Unfollow', 'imagepress'); ?></a>
 	<?php } ?>
-	<img src="<?php echo IP_PLUGIN_URL; ?>/img/loading.gif" class="imagepress-ajax" style="display: none;">
+	<img src="<?php echo IMAGEPRESS_PLUGIN_URL; ?>/img/loading.gif" class="imagepress-ajax" style="display: none;">
 	<?php
 
     return ob_get_clean();

@@ -29,7 +29,7 @@ function imagepress_admin_page() {
             global $wpdb;
 
             // Get the WP built-in version
-            $ipdata = get_plugin_data(IP_PLUGIN_FILE_PATH);
+            $ipdata = get_plugin_data(IMAGEPRESS_PLUGIN_FILE_PATH);
 
             echo '<div id="gb-ad">
                 <h3 class="gb-handle">Thank you for using ImagePress!</h3>
@@ -405,7 +405,10 @@ function imagepress_admin_page() {
                             $collectionUser = get_user_by('id', $collection['collection_author_ID']);
 
                             echo '<td>' . $collection['collection_ID'] . '</td>';
-                            echo '<td><b><a href="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></b></td>';
+                            echo '<td>
+                                <b><a href="' . get_permalink($ipCollectionsPageId) . '?collection=' . (int) $collection['collection_ID'] . '">' . $collection['collection_title'] . '</a></b>
+                                <br>Shortcode: <code>[imagepress-collection-single id="' . $collection['collection_ID'] . '"]</code>
+                            </td>';
                             echo '<td><a href="' . admin_url('user-edit.php?user_id=' . $collectionUser->ID) . '">' . $collectionUser->user_nicename . '</a></td>';
                             echo '<td>' . ((count($postslistcount) === 1) ? count($postslistcount) . ' image' : count($postslistcount) . ' images') . '</td>';
                             echo '<td>' . (($collection['collection_status'] == 0) ? 'private' : 'public') . '</td>';

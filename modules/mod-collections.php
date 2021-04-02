@@ -3,7 +3,7 @@
  * ImagePress Module: Collections
  */
 
-function addCollection() {
+function imagepress_add_collection() {
     global $wpdb;
 
     $collectionAuthorId = intval($_POST['collection_author_id']);
@@ -14,7 +14,7 @@ function addCollection() {
     $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_title_slug, collection_status, collection_author_ID) VALUES ('%s', '%s', %d, %d)", $collectionTitle, $collectionTitleSlug, $collectionStatus, $collectionAuthorId));
     die();
 }
-function editCollectionTitle() {
+function imagepress_edit_collection_title() {
     global $wpdb;
 
     $collectionId = intval($_POST['collection_id']);
@@ -24,7 +24,7 @@ function editCollectionTitle() {
     $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "ip_collections SET collection_title = '%s', collection_title_slug = '%s' WHERE collection_ID = %d", $collectionTitle, $collectionTitleSlug, $collectionId));
     die();
 }
-function editCollectionStatus() {
+function imagepress_edit_collection_status() {
     global $wpdb;
 
     $collectionId = intval($_POST['collection_id']);
@@ -33,7 +33,7 @@ function editCollectionStatus() {
     $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "ip_collections SET collection_status = '%s' WHERE collection_ID = %d", $collectionStatus, $collectionId));
     die();
 }
-function deleteCollection() {
+function imagepress_delete_collection() {
     global $wpdb;
 
     $collectionId = intval($_POST['collection_id']);
@@ -42,7 +42,7 @@ function deleteCollection() {
     $wpdb->query($wpdb->prepare("DELETE FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d", $collectionId));
     die();
 }
-function deleteCollectionImage() {
+function imagepress_delete_collection_image() {
     global $wpdb;
 
     $image_ID = intval($_POST['image_id']);
@@ -51,15 +51,15 @@ function deleteCollectionImage() {
     die();
 }
 
-add_action('wp_ajax_addCollection', 'addCollection');
-add_action('wp_ajax_editCollectionTitle', 'editCollectionTitle');
-add_action('wp_ajax_editCollectionStatus', 'editCollectionStatus');
-add_action('wp_ajax_deleteCollection', 'deleteCollection');
-add_action('wp_ajax_deleteCollectionImage', 'deleteCollectionImage');
+add_action('wp_ajax_addCollection', 'imagepress_add_collection');
+add_action('wp_ajax_editCollectionTitle', 'imagepress_edit_collection_title');
+add_action('wp_ajax_editCollectionStatus', 'imagepress_edit_collection_status');
+add_action('wp_ajax_deleteCollection', 'imagepress_delete_collection');
+add_action('wp_ajax_deleteCollectionImage', 'imagepress_delete_collection_image');
 
-add_action('wp_ajax_ip_collections_display', 'ip_collections_display');
+add_action('wp_ajax_ip_collections_display', 'imagepress_collections_display');
 
-function ip_collection_count($author) {
+function imagepress_collection_count($author) {
     global $wpdb;
 
     $result = $wpdb->get_results($wpdb->prepare("SELECT collection_ID FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = %d", $author), ARRAY_A);
@@ -68,7 +68,7 @@ function ip_collection_count($author) {
     return $count;
 }
 
-function ip_collections_display() {
+function imagepress_collections_display() {
     global $wpdb;
 
     $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_author_ID = %d", get_current_user_id()), ARRAY_A);
@@ -114,7 +114,7 @@ function ip_collections_display() {
 
     die();
 }
-function ip_collections_display_public($author_ID) {
+function imagepress_collections_display_public($author_ID) {
     global $wpdb;
 
     $result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_status = 1 AND collection_author_ID = %d", $author_ID), ARRAY_A);
@@ -143,7 +143,7 @@ function ip_collections_display_public($author_ID) {
 
     return $out;
 }
-function ip_collections_display_custom($atts) {
+function imagepress_collections_display_custom($atts) {
     extract(shortcode_atts([
         'mode' => 'random', // random, latest
         'count' => 1
@@ -192,7 +192,7 @@ function ip_collections_display_custom($atts) {
 
 
 // FRONT END BUTTON
-function ip_frontend_add_collection($ip_id) {
+function imagepress_frontend_add_collection($ip_id) {
     if (isset($_POST['collectme'])) {
         global $wpdb, $current_user;
 
@@ -394,3 +394,94 @@ function imagepress_collection($atts) {
         return $out;
     }
 }
+
+
+
+function imagepress_collection_single($atts) {
+    extract(shortcode_atts([
+        'count' => 0,
+        'limit' => 999999,
+        'type' => '', // 'random'
+        'id' => '', // new parameter (will extract all images from a certain collection)
+        'order' => '' // only used by profile viewer
+    ], $atts));
+
+    global $wpdb;
+
+    $ip_order_asc_desc = 'DESC';
+    $ip_order = empty($type) ? 'date' : 'rand';
+
+    $collectedArray = [];
+
+    $collection_page = (int) sanitize_text_field($id);
+
+    $collectionables = $wpdb->get_results($wpdb->prepare("SELECT image_ID, image_collection_ID FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d", $collection_page), ARRAY_A);
+
+    foreach ($collectionables as $collectable) {
+        $collectedArray[] = $collectable['image_ID'];
+    }
+
+    $wpdb->query($wpdb->prepare("UPDATE " . $wpdb->prefix . "ip_collections SET collection_views = collection_views + 1 WHERE collection_ID = %d", $collection_page));
+
+    $collection_row = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collections WHERE collection_ID = %d", $collection_page), ARRAY_A);
+
+    $out = '<div class="ip-template-collection-meta">';
+        $last_image_row = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "ip_collectionmeta WHERE image_collection_ID = %d ORDER BY image_meta_ID DESC LIMIT 1", $collection_row['collection_ID']), ARRAY_A);
+
+        $out .= '<div class="imagepress-float-right">' . $collection_row['collection_views'] . ' ' . __('views', 'imagepress') . ' | ' . count($collectionables) . ' ' . __('images', 'imagepress') . '</div>';
+        $out .= '<div class="imagepress-float-left"><a href="' . get_permalink($last_image_row['image_ID']) . '">' . get_the_post_thumbnail($last_image_row['image_ID'], 'thumbnail') . '</a></div>';
+        $out .= '<div class="tcm-title">' . $collection_row['collection_title'] . '</div>';
+        $out .= imagepress_get_profile_uri($collection_row['collection_author_ID']);
+        $out .= '<div class="ipclear"></div>';
+    $out .= '</div>';
+
+    $hmc = count($collectionables);
+
+    if ((int) $hmc === 0 || empty($hmc)) {
+        $out .= '<p>' . __('This collection is empty.', 'imagepress') . '</p>';
+
+        return $out;
+    }
+
+    $args = [
+        'post_type'                 => imagepress_get_option('ip_slug'),
+        'post_status'               => ['publish'],
+        'posts_per_page'            => $limit,
+        'orderby'                   => $ip_order,
+        'order'                     => $ip_order_asc_desc,
+        'post__in'                  => $collectedArray,
+        'fields'                    => 'ids',
+        'no_found_rows'             => true
+    ];
+
+    $posts = get_posts($args);
+
+    if ($posts) {
+        // Image box appearance
+        $ip_box_ui = (string) imagepress_get_option('ip_box_ui');
+
+        $out .= '<div id="ip-boxes" class="ip-box-container ip-box-container-' . $ip_box_ui . '">';
+            foreach ($posts as $user_image) {
+                // Check if post has a featured image. If not, something has gone wrong and remove it.
+                if (has_post_thumbnail($user_image)) { // $user_image->ID
+                    // image ID
+
+                    $out .= imagepress_render_grid_element($user_image);
+                }
+            }
+            // end loop
+
+        $out .= '</div>';
+        if ((int) $count === 0) {
+            $out .= '<ul class="pagination"></ul>';
+        }
+        $out .= '<div class="ip_clear"></div>';
+
+        return $out;
+    } else {
+        $out .= '<div class="imagepress-not-found">' . __('No images found!', 'imagepress') . '</div>';
+        return $out;
+    }
+}
+
+add_shortcode('imagepress-collection-single', 'imagepress_collection_single');

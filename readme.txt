@@ -1,10 +1,10 @@
 === ImagePress ===
 Contributors: butterflymedia
 Tags: image, user, upload, gallery, album, category, profile
-Requires at least: 5.4
+Requires at least: 5.5
 Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 8.1.0
+Stable tag: 8.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: imagepress
@@ -20,6 +20,28 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 3. A new ImagePress menu will appear in WordPress with options and general help
 
 == Changelog ==
+
+= 8.1.3 =
+* TODO: Delete/reconsider cinnamon_cards()
+* TODO: Refactor collections (CPT?)
+* TODO/ROADMAP: Remove jQuery dependency
+* TODO: Replace URL fields with page dropdowns
+
+= 8.1.2 =
+* FIX: Fixed function type
+* UPDATE: Updated WordPress compatibility
+* UPDATE: Updated FontAwesome (5.15.2 -> 5.15.3)
+* FEATURE: Added single collection shortcode
+
+= 8.1.1 =
+* UPDATE: Updated all constant prefixes
+* UPDATE: Updated all PHP function names
+* UPDATE: Updated all PHP class names
+* UPDATE: Updated all PHP global variables
+* UPDATE: Updated all action/filter hooks
+* UPDATE: Updated all script handles
+* UPDATE: Updated all style handles
+* UPDATE: Updated all image size names
 
 = 8.1.0 =
 * FIX: Fixed profile editing link for mismatched user_login and username
@@ -37,12 +59,6 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * UPDATE: Updated HalkaBoxJS library to latest version
 * UPDATE: Changed deprecated onclick() insline functions
 * UPDATE: Removed unused .ip-tab/.ip-tabs classes
-7. __() & _e() does not escape. Simply use WordPress' escaping functions such as esc_attr__(), esc_html__() etc…
-9. The localization file should be in English and delivered as a {plugin-slug}.pot file that contains all your translation strings. The plugin can include an actual translation file, but it should not add the en_US.mo or en_US.po because English is implied.
-* TODO: Delete/reconsider cinnamon_cards()
-* TODO: Refactor collections (CPT?)
-* TODO/ROADMAP: Remove jQuery dependency
-* TODO: Replace URL fields with page dropdowns
 
 = 8.0.0 =
 * FIX: Removed non-functional image search

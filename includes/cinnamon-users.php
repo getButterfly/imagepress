@@ -2,9 +2,9 @@
 function imagepress_count_user_posts_by_type($userid) {
     global $wpdb;
 
-    $ip_slug = imagepress_get_option('ip_slug');
+    $imagepress_slug = imagepress_get_option('ip_slug');
 
-    $where = get_posts_by_author_sql($ip_slug, true, $userid);
+    $where = get_posts_by_author_sql($imagepress_slug, true, $userid);
     $count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts $where");
 
     return apply_filters('get_usernumposts', $count, $userid);
@@ -33,11 +33,11 @@ function imagepress_author_base() {
 }
 
 function imagepress_get_related_author_posts($author) {
-    $ip_slug = imagepress_get_option('ip_slug');
+    $imagepress_slug = imagepress_get_option('ip_slug');
     $authors_posts = get_posts([
         'author' => $author,
         'posts_per_page' => 9,
-        'post_type' => $ip_slug
+        'post_type' => $imagepress_slug
     ]);
 
     $output = '';
@@ -55,7 +55,7 @@ function imagepress_get_related_author_posts($author) {
     return $output;
 }
 
-function cinnamon_extra_contact_info($contactmethods) {
+function imagepress_extra_contact_info($contactmethods) {
     unset($contactmethods['aim']);
     unset($contactmethods['yim']);
     unset($contactmethods['jabber']);
@@ -70,7 +70,7 @@ function cinnamon_extra_contact_info($contactmethods) {
 
 
 /* CINNAMON CARD SHORTCODE */
-function cinnamon_card($atts) {
+function imagepress_card($atts) {
     extract(shortcode_atts([
         'author' => '',
         'count' => 10,
@@ -78,7 +78,7 @@ function cinnamon_card($atts) {
         'role' => ''
     ], $atts));
 
-    $ip_slug = imagepress_get_option('ip_slug');
+    $imagepress_slug = imagepress_get_option('ip_slug');
 
     $display = '<div id="author-cards">';
 
@@ -102,7 +102,7 @@ function cinnamon_card($atts) {
             $cardArguments = [
                 'author' => $author,
                 'posts_per_page' => imagepress_get_option('ip_cards_per_author'),
-                'post_type' => $ip_slug
+                'post_type' => $imagepress_slug
             ];
             $authors_posts = get_posts($cardArguments);
 
@@ -127,7 +127,7 @@ function cinnamon_card($atts) {
                     <div class="cinnamon-stats">
                         <div class="cinnamon-meta"><span class="views">' . imagepress_kformat(imagepress_post_views($author, false)) . '</span><br><small>' . __('views', 'imagepress') . '</small></div>
                         <div class="cinnamon-meta"><span class="followers">' . imagepress_kformat(imagepress_get_follower_count($author)) . '</span><br><small>' . __('followers', 'imagepress') . '</small></div>
-                        <div class="cinnamon-meta"><span class="uploads">' . imagepress_kformat(imagepress_count_user_posts_by_type($author, $ip_slug)) . '</span><br><small>' . __('uploads', 'imagepress') . '</small></div>
+                        <div class="cinnamon-meta"><span class="uploads">' . imagepress_kformat(imagepress_count_user_posts_by_type($author, $imagepress_slug)) . '</span><br><small>' . __('uploads', 'imagepress') . '</small></div>
                     </div>';
                 $display .= '</li>';
             }
@@ -157,7 +157,7 @@ function cinnamon_card($atts) {
 
 
 /* CINNAMON PROFILE SHORTCODE */
-function cinnamon_profile($atts) {
+function imagepress_profile($atts) {
     extract(shortcode_atts([
         'author' => '',
         'username' => ''
@@ -197,7 +197,7 @@ function cinnamon_profile($atts) {
         $username = $userArray->user_nicename;
     }
 
-    $ip_slug = imagepress_get_option('ip_slug');
+    $imagepress_slug = imagepress_get_option('ip_slug');
     $hub_user_info = get_userdata((int) $author);
 
     $display = '';
@@ -213,7 +213,7 @@ function cinnamon_profile($atts) {
     $hca = get_the_author_meta('hub_custom_cover', $author);
     $hca = wp_get_attachment_url($hca);
     if (!isset($hca) || empty($hca)) {
-        $hca = IP_PLUGIN_URL . '/img/coverimage.png';
+        $hca = IMAGEPRESS_PLUGIN_URL . '/img/coverimage.png';
     }
 
     $logged_in_user = wp_get_current_user();
@@ -289,7 +289,7 @@ function cinnamon_profile($atts) {
         $display .= '<div class="cinnamon-stats">
             <div class="cinnamon-meta"><b>' . imagepress_kformat(imagepress_post_views($author)) . '</b> ' . __('profile views', 'imagepress') . '</div>
             <div class="cinnamon-meta"><b>' . imagepress_kformat(imagepress_get_follower_count($author)) . '</b> ' . __('followers', 'imagepress') . '</div>
-            <div class="cinnamon-meta"><b>' . imagepress_kformat(imagepress_count_user_posts_by_type($author, $ip_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>
+            <div class="cinnamon-meta"><b>' . imagepress_kformat(imagepress_count_user_posts_by_type($author, $imagepress_slug)) . '</b> ' . __('uploads', 'imagepress') . '</div>
         </div>';
         $display .= '<div class="ip-profile" data-ipw="' . imagepress_get_option('ip_ipw') . '">';
 
@@ -317,7 +317,7 @@ function cinnamon_profile($atts) {
     return $display;
 }
 
-function cinnamon_profile_edit($atts) {
+function imagepress_profile_edit($atts) {
     extract(shortcode_atts([
         'author' => ''
     ], $atts));
@@ -398,10 +398,10 @@ function cinnamon_profile_edit($atts) {
                 </ul>
                 <div class="tab-content" id="summary">
                     <h3>' . __('Statistics', 'imagepress') . '</h3>';
-                    $ip_slug = imagepress_get_option('ip_slug');
+                    $imagepress_slug = imagepress_get_option('ip_slug');
 
                     // get current user uploads
-                    $user_uploads = imagepress_count_user_posts_by_type($userid, $ip_slug);
+                    $user_uploads = imagepress_count_user_posts_by_type($userid, $imagepress_slug);
 
                     $out .= '<div class="ip-user-dashboard">
                         <div class="ip-user-dashboard-stat">
@@ -417,12 +417,12 @@ function cinnamon_profile_edit($atts) {
                             __('following', 'imagepress') . '
                         </div>
                         <div class="ip-user-dashboard-stat">
-                            <span>' . imagepress_kformat(imagepress_count_user_posts_by_type($userid, $ip_slug)) . '</span>' .
+                            <span>' . imagepress_kformat(imagepress_count_user_posts_by_type($userid, $imagepress_slug)) . '</span>' .
                             __('uploads', 'imagepress') . '
                         </div>';
 
                         $out .= '<div class="ip-user-dashboard-stat">
-                            <span>' . imagepress_kformat(ip_collection_count($userid)) . '</span>' .
+                            <span>' . imagepress_kformat(imagepress_collection_count($userid)) . '</span>' .
                             __('collections', 'imagepress') . '
                         </div>';
 
@@ -451,7 +451,7 @@ function cinnamon_profile_edit($atts) {
                         $out .= '</div>';
                     }
 
-                    $out .= ipFrontEndUserLikes($userid);
+                    $out .= imagepress_frontend_user_likes($userid);
 
                 $out .= '</div>
 
@@ -636,7 +636,7 @@ function cinnamon_profile_edit($atts) {
 
 
 /* CINNAMON CUSTOM PROFILE FIELDS */
-function save_cinnamon_profile_fields($user_id) {
+function imagepress_save_profile_fields($user_id) {
     if (!current_user_can('edit_user', $user_id))
         return false;
 
@@ -650,7 +650,7 @@ function save_cinnamon_profile_fields($user_id) {
     }
 }
 
-function hub_gravatar_filter($avatar, $id_or_email, $size) {
+function imagepress_hub_gravatar_filter($avatar, $id_or_email, $size) {
     // do not use email for get_avatar(), use ID
     $current_user = wp_get_current_user();
 
@@ -664,7 +664,7 @@ function hub_gravatar_filter($avatar, $id_or_email, $size) {
     return $avatar;
 }
 
-function cinnamon_awards() {
+function imagepress_awards() {
     $args = [
         'hide_empty' => false,
         'pad_counts' => true
