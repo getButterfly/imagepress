@@ -28,7 +28,7 @@ Create a user-powered image gallery or an image upload site, using nothing but W
 * TODO: Replace URL fields with page dropdowns
 
 = 8.1.2 =
-* FIX: Fixed function type
+* FIX: Fixed function typo
 * UPDATE: Updated WordPress compatibility
 * UPDATE: Updated FontAwesome (5.15.2 -> 5.15.3)
 * FEATURE: Added single collection shortcode
